@@ -1,6 +1,6 @@
 <template>
   <div>
-      
+     this is search vue 
   </div>
 </template>
 <script>
