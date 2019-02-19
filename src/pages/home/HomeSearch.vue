@@ -16,5 +16,6 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-
+.this-is-c-dev-branch
+    overflow hidden
 </style>
