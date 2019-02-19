@@ -18,4 +18,5 @@ export default {
 <style lang="stylus" scoped>
 .this-is-c-dev-branch
     overflow hidden
+    height 100%
 </style>
