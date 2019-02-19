@@ -1,12 +1,20 @@
 <template>
   <div>
-     this is search vue 
+     <search-header></search-header>
+     <!-- <search-tip></search-tip> -->
+     <search-list></search-list>
   </div>
 </template>
 <script>
+import SearchHeader from './components/HomeSearchHeader'
+import SearchTip from './components/HomeSearchTip'
+import SearchList from './components/HomeSearchList'
 export default {
   name: 'login',
   components: {
+    SearchHeader,
+    SearchTip,
+    SearchList
   },
   methods: {
     back: function () {

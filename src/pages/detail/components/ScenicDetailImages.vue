@@ -1,17 +1,16 @@
 <template>
-    <div class="h-s-container">
+    <div class="s-d-images-container">
         <swiper :options="swiperOption">
-            <swiper-slide v-for="(item,index) of imageList" :key="index">
-                <img :src="item" class="h-s-img" @click="startScenicDetail">
+            <swiper-slide v-for="(item, index) of imageList" :key="index">
+                <img :src="item" class="s-d-images-item">
             </swiper-slide>
-            <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
     </div>
 </template>
 
 <script>
 export default {
-  name: 'homeSwiper',
+  name: 'scenicDetailImages',
   data () {
     return {
       swiperOption: {
@@ -31,22 +30,16 @@ export default {
         'http://img15.3lian.com/2015/f2/57/d/93.jpg'
       ]
     }
-  },
-  methods: {
-    startScenicDetail () {
-      this.$router.push({name: 'scenicDetail'})
-    }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-.h-s-container
-    overflow hidden
-    width 100%
-    padding-bottom 40%
+.s-d-images-container
     height 0
-    .h-s-img
+    padding-bottom 50%
+    overflow hidden
+    .s-d-images-item
         width 100%
         height 100%
         object-fit cover

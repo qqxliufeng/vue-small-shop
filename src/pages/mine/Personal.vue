@@ -42,7 +42,9 @@
                     </li>
                 </ul>
             </div>
-            <button class="p-logout">退出登录</button>
+            <div class="p-logout-wrapper">
+              <button class="p-logout">退出登录</button>
+            </div>
         </div>
     </div>
 </template>
@@ -238,12 +240,14 @@ export default {
       & img
           width .5rem
           margin-right .2rem
-    .p-logout
-        display block
-        background-color $primary
-        width 70%
-        height .75rem
-        margin .3rem auto
-        color #ffffff
-        border-radius 1rem
+    .p-logout-wrapper
+      padding-bottom .3rem
+      .p-logout
+          display block
+          background-color $primary
+          width 70%
+          height .75rem
+          margin .3rem auto
+          color #ffffff
+          border-radius 1rem
 </style>

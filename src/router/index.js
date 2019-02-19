@@ -25,6 +25,9 @@ import CustomService from '@/pages/mine/CustomService'
 import TestScroller from '@/pages/mine/TestScroller'
 // home
 import Home from '@/pages/home/Home'
+import HomeSearch from '@/pages/home/HomeSearch'
+// detail
+import ScenicDetail from '@/pages/detail/ScenicDetail'
 
 Vue.use(Router)
 
@@ -34,6 +37,16 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/homesearch',
+      name: 'homeSearch',
+      component: HomeSearch
+    },
+    {
+      path: '/scenicdetail',
+      name: 'scenicDetail',
+      component: ScenicDetail
     },
     {
       path: '/login',

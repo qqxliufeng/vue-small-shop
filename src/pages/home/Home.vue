@@ -31,14 +31,6 @@ export default {
     HomeHot,
     HomeLike,
     HomeNavi
-  },
-  beforeRouteLeave: function (to, from, next) {
-    let confirm = window.confirm('是否要离开？')
-    if (confirm) {
-      next()
-    } else {
-      next(false)
-    }
   }
 }
 </script>

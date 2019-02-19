@@ -5,7 +5,7 @@
         <div class="sperator-line">|</div>
         <span class="h-n-navi-item">会员登录</span>
         <div class="sperator-line">|</div>
-        <span class="h-n-navi-item">个人中心</span>
+        <span class="h-n-navi-item" @click="startMine">个人中心</span>
         <div class="sperator-line">|</div>
         <span class="h-n-navi-item">联系客服</span>
       </div>
@@ -42,6 +42,9 @@ export default {
           }
         }
       }
+    },
+    startMine () {
+      this.$router.push({name: 'personal'})
     }
   },
   mounted () {
