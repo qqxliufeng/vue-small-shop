@@ -16,7 +16,8 @@ export default {
       opacityStyle: {
         opacity: 0
       },
-      mTop: 0
+      mTop: 0,
+      ref: this.$userInfo
     }
   },
   computed: {
@@ -40,6 +41,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this)
     window.addEventListener('scroll', this.handleScroll, true)
   },
   unmounted () {
