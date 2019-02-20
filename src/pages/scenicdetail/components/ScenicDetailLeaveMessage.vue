@@ -49,9 +49,10 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .s-d-l-m-message-container
+    border-top #f5f5f5 solid rem(.1)
     .s-d-l-m-message-title
         overflow hidden
-        padding rem(.1) rem(.2)
+        padding rem(.2)
         borderBottom()
         & span:nth-child(1)
             float left
@@ -68,7 +69,7 @@ export default {
     .s-d-l-m-message-info-item
         display flex
         align-items center
-        padding rem(.2)
+        padding rem(.1) rem(.2)
         & span:nth-child(1)
             background-color $orangeColor
             color #ffffff

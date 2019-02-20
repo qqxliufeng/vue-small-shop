@@ -1,6 +1,6 @@
 <template>
     <div class="s-d-header-container" >
-        <div :style="{ 'background-color': top == 0 ? '#000' : 'transparent'}">
+        <div :style="{ 'background-color': top == 0 ? '#000' : 'transparent'}" @click="back">
             <span class="iconfont" :style="{'color': top == 0 ? '#fff' : '#000'}">&#xe625;</span>
         </div>
         <div :style="{ 'background-color': top == 0 ? '#000' : 'transparent'}">
@@ -30,6 +30,9 @@ export default {
         opacity = Math.min(1, opacity)
         this.opacityStyle.opacity = 1 - opacity
       }
+    },
+    back () {
+      this.$router.back()
     }
   },
   mounted () {

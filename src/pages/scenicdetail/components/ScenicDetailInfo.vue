@@ -14,12 +14,12 @@
             </div>
             <div class="s-d-info-middle-wrapper">
                 <div class="s-d-info-scenic-info-wrapper">
-                    <div>
+                    <div @click="startScenicInfo('scenicInfoForIntro')">
                         <p class="s-d-info-scenic-info-title">景区介绍</p>
                         <p class="s-d-info-scenic-info-info">景区介绍景区介绍景区介绍景区介绍景区介绍景区介绍</p>
                     </div>
                     <div class="vertical-line"></div>
-                    <div>
+                    <div @click="startScenicInfo('scenicInfoForOrderNotify')">
                         <p class="s-d-info-scenic-info-title">预定须知</p>
                         <p class="s-d-info-scenic-info-info">预定须知预定须知预定须知预定须知预定须知预定须知</p>
                     </div>
@@ -48,7 +48,12 @@
 
 <script>
 export default {
-  name: 'scenicDetailInfo'
+  name: 'scenicDetailInfo',
+  methods: {
+    startScenicInfo (type) {
+      this.$router.push({name: 'scenicInfo', params: {selected: type}})
+    }
+  }
 }
 </script>
 

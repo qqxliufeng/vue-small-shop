@@ -16,7 +16,7 @@
                         <el-tag type="success" size="mini" class="s-d-hot-item-info-info-info-tag">立减2元</el-tag>
                     </p>
                     <p>
-                        已售1234   |   <span>预定须知</span>
+                        已售1234<span>|</span><span>预定须知</span>
                     </p>
                 </div>
                 <div class="s-d-hot-item-info-info-action">
@@ -87,6 +87,8 @@ export default {
                 & p:nth-child(2)
                     margin-top rem(.1)
                     normalTextStyle(#888888, .25)
+                    & span:nth-child(1)
+                        margin 0 rem(.2)
             .s-d-hot-item-info-info-action
                 flex 1
     .s-d-hot-item-will-online

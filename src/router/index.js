@@ -26,8 +26,11 @@ import TestScroller from '@/pages/mine/TestScroller'
 // home
 import Home from '@/pages/home/Home'
 import HomeSearch from '@/pages/home/HomeSearch'
-// detail
-import ScenicDetail from '@/pages/detail/ScenicDetail'
+// scenicdetail
+import ScenicDetail from '@/pages/scenicdetail/ScenicDetail'
+import ScenicInfo from '@/pages/scenicdetail/ScenicInfo'
+// scenicList
+import ScenicList from '@/pages/sceniclist/ScenicList'
 
 Vue.use(Router)
 
@@ -47,6 +50,17 @@ export default new Router({
       path: '/scenicdetail',
       name: 'scenicDetail',
       component: ScenicDetail
+    },
+    {
+      path: '/scenicinfo',
+      name: 'scenicInfo',
+      component: ScenicInfo,
+      props: true
+    },
+    {
+      path: '/sceniclist',
+      name: 'scenicList',
+      component: ScenicList
     },
     {
       path: '/login',

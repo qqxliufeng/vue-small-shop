@@ -17,11 +17,21 @@ import '../theme/index.css'
 // VueAwesomeSwiper
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+// VueLazyLoad
+import VueLazyLoad from 'vue-lazyload'
+
+import logo from 'images/logo.png'
 
 Vue.use(Toast)
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueAwesomeSwiper)
+Vue.use(VueLazyLoad, {
+  preLoad: 1.3,
+  error: logo,
+  loading: logo,
+  attempt: 1
+})
 Vue.prototype.$http = axios
 Vue.prototype.$userInfo = userInfo
 Vue.prototype.$validator = validator

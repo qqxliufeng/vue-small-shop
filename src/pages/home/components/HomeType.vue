@@ -2,7 +2,7 @@
     <swiper :options="swiperOption">
         <swiper-slide v-for="(items, slideIndex) of slideItems" :key="slideIndex">
             <div class="h-t-type-container">
-                <div v-for="(item, index) of items" :key="index" class="h-t-type-wrapper">
+                <div v-for="(item, index) of items" :key="index" class="h-t-type-wrapper" @click="homeTypeClick(index)">
                     <img :src="item.icon" class="h-t-type-icon">
                     <p class="h-t-type-title">{{item.name}}</p>
                 </div>
@@ -77,6 +77,11 @@ export default {
         pages[page].push(element)
       })
       return pages
+    }
+  },
+  methods: {
+    homeTypeClick (index) {
+      this.$router.push({name: 'scenicList'})
     }
   }
 }
