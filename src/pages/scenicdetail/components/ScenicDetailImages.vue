@@ -24,10 +24,7 @@ export default {
         }
       },
       imageList: [
-        'http://pic36.photophoto.cn/20150812/0033033907240876_b.jpg',
-        'http://img1.3lian.com/img013/v5/21/d/84.jpg',
-        'http://pic2.16pic.com/00/05/01/16pic_501154_b.jpg',
-        'http://img15.3lian.com/2015/f2/57/d/93.jpg'
+        'http://pic36.photophoto.cn/20150812/0033033907240876_b.jpg'
       ]
     }
   }

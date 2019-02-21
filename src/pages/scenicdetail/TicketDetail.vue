@@ -51,7 +51,7 @@ export default {
       bugInfoHeight: {
         maxHeight: '1.85rem'
       },
-      isSeeMore: false,
+      isSeeMore: true,
       showBuyAction: true
     }
   },

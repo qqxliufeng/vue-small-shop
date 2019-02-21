@@ -68,7 +68,7 @@ export default new Router({
     },
     {
       path: '/ticketdetail',
-      name: 'TicketDetail',
+      name: 'ticketDetail',
       component: TicketDetail
     },
     {
@@ -221,5 +221,12 @@ export default new Router({
       name: 'orderInfoPay',
       component: OrderInfoPay
     }
-  ]
+  ],
+  scrollBehavior (to, from, saveTop) {
+    if (saveTop) {
+      return saveTop
+    } else {
+      return {x: 0, y: 0}
+    }
+  }
 })

@@ -58,7 +58,7 @@ export default {
   },
   mounted () {
     this.$root.$on('ticketItemClick', (item) => {
-      this.$router.push({name: 'TicketDetail'})
+      this.$router.push({name: 'ticketDetail'})
     })
   }
 }
