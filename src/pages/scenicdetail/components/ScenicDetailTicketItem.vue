@@ -20,7 +20,7 @@
                     </p>
                 </div>
                 <div class="s-d-hot-item-info-info-action">
-                    <el-button type="primary" size="mini">立即预定</el-button>
+                    <el-button type="primary" size="mini" @click="itemClick">立即预定</el-button>
                 </div>
             </div>
         </div>
@@ -35,6 +35,11 @@ export default {
   name: 'scenicDetailTicketItem',
   props: {
     item: Object
+  },
+  methods: {
+    itemClick () {
+      this.$root.$emit('ticketItemClick', this.item)
+    }
   }
 }
 </script>

@@ -31,6 +31,10 @@ import ScenicDetail from '@/pages/scenicdetail/ScenicDetail'
 import ScenicInfo from '@/pages/scenicdetail/ScenicInfo'
 // scenicList
 import ScenicList from '@/pages/sceniclist/ScenicList'
+// ticketDetail
+import TicketDetail from '@/pages/scenicdetail/TicketDetail'
+// reseve
+import ReseveDetail from '@/pages/reseve/ReseveDetail'
 
 Vue.use(Router)
 
@@ -61,6 +65,16 @@ export default new Router({
       path: '/sceniclist',
       name: 'scenicList',
       component: ScenicList
+    },
+    {
+      path: '/ticketdetail',
+      name: 'TicketDetail',
+      component: TicketDetail
+    },
+    {
+      path: '/resevedetail',
+      name: 'reseveDetail',
+      component: ReseveDetail
     },
     {
       path: '/login',

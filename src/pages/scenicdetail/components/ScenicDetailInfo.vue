@@ -13,28 +13,18 @@
                 <span class="s-d-info-header-saller">已售1234</span>
             </div>
             <div class="s-d-info-middle-wrapper">
-                <div class="s-d-info-scenic-info-wrapper">
-                    <div @click="startScenicInfo('scenicInfoForIntro')">
-                        <p class="s-d-info-scenic-info-title">景区介绍</p>
-                        <p class="s-d-info-scenic-info-info">景区介绍景区介绍景区介绍景区介绍景区介绍景区介绍</p>
-                    </div>
-                    <div class="vertical-line"></div>
-                    <div @click="startScenicInfo('scenicInfoForOrderNotify')">
-                        <p class="s-d-info-scenic-info-title">预定须知</p>
-                        <p class="s-d-info-scenic-info-info">预定须知预定须知预定须知预定须知预定须知预定须知</p>
-                    </div>
-                </div>
-                <div class="s-d-info-scenic-open-time-wrapper">
-                    <p>营业时间</p>
-                    <p>早上9：00-12：00</p>
-                    <p>下午9：00-12：00</p>
-                </div>
+                <slot name="info"></slot>
                 <div class="s-d-info-scenic-location-wrapper">
                     <span class="iconfont s-d-info-scenic-location-icon">&#xe850;</span>
-                    <span>济南市历下区</span>
+                    <div class="s-d-info-scenic-location">
+                        <p>济南市历下区济南市历下区</p>
+                        <p>159111111111</p>
+                    </div>
+                    <a :href="'tel:159101011111'" class="iconfont s-d-info-scenic-phone">&#xe6a9;</a>
                 </div>
             </div>
         </div>
+        <slot name="bottomInfo"></slot>
         <div class="sperator-line"></div>
         <div class="o-i-ticket-safe-container">
             <p>优待客消费保障</p>
@@ -88,41 +78,16 @@ export default {
         .s-d-info-middle-wrapper
             padding-top rem(.3)
             overflow hidden
-            .s-d-info-scenic-info-wrapper
-                overflow hidden
-                display flex
-                height 100%
-                justify-content center
-                & p
-                    ellipsis()
-                & div:nth-child(1)
-                    overflow hidden
-                    flex 1
-                & div:nth-child(3)
-                    overflow hidden
-                    flex 1
-                .vertical-line
-                    width 1px
-                    height rem(1)
-                    margin rem(.1) rem(.1)
-                    background-color #f5f5f5
-                .s-d-info-scenic-info-title
-                    normalTextStyle(#333333, .3)
-                .s-d-info-scenic-info-info
-                    margin-top rem(.2)
-                    normalTextStyle(#888888, .25)
-            .s-d-info-scenic-open-time-wrapper
-                background-color #f5f5f5
-                padding rem(.1)
-                border-radius rem(.1)
-                & p:nth-child(1)
-                    normalTextStyle(#333, .28)
-                & p:nth-child(2), & p:nth-child(3)
-                    normalTextStyle(#888, .25)
             .s-d-info-scenic-location-wrapper
                 margin-top rem(.3)
                 normalTextStyle(#333333, .3)
                 line-height rem(.45)
+                display flex
+                align-items center
+                .s-d-info-scenic-location
+                    flex 1
+                .s-d-info-scenic-phone
+                    textStyle($primary, .65)
             .s-d-info-scenic-location-icon
                 font-size rem(.4)
                 margin-right rem(.2)

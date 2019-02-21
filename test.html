@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ch">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,29 +10,22 @@
     
 </body>
 <script>
-   
-//    var a = 11111
+    var name = "this is name"
+    var obj = {
+        name: this.name
+    }
 
-   function func () {
-    //    this.a = 99
-       a = 99
-       return {
-           a: 10,
-           b: this.a,
-           c: {
-               name: this.a,
-               a: 'rr',
-               d: {
-                   e: this
-               }
-           }
-       }
-   }
+    var mName = "window this is mName"
 
-   func.prototype.a = 33333
+    function fun () {
+        // var mName = "this is mName"
+        return {
+            name: mName
+        }
+    }
 
-   var o = func()
-   console.log(o.c.d.e)
-   console.log(o.b)
+    var obj1 = new fun()
+
+    console.log(obj1)
 </script>
 </html>
