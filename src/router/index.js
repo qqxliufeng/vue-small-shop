@@ -35,6 +35,13 @@ import ScenicList from '@/pages/sceniclist/ScenicList'
 import TicketDetail from '@/pages/scenicdetail/TicketDetail'
 // reseve
 import ReseveDetail from '@/pages/reseve/ReseveDetail'
+// commentList
+import CommentList from '@/pages/scenicdetail/comment/CommentList'
+// leaveMessageList
+import LeaveMessageList from '@/pages/scenicdetail/leavemessage/LeaveMessageList'
+// askMessage
+import AskMessage from '@/pages/scenicdetail/leavemessage/AskMessage'
+import ReplyMessage from '@/pages/scenicdetail/leavemessage/ReplyMessage'
 
 Vue.use(Router)
 
@@ -53,7 +60,10 @@ export default new Router({
     {
       path: '/scenicdetail',
       name: 'scenicDetail',
-      component: ScenicDetail
+      component: ScenicDetail,
+      meta: {
+        keepAlive: true
+      }
     },
     {
       path: '/scenicinfo',
@@ -75,6 +85,26 @@ export default new Router({
       path: '/resevedetail',
       name: 'reseveDetail',
       component: ReseveDetail
+    },
+    {
+      path: '/commentlist',
+      name: 'commentList',
+      component: CommentList
+    },
+    {
+      path: '/leavemessagelist',
+      name: 'leaveMessageList',
+      component: LeaveMessageList
+    },
+    {
+      path: '/askmessage',
+      name: 'askMessage',
+      component: AskMessage
+    },
+    {
+      path: '/replymessage',
+      name: 'replyMessage',
+      component: ReplyMessage
     },
     {
       path: '/login',

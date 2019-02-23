@@ -23,10 +23,14 @@ import VueLazyLoad from 'vue-lazyload'
 
 import logo from 'images/logo.png'
 
+// loading
+import Loading from 'common/components/Loading'
+
 Vue.use(Toast)
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueAwesomeSwiper)
+Vue.use(Loading)
 Vue.use(VueLazyLoad, {
   preLoad: 1.3,
   error: logo,

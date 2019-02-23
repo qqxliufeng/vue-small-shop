@@ -17,7 +17,7 @@
                     </div>
                 </li>
             </ul>
-            <div v-if="messageList.length > 2" class="s-d-l-m-message-info-see-more">
+            <div v-if="messageList.length > 2" class="s-d-l-m-message-info-see-more" @click="seeMoreLeaveMessage">
                 查看更多
             </div>
         </div>
@@ -40,6 +40,11 @@ export default {
           name: '这是一个好地方吗？这是一个好地方吗？这是一个好地方吗？这是一个好地方吗？'
         }
       ]
+    }
+  },
+  methods: {
+    seeMoreLeaveMessage () {
+      this.$router.push({name: 'leaveMessageList'})
     }
   }
 }

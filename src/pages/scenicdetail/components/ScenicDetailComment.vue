@@ -5,16 +5,13 @@
             <span>123次评价</span>
         </div>
         <div class="s-d-comment-tags-wrapper">
-            <span v-for="(item, index) of tagsList" :key="index" :class="{'s-d-comment-tags-selected': item.select}" @click="tagsClick(index)">{{item.name}}</span>
+            <span v-for="(item, index) of tagsList" :key="index" :class="{'s-d-comment-tags-selected': item.select}" @click="tagsClick(item)">{{item.name}}</span>
         </div>
         <ul>
-            <li v-for="(item, index) of commentList" :key="index">
+            <li v-for="(item, index) of mCommentList" :key="index">
                 <scenic-detail-comment-item :item="item"></scenic-detail-comment-item>
             </li>
         </ul>
-        <div v-if="commentList.length > 2" class="s-d-l-m-comment-info-see-more">
-            查看更多
-        </div>
     </div>
 </template>
 
@@ -22,12 +19,25 @@
 import ScenicDetailCommentItem from './ScenicDetailCommentItem'
 export default {
   name: 'scenicDetailComment',
+  props: {
+    commentList: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    tagCanSelected: {
+      type: Boolean,
+      default: false
+    }
+  },
   components: {
     ScenicDetailCommentItem
   },
   data () {
     return {
       select: true,
+      mCommentList: this.commentList,
       tagsList: [
         {
           name: '较好',
@@ -57,40 +67,17 @@ export default {
           name: '较好66666666666',
           select: false
         }
-      ],
-      commentList: [
-        {
-          content: '这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方',
-          isShowMore () {
-            return this.content.length > 100
-          }
-        },
-        {
-          content: '这是一个好地方，真的是一个好地方这是一地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方',
-          isShowMore () {
-            return this.content.length > 100
-          }
-        },
-        {
-          content: '这是一个好地方，真的是一个好地方这是一个好地方',
-          isShowMore () {
-            return this.content.length > 100
-          }
-        },
-        {
-          content: '这是一个好地方，真的是一个好地方这是一个好地方，真的的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方',
-          isShowMore () {
-            return this.content.length > 100
-          }
-        }
       ]
     }
   },
   methods: {
-    tagsClick (index) {
-      this.tagsList.forEach((element, i) => {
-        element.select = index === i
-      })
+    tagsClick (item) {
+      if (this.tagCanSelected) {
+        this.tagsList.forEach(element => {
+          element.select = element === item
+        })
+      }
+      this.$emit('tagClick', item)
     }
   }
 }
@@ -127,9 +114,4 @@ export default {
         .s-d-comment-tags-selected
             background-color $orangeColor
             color #fff
-    .s-d-l-m-comment-info-see-more
-        normalTextStyle(#333, .32)
-        padding rem(.2)
-        text-align center
-        border-top #f5f5f5 solid rem(.05)
 </style>

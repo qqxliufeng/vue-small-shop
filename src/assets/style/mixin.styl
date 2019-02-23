@@ -52,6 +52,9 @@ mescroller()
   left 0
   right 0
   height 88%
+  & >>> .mescroll-upwarp
+    min-height rem(.1)
+    padding rem(.2) 0
   // height auto
   // bottom 0
   // background-color blue
@@ -100,3 +103,23 @@ setPlaceholder(color)
       color color
   &:-ms-input-placeholder /* Internet Explorer 10+ */
       color color
+
+askAnswerWrapper(tagBgColor)
+  display flex
+  align-items center
+  & span:nth-child(1)
+      color #ffffff
+      font-size .2rem
+      background-color tagBgColor
+      border-radius .08rem
+      padding .05rem
+      width .25rem
+      height .25rem
+      margin-right .1rem
+      line-height .28rem
+      text-align center
+  & span:nth-child(2)
+      flex 1
+      color #555555
+      font-size .3rem
+      line-height .45rem

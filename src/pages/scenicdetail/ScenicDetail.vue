@@ -25,7 +25,10 @@
         <scenic-detail-hot></scenic-detail-hot>
         <scenic-detail-ticket-type></scenic-detail-ticket-type>
         <scenic-detail-leave-message></scenic-detail-leave-message>
-        <scenic-detail-comment></scenic-detail-comment>
+        <scenic-detail-comment :commentList="commentList" :tagCanSelected="false" @tagClick="handleTagClick"></scenic-detail-comment>
+         <div class="s-d-l-m-comment-info-see-more" @click="seeMoreComment">
+            查看更多
+        </div>
     </div>
 </template>
 
@@ -48,12 +51,30 @@ export default {
     ScenicDetailLeaveMessage,
     ScenicDetailComment
   },
+  data () {
+    return {
+      commentList: [
+        {
+          content: '这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方这是一个好地方，真的是一个好地方',
+          isShowMore () {
+            return this.content.length > 100
+          }
+        }
+      ]
+    }
+  },
   methods: {
     onItemClick (item) {
       console.log(item)
     },
     startScenicInfo (type) {
       this.$router.push({name: 'scenicInfo', params: {selected: type}})
+    },
+    seeMoreComment () {
+      this.$router.push({name: 'commentList'})
+    },
+    handleTagClick (tag) {
+      console.log(tag)
     }
   },
   mounted () {
@@ -98,4 +119,9 @@ export default {
         normalTextStyle(#333, .28)
     & p:nth-child(2), & p:nth-child(3)
         normalTextStyle(#888, .25)
+.s-d-l-m-comment-info-see-more
+    normalTextStyle(#333, .32)
+    padding rem(.2)
+    text-align center
+    border-top #f5f5f5 solid rem(.05)
 </style>

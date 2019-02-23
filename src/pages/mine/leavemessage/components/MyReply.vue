@@ -76,23 +76,8 @@ export default {
                 float right
         .l-q-content-container
             margin-top .3rem
-            display flex
-            & span:nth-child(1)
-                color #ffffff
-                font-size .2rem
-                background-color $primary
-                border-radius .08rem
-                padding .05rem
-                width .3rem
-                height .25rem
-                margin-top .05rem
-                margin-right .1rem
-                line-height .28rem
-                flex 1
-            & span:nth-child(2)
-                color #555555
-                font-size .3rem
-                line-height .45rem
+            askAnswerWrapper($primary)
+            align-items flex-start
         .l-q-no-reply
             margin-top .2rem
             color #aaaaaa
@@ -100,23 +85,8 @@ export default {
             line-height .45rem
         .l-q-content-r-container
             margin-top .3rem
-            display flex
-            & span:nth-child(1)
-                color #ffffff
-                font-size .2rem
-                background-color #EA741F
-                border-radius .08rem
-                padding .05rem
-                width .3rem
-                height .25rem
-                margin-top .05rem
-                margin-right .1rem
-                line-height .28rem
-                flex 1
-            & span:nth-child(2)
-                color #aaaaaa
-                font-size .25rem
-                line-height .45rem
+            askAnswerWrapper(#EA741F)
+            align-items flex-start
         .l-q-footer-container
             margin-top .3rem
             padding-left .4rem
