@@ -151,6 +151,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 @import '~styles/varibles.styl'
+@import '~styles/mixin.styl'
 .p-header-container
   background-color $primary
   height $headerHeight
@@ -162,6 +163,7 @@ export default {
   top 0
   left 0
   right 0
+  z-index 999
   .p-header-back
     position absolute
     left 0
@@ -183,7 +185,7 @@ export default {
       top .24rem
       right 0
 .p-content-container
-  margin-top $headerHeight
+  contentFixed()
   .p-info-container
     color #ffffff
     display flex

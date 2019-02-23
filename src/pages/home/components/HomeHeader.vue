@@ -26,8 +26,7 @@ export default {
   },
   methods: {
     startSearch () {
-      console.log(this.colorStyle)
-      // this.$router.push({name: 'homeSearch'})
+      this.$router.push({name: 'homeSearch'})
     },
     handleScroll (target) {
       let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop

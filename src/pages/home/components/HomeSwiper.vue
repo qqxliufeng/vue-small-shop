@@ -1,8 +1,10 @@
 <template>
     <div class="h-s-container">
-        <swiper :options="swiperOption">
+        <swiper :options="swiperData">
             <swiper-slide v-for="(item,index) of imageList" :key="index">
-                <img :src="item" class="h-s-img" @click="startScenicDetail">
+                <div @click="startScenicDetail">
+                  <img :src="item" class="h-s-img">
+                </div>
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
@@ -14,23 +16,33 @@ export default {
   name: 'homeSwiper',
   data () {
     return {
-      swiperOption: {
+      swiperOptionSlide: {
         loop: true,
-        pagination: {
-          el: '.swiper-pagination'
-        },
         autoplay: {
           delay: 2500,
           disableOnInteraction: false
         }
+      },
+      swiperOptionNoSlide: {
+        loop: false
       },
       imageList: [
         'http://pic36.photophoto.cn/20150812/0033033907240876_b.jpg'
       ]
     }
   },
+  computed: {
+    swiperData () {
+      if (this.imageList.length > 1) {
+        return this.swiperOptionSlide
+      } else {
+        return this.swiperOptionNoSlide
+      }
+    }
+  },
   methods: {
     startScenicDetail () {
+      console.log('2222222')
       this.$router.push({name: 'scenicDetail'})
     }
   }

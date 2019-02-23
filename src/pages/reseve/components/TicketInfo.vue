@@ -22,8 +22,8 @@
                 <el-input-number v-model="num" size="mini" :max="10" :min="1"></el-input-number>
             </div>
         </div>
-       <el-dialog title="选择日期" :visible.sync="isShowCanlendarDialog" center width="92%">
-            <calander :events="calendar.events" :lunar="calendar.lunar" :begin="calendar.begin" :end="calendar.end" :weeks="calendar.weeks" :months="calendar.months" @select="calendar.select">
+       <el-dialog title="选择日期" :visible.sync="isShowCanlendarDialog" center width="92%" :modal="false" @open="showModal = true" @close="showModal = false">
+            <calander :events="calendar.events" :lunar="calendar.lunar" :begin="calendar.begin" :end="calendar.end" :weeks="calendar.weeks" :months="calendar.months" @select="select">
                 <template slot="event">
                     <div class="c-e-wrapper">
                         <p>补￥278</p>
@@ -73,19 +73,15 @@ export default {
       showModal: false,
       calendar: {
         value: [2018, 2, 16], // 默认日期
-        // lunar:true, //显示农历
         weeks: ['日', '一', '二', '三', '四', '五', '六'],
         months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
         events: {
           '2018-2-14': '$408', '2018-2-15': '$460', '2018-2-16': '$500\n111'
-        },
-        select (value) {
-          console.log(value.toString())
         }
       },
       times: [
         {
-          date: '02-29',
+          date: '2018-02-29',
           price: '￥24',
           isEnable: true,
           isSelected: true
@@ -116,12 +112,23 @@ export default {
     for (let index = 0; index < 100; index++) {
       this.remarks.push('这是备注' + index)
     }
+    let date = new Date()
+    this.times.forEach((it, index) => {
+      it.date = this.$utils.dateAdd(date, index)
+    })
   },
   methods: {
     timeItemClick (item) {
       this.times.forEach(element => {
         element.isSelected = element === item
       })
+    },
+    select (startDate) {
+      let date = new Date(startDate[0], startDate[1] - 1, startDate[2])
+      this.times.forEach((it, index) => {
+        it.date = this.$utils.dateAdd(date, index)
+      })
+      this.isShowCanlendarDialog = false
     },
     beforeEnter (el) {
       this.showModal = true
@@ -142,6 +149,7 @@ export default {
     transform translateY(10rem)
     opacity 0
 .r-d-ticket-info-container
+    z-index 0
     .r-d-ticket-info-title-wrapper
         display flex
         padding rem(.2) 0
@@ -272,7 +280,7 @@ export default {
         top 0
         left 0
         right 0
-        height 20%
+        height 100%
         background-color #000000
         z-index 1000
         opacity .5

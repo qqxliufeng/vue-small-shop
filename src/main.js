@@ -13,6 +13,7 @@ import './assets/style/element-variables.styl'
 import 'vue2-toast/lib/toast.css'
 import Toast from 'vue2-toast'
 import validator from 'common/utils/validator'
+import utils from 'common/utils/utils'
 import '../theme/index.css'
 // VueAwesomeSwiper
 import VueAwesomeSwiper from 'vue-awesome-swiper'
@@ -35,6 +36,7 @@ Vue.use(VueLazyLoad, {
 Vue.prototype.$http = axios
 Vue.prototype.$userInfo = userInfo
 Vue.prototype.$validator = validator
+Vue.prototype.$utils = utils
 Vue.prototype.$isWeiXin = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1
 
 /* eslint-disable no-new */
