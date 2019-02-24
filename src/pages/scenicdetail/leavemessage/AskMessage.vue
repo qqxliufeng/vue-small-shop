@@ -59,6 +59,9 @@ export default {
 <style lang='stylus' scoped>
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
+@media (max-height: 400px)
+    .a-m-message-submit
+        display none
 .a-m-message-container
     & >>> .el-dialog__header
         padding 0
