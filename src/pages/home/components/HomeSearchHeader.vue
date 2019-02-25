@@ -1,7 +1,7 @@
 <template>
     <div class="h-s-header-container">
         <div class="h-s-header-input-wrapper">
-            <span class="iconfont h-s-back">&#xe625;</span>
+            <span class="iconfont h-s-back" @click="back">&#xe625;</span>
             <el-input placeholder="景点名称、关键字">
                 <i class="el-icon-search"></i>
             </el-input>
@@ -12,7 +12,12 @@
 
 <script>
 export default {
-  name: 'homeSearchHeader'
+  name: 'homeSearchHeader',
+  methods: {
+    back () {
+      this.$router.back()
+    }
+  }
 }
 </script>
 

@@ -28,6 +28,12 @@
 import navi from 'common/components/navigation'
 export default {
   name: 'login',
+  props: {
+    backName: {
+      type: String,
+      default: 'home'
+    }
+  },
   components: {
     navi
   },
@@ -42,7 +48,8 @@ export default {
       this.userName = ''
     },
     login () {
-      this.$router.push({ name: 'personal' })
+      this.$root.$data.userInfo.setUserInfo()
+      this.$router.replace({ name: this.backName })
     }
   }
 }

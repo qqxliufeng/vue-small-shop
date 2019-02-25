@@ -15,43 +15,40 @@
 <script>
 export default {
   name: 'homeNavi',
-  data () {
-    return {
-      i: 0,
-      show: true
+  props: {
+    scrollTop: {
+      type: Number,
+      default: 0
     }
   },
-  methods: {
-    handleScroll (target) {
-      // 页面滚动距顶部距离
-      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      let scroll = scrollTop - this.i
-      this.i = scrollTop
+  data () {
+    return {
+      show: true,
+      top: 0
+    }
+  },
+  watch: {
+    scrollTop () {
+      let scroll = this.scrollTop - this.top
+      this.top = this.scrollTop
       if (Math.abs(scroll) > 10) {
         if (scroll < 0) {
-          // console.log('1up')
           if (!this.show) {
             this.show = true
-            // console.log('2up')
           }
         } else {
-          // console.log('1down')
           if (this.show) {
             this.show = false
-            // console.log('2down')
           }
         }
       }
-    },
+      return this.show
+    }
+  },
+  methods: {
     startMine () {
       this.$router.push({name: 'personal'})
     }
-  },
-  mounted () {
-    window.addEventListener('scroll', this.handleScroll, true)
-  },
-  unmounted () {
-    window.removeEventListener('scroll', this.handleScroll)
   }
 }
 </script>

@@ -6,7 +6,6 @@
                   <img :src="item" class="h-s-img">
                 </div>
             </swiper-slide>
-            <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
     </div>
 </template>
@@ -42,7 +41,6 @@ export default {
   },
   methods: {
     startScenicDetail () {
-      console.log('2222222')
       this.$router.push({name: 'scenicDetail'})
     }
   }

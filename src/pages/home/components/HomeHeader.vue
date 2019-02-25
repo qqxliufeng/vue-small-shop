@@ -11,17 +11,28 @@
 <script>
 export default {
   name: 'homeHeader',
+  props: {
+    scrollTop: {
+      type: Number,
+      default: 0
+    }
+  },
   data () {
     return {
-      opacityStyle: {
-        opacity: 0
-      },
-      mTop: 0
     }
   },
   computed: {
+    opacityStyle () {
+      let opacity = 0
+      if (this.scrollTop > 0) {
+        opacity = Math.min(1, this.scrollTop / 140)
+      }
+      return {
+        opacity
+      }
+    },
     colorStyle () {
-      return { color: this.mTop === 0 ? '#fff' : '#000' }
+      return { color: this.scrollTop === 0 ? '#fff' : '#000' }
     }
   },
   methods: {
@@ -37,12 +48,6 @@ export default {
         this.opacityStyle.opacity = opacity
       }
     }
-  },
-  mounted () {
-    window.addEventListener('scroll', this.handleScroll, true)
-  },
-  unmounted () {
-    window.removeEventListener('scroll', this.handleScroll)
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
      <search-header></search-header>
-     <!-- <search-tip></search-tip> -->
+     <search-tip></search-tip>
      <search-list></search-list>
   </div>
 </template>

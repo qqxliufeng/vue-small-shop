@@ -8,14 +8,14 @@
               <span v-if="isShowRedNotify" class="p-header-notify-red"></span>
             </div>
         </div>
-        <div class="p-content-container">
+        <div class="p-content-container" @scroll="divScroll" ref="pContent">
             <div class="p-info-container">
                 <span class="iconfont p-info-header">&#xe65f;</span>
                 <router-link :to="{ name: 'pinfo', params: { userId: 11 } }">
                   <div>
                       <div class="p-info-header-vip-container">
                           <span class="p-info-header-vip">会员</span>
-                          <span>150111111111</span>
+                          <span>{{userPhone}}</span>
                       </div>
                       <p class="p-info-header-id">ID: 3312</p>
                   </div>
@@ -29,8 +29,10 @@
             </div>
             <div class="p-order">
                 <div class="p-order-item" v-for="(item,index) of orderItemList" :key="index">
+                  <el-badge :value="item.badage" class="item" :hidden="!item.isShow" @click.native="orderItemClick(index)">
                     <img :src="item.icon" alt="">
                     <p>{{item.title}}</p>
+                  </el-badge>
                 </div>
             </div>
             <div class="line"></div>
@@ -49,7 +51,18 @@
     </div>
 </template>
 <script>
-import imgUrl from 'images/logo.png'
+import img01 from 'images/img_order_01.png'
+import img02 from 'images/img_order_02.png'
+import img03 from 'images/img_order_03.png'
+import img04 from 'images/img_order_04.png'
+
+import img05 from 'images/img_personal_01.png'
+import img06 from 'images/img_personal_02.png'
+import img07 from 'images/img_personal_03.png'
+import img08 from 'images/img_personal_04.png'
+import img09 from 'images/img_personal_05.png'
+import img10 from 'images/img_personal_06.png'
+import img11 from 'images/img_personal_07.png'
 export default {
   name: 'personal',
   data () {
@@ -57,52 +70,66 @@ export default {
       orderItemList: [
         {
           title: '待付款',
-          icon: imgUrl
+          icon: img02,
+          badage: 0,
+          isShow: false
         },
         {
           title: '待使用',
-          icon: imgUrl
+          icon: img03,
+          badage: 1,
+          isShow: true
         },
         {
           title: '待评价',
-          icon: imgUrl
+          icon: img04,
+          badage: 2,
+          isShow: true
         },
         {
           title: '售后/退款',
-          icon: imgUrl
+          icon: img01,
+          badage: 3,
+          isShow: true
         }
       ],
       actionItemList: [
         {
           title: '我的收藏',
-          icon: imgUrl
+          icon: img05
         },
         {
           title: '我的优惠券',
-          icon: imgUrl
+          icon: img06
         },
         {
           title: '留言板',
-          icon: imgUrl
+          icon: img07
         },
         {
           title: '常用联系人',
-          icon: imgUrl
+          icon: img08
         },
         {
           title: '个人信息',
-          icon: imgUrl
+          icon: img09
         },
         {
           title: '密码修改',
-          icon: imgUrl
+          icon: img10
         },
         {
           title: '联系客服',
-          icon: imgUrl
+          icon: img11
         }
       ],
-      isShowRedNotify: true
+      isShowRedNotify: true,
+      contentDivScroll: 0
+    }
+  },
+  computed: {
+    userPhone () {
+      return this.$root.$data.userInfo.state.phone
     }
   },
   methods: {
@@ -111,6 +138,13 @@ export default {
     },
     message () {
       this.$router.push({ name: 'message' })
+    },
+    orderItemClick (orderItemIndex) {
+      this.orderItemList[orderItemIndex].isShow = false
+      // switch (orderItemIndex) {
+      //   case 1:
+      //     break
+      // }
     },
     itemClick (index) {
       switch (index) {
@@ -136,6 +170,11 @@ export default {
           this.$router.push({name: 'customService', params: { userId: 11 }})
           break
       }
+    },
+    divScroll (div) {
+      if (div) {
+        this.contentDivScroll = div.target.scrollTop
+      }
     }
   },
   beforeRouteLeave (to, from, next) {
@@ -146,6 +185,9 @@ export default {
     } else {
       next()
     }
+  },
+  activated () {
+    this.$refs.pContent.scrollTop = this.contentDivScroll
   }
 }
 </script>
@@ -228,6 +270,10 @@ export default {
           & img
               margin .2rem 0rem
               width .5rem
+          & >>> .el-badge__content
+              margin-top rem(.2)
+              margin-right rem(.1)
+              font-size rem(.2)
   .line
       margin .3rem 0rem
       background-color #f5f5f5

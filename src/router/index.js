@@ -50,7 +50,10 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: {
+        keepAlive: true
+      }
     },
     {
       path: '/homesearch',
@@ -109,7 +112,8 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      props: true
     },
     {
       path: '/register',
@@ -142,7 +146,8 @@ export default new Router({
       name: 'personal',
       component: Personal,
       meta: {
-        keepAlive: true
+        keepAlive: true,
+        auth: true
       }
     },
     {

@@ -61,14 +61,7 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .h-t-tip-container
-    position fixed
-    top $headerHeight
-    left 0
-    right 0
-    height 100%
-    box-sizing border-box
-    padding-bottom rem($headerHeight)
-    overflow-y scroll
+    contentFixed()
     .h-t-tip-wrapper
         padding rem(.2)
         .h-t-tip-title

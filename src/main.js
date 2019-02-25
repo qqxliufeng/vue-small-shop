@@ -38,15 +38,30 @@ Vue.use(VueLazyLoad, {
   attempt: 1
 })
 Vue.prototype.$http = axios
-Vue.prototype.$userInfo = userInfo
+// Vue.prototype.$userInfo = userInfo
 Vue.prototype.$validator = validator
 Vue.prototype.$utils = utils
 Vue.prototype.$isWeiXin = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(m => m.meta.auth)) {
+    if (userInfo.isLogin()) {
+      next()
+    } else {
+      next({name: 'login', params: { backName: to.name }})
+    }
+  } else {
+    next()
+  }
+})
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  data: {
+    userInfo
+  }
 })
