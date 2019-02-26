@@ -273,7 +273,6 @@ export default {
           & >>> .el-badge__content
               margin-top rem(.2)
               margin-right rem(.1)
-              font-size rem(.2)
   .line
       margin .3rem 0rem
       background-color #f5f5f5
@@ -286,7 +285,7 @@ export default {
       color #333333
       font-size .28rem
       & img
-          width .5rem
+          width .4rem
           margin-right .2rem
     .p-logout-wrapper
       padding-bottom .3rem

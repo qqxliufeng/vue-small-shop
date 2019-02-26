@@ -22,6 +22,7 @@
                 </router-link>
             </div>
         </div>
+        <loading v-if="showLoading" loadingTip="正在登录…"></loading>
     </div>
 </template>
 <script>
@@ -40,7 +41,8 @@ export default {
   data () {
     return {
       userName: '',
-      userPassword: ''
+      userPassword: '',
+      showLoading: false
     }
   },
   methods: {
@@ -48,8 +50,12 @@ export default {
       this.userName = ''
     },
     login () {
-      this.$root.$data.userInfo.setUserInfo()
-      this.$router.replace({ name: this.backName })
+      this.showLoading = true
+      setTimeout(() => {
+        this.$root.$data.userInfo.setUserInfo()
+        this.$router.replace({ name: this.backName })
+        this.$toast('登录成功')
+      }, 1000)
     }
   }
 }

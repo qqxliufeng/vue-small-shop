@@ -225,7 +225,10 @@ export default new Router({
     {
       path: '/customservice',
       name: 'customService',
-      component: CustomService
+      component: CustomService,
+      meta: {
+        auth: true
+      }
     },
     {
       path: '/orderinfo/:orderType',

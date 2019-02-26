@@ -3,11 +3,11 @@
       <div class="h-n-navi-container" v-show="show">
         <span class="h-n-navi-item">首页</span>
         <div class="sperator-line">|</div>
-        <span class="h-n-navi-item">会员登录</span>
+        <span class="h-n-navi-item" @click="startLogin">{{loginTip}}</span>
         <div class="sperator-line">|</div>
         <span class="h-n-navi-item" @click="startMine">个人中心</span>
         <div class="sperator-line">|</div>
-        <span class="h-n-navi-item">联系客服</span>
+        <span class="h-n-navi-item" @click="startCustomService">联系客服</span>
       </div>
     </transition>
 </template>
@@ -25,6 +25,11 @@ export default {
     return {
       show: true,
       top: 0
+    }
+  },
+  computed: {
+    loginTip () {
+      return this.$root.userInfo.isLogin() ? '退出' : '登录'
     }
   },
   watch: {
@@ -46,8 +51,21 @@ export default {
     }
   },
   methods: {
+    startLogin () {
+      if (this.$root.userInfo.isLogin()) {
+        let confirm = window.confirm('是否要退出登录？')
+        if (confirm) {
+          this.$root.userInfo.clearInfoAction()
+        }
+      } else {
+        this.$router.push({name: 'login'})
+      }
+    },
     startMine () {
       this.$router.push({name: 'personal'})
+    },
+    startCustomService () {
+      this.$router.push({name: 'customService'})
     }
   }
 }

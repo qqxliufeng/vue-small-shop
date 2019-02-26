@@ -4,7 +4,7 @@
       <div class="h-h-header-wrapper">
         <span class="h-h-header-title" :style="colorStyle">济南<i class="el-icon-arrow-down"></i></span>
         <span class="h-h-header-search" @click="startSearch"><i class="el-icon-search"></i>搜索景点、关键字</span>
-        <span class="iconfont h-h-header-mine" :style="colorStyle">&#xe8a0;</span>
+        <span class="iconfont h-h-header-mine" :style="colorStyle" @click="startPersonal">&#xe8a0;</span>
       </div>
     </div>
 </template>
@@ -39,14 +39,8 @@ export default {
     startSearch () {
       this.$router.push({name: 'homeSearch'})
     },
-    handleScroll (target) {
-      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      this.mTop = scrollTop
-      if (scrollTop > 0) {
-        let opacity = scrollTop / 140
-        opacity = Math.min(1, opacity)
-        this.opacityStyle.opacity = opacity
-      }
+    startPersonal () {
+      this.$router.push({name: 'personal'})
     }
   }
 }
