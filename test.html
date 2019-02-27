@@ -7,69 +7,20 @@
     <title>Document</title>
 </head>
 <style>
-    .wrapper{
-        z-index: 0;
-    }
-    .a {
+    .block{
+        display: inline-block;
         width: 100px;
         height: 100px;
-        background-color: black;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 105;
+        background-color: red
     }
-    .c {
-        position: relative;
-        width: 100px;
-        height: 100px;
-        background-color: blue;
-        z-index: 101;
-    }
-    .b {
-        position: relative;
-        width: 100px;
-        height: 100px;
-        background-color: red;
-        margin-top: -10px;
-        z-index: 102;
-    }
-    .d{
-        width: 50px;
-        height: 50px;
-        background-color: #ffffff;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1000
-    }
-    .e{
-        width: 30px;
-        height: 30px;
-        background-color: green;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1001
+    .middle {
+        vertical-align: middle
     }
 </style>
 <body>
     <div class="wrapper">
-        <div class="a">
-            this is a
-            <div class="d">
-                this is d
-            </div>
-            <div class="e">
-                    this is e
-                </div>
-        </div>
-        <div class="c">
-                this is c
-        </div>
-    </div>
-    <div class="b">
-        b
+        <span class="block middle"></span>
+        <span class="middle">x</span>
     </div>
 </body>
 <script>

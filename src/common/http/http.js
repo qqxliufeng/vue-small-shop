@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 axios.defaults.timeout = 10000
-axios.defaults.baseURL = 'https://api.coindesk.com/v1/bpi/'
+axios.defaults.baseURL = 'http://192.168.0.102:8001/index/index'
 
 axios.interceptors.request.use(
   config => {
@@ -18,12 +18,12 @@ axios.interceptors.response.use(
     if (response.data.resultCode === '404') {
       console.log('找不到')
     } else {
-      console.log(response)
       return response
     }
   },
   error => {
-    return Promise.reject(error.response)
+    console.log(error)
+    return Promise.reject(error)
   }
 )
 

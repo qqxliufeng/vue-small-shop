@@ -51,11 +51,24 @@ export default {
     },
     login () {
       this.showLoading = true
-      setTimeout(() => {
-        this.$root.$data.userInfo.setUserInfo()
-        this.$router.replace({ name: this.backName })
-        this.$toast('登录成功')
-      }, 1000)
+      this.$http.post('/login', {
+        userName: 'hhhhh',
+        password: '777777'
+      })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        .then(() => {
+          this.showLoading = false
+        })
+      // setTimeout(() => {
+      //   this.$root.$data.userInfo.setUserInfo()
+      //   this.$router.replace({ name: this.backName })
+      //   this.$toast('登录成功')
+      // }, 1000)
     }
   }
 }
