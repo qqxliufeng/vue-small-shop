@@ -88,14 +88,12 @@ export default {
             margin-top rem(.1)
             .s-d-hot-item-info-info-info
                 overflow hidden
-                flex 5
+                flex 1
                 & p:nth-child(2)
                     margin-top rem(.1)
                     normalTextStyle(#888888, .25)
                     & span:nth-child(1)
                         margin 0 rem(.2)
-            .s-d-hot-item-info-info-action
-                flex 1
     .s-d-hot-item-will-online
         background-color #FEEBC6
         normalTextStyle($orangeColor, .28)

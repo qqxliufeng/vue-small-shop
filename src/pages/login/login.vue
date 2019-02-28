@@ -64,11 +64,11 @@ export default {
         .then(() => {
           this.showLoading = false
         })
-      // setTimeout(() => {
-      //   this.$root.$data.userInfo.setUserInfo()
-      //   this.$router.replace({ name: this.backName })
-      //   this.$toast('登录成功')
-      // }, 1000)
+      setTimeout(() => {
+        this.$root.$data.userInfo.setUserInfo()
+        this.$router.replace({ name: this.backName })
+        this.$toast('登录成功')
+      }, 1000)
     }
   }
 }
