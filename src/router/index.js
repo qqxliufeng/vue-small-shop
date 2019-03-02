@@ -258,6 +258,11 @@ export default new Router({
       path: '/orderinfopay',
       name: 'orderInfoPay',
       component: OrderInfoPay
+    },
+    {
+      path: '/adsdetail',
+      name: 'adsDetail',
+      component: () => import('@/pages/ads/AdsDetail')
     }
   ],
   scrollBehavior (to, from, saveTop) {

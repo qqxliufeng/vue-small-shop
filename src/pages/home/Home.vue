@@ -3,12 +3,13 @@
        <home-header :scrollTop="mScrollTop"></home-header>
        <div ref="homeContent" class="h-content">
           <home-swiper></home-swiper>
+          <home-notice></home-notice>
           <home-type></home-type>
           <div class="sperator-line-height"></div>
           <div class="h-h-title">人气推荐</div>
           <home-hot></home-hot>
           <div class="h-h-ad-wrapper">
-            <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2079932039,2403444542&fm=27&gp=0.jpg">
+            <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2079932039,2403444542&fm=27&gp=0.jpg" @click="adClick">
           </div>
           <div class="h-h-title">猜你喜欢</div>
           <home-like></home-like>
@@ -23,6 +24,7 @@ import HomeType from './components/HomeType'
 import HomeHot from './components/HomeHot'
 import HomeLike from './components/HomeLike'
 import HomeNavi from './components/HomeNavigation'
+import HomeNotice from './components/HomeNotice'
 export default {
   name: 'home',
   props: ['nameId'],
@@ -32,7 +34,8 @@ export default {
     HomeType,
     HomeHot,
     HomeLike,
-    HomeNavi
+    HomeNavi,
+    HomeNotice
   },
   data () {
     return {
@@ -47,6 +50,9 @@ export default {
         document.body.scrollTop = 0
         this.isFirstLoad = false
       }
+    },
+    adClick () {
+      this.$router.push({name: 'adsDetail'})
     }
   },
   mounted () {
