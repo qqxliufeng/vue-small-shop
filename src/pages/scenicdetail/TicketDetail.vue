@@ -7,12 +7,6 @@
                 <p class="t-d-intro-title">产品介绍</p>
                 <p class="t-d-intro-content">趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼</p>
             </template>
-            <template slot="bottomInfo">
-                <div class="t-d-intro-back-money">
-                    <span>产品返利：最高返<i>10元</i></span>
-                    <button>立即分享</button>
-                </div>
-            </template>
         </ticket-info>
         <div class="t-d-detail-buy-info">
             <p class="t-d-detail-buy-info-title">购买须知</p>
