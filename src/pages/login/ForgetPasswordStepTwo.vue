@@ -18,6 +18,16 @@
 import navi from 'common/components/navigation'
 export default {
   name: 'login',
+  props: {
+    phone: {
+      type: String,
+      default: ''
+    },
+    code: {
+      type: String,
+      default: ''
+    }
+  },
   components: {
     navi
   },
@@ -52,10 +62,20 @@ export default {
         this.$toast('两次密码不一致')
         return
       }
-      // 返回当前页面
-      this.$router.back()
-      // 把第一步返回了
-      this.$router.back()
+      this.$http('user/user/resetpwd', {
+        type: 'mobile',
+        newpassword: this.firstPassword,
+        captcha: this.code,
+        mobile: this.phone
+      }, '正在修改密码…', (data) => {
+        this.$toast(data.msg)
+        // 返回当前页面
+        this.$router.back()
+        // 把第一步返回了
+        this.$router.back()
+      }, (error) => {
+        this.$toast(error)
+      })
     }
   }
 }

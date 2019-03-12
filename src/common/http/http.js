@@ -1,11 +1,14 @@
 import axios from 'axios'
+import qs from 'qs'
 
 axios.defaults.timeout = 10000
-axios.defaults.baseURL = 'http://192.168.0.102:8001/index/index'
+axios.defaults.baseURL = 'http://192.168.1.100:80/store_api/v1/'
 
 axios.interceptors.request.use(
   config => {
-    config.headers['Content-Type'] = 'application/json;charset=UTF-8'
+    config.data = qs.stringify(config.data)
+    console.log(config)
+    config.headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
     return config
   },
   error => {

@@ -3,16 +3,16 @@
         <navi title="注册"></navi>
         <div class="input-container">
             <div>
-                <span class="iconfont input-close" @click="clear">&#xe604;</span>
-                <input placeholder="请输入手机号" class="user-name" maxlength="11"/>
+                <span class="iconfont input-close" @click="clear('phone')">&#xe604;</span>
+                <input placeholder="请输入手机号" class="user-name" maxlength="11" v-model="userPhone"/>
             </div>
             <div class="input-password-container">
-                <input placeholder="请输入验证码" class="user-password" maxlength="16"/>
-                <span class="input-forget-password">获取验证码</span>
+                <input placeholder="请输入验证码" class="user-password" maxlength="6" v-model="verifyCode"/>
+                <button class="input-forget-password" @click="getVerifyCode" :disabled="disabled">{{countTitle}}</button>
             </div>
             <div class="input-password-container">
-                <span class="iconfont input-close" @click="clear">&#xe604;</span>
-                <input placeholder="请输入密码" maxlength="16"/>
+                <span class="iconfont input-close" @click="clear('password')">&#xe604;</span>
+                <input placeholder="请输入密码" maxlength="16" v-model="password" type="password"/>
             </div>
             <div class="register-protocol-container">
                 <el-checkbox v-model="checked" class="register-input-protocol" label="我同意"></el-checkbox>
@@ -20,8 +20,9 @@
                     <span class="register-protocol">《用户协议》</span>
                 </router-link>
             </div>
-            <el-button type="primary" class="input-login">注册</el-button>
+            <el-button type="primary" class="input-login" @click="register">注册</el-button>
         </div>
+        <loading :loadingTip="loading.tip" v-show="loading.show"></loading>
     </div>
 </template>
 <script>
@@ -33,12 +34,90 @@ export default {
   },
   data () {
     return {
-      checked: true
+      checked: true,
+      userPhone: '',
+      verifyCode: '',
+      password: '',
+      loading: this.$loading(),
+      countTitle: '获取验证码',
+      disabled: false
     }
   },
   methods: {
-    clear () {
-      this.userName = ''
+    clear (type) {
+      switch (type) {
+        case 'phone':
+          this.userPhone = ''
+          break
+        case 'password':
+          this.password = ''
+          break
+      }
+    },
+    getVerifyCode () {
+      if (!this.userPhone) {
+        this.$toast('请输入手机号')
+        return
+      }
+      if (!this.$utils.validator.isPhone(this.userPhone)) {
+        this.$toast('请输入合法的手机号')
+        return
+      }
+      this.disabled = true
+      let count = 60
+      let time = setInterval(() => {
+        this.disabled = true
+        count--
+        this.countTitle = count + ' s'
+        if (count <= 0) {
+          clearInterval(time)
+          this.disabled = false
+          this.countTitle = '重新获取？'
+        }
+      }, 1000)
+      this.$http('user/user/get_captcha', {
+        mobile: this.userPhone,
+        event: 'register'
+      }, null, (data) => {
+        this.$toast('短信发送成功，请注意查收')
+      }, (error) => {
+        this.$toast(error)
+      })
+    },
+    register () {
+      if (!this.userPhone) {
+        this.$toast('请输入手机号')
+        return
+      }
+      if (!this.$utils.validator.isPhone(this.userPhone)) {
+        this.$toast('请输入合法的手机号')
+        return
+      }
+      if (!this.verifyCode) {
+        this.$toast('请输入验证码')
+        return
+      }
+      if (!this.password) {
+        this.$toast('请输入密码')
+        return
+      }
+      if (!this.$utils.validator.isPassword(this.password)) {
+        this.$toast('请输入6-16位密码')
+        return
+      }
+      if (!this.checked) {
+        this.$toast('请先阅读并同意用户协议')
+        return
+      }
+      this.$http('user/user/register', {
+        mobile: this.userPhone,
+        password: this.password,
+        captcha: this.verifyCode
+      }, '正在注册…', (data) => {
+        this.$toast(data.msg)
+      }, (error) => {
+        this.$toast(error)
+      })
     }
   }
 }
@@ -72,9 +151,9 @@ export default {
     .input-forget-password
       position absolute
       right 0
-      margin-top .1rem
       margin-right .3rem
       color $primary
+      background #ffffff
       &::before
        content '|'
        margin-right .5rem
@@ -87,6 +166,8 @@ export default {
   .register-protocol-container
     margin-top .3rem
     text-align right
+    & >>> .el-checkbox
+      margin-right 0
     .register-input-protocol
       &:focus
         color $primary

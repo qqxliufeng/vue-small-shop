@@ -12,6 +12,7 @@
             </div>
             <el-button type="primary" class="input-login" @click="nextStep">下一步</el-button>
         </div>
+        <loading :loadingTip="loading.tip" v-show="loading.show"></loading>
     </div>
 </template>
 <script>
@@ -26,7 +27,8 @@ export default {
       phone: '',
       verifyCode: '',
       disabled: false,
-      countTitle: '获取验证码'
+      countTitle: '获取验证码',
+      loading: this.$loading()
     }
   },
   methods: {
@@ -34,29 +36,37 @@ export default {
       this.phone = ''
     },
     nextStep () {
-      if (!this.phone) {
-        this.$toast('请输入手机号')
-        return
-      }
-      if (!(this.$validator.isPhone(this.phone))) {
-        this.$toast('请输入正确的手机号')
-        return
-      }
-      if (!this.verifyCode) {
-        this.$toast('请输入验证码')
-        return
-      }
-      this.$router.push({name: 'fptwo'})
+      // if (!this.phone) {
+      //   this.$toast('请输入手机号')
+      //   return
+      // }
+      // if (!(this.$utils.validator.isPhone(this.phone))) {
+      //   this.$toast('请输入正确的手机号')
+      //   return
+      // }
+      // if (!this.verifyCode) {
+      //   this.$toast('请输入验证码')
+      //   return
+      // }
+      this.$router.push({name: 'fptwo', params: {phone: this.phone, code: this.verifyCode}})
     },
     countDown () {
       if (!this.phone) {
         this.$toast('请输入手机号')
         return
       }
-      if (!(this.$validator.isPhone(this.phone))) {
+      if (!(this.$utils.validator.isPhone(this.phone))) {
         this.$toast('请输入正确的手机号')
         return
       }
+      this.$http('user/user/get_captcha', {
+        mobile: this.phone,
+        event: 'resetpwd'
+      }, null, (data) => {
+        this.$toast('短信发送成功，请注意查收')
+      }, (error) => {
+        this.$toast(error)
+      })
       this.disabled = true
       let count = 60
       let time = setInterval(() => {

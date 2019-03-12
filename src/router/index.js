@@ -133,7 +133,8 @@ export default new Router({
     {
       path: '/forgetpasswordsteptwo',
       name: 'fptwo',
-      component: ForgetPasswordStepTwo
+      component: ForgetPasswordStepTwo,
+      props: true
     },
     {
       path: '/fastlogin',
