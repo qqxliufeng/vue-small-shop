@@ -4,14 +4,15 @@
         <div class="input-container">
             <div>
                 <span class="iconfont input-close" @click="clear">&#xe604;</span>
-                <input placeholder="请输入手机号" class="user-name" maxlength="11" v-model="phone"/>
+                <input placeholder="请输入手机号" class="user-name" maxlength="11" v-model="phone">
             </div>
             <div class="input-password-container">
-                <input placeholder="请输入验证码" class="user-password" maxlength="6" v-model="verifyCode"/>
+                <input placeholder="请输入验证码" class="user-password" maxlength="6" v-model="verifyCode" type="number"/>
                 <button class="input-forget-password" @click="countDown" :disabled="disabled">{{countTitle}}</button>
             </div>
             <el-button type="primary" class="input-login" @click="login">登录</el-button>
         </div>
+        <loading :loadingTip="loading.tip" v-show="loading.show"></loading>
     </div>
 </template>
 <script>
@@ -26,7 +27,8 @@ export default {
       phone: '',
       verifyCode: '',
       disabled: false,
-      countTitle: '获取验证码'
+      countTitle: '获取验证码',
+      loading: this.$loading()
     }
   },
   methods: {
@@ -38,22 +40,34 @@ export default {
         this.$toast('请输入手机号')
         return
       }
-      if (!(this.$validator.isPhone(this.phone))) {
+      if (!(this.$utils.validator.isPhone(this.phone))) {
         this.$toast('请输入正确的手机号')
+        this.phone = ''
         return
       }
       if (!this.verifyCode) {
         this.$toast('请输入验证码')
         return
       }
-      this.$router.push({name: 'fptwo'})
+      this.$http(this.$urlPath.userInfoModileLoginUrl, {
+        mobile: this.phone,
+        captcha: this.verifyCode
+      }, '正在登录…',
+      (data) => {
+        this.$toast(data.msg)
+        this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
+        this.$router.back()
+      },
+      (errorCode, error) => {
+        this.$toast(error)
+      })
     },
     countDown () {
       if (!this.phone) {
         this.$toast('请输入手机号')
         return
       }
-      if (!(this.$validator.isPhone(this.phone))) {
+      if (!(this.$utils.validator.isPhone(this.phone))) {
         this.$toast('请输入正确的手机号')
         return
       }
@@ -69,6 +83,14 @@ export default {
           this.countTitle = '重新获取？'
         }
       }, 1000)
+      this.$http(this.$urlPath.userInfoGetSMSCodeUrl, {
+        mobile: this.phone,
+        event: 'mobilelogin'
+      }, null, (data) => {
+        this.$toast('短信发送成功，请注意查收')
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
     }
   }
 }

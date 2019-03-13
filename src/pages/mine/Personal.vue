@@ -10,14 +10,14 @@
         </div>
         <div class="p-content-container" @scroll="divScroll" ref="pContent">
             <div class="p-info-container">
-                <span class="iconfont p-info-header">&#xe65f;</span>
-                <router-link :to="{ name: 'pinfo', params: { userId: 11 } }">
+                <img class="p-info-header" :src="avatar"/>
+                <router-link :to="{ name: 'pinfo' }">
                   <div>
                       <div class="p-info-header-vip-container">
                           <span class="p-info-header-vip">会员</span>
                           <span>{{userPhone}}</span>
                       </div>
-                      <p class="p-info-header-id">ID: 3312</p>
+                      <p class="p-info-header-id">ID: {{this.$root.userInfo.state.id}}</p>
                   </div>
                 </router-link>
             </div>
@@ -129,7 +129,10 @@ export default {
   },
   computed: {
     userPhone () {
-      return this.$root.$data.userInfo.state.phone
+      return this.$root.userInfo.state.name
+    },
+    avatar () {
+      return this.$utils.image.getImagePath(this.$root, this.$root.userInfo.state.avatar)
     }
   },
   methods: {
@@ -149,25 +152,25 @@ export default {
     itemClick (index) {
       switch (index) {
         case 0:
-          this.$router.push({name: 'collection', params: {userId: 11}})
+          this.$router.push({name: 'collection'})
           break
         case 1:
-          this.$router.push({name: 'coupon', params: {userId: 11}})
+          this.$router.push({name: 'coupon'})
           break
         case 2:
-          this.$router.push({name: 'leaveMessage', params: {userId: 11}})
+          this.$router.push({name: 'leaveMessage'})
           break
         case 3:
-          this.$router.push({name: 'contacts', params: {userId: 11}})
+          this.$router.push({name: 'contacts'})
           break
         case 4:
-          this.$router.push({name: 'pinfo', params: { userId: 11 }})
+          this.$router.push({name: 'pinfo'})
           break
         case 5:
-          this.$router.push({name: 'resetPassword', params: { userId: 11 }})
+          this.$router.push({name: 'resetPassword'})
           break
         case 6:
-          this.$router.push({name: 'customService', params: { userId: 11 }})
+          this.$router.push({name: 'customService'})
           break
       }
     },
@@ -236,8 +239,11 @@ export default {
     align-items center
     height 2.5rem
     .p-info-header
-      font-size 1.5rem
-      margin-left .15rem
+      width rem(1.2)
+      height rem(1.2)
+      border-radius 50%
+      padding rem(.2)
+      object-fit cover
     .p-info-header-vip-container
       color #ffffff
       margin-bottom .35rem
@@ -250,7 +256,7 @@ export default {
         line-height .4rem
         vertical-align middle
     .p-info-header-id
-      font-size .2rem
+      font-size .28rem
       color #f5ffff
   .p-order-all
       border-bottom .01rem solid #f5f5f5

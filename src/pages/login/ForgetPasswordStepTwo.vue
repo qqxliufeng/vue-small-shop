@@ -62,7 +62,7 @@ export default {
         this.$toast('两次密码不一致')
         return
       }
-      this.$http('user/user/resetpwd', {
+      this.$http(this.$urlPath.userInfoForgetPWUrl, {
         type: 'mobile',
         newpassword: this.firstPassword,
         captcha: this.code,
@@ -73,7 +73,7 @@ export default {
         this.$router.back()
         // 把第一步返回了
         this.$router.back()
-      }, (error) => {
+      }, (errorCode, error) => {
         this.$toast(error)
       })
     }

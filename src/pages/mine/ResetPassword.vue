@@ -15,8 +15,9 @@
                 <input placeholder="请再次输入新密码" class="user-name" maxlength="16" type="password" v-model="repeatNewPassword"/>
             </div>
             <p>注：请设置6位以上密码</p>
-            <button>确定</button>
+            <button @click="resetPassword">确定</button>
         </div>
+        <loading :loadingTip="loading.tip" v-show="loading.show"></loading>
     </div>
 </template>
 <script>
@@ -30,7 +31,8 @@ export default {
     return {
       oldPassword: '',
       newPassword: '',
-      repeatNewPassword: ''
+      repeatNewPassword: '',
+      loading: this.$loading()
     }
   },
   methods: {
@@ -42,6 +44,45 @@ export default {
       } else {
         this.repeatNewPassword = ''
       }
+    },
+    resetPassword () {
+      if (!this.oldPassword) {
+        this.$toast('请输入原始密码')
+        return
+      }
+      if (!this.$utils.validator.isPassword(this.oldPassword)) {
+        this.$toast('请输入6-16原始位密码')
+        return
+      }
+      if (!this.newPassword) {
+        this.$toast('请输入新密码')
+        return
+      }
+      if (!this.$utils.validator.isPassword(this.newPassword)) {
+        this.$toast('请输入6-16新位密码')
+        return
+      }
+      if (!this.repeatNewPassword) {
+        this.$toast('请再次输入新密码')
+        return
+      }
+      if (this.newPassword !== this.repeatNewPassword) {
+        this.$toast('两次密码不一致')
+        this.newPassword = ''
+        this.repeatNewPassword = ''
+        return
+      }
+      this.$http(this.$urlPath.userInfoResetPWUrl, {
+        oldpassword: this.oldPassword,
+        newpassword: this.newPassword
+      }, '正在修改密码…',
+      (data) => {
+        this.$toast('密码修改成功，请牢记…')
+        this.$router.back()
+      },
+      (errorCode, error) => {
+        this.$toast(error)
+      })
     }
   }
 }

@@ -7,7 +7,7 @@
                 <input placeholder="请输入手机号" class="user-name" maxlength="11" v-model="phone"/>
             </div>
             <div class="input-password-container">
-                <input placeholder="请输入验证码" class="user-password" maxlength="6" v-model="verifyCode"/>
+                <input placeholder="请输入验证码" class="user-password" maxlength="6" v-model="verifyCode" type="number"/>
                 <button class="input-forget-password" @click="countDown" :disabled="disabled">{{countTitle}}</button>
             </div>
             <el-button type="primary" class="input-login" @click="nextStep">下一步</el-button>
@@ -36,18 +36,18 @@ export default {
       this.phone = ''
     },
     nextStep () {
-      // if (!this.phone) {
-      //   this.$toast('请输入手机号')
-      //   return
-      // }
-      // if (!(this.$utils.validator.isPhone(this.phone))) {
-      //   this.$toast('请输入正确的手机号')
-      //   return
-      // }
-      // if (!this.verifyCode) {
-      //   this.$toast('请输入验证码')
-      //   return
-      // }
+      if (!this.phone) {
+        this.$toast('请输入手机号')
+        return
+      }
+      if (!(this.$utils.validator.isPhone(this.phone))) {
+        this.$toast('请输入正确的手机号')
+        return
+      }
+      if (!this.verifyCode) {
+        this.$toast('请输入验证码')
+        return
+      }
       this.$router.push({name: 'fptwo', params: {phone: this.phone, code: this.verifyCode}})
     },
     countDown () {
@@ -59,12 +59,12 @@ export default {
         this.$toast('请输入正确的手机号')
         return
       }
-      this.$http('user/user/get_captcha', {
+      this.$http(this.$urlPath.userInfoGetSMSCodeUrl, {
         mobile: this.phone,
         event: 'resetpwd'
       }, null, (data) => {
         this.$toast('短信发送成功，请注意查收')
-      }, (error) => {
+      }, (errorCode, error) => {
         this.$toast(error)
       })
       this.disabled = true

@@ -40,7 +40,8 @@ export default {
       password: '',
       loading: this.$loading(),
       countTitle: '获取验证码',
-      disabled: false
+      disabled: false,
+      intervalId: null
     }
   },
   methods: {
@@ -61,26 +62,30 @@ export default {
       }
       if (!this.$utils.validator.isPhone(this.userPhone)) {
         this.$toast('请输入合法的手机号')
+        this.userPhone = ''
         return
       }
       this.disabled = true
       let count = 60
-      let time = setInterval(() => {
+      this.intervalId = setInterval(() => {
         this.disabled = true
         count--
         this.countTitle = count + ' s'
         if (count <= 0) {
-          clearInterval(time)
+          clearInterval(this.intervalId)
           this.disabled = false
           this.countTitle = '重新获取？'
         }
       }, 1000)
-      this.$http('user/user/get_captcha', {
+      this.$http(this.$urlPath.userInfoGetSMSCodeUrl, {
         mobile: this.userPhone,
         event: 'register'
       }, null, (data) => {
         this.$toast('短信发送成功，请注意查收')
-      }, (error) => {
+      }, (errorCode, error) => {
+        if (this.intervalId) {
+          clearInterval(this.intervalId)
+        }
         this.$toast(error)
       })
     },
@@ -91,6 +96,7 @@ export default {
       }
       if (!this.$utils.validator.isPhone(this.userPhone)) {
         this.$toast('请输入合法的手机号')
+        this.userPhone = ''
         return
       }
       if (!this.verifyCode) {
@@ -109,13 +115,15 @@ export default {
         this.$toast('请先阅读并同意用户协议')
         return
       }
-      this.$http('user/user/register', {
+      this.$http(this.$urlPath.userInfoRegisterUrl, {
         mobile: this.userPhone,
         password: this.password,
         captcha: this.verifyCode
       }, '正在注册…', (data) => {
         this.$toast(data.msg)
-      }, (error) => {
+        this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
+        this.$router.back()
+      }, (errorCode, error) => {
         this.$toast(error)
       })
     }

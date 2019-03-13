@@ -16,7 +16,6 @@ const userInfo = {
     return this.state.id && this.state.token && this.state.phone
   },
   setUserInfo (userInfo) {
-    console.log(userInfo)
     this.state.id = userInfo.id
     this.state.token = userInfo.token
     this.state.phone = userInfo.mobile
@@ -35,6 +34,30 @@ const userInfo = {
     sessionStorage.setItem('email', this.state.email)
     sessionStorage.setItem('qq', this.state.qq)
     sessionStorage.setItem('gender', this.state.gender)
+  },
+  setUserInfoAvatar (avatar) {
+    this.state.avatar = avatar
+    sessionStorage.setItem('avatar', this.state.avatar)
+  },
+  setUserInfoName (name) {
+    this.state.name = name
+    sessionStorage.setItem('name', this.state.name)
+  },
+  setUserInfoRealName (realName) {
+    this.state.realName = realName
+    sessionStorage.setItem('realName', this.state.realName)
+  },
+  setUserInfoEmail (email) {
+    this.state.email = email
+    sessionStorage.setItem('email', this.state.email)
+  },
+  setUserInfoGender (gender) {
+    this.state.gender = gender
+    sessionStorage.setItem('gender', this.state.gender)
+  },
+  setUserInfoQQ (qq) {
+    this.state.qq = qq
+    sessionStorage.setItem('qq', this.state.qq)
   },
   clearInfoAction () {
     this.state.id = ''

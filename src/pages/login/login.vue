@@ -14,7 +14,7 @@
             </div>
             <el-button type="primary" class="input-login" @click="login">登录</el-button>
             <div>
-                <router-link to="/fastlogin">
+                <router-link :to="{name: 'fastLogin'}">
                   <span class="input-fast-phone">手机快捷登录</span>
                 </router-link>
                 <router-link to="/register">
@@ -56,13 +56,14 @@ export default {
       }
       if (!this.$utils.validator.isPhone(this.userName)) {
         this.$toast('请输入正确的手机号码')
+        this.userName = ''
         return
       }
       if (!this.userPassword) {
         this.$toast('请输入密码')
         return
       }
-      this.$http('user/user/login', {
+      this.$http(this.$urlPath.userInfoLoginUrl, {
         account: this.userName,
         password: this.userPassword
       },
@@ -71,14 +72,21 @@ export default {
         this.$toast(data.msg)
         if (data.data) {
           this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
-          this.$router.replace({ name: this.backName })
+          this.$router.go(-1)
         } else {
           this.$toast('登录失败，请重试…')
         }
-      }, (error) => {
+      }, (errorCode, error) => {
         this.$toast(error)
       })
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if (vm.$root.userInfo.isLogin()) {
+        vm.$router.replace({ name: vm.backName || 'home' })
+      }
+    })
   }
 }
 </script>

@@ -12,6 +12,7 @@ import './assets/style/element-variables.styl'
 import 'vue2-toast/lib/toast.css'
 import Toast from 'vue2-toast'
 import utils from 'common/utils/utils'
+import * as urlPath from 'common/urlConfig'
 import '../theme/index.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
@@ -32,6 +33,7 @@ Vue.use(VueLazyLoad, {
 })
 Vue.prototype.$isWeiXin = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1
 Vue.prototype.$utils = utils
+Vue.prototype.$urlPath = urlPath
 Vue.prototype.$loading = () => {
   return {
     tip: '正在加载…',
@@ -48,6 +50,9 @@ Vue.prototype.$http = function (url, params = {}, loadingTip = '', onRequestSucc
       this.loading.tip = loadingTip || '正在加载…'
       this.loading.show = true
     }
+    if (userInfo.isLogin()) {
+      params.token = userInfo.state.token
+    }
     return axios.post(url, params)
       .then(response => {
         if (response.data) {
@@ -55,14 +60,14 @@ Vue.prototype.$http = function (url, params = {}, loadingTip = '', onRequestSucc
           if (response.data.code === 1) {
             onRequestSuccess(response.data)
           } else {
-            onRequestFail(response.data.msg)
+            onRequestFail(200, response.data.msg)
           }
         } else {
-          onRequestFail('请求失败，请重试…')
+          onRequestFail(-1, '请求失败，请重试…')
         }
       })
       .catch(() => {
-        onRequestFail('请求失败，请重试…')
+        this.$toast('请求失败，请重试…')
       })
       .then(() => {
         if (this.loading) {
@@ -80,6 +85,7 @@ Vue.prototype.$http = function (url, params = {}, loadingTip = '', onRequestSucc
 router.beforeEach((to, from, next) => {
   if (to.matched.some(m => m.meta.auth)) {
     if (userInfo.isLogin()) {
+      console.log('登录了……')
       next()
     } else {
       console.log('没有登录')

@@ -1,8 +1,9 @@
 import axios from 'axios'
 import qs from 'qs'
+import { baseUrl } from 'common/urlConfig'
 
 axios.defaults.timeout = 10000
-axios.defaults.baseURL = 'http://192.168.1.100:80/store_api/v1/'
+axios.defaults.baseURL = baseUrl
 
 axios.interceptors.request.use(
   config => {

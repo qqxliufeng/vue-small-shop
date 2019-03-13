@@ -62,7 +62,7 @@ export default {
       }
     },
     startMine () {
-      this.$router.push({name: 'personal'})
+      this.$router.push({name: 'personal', params: {backName: 'personal'}})
     },
     startCustomService () {
       this.$router.push({name: 'customService'})

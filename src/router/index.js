@@ -138,7 +138,7 @@ export default new Router({
     },
     {
       path: '/fastlogin',
-      name: 'fastlogin',
+      name: 'fastLogin',
       component: FastLogin
     },
     // 个人中心
