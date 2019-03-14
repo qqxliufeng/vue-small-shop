@@ -72,6 +72,7 @@ export default {
         this.$toast(data.msg)
         if (data.data) {
           this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
+          this.$root.state.saveUserInfo(this.userName, this.userPassword)
           this.$router.go(-1)
         } else {
           this.$toast('登录失败，请重试…')

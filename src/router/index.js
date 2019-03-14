@@ -43,6 +43,8 @@ import LeaveMessageList from '@/pages/scenicdetail/leavemessage/LeaveMessageList
 import AskMessage from '@/pages/scenicdetail/leavemessage/AskMessage'
 import ReplyMessage from '@/pages/scenicdetail/leavemessage/ReplyMessage'
 
+import City from '@/pages/city/City'
+
 Vue.use(Router)
 
 export default new Router({
@@ -264,6 +266,12 @@ export default new Router({
       path: '/adsdetail',
       name: 'adsDetail',
       component: () => import('@/pages/ads/AdsDetail')
+    },
+    {
+      path: '/city',
+      name: 'city',
+      component: City,
+      props: true
     }
   ],
   scrollBehavior (to, from, saveTop) {

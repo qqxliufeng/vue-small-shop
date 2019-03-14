@@ -2,7 +2,7 @@
     <div class="h-h-header-container">
       <div :style="opacityStyle" class="header-bg"></div>
       <div class="h-h-header-wrapper">
-        <span class="h-h-header-title" :style="colorStyle">济南<i class="el-icon-arrow-down"></i></span>
+        <span class="h-h-header-title" :style="colorStyle" @click="citySelector">{{currentCity.value}}<i class="el-icon-arrow-down"></i></span>
         <span class="h-h-header-search" @click="startSearch"><i class="el-icon-search"></i>搜索景点、关键字</span>
         <span class="iconfont h-h-header-mine" :style="colorStyle" @click="startPersonal">&#xe8a0;</span>
       </div>
@@ -22,6 +22,9 @@ export default {
     }
   },
   computed: {
+    currentCity () {
+      return this.$root.state.currentCity
+    },
     opacityStyle () {
       let opacity = 0
       if (this.scrollTop > 0) {
@@ -41,7 +44,20 @@ export default {
     },
     startPersonal () {
       this.$router.push({name: 'personal'})
+    },
+    citySelector () {
+      this.$router.push({name: 'city', params: { backName: 'home' }})
+    },
+    getCityData () {
+      let city = this.$route.params.city
+      if (city) {
+        // this.currentCity = city.city
+        this.$root.state.changeCity(city.city)
+      }
     }
+  },
+  watch: {
+    '$route': 'getCityData'
   }
 }
 </script>

@@ -7,6 +7,7 @@ import router from './router'
 import './assets/style/reset.css'
 import axios from '@/common/http/http.js'
 import userInfo from '@/common/data/user-info'
+import state from '@/common/data/state'
 import './assets/style/iconfont.css'
 import './assets/style/element-variables.styl'
 import 'vue2-toast/lib/toast.css'
@@ -103,6 +104,7 @@ new Vue({
   components: { App },
   template: '<App/>',
   data: {
-    userInfo
+    userInfo,
+    state
   }
 })

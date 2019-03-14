@@ -86,7 +86,7 @@ export default {
     tabFixed()
     .m-tabs-item-li
       borderBottom()
-      padding .2rem 0
+      padding .2rem
       .m-s-title-container
         overflow hidden
         .m-s-title

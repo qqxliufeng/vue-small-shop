@@ -55,6 +55,20 @@ export default {
       this.$router.push({name: 'adsDetail'})
     }
   },
+  // beforeRouteEnter (to, from, next) {
+  //   next(vm => {
+  //     if (!vm.$root.userInfo.isLogin()) {
+  //       let state = vm.$root.state
+  //       if (state.token) {
+  //         vm.$http(vm.$urlPath.userInfoLoginUrl, null, (data) => {
+  //           console.log(data)
+  //         }, null)
+  //       } else {
+  //         console.log('不能登录')
+  //       }
+  //     }
+  //   })
+  // },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)
   },
