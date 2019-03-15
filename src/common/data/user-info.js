@@ -9,7 +9,8 @@ const userInfo = {
     avatar: sessionStorage.getItem('avatar'),
     gender: sessionStorage.getItem('gender'),
     email: sessionStorage.getItem('email'),
-    qq: sessionStorage.getItem('qq')
+    qq: sessionStorage.getItem('qq'),
+    city: sessionStorage.getItem('city')
   },
   isLogin () {
     // return this.state.id !== '' && this.state.id !== null && this.state.token !== '' && this.state.token !== null && this.state.phone !== '' && this.state.phone !== null
@@ -25,6 +26,7 @@ const userInfo = {
     this.state.gender = userInfo.gender
     this.state.email = userInfo.email
     this.state.qq = userInfo.qq
+    this.state.city = userInfo.province + userInfo.town
     sessionStorage.setItem('userId', this.state.id)
     sessionStorage.setItem('token', this.state.token)
     sessionStorage.setItem('name', this.state.name)
@@ -34,6 +36,7 @@ const userInfo = {
     sessionStorage.setItem('email', this.state.email)
     sessionStorage.setItem('qq', this.state.qq)
     sessionStorage.setItem('gender', this.state.gender)
+    sessionStorage.setItem('city', this.state.city)
   },
   setUserInfoAvatar (avatar) {
     this.state.avatar = avatar
@@ -59,10 +62,18 @@ const userInfo = {
     this.state.qq = qq
     sessionStorage.setItem('qq', this.state.qq)
   },
+  setUserInfoCity (city) {
+    this.state.city = city
+    sessionStorage.setItem('city', this.state.city)
+  },
   clearInfoAction () {
     this.state.id = ''
     this.state.token = ''
     this.state.phone = ''
+    sessionStorage.clear()
+    if (localStorage) {
+      localStorage.clear()
+    }
   }
 }
 

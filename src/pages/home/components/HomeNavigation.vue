@@ -1,11 +1,9 @@
 <template>
     <transition name="slide-fade">
       <div class="h-n-navi-container" v-show="show">
-        <span class="h-n-navi-item">首页</span>
-        <div class="sperator-line">|</div>
         <span class="h-n-navi-item" @click="startLogin">{{loginTip}}</span>
         <div class="sperator-line">|</div>
-        <span class="h-n-navi-item" @click="startMine">个人中心</span>
+        <span class="h-n-navi-item" @click="startMine">{{personCenterTip}}</span>
         <div class="sperator-line">|</div>
         <span class="h-n-navi-item" @click="startCustomService">联系客服</span>
       </div>
@@ -30,6 +28,9 @@ export default {
   computed: {
     loginTip () {
       return this.$root.userInfo.isLogin() ? '退出' : '登录'
+    },
+    personCenterTip () {
+      return this.$root.userInfo.isLogin() ? '[' + this.$utils.common.hiddenMobile(this.$root.userInfo.state.phone) + ']' : '个人中心'
     }
   },
   watch: {

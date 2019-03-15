@@ -12,7 +12,6 @@
             </div>
             <el-button type="primary" class="input-login" @click="nextStep">下一步</el-button>
         </div>
-        <loading :loadingTip="loading.tip" v-show="loading.show"></loading>
     </div>
 </template>
 <script>
@@ -27,8 +26,7 @@ export default {
       phone: '',
       verifyCode: '',
       disabled: false,
-      countTitle: '获取验证码',
-      loading: this.$loading()
+      countTitle: '获取验证码'
     }
   },
   methods: {

@@ -22,7 +22,6 @@
             </div>
             <el-button type="primary" class="input-login" @click="register">注册</el-button>
         </div>
-        <loading :loadingTip="loading.tip" v-show="loading.show"></loading>
     </div>
 </template>
 <script>
@@ -38,7 +37,6 @@ export default {
       userPhone: '',
       verifyCode: '',
       password: '',
-      loading: this.$loading(),
       countTitle: '获取验证码',
       disabled: false,
       intervalId: null

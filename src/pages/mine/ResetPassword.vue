@@ -17,7 +17,6 @@
             <p>注：请设置6位以上密码</p>
             <button @click="resetPassword">确定</button>
         </div>
-        <loading :loadingTip="loading.tip" v-show="loading.show"></loading>
     </div>
 </template>
 <script>
@@ -31,8 +30,7 @@ export default {
     return {
       oldPassword: '',
       newPassword: '',
-      repeatNewPassword: '',
-      loading: this.$loading()
+      repeatNewPassword: ''
     }
   },
   methods: {

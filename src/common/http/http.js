@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import { baseUrl } from 'common/urlConfig'
+import { baseUrl } from './urlConfig'
 
 axios.defaults.timeout = 10000
 axios.defaults.baseURL = baseUrl

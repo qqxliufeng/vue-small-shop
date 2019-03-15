@@ -38,8 +38,8 @@
                <div class="p-i-item">
                    <span class="p-i-left">性别</span>
                    <div class="p-i-sex">
-                        <el-radio v-model="sex" label="1">男</el-radio>
-                        <el-radio v-model="sex" label="2">女</el-radio>
+                        <el-radio v-model="sex" :label="1">男</el-radio>
+                        <el-radio v-model="sex" :label="2">女</el-radio>
                    </div>
                </div>
            </li>
@@ -50,14 +50,13 @@
                </div>
            </li>
            <li>
-               <div class="p-i-item">
+               <div class="p-i-item" @click="selectCity">
                    <span class="p-i-left">所在城市</span>
-                   <span class="p-i-right p-i-text">山东省济南市</span>
+                   <span class="p-i-right p-i-text">{{location || '暂无'}}</span>
                </div>
            </li>
        </ul>
        <button class="p-i-submit" @click="submit">确定</button>
-       <loading :loadingTip="loading.tip" v-show="loading.show"></loading>
     </div>
 </template>
 <script>
@@ -74,12 +73,28 @@ export default {
       realName: this.$root.userInfo.state.realName,
       email: this.$root.userInfo.state.email,
       qq: this.$root.userInfo.state.qq,
-      sex: this.$root.userInfo.state.gender,
+      sex: parseInt(this.$root.userInfo.state.gender),
       avatarAction: this.$urlPath.imageActionUrl,
-      loading: this.$loading()
+      location: this.$root.userInfo.state.city,
+      province: '',
+      city: ''
     }
   },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if (from.name === 'city' && to.params.city) {
+        let province = to.params.city.province.value
+        let city = to.params.city.city.value
+        vm.location = province + city
+        vm.province = province
+        vm.city = city
+      }
+    })
+  },
   methods: {
+    selectCity () {
+      this.$router.push({name: 'city', params: {backName: 'pinfo'}})
+    },
     submit () {
       if (!this.userName) {
         this.$toast('用户名不能为空')
@@ -102,7 +117,9 @@ export default {
         realname: this.realName,
         email: this.email,
         gender: this.sex,
-        qq: this.qq
+        qq: this.qq,
+        province: this.province,
+        city: this.city
       }, '正在修改…', (data) => {
         this.$toast(data.msg)
         if (this.userName) {
@@ -119,6 +136,9 @@ export default {
         }
         if (this.qq) {
           this.$root.userInfo.setUserInfoQQ(this.qq)
+        }
+        if (this.province) {
+          this.$root.userInfo.setUserInfoCity(this.location)
         }
         this.$router.go(-1)
       }, (errorCode, error) => {

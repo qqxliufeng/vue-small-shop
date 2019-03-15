@@ -52,25 +52,25 @@ export default {
       }
     },
     adClick () {
-      this.$router.push({name: 'adsDetail'})
+      // this.$router.push({name: 'adsDetail'})
+      this.$loading('1223')
+    },
+    autoLogin () {
+      if (!this.$root.userInfo.isLogin()) {
+        let state = this.$root.state
+        if (state.token) {
+          this.$http(this.$urlPath.userInfoLoginUrl, null, null, (data) => {
+            console.log(data)
+          }, null)
+        } else {
+          console.log('不能登录')
+        }
+      }
     }
   },
-  // beforeRouteEnter (to, from, next) {
-  //   next(vm => {
-  //     if (!vm.$root.userInfo.isLogin()) {
-  //       let state = vm.$root.state
-  //       if (state.token) {
-  //         vm.$http(vm.$urlPath.userInfoLoginUrl, null, (data) => {
-  //           console.log(data)
-  //         }, null)
-  //       } else {
-  //         console.log('不能登录')
-  //       }
-  //     }
-  //   })
-  // },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)
+    // this.autoLogin()
   },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll)

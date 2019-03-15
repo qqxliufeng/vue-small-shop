@@ -36,5 +36,14 @@ export default {
     getImagePath (vue, image) {
       return vue.$urlPath.imageUrl + image
     }
+  },
+  common: {
+    hiddenMobile (mobile) {
+      let newMobile = mobile
+      if (mobile.length > 7) {
+        newMobile = mobile.substr(0, 3) + '****' + mobile.substr(7)
+      }
+      return newMobile
+    }
   }
 }

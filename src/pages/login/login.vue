@@ -22,7 +22,6 @@
                 </router-link>
             </div>
         </div>
-        <loading v-if="loading.show" loadingTip="正在登录…"></loading>
     </div>
 </template>
 <script>
@@ -41,8 +40,7 @@ export default {
   data () {
     return {
       userName: '',
-      userPassword: '',
-      loading: this.$loading()
+      userPassword: ''
     }
   },
   methods: {
@@ -72,8 +70,8 @@ export default {
         this.$toast(data.msg)
         if (data.data) {
           this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
-          this.$root.state.saveUserInfo(this.userName, this.userPassword)
-          this.$router.go(-1)
+          this.$root.state.saveUserInfo(data.data.userinfo.token)
+          this.$router.replace({ name: this.backName || 'home' })
         } else {
           this.$toast('登录失败，请重试…')
         }
@@ -109,8 +107,6 @@ export default {
     right 0
     top 0
     color #aaaaaa
-  .user-password
-    font-size .3rem
   .input-password-container
     margin-top .6rem
     border: 0 none
@@ -119,11 +115,13 @@ export default {
     padding-bottom .1rem
     position relative
     overflow hidden
+    display flex
+    align-items center
+    .user-password
+      font-size .3rem
+      flex 1
     .input-forget-password
-      position absolute
-      right 0
       margin-top .1rem
-      margin-right .3rem
       color $primary
       &::before
        content '|'

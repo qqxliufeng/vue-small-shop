@@ -45,7 +45,7 @@
                 </ul>
             </div>
             <div class="p-logout-wrapper">
-              <button class="p-logout">退出登录</button>
+              <button class="p-logout" @click="logout">退出登录</button>
             </div>
         </div>
     </div>
@@ -177,6 +177,13 @@ export default {
     divScroll (div) {
       if (div) {
         this.contentDivScroll = div.target.scrollTop
+      }
+    },
+    logout () {
+      let confirm = window.confirm('是否要退出当前帐号？')
+      if (confirm) {
+        this.$root.userInfo.clearInfoAction()
+        this.$router.replace({name: 'home'})
       }
     }
   },
