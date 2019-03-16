@@ -1,7 +1,7 @@
 <template>
     <div>
        <home-header :scrollTop="mScrollTop"></home-header>
-       <div ref="homeContent" class="h-content">
+       <div ref="homeContent" class="h-content" id="#home">
           <home-swiper></home-swiper>
           <home-notice></home-notice>
           <home-type></home-type>

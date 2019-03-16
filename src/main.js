@@ -19,10 +19,8 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 import VueLazyLoad from 'vue-lazyload'
 import logo from 'images/logo.png'
-import TestLoading from 'common/components/testLoading/test-loading'
 
 Vue.config.productionTip = false
-Vue.use(TestLoading)
 Vue.use(ElementUI)
 Vue.use(Toast)
 Vue.use(VueAwesomeSwiper)
@@ -66,19 +64,15 @@ Vue.prototype.$http = function (url, params = {}, loadingTip = '', onRequestSucc
       })
   } catch (error) {
     console.log(error)
-    if (this.loading) {
-      this.loading.show = false
-    }
+    this.loading.show = false
   }
 }
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(m => m.meta.auth)) {
     if (userInfo.isLogin()) {
-      console.log('登录了……')
       next()
     } else {
-      console.log('没有登录')
       next({name: 'login', params: { backName: to.name }})
     }
   } else {
