@@ -1,11 +1,15 @@
 
-const userModuleUrl = 'user'
-
-const userInfoUrl = userModuleUrl + '/user/'
-
 export const baseUrl = 'http://192.168.1.100:80/store_api/v1/'
 
 export const imageUrl = 'http://192.168.1.100:80/'
+
+const commonModuleUrl = 'common/'
+
+export const imageActionUrl = imageUrl + 'store_api/' + commonModuleUrl + 'upload'
+
+const userModuleUrl = 'user'
+
+const userInfoUrl = userModuleUrl + '/user/'
 
 export const userInfoLoginUrl = userInfoUrl + 'login'
 
@@ -21,6 +25,12 @@ export const userInfoResetPWUrl = userInfoUrl + 'eidtpwd'
 
 export const userInfoResetInfo = userInfoUrl + 'profile'
 
-const commonModuleUrl = 'common/'
+const personInfoUrl = userModuleUrl + '/personal/'
 
-export const imageActionUrl = imageUrl + 'store_api/' + commonModuleUrl + 'upload'
+export const linkManUrl = personInfoUrl + 'linkman'
+
+export const addLinkManUrl = personInfoUrl + 'add_linkman'
+
+export const editLinkManUrl = personInfoUrl + 'edit_linkman'
+
+export const deleteLinkManUrl = personInfoUrl + 'del_linkman'

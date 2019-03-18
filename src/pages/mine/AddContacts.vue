@@ -33,41 +33,75 @@
 import navi from 'common/components/navigation'
 export default {
   name: 'contacts',
+  props: {
+    tempConstacts: {
+      type: Object,
+      default: null
+    }
+  },
   components: {
     navi
   },
   data () {
     return {
-      name: '',
-      phone: '',
-      idCard: '',
-      schoolName: '',
-      schoolId: '',
+      name: this.tempConstacts !== null ? this.tempConstacts.l_name : '',
+      phone: this.tempConstacts !== null ? this.tempConstacts.l_mobile : '',
+      idCard: this.tempConstacts !== null ? this.tempConstacts.l_id_no : '',
+      schoolName: this.tempConstacts !== null ? this.tempConstacts.l_school : '',
+      schoolId: this.tempConstacts !== null ? this.tempConstacts.l_stdnostring : '',
       constacts: null
     }
   },
   methods: {
     addContacts () {
-      // if (!this.name) {
-      //   this.$toast('请输入姓名')
-      //   return
-      // }
-      // if (!this.phone) {
-      //   this.$toast('请输入手机号')
-      //   return
-      // }
-      // if (!this.$validator.isPhone(this.phone)) {
-      //   this.$toast('请输入合法的手机号')
-      //   return
-      // }
-      this.constacts = {name: 'this is name', phone: 'this is phone'}
-      this.$router.back()
+      if (!this.name) {
+        this.$toast('请输入姓名')
+        return
+      }
+      if (!this.phone) {
+        this.$toast('请输入手机号')
+        return
+      }
+      if (!this.$utils.validator.isPhone(this.phone)) {
+        this.$toast('请输入合法的手机号')
+        return
+      }
+      if (this.tempConstacts) {
+        this.$http(this.$urlPath.editLinkManUrl, {
+          l_id: this.tempConstacts.l_id,
+          name: this.name,
+          mobile: this.phone,
+          id_no: this.idCard,
+          school: this.schoolName,
+          stdnostring: this.schoolId
+        }, '正在修改…', (data) => {
+          this.constacts = {l_id: this.tempConstacts.l_id, l_name: this.name, l_mobile: this.phone, l_id_no: this.idCard, l_school: this.schoolName, l_stdnostring: this.schoolId
+          }
+          this.$toast('修改成功')
+          this.$router.back()
+        }, (error) => {
+          this.$toast(error)
+        })
+      } else {
+        this.$http(this.$urlPath.addLinkManUrl, {
+          name: this.name,
+          mobile: this.phone,
+          id_no: this.idCard,
+          school: this.schoolName,
+          stdnostring: this.schoolId
+        }, '正在添加…', (data) => {
+          this.constacts = {l_name: this.name, l_mobile: this.phone, l_id_no: this.idCard, l_school: this.schoolName, l_stdnostring: this.schoolId}
+          this.$toast('添加成功')
+          this.$router.back()
+        }, (error) => {
+          this.$toast(error)
+        })
+      }
     }
   },
   beforeRouteLeave (to, from, next) {
     if (to.name === 'contacts' && this.constacts !== null) {
       to.query.constacts = this.constacts
-      console.log(this.constacts)
     }
     next()
   }

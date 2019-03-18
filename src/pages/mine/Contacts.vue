@@ -5,14 +5,14 @@
                <span @click="deleteContacts" class="c-delete-action">删除</span>
            </template>
         </navi>
-        <ul class="c-item-container">
-            <li v-for="(item,index) of contactsList" :key="index">
-                <div>
-                    <el-checkbox class="c-checkbox"/>
+        <ul class="c-item-container" v-if="contactsList">
+            <li v-for="item of contactsList" :key="item.l_id">
+                <div @click="itemClick(item)">
+                    <el-checkbox class="c-checkbox" v-model="item.isChecked"/>
                     <div class="c-item-content">
-                        <p>{{item.name}}</p>
-                        <p>手机号：{{item.phone}}</p>
-                        <span class="iconfont">&#xe609;</span>
+                        <p>{{item.l_name}}</p>
+                        <p>手机号：{{item.l_mobile}}</p>
+                        <span class="iconfont" @click="modifyContact(item)">&#xe609;</span>
                     </div>
                 </div>
             </li>
@@ -31,67 +31,72 @@ export default {
   },
   data () {
     return {
-      contactsList: [
-        {
-          name: '王大宝',
-          phone: '15000000000'
-        },
-        {
-          name: '王大宝',
-          phone: '15000000000'
-        },
-        {
-          name: '王大宝',
-          phone: '15000000000'
-        },
-        {
-          name: '王大宝',
-          phone: '15000000000'
-        },
-        {
-          name: '王大宝',
-          phone: '15000000000'
-        },
-        {
-          name: '王大宝',
-          phone: '15000000000'
-        },
-        {
-          name: '王大宝',
-          phone: '15000000000'
-        },
-        {
-          name: '王大宝',
-          phone: '15000000000'
-        },
-        {
-          name: '王大宝',
-          phone: '15000000000'
-        },
-        {
-          name: '王大宝',
-          phone: '15000000000'
-        },
-        {
-          name: '王大宝',
-          phone: '15000000000'
-        }
-      ]
+      contactsList: null,
+      deleteContactsList: []
     }
   },
   methods: {
     deleteContacts () {
-      console.log('delete')
+      this.deleteContactsList.length = 0
+      this.contactsList.forEach(el => {
+        if (el.isChecked) {
+          this.deleteContactsList.push(el.l_id)
+        }
+      })
+      if (this.deleteContactsList.length > 0) {
+        this.$http(this.$urlPath.deleteLinkManUrl, {
+          l_id: this.deleteContactsList.join(',')
+        }, '正在删除…', (data) => {
+          this.$toast('删除成功')
+          this.getData()
+        }, (error) => {
+          this.$toast(error)
+        })
+      } else {
+        this.$toast('请先选择要删除的联系人')
+      }
+    },
+    itemClick (item) {
+      item.isChecked = !item.isChecked
     },
     addContacts () {
       this.$router.push({name: 'addContacts'})
+    },
+    modifyContact (item) {
+      this.$router.push({name: 'addContacts', params: { tempConstacts: item }})
+    },
+    getData () {
+      this.$http(this.$urlPath.linkManUrl, {}, '加载中…', (data) => {
+        if (data.data) {
+          data.data.forEach(item => {
+            item.isChecked = false
+          })
+          this.contactsList = data.data
+        }
+      }, (error) => {
+        console.log(error)
+      })
     }
   },
   mounted () {
-    if (this.$route.query.constacts) {
-      this.contactsList.push(this.$route.query.constacts)
-      this.$route.query.constacts = null
-    }
+    this.getData()
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      let constacts = vm.$route.query.constacts
+      if (constacts) {
+        if (constacts.l_id) {
+          vm.contactsList.forEach((el, index) => {
+            if (el.l_id === constacts.l_id) {
+              vm.contactsList.splice(index, 1, constacts)
+            }
+          })
+        } else {
+          vm.getData()
+        }
+        vm.$route.query.constacts = null
+      }
+    })
   }
 }
 </script>

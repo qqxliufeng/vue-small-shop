@@ -173,14 +173,14 @@ export default new Router({
       name: 'contacts',
       component: Contacts,
       meta: {
-        'x5-fullscreen': true,
-        'apple-mobile-web-app-capable': 'yes'
+        keepAlive: true
       }
     },
     {
       path: '/addcontacts',
       name: 'addContacts',
-      component: AddContacts
+      component: AddContacts,
+      props: true
     },
     {
       path: '/leavemessage',

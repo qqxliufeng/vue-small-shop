@@ -6,6 +6,7 @@
         <span class="h-h-header-search" @click="startSearch"><i class="el-icon-search"></i>搜索景点、关键字</span>
         <span class="iconfont h-h-header-mine" :style="colorStyle" @click="startPersonal">&#xe8a0;</span>
       </div>
+      <el-amap vid="amap" :plugin="plugin" class="amap-demo" style="display:none"></el-amap>
     </div>
 </template>
 <script>
@@ -19,6 +20,19 @@ export default {
   },
   data () {
     return {
+      plugin: [{
+        pName: 'Geolocation',
+        events: {
+          init: (amap) => {
+            amap.getCityInfo((status, result) => {
+              this.$root.state.changeCity({
+                value: result.city,
+                code: '-1'
+              })
+            })
+          }
+        }
+      }]
     }
   },
   computed: {
