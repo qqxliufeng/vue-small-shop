@@ -18,7 +18,6 @@ import '../theme/index.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 import VueLazyLoad from 'vue-lazyload'
-import logo from 'images/logo.png'
 import VueAMap from 'vue-amap'
 
 Vue.config.productionTip = false
@@ -33,8 +32,8 @@ VueAMap.initAMapApiLoader({
 })
 Vue.use(VueLazyLoad, {
   preLoad: 1.3,
-  error: logo,
-  loading: logo,
+  error: require('images/img_loading_failed_list.png'),
+  loading: require('images/img_loading_list.png'),
   attempt: 1
 })
 Vue.prototype.$isWeiXin = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1
@@ -59,7 +58,9 @@ Vue.prototype.$http = function (url, params = {}, loadingTip, onRequestSuccess, 
         if (response.status === 200) {
           if (response.data) {
             if (response.data.code === 1) {
-              console.log(response.data)
+              if (this.NODE_DEVELOPMENT) {
+                console.log(response.data)
+              }
               onRequestSuccess(response.data)
             } else {
               onRequestFail(200, response.data.msg)
@@ -78,11 +79,13 @@ Vue.prototype.$http = function (url, params = {}, loadingTip, onRequestSuccess, 
         this.$loading.close()
       })
   } catch (error) {
-    console.log(error)
+    if (this.NODE_DEVELOPMENT) {
+      console.log(error)
+    }
     this.$loading.close()
   }
 }
-
+console.log(process.env.NODE_ENV)
 router.beforeEach((to, from, next) => {
   if (to.matched.some(m => m.meta.auth)) {
     if (userInfo.isLogin()) {

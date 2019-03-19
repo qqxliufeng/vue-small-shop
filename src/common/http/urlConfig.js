@@ -34,3 +34,9 @@ export const addLinkManUrl = personInfoUrl + 'add_linkman'
 export const editLinkManUrl = personInfoUrl + 'edit_linkman'
 
 export const deleteLinkManUrl = personInfoUrl + 'del_linkman'
+
+const goodsModuleUrl = 'goods'
+
+const goodsIndexUrl = goodsModuleUrl + '/index/'
+
+export const goodsIndexListUrl = goodsIndexUrl + 'goods_list'

@@ -1,18 +1,19 @@
 <template>
     <div class="h-l-like-container">
-        <ul>
-            <li v-for="(item, index) of likeList" :key="index" class="h-l-like-wrapper">
+        <ul v-if="tempLikeList">
+            <li v-for="item of tempLikeList" :key="item.s_id" class="h-l-like-wrapper" @click="itemClick(item)">
                 <div class="h-l-like-img-wrapper">
-                    <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2373144604,3573823380&fm=27&gp=0.jpg">
+                    <img v-lazy="item.scenicimages">
                 </div>
                 <div class="h-l-like-info-wrapper">
-                    <p>{{item.name}}</p>
-                    <p>{{item.name}}{{item.name}}{{item.name}}{{item.name}}{{item.name}}{{item.name}}{{item.name}}{{item.name}}{{item.name}}{{item.name}}</p>
-                    <p><span>￥199</span><i>起</i><span>已售1234</span></p>
+                    <p>{{item.s_title}}</p>
+                    <p>{{item.brief}}</p>
+                    <p><span>￥{{item.minPrice}}</span><i>起</i><span>已售{{item.totalSales}}</span></p>
                 </div>
             </li>
+            <p class="h-l-sell-more" @click="seeMore" v-if="showMore">查看更多</p>
         </ul>
-        <p class="h-l-sell-more" @click="seeMore" v-if="!isSeeMore">查看更多</p>
+        <p v-else class="empty">暂无信息哦~</p>
     </div>
 </template>
 
@@ -21,29 +22,38 @@ export default {
   name: 'homeLike',
   data () {
     return {
-      isSeeMore: false,
-      likeList: [
-        {
-          name: '卧虎山滑雪场'
-        },
-        {
-          name: '卧虎山滑雪场'
-        },
-        {
-          name: '卧虎山滑雪场'
-        }
-      ]
+      showMore: false,
+      likeList: null,
+      tempLikeList: null
     }
   },
   methods: {
     seeMore () {
-      this.isSeeMore = true
-      for (let index = 0; index < 3; index++) {
-        this.likeList.push({
-          name: '卧虎山滑雪场'
-        })
-      }
+      this.tempLikeList = this.likeList
+      this.showMore = false
+    },
+    itemClick (item) {
+      this.$router.push({name: 'scenicDetail'})
     }
+  },
+  mounted () {
+    console.log(this.$parent)
+    this.$http(this.$urlPath.goodsIndexListUrl, {
+      identity: this.$parent.$props.identity,
+      district: '济南市',
+      store_id: this.$parent.$props.storeId
+    }, null, (data) => {
+      if (data.data) {
+        data.data.forEach(item => {
+          item.scenicimages = this.$utils.image.getImagePath(this, item.scenicimages)
+        })
+        this.likeList = data.data
+        this.tempLikeList = this.likeList.slice(0, 3)
+        this.showMore = this.likeList.length > 3
+      }
+    }, (error) => {
+      console.log(error)
+    })
   }
 }
 </script>
@@ -78,7 +88,7 @@ export default {
             & p:nth-child(2)
                 muitlLineEllipsis(2)
                 normalTextStyle(#888, .25)
-                line-height rem(.28)
+                line-height rem(.32)
                 margin-top rem(.1)
             & p:nth-child(3)
                 overflow hidden
@@ -96,10 +106,14 @@ export default {
                     normalTextStyle(#888888, .22)
                     float right
                     margin-top rem(.11rem)
-.h-l-sell-more
-    margin 0 auto
-    normalTextStyle(#333333, .3)
-    text-align center
-    padding .2rem
-    border-bottom #f5f5f5 solid rem(.2)
+    .h-l-sell-more
+        margin 0 auto
+        normalTextStyle(#333333, .3)
+        text-align center
+        padding .2rem
+        border-bottom #f5f5f5 solid rem(.2)
+    .empty
+        textStyle(#888, .3)
+        text-align center
+        padding rem(1)
 </style>

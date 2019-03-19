@@ -50,12 +50,13 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/:identity/:storeId',
       name: 'home',
       component: Home,
       meta: {
         keepAlive: true
-      }
+      },
+      props: true
     },
     {
       path: '/homesearch',

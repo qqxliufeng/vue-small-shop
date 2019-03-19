@@ -27,7 +27,16 @@ import HomeNavi from './components/HomeNavigation'
 import HomeNotice from './components/HomeNotice'
 export default {
   name: 'home',
-  props: ['nameId'],
+  props: {
+    identity: {
+      type: String,
+      default: '1'
+    },
+    storeId: {
+      type: String,
+      default: '1'
+    }
+  },
   components: {
     HomeHeader,
     HomeSwiper,
@@ -71,6 +80,7 @@ export default {
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)
     // this.autoLogin()
+    console.log(this.$route)
   },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll)
