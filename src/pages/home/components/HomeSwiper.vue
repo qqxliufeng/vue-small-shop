@@ -1,9 +1,9 @@
 <template>
     <div class="h-s-container">
         <swiper :options="swiperData">
-            <swiper-slide v-for="(item,index) of imageList" :key="index">
+            <swiper-slide v-for="item of imageList" :key="item.id">
                 <div @click="startScenicDetail">
-                  <img :src="item" class="h-s-img">
+                  <img v-lazy="getImagePath(item.image)" :src="item" class="h-s-img">
                 </div>
             </swiper-slide>
         </swiper>
@@ -13,6 +13,9 @@
 <script>
 export default {
   name: 'homeSwiper',
+  props: {
+    list: Array
+  },
   data () {
     return {
       swiperOptionSlide: {
@@ -24,10 +27,7 @@ export default {
       },
       swiperOptionNoSlide: {
         loop: false
-      },
-      imageList: [
-        'http://pic36.photophoto.cn/20150812/0033033907240876_b.jpg'
-      ]
+      }
     }
   },
   computed: {
@@ -37,11 +37,17 @@ export default {
       } else {
         return this.swiperOptionNoSlide
       }
+    },
+    imageList () {
+      return this.list
     }
   },
   methods: {
     startScenicDetail () {
       this.$router.push({name: 'scenicDetail'})
+    },
+    getImagePath (path) {
+      return this.$utils.image.getImagePath(this, path)
     }
   }
 }

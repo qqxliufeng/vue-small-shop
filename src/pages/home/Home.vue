@@ -2,7 +2,7 @@
     <div>
        <home-header :scrollTop="mScrollTop"></home-header>
        <div ref="homeContent" class="h-content" id="#home">
-          <home-swiper></home-swiper>
+          <home-swiper :list="swiperList"></home-swiper>
           <home-notice></home-notice>
           <home-type></home-type>
           <div class="sperator-line-height"></div>
@@ -12,7 +12,7 @@
             <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2079932039,2403444542&fm=27&gp=0.jpg" @click="adClick">
           </div>
           <div class="h-h-title">猜你喜欢</div>
-          <home-like></home-like>
+          <home-like :likeList="guessList"></home-like>
         </div>
         <home-navi :scrollTop="mScrollTop"></home-navi>
     </div>
@@ -49,7 +49,9 @@ export default {
   data () {
     return {
       mScrollTop: 0,
-      isFirstLoad: true
+      isFirstLoad: true,
+      guessList: [],
+      swiperList: []
     }
   },
   methods: {
@@ -75,12 +77,26 @@ export default {
           console.log('不能登录')
         }
       }
+    },
+    getData () {
+      this.$http(this.$urlPath.indexUrl, {
+        identity: this.identity,
+        district: '济南市',
+        store_id: this.storeId
+      }, '', (data) => {
+        if (data.data) {
+          this.guessList = data.data.guess_like_scenic
+          this.swiperList = data.data.swiper
+        }
+      }, (errorCode, error) => {
+        console.log(error)
+      })
     }
   },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)
     // this.autoLogin()
-    console.log(this.$route)
+    this.getData()
   },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll)

@@ -69,11 +69,18 @@ Vue.prototype.$http = function (url, params = {}, loadingTip, onRequestSuccess, 
             onRequestFail(-1, '请求失败，请重试…')
           }
         } else {
-          onRequestFail(-1, '请求失败，请重试…')
+          if (onRequestFail) {
+            onRequestFail(-1, '请求失败，请重试…')
+          }
         }
       })
-      .catch(() => {
-        this.$toast('请求失败，请重试…')
+      .catch((error) => {
+        if (this.NODE_DEVELOPMENT) {
+          console.log(error)
+        }
+        if (onRequestFail) {
+          onRequestFail(-1, '请求失败，请重试…')
+        }
       })
       .then(() => {
         this.$loading.close()

@@ -1,9 +1,9 @@
 <template>
     <div class="h-l-like-container">
-        <ul v-if="tempLikeList">
+        <ul v-if="tempLikeList.length > 0">
             <li v-for="item of tempLikeList" :key="item.s_id" class="h-l-like-wrapper" @click="itemClick(item)">
                 <div class="h-l-like-img-wrapper">
-                    <img v-lazy="item.scenicimages">
+                    <img v-lazy="getImagePath(item.scenicimages)">
                 </div>
                 <div class="h-l-like-info-wrapper">
                     <p>{{item.s_title}}</p>
@@ -11,7 +11,7 @@
                     <p><span>￥{{item.minPrice}}</span><i>起</i><span>已售{{item.totalSales}}</span></p>
                 </div>
             </li>
-            <p class="h-l-sell-more" @click="seeMore" v-if="showMore">查看更多</p>
+            <p class="h-l-sell-more" @click="seeMore" v-if="showMore ">查看更多</p>
         </ul>
         <p v-else class="empty">暂无信息哦~</p>
     </div>
@@ -20,40 +20,35 @@
 <script>
 export default {
   name: 'homeLike',
+  props: {
+    likeList: Array
+  },
   data () {
     return {
-      showMore: false,
-      likeList: null,
-      tempLikeList: null
+      tempLikeList: []
     }
   },
   methods: {
     seeMore () {
       this.tempLikeList = this.likeList
-      this.showMore = false
     },
     itemClick (item) {
       this.$router.push({name: 'scenicDetail'})
+    },
+    getImagePath (path) {
+      return this.$utils.image.getImagePath(this, path)
     }
   },
-  mounted () {
-    console.log(this.$parent)
-    this.$http(this.$urlPath.goodsIndexListUrl, {
-      identity: this.$parent.$props.identity,
-      district: '济南市',
-      store_id: this.$parent.$props.storeId
-    }, null, (data) => {
-      if (data.data) {
-        data.data.forEach(item => {
-          item.scenicimages = this.$utils.image.getImagePath(this, item.scenicimages)
-        })
-        this.likeList = data.data
-        this.tempLikeList = this.likeList.slice(0, 3)
-        this.showMore = this.likeList.length > 3
-      }
-    }, (error) => {
-      console.log(error)
-    })
+  computed: {
+    showMore () {
+      return this.likeList.length > 3 && this.tempLikeList.length !== this.likeList.length
+    }
+  },
+  watch: {
+    likeList () {
+      this.tempLikeList = this.likeList ? this.likeList.slice(0, 3) : []
+      return this.tempLikeList
+    }
   }
 }
 </script>

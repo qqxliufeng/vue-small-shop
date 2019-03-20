@@ -2,13 +2,13 @@
    <div>
        <navi title="我的收藏" :isFixed="true"></navi>
        <el-tabs value="first" :stretch="true" class="c-tabs">
-           <el-tab-pane label="店铺收藏" class="c-tabs-item" name="first">
+           <el-tab-pane label="店铺收藏" class="c-tabs-item" name="first" lazy>
                <shop-collection></shop-collection>
            </el-tab-pane>
-           <el-tab-pane label="景区收藏" class="c-tabs-item" name="second">
+           <el-tab-pane label="景区收藏" class="c-tabs-item" name="second" lazy>
                <scenic-collection></scenic-collection>
            </el-tab-pane>
-           <el-tab-pane label="门票收藏" class="c-tabs-item" name="third">
+           <el-tab-pane label="门票收藏" class="c-tabs-item" name="third" lazy>
                <ticket-collection></ticket-collection>
            </el-tab-pane>
        </el-tabs>

@@ -2,24 +2,24 @@
     <div id="scenic_collection">
         <mescroll-vue ref="mescroll" :down="mescrollConfig.mescrollDown" :up="mescrollConfig.mescrollUp">
             <ul>
-                <li v-for="(item,index) of scenicList" :key="index">
+                <li v-for="item of list" :key="item.fs_id">
                     <el-card shadow="always" :body-style="{ padding: '.2rem' }" class="c-item-card">
                         <div class="s-c-content-container">
                             <div>
-                                <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1550046367219&di=9e4765dc6953bf2e0ab8c3dfbd47855a&imgtype=0&src=http%3A%2F%2Fp2.qhimgs4.com%2Ft01d8dbb2157c53cc27.jpg">
+                                <img v-lazy="getImagePath(item.scenicimages)">
                             </div>
                             <div class="s-c-info-container">
                                 <p class="s-c-info-title">
-                                    {{item.name}}
+                                    {{item.s_title}}
                                 </p>
-                                <span class="s-c-info-info">店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告店铺公告
+                                <span class="s-c-info-info">{{item.brief}}
                                 </span>
-                                <span class='s-c-info-count'>已售12345</span>
+                                <span class='s-c-info-count'>已售{{item.totalSales}}</span>
                             </div>
                         </div>
                         <div class="s-c-line"></div>
                         <div class="s-c-bottom-action-container">
-                            <el-button plain size="small" class="s-c-bottom-action">取消收藏</el-button>
+                            <el-button plain size="small" class="s-c-bottom-action" @click="cancleFavorite(item)">取消收藏</el-button>
                             <el-button type="primary" size="small" class="s-c-bottom-action">查看详情</el-button>
                         </div>
                     </el-card>
@@ -32,29 +32,43 @@
 <script>
 import MescrollVue from 'mescroll.js/mescroll.vue'
 import mescrollConfig from 'common/utils/mescrollerConfig'
+import listHandlerMixin from 'common/mixins/list-mixin'
 export default {
   name: 'scenicCollection',
+  mixins: [listHandlerMixin],
   components: {
     MescrollVue
   },
   data () {
     return {
       mescrollConfig: mescrollConfig('scenic_collection', this.upCallBack),
-      scenicList: []
+      list: []
     }
   },
   methods: {
     upCallBack (page, mescroll) {
-      setTimeout(() => {
-        this.scenicList.push({
-          name: '卧虎山滑雪场'
+      this.$http(this.$urlPath.userFavoriteScenicUrl, {
+        page: page.num
+      }, null, (data) => {
+        this.loadSuccess(page, mescroll, data)
+      }, (errorCode, error) => {
+        this.loadError(mescroll)
+      })
+    },
+    getImagePath (path) {
+      return this.$utils.image.getImagePath(this, path)
+    },
+    cancleFavorite (item) {
+      let confirm = window.confirm('是否要取消收藏？')
+      if (confirm) {
+        this.$http(this.$urlPath.userUnFavoroteScenicUrl, {
+          fs_id: item.fs_id
+        }, '正在取消', (data) => {
+          this.list.splice(this.list.indexOf(item), 1)
+        }, (errorCode, error) => {
+          this.$toast(error)
         })
-        if (page.num > 4) {
-          mescroll.endSuccess(0)
-        } else {
-          mescroll.endSuccess(10)
-        }
-      }, 1000)
+      }
     }
   }
 }
