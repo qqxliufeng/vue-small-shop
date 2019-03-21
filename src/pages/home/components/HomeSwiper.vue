@@ -1,9 +1,9 @@
 <template>
     <div class="h-s-container">
-        <swiper :options="swiperData">
-            <swiper-slide v-for="item of imageList" :key="item.id">
-                <div @click="startScenicDetail">
-                  <img v-lazy="getImagePath(item.image)" :src="item" class="h-s-img">
+        <swiper v-if="list.length > 1" :options="swiperData" ref="swiper">
+            <swiper-slide v-for="item of list" :key="item.id">
+                <div>
+                  <img :src="$utils.image.getImagePath(item.image)" class="h-s-img">
                 </div>
             </swiper-slide>
         </swiper>
@@ -21,33 +21,32 @@ export default {
       swiperOptionSlide: {
         loop: true,
         autoplay: {
-          delay: 2500,
           disableOnInteraction: false
+        },
+        on: {
+          click: () => {
+            this.startScenicDetail(this.$refs.swiper.swiper.realIndex)
+          }
         }
       },
       swiperOptionNoSlide: {
-        loop: false
+        loop: false,
+        on: {
+          click: () => {
+            this.startScenicDetail(this.$refs.swiper.swiper.realIndex)
+          }
+        }
       }
     }
   },
   computed: {
     swiperData () {
-      if (this.imageList.length > 1) {
-        return this.swiperOptionSlide
-      } else {
-        return this.swiperOptionNoSlide
-      }
-    },
-    imageList () {
-      return this.list
+      return this.list && this.list.length > 1 ? this.swiperOptionSlide : this.swiperOptionNoSlide
     }
   },
   methods: {
-    startScenicDetail () {
+    startScenicDetail (item) {
       this.$router.push({name: 'scenicDetail'})
-    },
-    getImagePath (path) {
-      return this.$utils.image.getImagePath(this, path)
     }
   }
 }
@@ -61,6 +60,5 @@ export default {
     height 0
     .h-s-img
         width 100%
-        height 100%
         object-fit cover
 </style>

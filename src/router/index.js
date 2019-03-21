@@ -266,7 +266,8 @@ export default new Router({
     {
       path: '/adsdetail',
       name: 'adsDetail',
-      component: () => import('@/pages/ads/AdsDetail')
+      component: () => import('@/pages/ads/AdsDetail'),
+      props: true
     },
     {
       path: '/city',

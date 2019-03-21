@@ -3,7 +3,7 @@
         <ul v-if="tempLikeList.length > 0">
             <li v-for="item of tempLikeList" :key="item.s_id" class="h-l-like-wrapper" @click="itemClick(item)">
                 <div class="h-l-like-img-wrapper">
-                    <img v-lazy="getImagePath(item.scenicimages)">
+                    <img v-lazy="$utils.image.getImagePath(item.scenicimages)">
                 </div>
                 <div class="h-l-like-info-wrapper">
                     <p>{{item.s_title}}</p>
@@ -34,9 +34,6 @@ export default {
     },
     itemClick (item) {
       this.$router.push({name: 'scenicDetail'})
-    },
-    getImagePath (path) {
-      return this.$utils.image.getImagePath(this, path)
     }
   },
   computed: {

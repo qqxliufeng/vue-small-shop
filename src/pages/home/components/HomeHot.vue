@@ -1,15 +1,15 @@
 <template>
     <div class="h-h-hot-container">
         <swiper :options="swiperOption" class="h-h-hot-card">
-            <swiper-slide v-for="(item, index) of hotList" :key="index">
+            <swiper-slide v-for="(item, index) of list" :key="item.s_id">
                 <el-card shadow="always" :body-style="{padding: '0'}">
                     <div class="h-h-hot-wrapper">
                         <div class="h-h-hot-image-wrapper">
-                            <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2373144604,3573823380&fm=27&gp=0.jpg">
+                            <img v-lazy="$utils.image.getImagePath(item.scenicimages)">
                         </div>
-                        <p class="h-h-hot-wrapper-title">卧虎山滑雪场卧虎山滑雪场卧虎山滑雪场</p>
+                        <p class="h-h-hot-wrapper-title">{{item.s_title}}</p>
                         <el-rate
-                            :value="3.7"
+                            :value="item.mark_avg"
                             disabled
                             show-score
                             text-color="#ff9900"
@@ -30,29 +30,15 @@
 <script>
 export default {
   name: 'homeHot',
+  props: {
+    list: Array
+  },
   data () {
     return {
       swiperOption: {
         slidesPerView: 3,
         spaceBetween: 10
-      },
-      hotList: [
-        {
-          name: '1'
-        },
-        {
-          name: '2'
-        },
-        {
-          name: '3'
-        },
-        {
-          name: '4'
-        },
-        {
-          name: '5'
-        }
-      ]
+      }
     }
   }
 }

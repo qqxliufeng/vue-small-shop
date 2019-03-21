@@ -3,13 +3,13 @@
        <home-header :scrollTop="mScrollTop"></home-header>
        <div ref="homeContent" class="h-content" id="#home">
           <home-swiper :list="swiperList"></home-swiper>
-          <home-notice></home-notice>
-          <home-type></home-type>
+          <!-- <home-notice></home-notice> -->
+          <home-type :list="categoryList"></home-type>
           <div class="sperator-line-height"></div>
           <div class="h-h-title">人气推荐</div>
-          <home-hot></home-hot>
-          <div class="h-h-ad-wrapper">
-            <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2079932039,2403444542&fm=27&gp=0.jpg" @click="adClick">
+          <home-hot :list="hotList"></home-hot>
+          <div class="h-h-ad-wrapper" v-if="ad">
+            <img v-lazy="$utils.image.getImagePath(ad.image)" @click="adClick">
           </div>
           <div class="h-h-title">猜你喜欢</div>
           <home-like :likeList="guessList"></home-like>
@@ -51,7 +51,10 @@ export default {
       mScrollTop: 0,
       isFirstLoad: true,
       guessList: [],
-      swiperList: []
+      swiperList: [],
+      hotList: [],
+      ad: null,
+      categoryList: []
     }
   },
   methods: {
@@ -63,8 +66,7 @@ export default {
       }
     },
     adClick () {
-      // this.$router.push({name: 'adsDetail'})
-      this.$loading('1223')
+      this.$router.push({name: 'adsDetail', params: {path: this.ad.ad_url}})
     },
     autoLogin () {
       if (!this.$root.userInfo.isLogin()) {
@@ -87,6 +89,9 @@ export default {
         if (data.data) {
           this.guessList = data.data.guess_like_scenic
           this.swiperList = data.data.swiper
+          this.hotList = data.data.hot_scenic
+          this.ad = data.data.ad
+          this.categoryList = data.data.category
         }
       }, (errorCode, error) => {
         console.log(error)

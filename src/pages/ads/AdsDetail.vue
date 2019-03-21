@@ -1,8 +1,9 @@
 <template>
 <div class='ads-detail-container'>
+  <vue-progress-bar></vue-progress-bar>
   <navi :isFixed="true"></navi>
   <div class="ads-container">
-    <iframe src="http://www.baidu.com"></iframe>
+    <iframe :src="path"></iframe>
   </div>
 </div>
 </template>
@@ -11,13 +12,17 @@
 import navi from 'common/components/navigation'
 export default {
   name: 'adsDetail',
+  props: {
+    path: String
+  },
   components: {
     navi
   },
-  data () {
-    return {
-
-    }
+  mounted () {
+    this.$loading('正在加载…')
+    setTimeout(() => {
+      this.$loading.close()
+    }, 3000)
   }
 }
 </script>

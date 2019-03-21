@@ -1,3 +1,5 @@
+import { imageUrl } from 'common/http/urlConfig'
+
 export default {
   dateAdd (startDate, num = 1) {
     startDate = new Date(startDate)
@@ -33,8 +35,8 @@ export default {
       }
       return isJPG && isLt2M
     },
-    getImagePath (vue, image) {
-      return vue.$urlPath.imageUrl + image
+    getImagePath (image) {
+      return imageUrl + image
     }
   },
   common: {

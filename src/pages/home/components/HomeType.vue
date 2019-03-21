@@ -1,78 +1,38 @@
 <template>
     <div class="home-type-container">
-        <swiper :options="swiperOption">
+        <swiper :options="swiperOption" v-if="list">
             <swiper-slide v-for="(items, slideIndex) of slideItems" :key="slideIndex">
                 <div class="h-t-type-container">
-                    <div v-for="(item, index) of items" :key="index" class="h-t-type-wrapper" @click="homeTypeClick(index)">
-                        <img :src="item.icon" class="h-t-type-icon">
+                    <div v-for="(item, index) of items" :key="item.id" class="h-t-type-wrapper" @click="homeTypeClick(index)">
+                        <img :src="$utils.image.getImagePath(item.image)" class="h-t-type-icon">
                         <p class="h-t-type-title">{{item.name}}</p>
                     </div>
                 </div>
             </swiper-slide>
-            <div class="swiper-pagination" slot="pagination" v-if="items.length > 8"></div>
+            <div class="swiper-pagination" slot="pagination" v-if="list.length > 8"></div>
         </swiper>
     </div>
 </template>
 
 <script>
-import imgIcon from 'images/img_h_t_ticket.png'
 export default {
   name: 'homeType',
+  props: {
+    list: Array
+  },
   data () {
     return {
       swiperOption: {
         pagination: {
           el: '.swiper-pagination'
         }
-      },
-      items: [
-        {
-          icon: imgIcon,
-          name: '景区门票'
-        },
-        {
-          icon: imgIcon,
-          name: '景区门票'
-        },
-        {
-          icon: imgIcon,
-          name: '景区门票'
-        },
-        {
-          icon: imgIcon,
-          name: '景区门票'
-        },
-        {
-          icon: imgIcon,
-          name: '景区门票'
-        },
-        {
-          icon: imgIcon,
-          name: '景区门票'
-        },
-        {
-          icon: imgIcon,
-          name: '景区门票'
-        },
-        {
-          icon: imgIcon,
-          name: '景区门票'
-        },
-        {
-          icon: imgIcon,
-          name: '景区门票'
-        },
-        {
-          icon: imgIcon,
-          name: '景区门票'
-        }
-      ]
+      }
     }
   },
   computed: {
     slideItems () {
       const pages = []
-      this.items.forEach((element, index) => {
+      this.list.forEach((element, index) => {
         let page = Math.floor(index / 8)
         if (!pages[page]) {
           pages[page] = []
@@ -94,28 +54,29 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .home-type-container
-    height 0
     width 100%
-    padding-bottom 54%
+    height 50vw
     overflow hidden
+    border-top 1px solid #f5f5f5
     .swiper-container
         & >>> .swiper-pagination-bullets
-            bottom 0px
+            bottom 1px
         & >>> .swiper-pagination-bullet
             width 6px
             height 6px
         & >>> .swiper-pagination-bullet-active
             background-color $primary
         .h-t-type-container
-            padding-bottom .2rem
             overflow hidden
             .h-t-type-wrapper
                 text-align center
                 float left
                 width 25%
-                margin-top rem(.3)
+                height 25vw
+                padding-top rem(.25)
+                box-sizing border-box
                 .h-t-type-icon
-                    width rem(1)
+                    width rem(.9)
                     object-fit cover
                 .h-t-type-title
                     normalTextStyle(#333, .2)
