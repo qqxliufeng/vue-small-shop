@@ -4,6 +4,8 @@ let defaultCity = {
 }
 let currentCity = defaultCity
 let token = ''
+let identity = '1'
+let storeId = '1'
 try {
   if (localStorage) {
     currentCity = JSON.parse(localStorage.getItem('currentCity')) || defaultCity
@@ -16,6 +18,8 @@ try {
 export default {
   currentCity,
   token,
+  identity,
+  storeId,
   changeCity (city) {
     this.currentCity = city
     try {
@@ -30,6 +34,16 @@ export default {
       localStorage.setItem('token', token)
     } catch (error) {
       console.log(error)
+    }
+  },
+  saveSallerInfo (identity, storeId) {
+    this.identity = identity
+    this.storeId = storeId
+  },
+  getSallerInfo () {
+    return {
+      identity: this.identity,
+      strorId: this.storeId
     }
   }
 }

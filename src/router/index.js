@@ -48,9 +48,11 @@ import City from '@/pages/city/City'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
-      path: '/:identity/:storeId',
+      // path: '/:identity/:storeId',
+      path: '/',
       name: 'home',
       component: Home,
       meta: {
@@ -274,6 +276,10 @@ export default new Router({
       name: 'city',
       component: City,
       props: true
+    },
+    {
+      path: '*',
+      component: () => import('@/pages/empty/EmptyPage')
     }
   ],
   scrollBehavior (to, from, saveTop) {

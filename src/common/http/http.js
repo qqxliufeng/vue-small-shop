@@ -8,7 +8,9 @@ axios.defaults.baseURL = baseUrl
 axios.interceptors.request.use(
   config => {
     config.data = qs.stringify(config.data)
-    console.log(config)
+    if (process.env.NODE_ENV === 'development') {
+      console.log(config)
+    }
     config.headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
     return config
   },
@@ -26,7 +28,9 @@ axios.interceptors.response.use(
     }
   },
   error => {
-    console.log(error)
+    if (process.env.NODE_ENV === 'development') {
+      console.log(error)
+    }
     return Promise.reject(error)
   }
 )

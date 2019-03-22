@@ -6,7 +6,7 @@
                     <el-card shadow="always" :body-style="{ padding: '.2rem' }" class="c-item-card">
                         <div class="s-c-content-container">
                             <div>
-                                <img v-lazy="getImagePath(item.scenicimages)">
+                                <img v-lazy="$utils.image.getImagePath(item.scenicimages)">
                             </div>
                             <div class="s-c-info-container">
                                 <p class="s-c-info-title">
@@ -54,9 +54,6 @@ export default {
       }, (errorCode, error) => {
         this.loadError(mescroll)
       })
-    },
-    getImagePath (path) {
-      return this.$utils.image.getImagePath(this, path)
     },
     cancleFavorite (item) {
       let confirm = window.confirm('是否要取消收藏？')

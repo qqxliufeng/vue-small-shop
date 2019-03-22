@@ -9,7 +9,7 @@
           <div class="h-h-title">人气推荐</div>
           <home-hot :list="hotList"></home-hot>
           <div class="h-h-ad-wrapper" v-if="ad">
-            <img v-lazy="$utils.image.getImagePath(ad.image)" @click="adClick">
+            <img :src="$utils.image.getImagePath(ad.image)" @click="adClick">
           </div>
           <div class="h-h-title">猜你喜欢</div>
           <home-like :likeList="guessList"></home-like>
@@ -98,6 +98,9 @@ export default {
       })
     }
   },
+  created () {
+    this.$root.state.saveSallerInfo(this.identity, this.storeId)
+  },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)
     // this.autoLogin()
@@ -123,6 +126,7 @@ export default {
         height rem(2)
         border-top #f5f5f5 solid rem(.2)
         border-bottom #f5f5f5 solid rem(.2)
+        background #f5f5f5
         & img
             width 100%
             height 100%

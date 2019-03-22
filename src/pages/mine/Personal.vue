@@ -132,7 +132,7 @@ export default {
       return this.$root.userInfo.state.name
     },
     avatar () {
-      return this.$utils.image.getImagePath(this.$root, this.$root.userInfo.state.avatar)
+      return this.$utils.image.getImagePath(this.$root.userInfo.state.avatar)
     }
   },
   methods: {

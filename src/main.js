@@ -92,7 +92,6 @@ Vue.prototype.$http = function (url, params = {}, loadingTip, onRequestSuccess, 
     this.$loading.close()
   }
 }
-console.log(process.env.NODE_ENV)
 router.beforeEach((to, from, next) => {
   if (to.matched.some(m => m.meta.auth)) {
     if (userInfo.isLogin()) {

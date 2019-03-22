@@ -1,6 +1,5 @@
 <template>
 <div class='a-m-message-container'>
-  <loading v-show="showLoading"></loading>
   <navi title="我要提问"></navi>
   <div class="a-m-message-content-wrapper">
     <el-card :body-style="{ padding: '.2rem' }" shadow="always">

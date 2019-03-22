@@ -1,6 +1,5 @@
 <template>
 <div class='ads-detail-container'>
-  <vue-progress-bar></vue-progress-bar>
   <navi :isFixed="true"></navi>
   <div class="ads-container">
     <iframe :src="path"></iframe>
