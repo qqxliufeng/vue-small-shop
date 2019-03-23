@@ -3,4 +3,4 @@
 /dist/
 /*.js
 /test/unit/coverage/
-/src/common/components/calendar/
+/src/common/components/

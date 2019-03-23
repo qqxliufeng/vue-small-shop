@@ -2,21 +2,21 @@
     <div class="s-d-hot-item-wrapper">
         <div class="s-d-hot-item-info">
             <div class="s-d-hot-item-info-title-wrapper">
-                <p class="s-d-hot-item-info-title">{{item.name}}</p>
-                <p class="s-d-hot-item-info-price"><span>￥89</span><i>起</i></p>
+                <p class="s-d-hot-item-info-title">{{item.goodsTitle}}</p>
+                <p class="s-d-hot-item-info-price"><span>￥{{item.minPrice}}</span><i>起</i></p>
             </div>
             <div class="s-d-hot-item-info-remark-wrapper">
-                <p class="s-d-hot-item-info-remark">{{item.remark}}</p>
-                <p class="s-d-hot-item-info-old-price">￥200</p>
+                <p class="s-d-hot-item-info-remark">{{item.before}}</p>
+                <p class="s-d-hot-item-info-old-price">￥{{item.retailPrice}}</p>
             </div>
             <div class="s-d-hot-item-info-info-wrapper">
                 <div class="s-d-hot-item-info-info-info">
-                    <p>
+                    <!-- <p>
                         <el-tag type="success" size="mini" class="s-d-hot-item-info-info-info-tag">立减2元</el-tag>
                         <el-tag type="success" size="mini" class="s-d-hot-item-info-info-info-tag">立减2元</el-tag>
-                    </p>
+                    </p> -->
                     <p>
-                        已售1234<span>|</span><span>预定须知</span>
+                        已售{{item.totalSales}}<span>|</span><span>预定须知</span>
                     </p>
                 </div>
                 <div class="s-d-hot-item-info-info-action">
@@ -24,9 +24,9 @@
                 </div>
             </div>
         </div>
-        <div class="s-d-hot-item-will-online">
+        <!-- <div class="s-d-hot-item-will-online">
             【即将上线】距离开始还有10时10分
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -89,7 +89,7 @@ export default {
             .s-d-hot-item-info-info-info
                 overflow hidden
                 flex 1
-                & p:nth-child(2)
+                & p:nth-child(1)
                     margin-top rem(.1)
                     normalTextStyle(#888888, .25)
                     & span:nth-child(1)

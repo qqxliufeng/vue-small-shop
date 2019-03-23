@@ -1,11 +1,11 @@
 <template>
     <div class="s-d-comment-item-container">
         <div class="s-d-comment-item-title-wrapper">
-            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1550639954262&di=22e710dcbc054ec67e789af150c6dda3&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fgif%2Fmore%2F11%2F2012%2F03%2F1162a0fe4e83420fe058c9324ecb9a7f.jpg">
-            <span class="s-d-comment-item-title-nickname">王大宝</span>
+            <img v-lazy="$utils.image.getImagePath(item.avatar)">
+            <span class="s-d-comment-item-title-nickname">{{item.username}}</span>
             <span></span>
             <span class="s-d-comment-item-title-rating">
-                <el-rate disabled :value="5"></el-rate>
+                <el-rate disabled :value="item.mark"></el-rate>
             </span>
         </div>
         <div class="s-d-comment-item-content-wrapper">
@@ -17,7 +17,7 @@
             </p>
         </div>
         <div class="s-d-comment-item-imags-wrapper" v-lazy-container="{ selector: 'img' }">
-            <img v-for="(item, index) of imagesList" :key="index" :data-src="item">
+            <img v-for="(image, index) of item.images" :key="index" :data-src="$utils.image.getImagePath(image)">
         </div>
     </div>
 </template>
@@ -33,12 +33,14 @@ export default {
       contentHeight: {
         maxHeight: '1rem'
       },
-      isSeeMore: this.item.isShowMore(),
-      isCollapse: !this.isSeeMore,
-      imagesList: ['http://img1.3lian.com/img013/v5/21/d/84.jpg', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1550639954262&di=22e710dcbc054ec67e789af150c6dda3&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fgif%2Fmore%2F11%2F2012%2F03%2F1162a0fe4e83420fe058c9324ecb9a7f.jpg', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1550639954262&di=22e710dcbc054ec67e789af150c6dda3&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fgif%2Fmore%2F11%2F2012%2F03%2F1162a0fe4e83420fe058c9324ecb9a7f.jpg']
+      isSeeMore: this.isShowMore(),
+      isCollapse: !this.isSeeMore
     }
   },
   methods: {
+    isShowMore () {
+      return this.item.content.length > 100
+    },
     seeMoreContent () {
       if (this.isCollapse) {
         this.contentHeight.maxHeight = '10rem'
@@ -64,6 +66,7 @@ export default {
             width rem(.8)
             height rem(.8)
             object-fit cover
+            background #f5f5f5
             border-radius 50%
         & span:nth-child(2)
             flex 1

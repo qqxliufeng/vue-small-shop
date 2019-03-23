@@ -1,8 +1,8 @@
 <template>
     <div class="s-d-images-container">
-        <swiper :options="swiperOption">
+        <swiper :options="swiperOption" v-if="imageList.length > 0">
             <swiper-slide v-for="(item, index) of imageList" :key="index">
-                <img :src="item" class="s-d-images-item">
+                <img :src="$utils.image.getImagePath(item)" class="s-d-images-item">
             </swiper-slide>
         </swiper>
     </div>
@@ -11,6 +11,9 @@
 <script>
 export default {
   name: 'scenicDetailImages',
+  props: {
+    imageList: Array
+  },
   data () {
     return {
       swiperOption: {
@@ -22,10 +25,7 @@ export default {
           delay: 2500,
           disableOnInteraction: false
         }
-      },
-      imageList: [
-        'http://pic36.photophoto.cn/20150812/0033033907240876_b.jpg'
-      ]
+      }
     }
   }
 }

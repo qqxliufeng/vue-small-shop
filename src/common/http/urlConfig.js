@@ -44,3 +44,11 @@ export const deleteLinkManUrl = personInfoUrl + 'del_linkman'
 const indexModuleUrl = 'index/'
 
 export const indexUrl = indexModuleUrl + 'index'
+
+const scenicDetailModuleUrl = 'details/'
+
+export const scenicDetailUrl = scenicDetailModuleUrl + 'scenic_details'
+
+const commentModuleUrl = 'comment/'
+
+export const commentListUrl = commentModuleUrl + 'comment_list'

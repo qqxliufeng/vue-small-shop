@@ -43,7 +43,7 @@ export default {
   getSallerInfo () {
     return {
       identity: this.identity,
-      strorId: this.storeId
+      storeId: this.storeId
     }
   }
 }

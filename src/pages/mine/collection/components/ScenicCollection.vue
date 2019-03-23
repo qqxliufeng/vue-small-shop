@@ -50,7 +50,7 @@ export default {
       this.$http(this.$urlPath.userFavoriteScenicUrl, {
         page: page.num
       }, null, (data) => {
-        this.loadSuccess(page, mescroll, data)
+        this.loadSuccess(page, mescroll, data.data)
       }, (errorCode, error) => {
         this.loadError(mescroll)
       })

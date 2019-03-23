@@ -1,10 +1,10 @@
 let listHandlerMixin = {
   methods: {
-    loadSuccess (page, mescroll, data) {
+    loadSuccess (page, mescroll, tempList) {
       if (page.num === 1) this.list = []
-      if (data.data && data.data instanceof Array) {
-        this.list = this.list.concat(data.data)
-        mescroll.endSuccess(data.data.length)
+      if (tempList && tempList instanceof Array) {
+        this.list = this.list.concat(tempList)
+        mescroll.endSuccess(tempList.length)
       } else {
         mescroll.endSuccess(0)
       }

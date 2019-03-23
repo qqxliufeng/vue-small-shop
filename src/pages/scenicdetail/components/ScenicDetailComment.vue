@@ -1,14 +1,14 @@
 <template>
     <div class="s-d-comment-container">
-        <div class="s-d-comment-title-wrapper">
-            <span>综合评价：<i>4.7</i></span>
-            <span>123次评价</span>
+        <div class="s-d-comment-title-wrapper" v-if="comment">
+            <span>综合评价：<i>{{comment.avg_mark}}</i></span>
+            <span>{{comment.count}}次评价</span>
         </div>
         <div class="s-d-comment-tags-wrapper">
             <span v-for="(item, index) of tagsList" :key="index" :class="{'s-d-comment-tags-selected': item.select}" @click="tagsClick(item)">{{item.name}}</span>
         </div>
         <ul>
-            <li v-for="(item, index) of mCommentList" :key="index">
+            <li v-for="(item, index) of comment.comment_list" :key="index">
                 <scenic-detail-comment-item :item="item"></scenic-detail-comment-item>
             </li>
         </ul>
@@ -20,12 +20,7 @@ import ScenicDetailCommentItem from './ScenicDetailCommentItem'
 export default {
   name: 'scenicDetailComment',
   props: {
-    commentList: {
-      type: Array,
-      default () {
-        return []
-      }
-    },
+    comment: Object,
     tagCanSelected: {
       type: Boolean,
       default: false
@@ -37,7 +32,7 @@ export default {
   data () {
     return {
       select: true,
-      mCommentList: this.commentList,
+      mCommentList: this.comment,
       tagsList: [
         {
           name: '较好',
