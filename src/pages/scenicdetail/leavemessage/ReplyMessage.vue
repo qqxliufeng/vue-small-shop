@@ -1,21 +1,12 @@
 <template>
 <div class='a-m-message-container'>
-  <loading v-show="showLoading"></loading>
   <navi title="我要回复"></navi>
   <div class="a-m-message-content-wrapper">
     <el-card :body-style="{ padding: '.2rem' }" shadow="always">
-      <div class="a-m-message-scenic-info-wrapper">
-        <div class="a-m-message-scenic-info-img-wrapper">
-          <img src="http://pic36.photophoto.cn/20150812/0033033907240876_b.jpg">
-        </div>
-        <div class="a-m-message-scenic-info-content-wrapper">
-          <p class="title">卧虎山滑雪场卧虎山滑雪场卧虎山滑雪场卧虎山滑雪场卧虎山滑雪场卧虎山滑雪场</p>
-          <p class="info">4.5分 | 2000人消费</p>
-        </div>
-      </div>
+      <scenic-info></scenic-info>
       <div class="reply-title-wrapper">
             <span>问</span>
-            <span>滑雪好不好玩啊</span>
+            <span>{{askContent}}</span>
         </div>
     </el-card>
     <el-card :body-style="{ padding: '.2rem' }" shadow="always" class="ask-content-card">
@@ -24,7 +15,7 @@
             <span>答</span>
             <span>我的回复</span>
         </div>
-        <textarea cols="30" rows="10" class="ask-content" placeholder="请输入您的回复哦~，最多200字"></textarea>
+        <textarea cols="30" rows="10" class="ask-content" placeholder="请输入您的回复哦~，最多100字" maxlength="100" v-model="content"></textarea>
       </div>
     </el-card>
   </div>
@@ -33,23 +24,40 @@
 </template>
 <script>
 import navi from 'common/components/navigation'
+import scenicInfo from './components/LeaveMessageScenicInfo'
 export default {
   name: 'replyMessage',
   components: {
-    navi
+    navi,
+    scenicInfo
   },
   data () {
     return {
       showLoading: false,
-      showSuccessDialog: false
+      showSuccessDialog: false,
+      askContent: this.$route.params.askTitle,
+      content: '',
+      scenicInfo: this.$route.params.scenicInfo
     }
   },
   methods: {
     submitAsk () {
-      this.showLoading = true
-      setTimeout(() => {
-        this.showLoading = false
-      }, 1000)
+      if (this.content.length === 0) {
+        this.$toast('请输入要回答的内容')
+        return
+      }
+      this.$http(this.$urlPath.askAnswerUrl, {
+        aid: this.$route.query.aid,
+        answer_text: this.content
+      }, '正在提交…', (data) => {
+        this.$message({
+          message: '恭喜, 提问成功~',
+          type: 'success'
+        })
+        this.$router.go(-1)
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
     }
   }
 }
@@ -74,29 +82,6 @@ export default {
         line-height $headerHeight
     .a-m-message-content-wrapper
         padding rem(.3)
-        .a-m-message-scenic-info-wrapper
-            display flex
-        .a-m-message-scenic-info-img-wrapper
-            height rem(1.3)
-            width rem(1.5)
-            background-color red
-            overflow hidden
-            & img
-                width 100%
-                height 100%
-                object-fit cover
-        .a-m-message-scenic-info-content-wrapper
-            flex 1
-            display flex
-            flex-direction column
-            justify-content space-around
-            overflow hidden
-            padding-left rem(.2)
-            .title
-                textStyle(#333, .3)
-                ellipsis()
-            .info
-                textStyle(#888, .28)
         .reply-title-wrapper
                 askAnswerWrapper($primary)
                 border-top 1px solid #f5f5f5
@@ -116,4 +101,5 @@ export default {
                     background-color #F7F5F5
                     border-radius rem(.1)
                     padding rem(.2)
+                    box-sizing border-box
 </style>

@@ -33,7 +33,7 @@ export default {
       this.tempLikeList = this.likeList
     },
     itemClick (item) {
-      this.$router.push({name: 'scenicDetail', params: {scenicId: item.s_id}})
+      this.$router.push({name: 'scenicDetail', query: {scenicId: item.s_id}})
     }
   },
   computed: {

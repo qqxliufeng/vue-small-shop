@@ -35,32 +35,29 @@ export default {
       mCommentList: this.comment,
       tagsList: [
         {
+          name: '极好',
+          select: true,
+          mark: 1
+        },
+        {
           name: '较好',
-          select: true
+          select: false,
+          mark: 2
         },
         {
-          name: '较好1',
-          select: false
+          name: '中等',
+          select: false,
+          mark: 3
         },
         {
-          name: '较好22',
-          select: false
+          name: '较差',
+          select: false,
+          mark: 4
         },
         {
-          name: '较好3333',
-          select: false
-        },
-        {
-          name: '较好4444',
-          select: false
-        },
-        {
-          name: '较好5555555',
-          select: false
-        },
-        {
-          name: '较好66666666666',
-          select: false
+          name: '很差',
+          select: false,
+          mark: 5
         }
       ]
     }

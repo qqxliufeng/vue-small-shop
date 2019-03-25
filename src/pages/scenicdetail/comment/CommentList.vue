@@ -40,32 +40,37 @@ export default {
       mescroll: null,
       comment: {},
       list: [],
-      mark: 1,
+      mark: 0,
       tagsList: [
         {
-          name: '较好',
+          name: '所有',
           select: true,
-          mark: 1
+          mark: 0
         },
         {
-          name: '较好1',
+          name: '极好',
           select: false,
-          mark: 2
+          mark: 5
         },
         {
-          name: '较好22',
-          select: false,
-          mark: 3
-        },
-        {
-          name: '较好3333',
+          name: '较好',
           select: false,
           mark: 4
         },
         {
-          name: '较好4444',
+          name: '中等',
           select: false,
-          mark: 5
+          mark: 3
+        },
+        {
+          name: '较差',
+          select: false,
+          mark: 2
+        },
+        {
+          name: '很差',
+          select: false,
+          mark: 1
         }
       ]
     }
@@ -100,38 +105,39 @@ export default {
 <style lang='stylus' scoped>
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
-.mescroll
-    mescroller()
-    top $headerHeight
-    height 100%
-    padding-bottom $headerHeight
-    box-sizing border-box
-    .s-d-comment-container
-        border-top #f5f5f5 solid rem(.1)
-        .s-d-comment-title-wrapper
-            overflow hidden
-            padding rem(.2)
-            borderBottom()
-            & span:nth-child(1)
-                float left
-                normalTextStyle(#333, .35)
-                & i
-                    color $orangeColor
-            & span:nth-child(2)
-                float right
-                normalTextStyle(#888, .3)
-        .s-d-comment-tags-wrapper
-            padding rem(.2)
-            overflow hidden
-            & span
-                float left
-                border #f5f5f5 solid 1px
-                border-radius rem(.2)
-                color #333
-                margin-left rem(.2)
-                margin-top rem(.2)
-                padding rem(.1) rem(.2)
-            .s-d-comment-tags-selected
-                background-color $orangeColor
-                color #fff
+    .mescroll
+        mescroller()
+        top $headerHeight
+        height 100%
+        padding-bottom $headerHeight
+        box-sizing border-box
+        background #ffffff
+        .s-d-comment-container
+            border-top #f5f5f5 solid rem(.1)
+            .s-d-comment-title-wrapper
+                overflow hidden
+                padding rem(.2)
+                borderBottom()
+                & span:nth-child(1)
+                    float left
+                    normalTextStyle(#333, .35)
+                    & i
+                        color $orangeColor
+                & span:nth-child(2)
+                    float right
+                    normalTextStyle(#888, .3)
+            .s-d-comment-tags-wrapper
+                padding rem(.2)
+                overflow hidden
+                & span
+                    float left
+                    border #f5f5f5 solid 1px
+                    border-radius rem(.2)
+                    color #333
+                    margin-left rem(.2)
+                    margin-top rem(.2)
+                    padding rem(.1) rem(.2)
+                .s-d-comment-tags-selected
+                    background-color $orangeColor
+                    color #fff
 </style>

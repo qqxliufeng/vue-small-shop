@@ -1,6 +1,6 @@
 <template>
     <div>
-        <scenic-detail-header></scenic-detail-header>
+        <scenic-detail-header :secnicInfo="secnicInfo"></scenic-detail-header>
         <scenic-detail-images :imageList="imageList"></scenic-detail-images>
         <scenic-detail-info :secnicInfo="secnicInfo">
           <template slot="info" slot-scope="slotPropes">
@@ -59,7 +59,8 @@ export default {
       secnicInfo: {},
       hotGoodsList: [],
       typeGoodsList: [],
-      scenicId: this.$route.params.scenicId
+      scenicId: null,
+      show: true
     }
   },
   methods: {
@@ -84,16 +85,19 @@ export default {
         if (data.data) {
           this.imageList = data.data.scenicimages
           // 景区信息
-          this.secnicInfo.title = data.data.s_title
-          this.secnicInfo.tel = data.data.tel
-          this.secnicInfo.totalSales = data.data.totalSales
-          this.secnicInfo.address = data.data.address
-          this.secnicInfo.city = data.data.city
-          this.secnicInfo.mark = data.data.mark
-          this.secnicInfo.open = data.data.open
-          this.secnicInfo.route = data.data.route
-          this.secnicInfo.tags = data.data.sceniclabel
-          this.secnicInfo.brief = data.data.brief
+          let info = {}
+          info.title = data.data.s_title
+          info.tel = data.data.tel
+          info.totalSales = data.data.totalSales
+          info.address = data.data.address
+          info.city = data.data.city
+          info.mark = data.data.mark
+          info.open = data.data.open
+          info.route = data.data.route
+          info.tags = data.data.sceniclabel
+          info.brief = data.data.brief
+          info.isFavorites = data.data.is_favorites
+          this.secnicInfo = info
           this.hotGoodsList = data.data.hot_goods
           this.typeGoodsList = data.data.type_list
           this.comment = data.data.comment
@@ -104,11 +108,14 @@ export default {
       })
     }
   },
+  created () {
+    this.scenicId = this.$route.query.scenicId
+  },
   mounted () {
-    this.getData()
     this.$root.$on('ticketItemClick', (item) => {
       this.$router.push({name: 'ticketDetail'})
     })
+    this.getData()
   }
 }
 </script>

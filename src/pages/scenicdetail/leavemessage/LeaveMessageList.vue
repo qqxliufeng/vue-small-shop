@@ -2,13 +2,13 @@
   <div id="leaveMessageList" class='l-m-list-container'>
     <navi title="留言列表" :isFixed="true"></navi>
     <mescroll-vue ref="mescroll" :down="mescrollConfig.mescrollDown" :up="mescrollConfig.mescrollUp">
-      <ul>
-        <li v-for="(item, index) of leaveMessageList" :key="index">
+      <ul v-if="list">
+        <li v-for="item of list" :key="item.aid">
           <leave-message-item :item="item"></leave-message-item>
         </li>
       </ul>
     </mescroll-vue>
-    <router-link :to="{name: 'askMessage'}">
+    <router-link :to="{name: 'askMessage', query: {s_id: $route.query.s_id}}">
       <p class="l-m-list-ask">我要提问</p>
     </router-link>
   </div>
@@ -19,8 +19,10 @@ import navi from 'common/components/navigation'
 import MescrollVue from 'mescroll.js/mescroll.vue'
 import mescrollConfig from 'common/utils/mescrollerConfig'
 import LeaveMessageItem from './components/LeaveMessageItem'
+import listMixin from 'common/mixins/list-mixin'
 export default {
   name: 'leaveMessageList',
+  mixins: [listMixin],
   components: {
     navi,
     MescrollVue,
@@ -29,21 +31,19 @@ export default {
   data () {
     return {
       mescrollConfig: mescrollConfig('leaveMessageList', this.upCallback),
-      leaveMessageList: []
+      list: []
     }
   },
   methods: {
     upCallback (page, mescroll) {
-      setTimeout(() => {
-        this.leaveMessageList.push({
-          name: '请问这是一个好玩的地方吗？请问这是一个好玩的地方吗？请问这是一个好玩的地方吗？请问这是一个好玩的地方吗？请问这是一个好玩的地方吗？'
-        })
-        if (page.num > 4) {
-          mescroll.endSuccess(0)
-        } else {
-          mescroll.endSuccess(10)
-        }
-      }, 1000)
+      this.$http(this.$urlPath.askListUrl, {
+        s_id: this.$route.query.s_id,
+        page: page.num
+      }, null, (data) => {
+        this.loadSuccess(page, mescroll, data.data)
+      }, (errorCode, error) => {
+        this.loadError(mescroll)
+      })
     }
   }
 }

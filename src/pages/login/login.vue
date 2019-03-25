@@ -29,10 +29,7 @@ import navi from 'common/components/navigation'
 export default {
   name: 'login',
   props: {
-    backName: {
-      type: String,
-      default: 'home'
-    }
+    backName: Object
   },
   components: {
     navi
@@ -71,7 +68,11 @@ export default {
         if (data.data) {
           this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
           this.$root.state.saveUserInfo(data.data.userinfo.token)
-          this.$router.replace({ name: this.backName || 'home' })
+          if (this.backName) {
+            this.$router.replace({name: this.backName.name, query: this.backName.query, params: this.backName.params})
+          } else {
+            this.$router.go(-1)
+          }
         } else {
           this.$toast('登录失败，请重试…')
         }
@@ -83,7 +84,7 @@ export default {
   beforeRouteEnter (to, from, next) {
     next(vm => {
       if (vm.$root.userInfo.isLogin()) {
-        vm.$router.replace({ name: vm.backName || 'home' })
+        this.$router.replace({name: this.backName.name, query: this.backName.query, params: this.backName.params})
       }
     })
   }

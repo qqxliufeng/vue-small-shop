@@ -39,6 +39,7 @@ import ReseveDetail from '@/pages/reseve/ReseveDetail'
 import CommentList from '@/pages/scenicdetail/comment/CommentList'
 // leaveMessageList
 import LeaveMessageList from '@/pages/scenicdetail/leavemessage/LeaveMessageList'
+import LeaveMessageInfo from '@/pages/scenicdetail/leavemessage/LeaveMessageInfo'
 // askMessage
 import AskMessage from '@/pages/scenicdetail/leavemessage/AskMessage'
 import ReplyMessage from '@/pages/scenicdetail/leavemessage/ReplyMessage'
@@ -68,10 +69,7 @@ export default new Router({
     {
       path: '/scenicdetail',
       name: 'scenicDetail',
-      component: ScenicDetail,
-      meta: {
-        keepAlive: true
-      }
+      component: ScenicDetail
     },
     {
       path: '/scenicinfo',
@@ -105,9 +103,20 @@ export default new Router({
       component: LeaveMessageList
     },
     {
+      path: '/leavemessageinfo',
+      name: 'leaveMessageInfo',
+      component: LeaveMessageInfo,
+      meta: {
+        auth: true
+      }
+    },
+    {
       path: '/askmessage',
       name: 'askMessage',
-      component: AskMessage
+      component: AskMessage,
+      meta: {
+        auth: true
+      }
     },
     {
       path: '/replymessage',

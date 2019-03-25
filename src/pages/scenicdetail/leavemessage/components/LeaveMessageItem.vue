@@ -3,18 +3,18 @@
       <el-card shadow="always" class="l-q-card" :body-style="{ padding:'.2rem' }">
           <div class="l-q-content-container">
               <span>问</span>
-              <span>{{tempItem.name}}</span>
+              <span>{{tempItem.content}}</span>
           </div>
-          <div class="l-q-content-r-container">
+          <div class="l-q-content-r-container" v-if="tempItem.answer">
               <span>答</span>
-              <span>请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？</span>
+              <span>{{tempItem.answer.answer_text}}</span>
           </div>
           <div class="l-q-footer-container">
-              <span class="iconfont l-q-footer-time">&#xe790; 1天前</span>
-              <p>
-                <span>查看其它答案</span>
-                <span>|</span>
-                <span @click="replyMessage">我要回答</span>
+              <span class="iconfont l-q-footer-time" v-if="tempItem.answer">&#xe790; {{tempItem.answer.create_time}}</span>
+              <p class="l-q-footer">
+                <span v-if="tempItem.answer" @click="startMessageInfo">查看其它答案</span>
+                <span v-if="tempItem.answer">|</span>
+                <span @click="replyMessage" class="l-q-footer-to-answer">我要回答</span>
               </p>
           </div>
       </el-card>
@@ -38,7 +38,10 @@ export default {
   },
   methods: {
     replyMessage () {
-      this.$router.push({name: 'replyMessage'})
+      this.$router.push({name: 'replyMessage', query: {s_id: this.$route.query.s_id, aid: this.tempItem.aid}, params: {askTitle: this.tempItem.content}})
+    },
+    startMessageInfo () {
+      this.$router.push({name: 'leaveMessageInfo', query: {s_id: this.$route.query.s_id, aid: this.tempItem.aid}})
     }
   }
 }
@@ -65,12 +68,11 @@ export default {
                 background-color $primary
                 border-radius .08rem
                 padding .05rem
-                width .3rem
+                width .25rem
                 height .25rem
                 margin-top .05rem
                 margin-right .1rem
                 line-height .28rem
-                flex 1
             & span:nth-child(2)
                 color #555555
                 font-size .3rem
@@ -89,12 +91,11 @@ export default {
                 background-color #EA741F
                 border-radius .08rem
                 padding .05rem
-                width .3rem
+                width .25rem
                 height .25rem
                 margin-top .05rem
                 margin-right .1rem
                 line-height .28rem
-                flex 1
             & span:nth-child(2)
                 color #aaaaaa
                 font-size .25rem
@@ -105,10 +106,9 @@ export default {
             .l-q-footer-time
                 color #D0D0D0
                 font-size .25rem
-            & p:nth-child(2)
+            .l-q-footer
                 color $primary
                 float right
+                margin-bottom .2rem
                 font-size .25rem
-                & span:nth-child(2)
-                    margin 0 rem(.2)
 </style>

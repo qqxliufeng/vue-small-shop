@@ -97,7 +97,7 @@ router.beforeEach((to, from, next) => {
     if (userInfo.isLogin()) {
       next()
     } else {
-      next({name: 'login', params: { backName: to.name }})
+      next({name: 'login', params: { backName: to }})
     }
   } else {
     next()

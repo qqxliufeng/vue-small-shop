@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     seeMoreLeaveMessage () {
-      this.$router.push({name: 'leaveMessageList'})
+      this.$router.push({name: 'leaveMessageList', query: {s_id: this.$parent.scenicId}})
     }
   }
 }

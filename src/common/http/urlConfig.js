@@ -52,3 +52,17 @@ export const scenicDetailUrl = scenicDetailModuleUrl + 'scenic_details'
 const commentModuleUrl = 'comment/'
 
 export const commentListUrl = commentModuleUrl + 'comment_list'
+
+const askModuleUrl = 'ask/'
+
+export const askListUrl = askModuleUrl + 'ask_list'
+
+export const askAddUrl = askModuleUrl + 'add_ask'
+
+export const askAnswerUrl = askModuleUrl + 'answer'
+
+export const askAnswerListUrl = askModuleUrl + 'answer_list'
+
+export const askAnswerLikeUrl = askModuleUrl + 'answer_like'
+
+export const askAnserGetScenicUrl = askModuleUrl + 'get_scenic'

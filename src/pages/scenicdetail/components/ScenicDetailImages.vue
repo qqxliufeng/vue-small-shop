@@ -1,6 +1,6 @@
 <template>
     <div class="s-d-images-container">
-        <swiper :options="swiperOption" v-if="imageList.length > 0">
+        <swiper :options="swiperOption" v-if="imageList.length > 0" ref="swiper">
             <swiper-slide v-for="(item, index) of imageList" :key="index">
                 <img :src="$utils.image.getImagePath(item)" class="s-d-images-item">
             </swiper-slide>
@@ -18,6 +18,8 @@ export default {
     return {
       swiperOption: {
         loop: true,
+        observer: true,
+        observeParents: true,
         pagination: {
           el: '.swiper-pagination'
         },
