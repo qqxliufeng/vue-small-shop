@@ -45,4 +45,6 @@ export default {
         borderBottom()
     .s-d-t-type-wrapper
         padding rem(.2)
+    & >>> .el-tabs__nav-scroll
+        margin 0 rem(.1)
 </style>

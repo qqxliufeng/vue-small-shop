@@ -3,7 +3,7 @@
         <navi :title="title" :isFixed="true"></navi>
         <el-tabs :value="mSelected" @tab-click="handleClick" class="c-tabs" :stretch="true">
             <el-tab-pane name="scenicInfoForIntro" label="景区介绍" class="c-tabs-item">
-                <div class="s-i-content" v-for="(item, index) of testData" :key="index">this洒月收入this洒月收入this洒月收入this洒月收入this洒月收入this洒月收入this洒月收入this洒月收入this洒月收入this洒月收入this洒月收入this洒月收入this洒月收入this洒月收入this洒月收入this洒月收入this洒月收入</div>
+                <div class="s-i-content" v-html="content"></div>
             </el-tab-pane>
             <el-tab-pane name="scenicInfoForOrderNotify" label="预定须知" class="c-tabs-item">2</el-tab-pane>
         </el-tabs>
@@ -15,15 +15,15 @@ import navi from 'common/components/navigation'
 export default {
   name: 'ScenicInfo',
   props: {
-    selected: String,
-    default: 'scenicInfoForIntro'
+    selected: {
+      type: String,
+      default: 'scenicInfoForIntro'
+    },
+    content: String
   },
   data () {
     return {
-      mSelected: this.selected ? this.selected : 'scenicInfoForIntro',
-      testData: [
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-      ]
+      mSelected: this.selected ? this.selected : 'scenicInfoForIntro'
     }
   },
   computed: {

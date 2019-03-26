@@ -1,33 +1,38 @@
 <template>
     <div>
-        <scenic-detail-header :secnicInfo="secnicInfo"></scenic-detail-header>
-        <scenic-detail-images :imageList="imageList"></scenic-detail-images>
-        <scenic-detail-info :secnicInfo="secnicInfo">
-          <template slot="info" slot-scope="slotPropes">
-            <div class="s-d-info-scenic-info-wrapper">
-                <div @click="startScenicInfo('scenicInfoForIntro')">
-                    <p class="s-d-info-scenic-info-title">景区介绍</p>
-                    <p class="s-d-info-scenic-info-info">{{slotPropes.secnicInfo.brief}}</p>
-                </div>
-                <!-- <div class="vertical-line"></div>
-                <div @click="startScenicInfo('scenicInfoForOrderNotify')">
-                    <p class="s-d-info-scenic-info-title">预定须知</p>
-                    <p class="s-d-info-scenic-info-info">预定须知预定须知预定须知预定须知预定须知预定须知</p>
-                </div> -->
-            </div>
-            <div class="s-d-info-scenic-open-time-wrapper">
-                <p>营业时间</p>
-                <p>{{slotPropes.secnicInfo.open}}</p>
-            </div>
-          </template>
-        </scenic-detail-info>
-        <scenic-detail-hot :hotGoodsList="hotGoodsList"></scenic-detail-hot>
-        <scenic-detail-ticket-type :typeGoodsList="typeGoodsList"></scenic-detail-ticket-type>
-        <scenic-detail-leave-message :ask="ask"></scenic-detail-leave-message>
-        <scenic-detail-comment :comment="comment" :tagCanSelected="false" @tagClick="handleTagClick"></scenic-detail-comment>
-        <div class="s-d-l-m-comment-info-see-more" @click="seeMoreComment">
-          查看更多
-        </div>
+        <section v-if="loadState">
+          <scenic-detail-header :scenicInfo="scenicInfo"></scenic-detail-header>
+          <scenic-detail-images :imageList="imageList"></scenic-detail-images>
+          <scenic-detail-info :scenicInfo="scenicInfo">
+            <template slot="info" slot-scope="slotPropes">
+              <div class="s-d-info-scenic-info-wrapper">
+                  <div @click="startScenicInfo('scenicInfoForIntro')">
+                      <p class="s-d-info-scenic-info-title">景区介绍</p>
+                      <p class="s-d-info-scenic-info-info">{{slotPropes.scenicInfo.brief}}</p>
+                  </div>
+                  <!-- <div class="vertical-line"></div>
+                  <div @click="startScenicInfo('scenicInfoForOrderNotify')">
+                      <p class="s-d-info-scenic-info-title">预定须知</p>
+                      <p class="s-d-info-scenic-info-info">预定须知预定须知预定须知预定须知预定须知预定须知</p>
+                  </div> -->
+              </div>
+              <div class="s-d-info-scenic-open-time-wrapper">
+                  <p>营业时间</p>
+                  <p>{{slotPropes.scenicInfo.open}}</p>
+              </div>
+            </template>
+          </scenic-detail-info>
+          <scenic-detail-hot :hotGoodsList="hotGoodsList"></scenic-detail-hot>
+          <scenic-detail-ticket-type :typeGoodsList="typeGoodsList"></scenic-detail-ticket-type>
+          <scenic-detail-leave-message :ask="ask"></scenic-detail-leave-message>
+          <scenic-detail-comment :comment="comment" :tagCanSelected="false" @tagClick="handleTagClick"></scenic-detail-comment>
+          <div class="s-d-l-m-comment-info-see-more" @click="seeMoreComment">
+            查看更多
+          </div>
+        </section>
+        <section v-else>
+          <load-fail @reload="reload"></load-fail>
+        </section>
     </div>
 </template>
 
@@ -39,6 +44,7 @@ import ScenicDetailHot from './components/ScenicDetailHot'
 import ScenicDetailTicketType from './components/ScenicDetailTicketType'
 import ScenicDetailLeaveMessage from './components/ScenicDetailLeaveMessage'
 import ScenicDetailComment from './components/ScenicDetailComment'
+import LoadFail from 'common/components/loading/load-fail'
 export default {
   name: 'scenicDetail',
   components: {
@@ -48,15 +54,17 @@ export default {
     ScenicDetailHot,
     ScenicDetailTicketType,
     ScenicDetailLeaveMessage,
-    ScenicDetailComment
+    ScenicDetailComment,
+    LoadFail
   },
   data () {
     return {
+      loadState: true,
       sellerInfo: this.$root.state.getSallerInfo(),
       comment: {},
       ask: {},
       imageList: [],
-      secnicInfo: {},
+      scenicInfo: {},
       hotGoodsList: [],
       typeGoodsList: [],
       scenicId: null,
@@ -68,13 +76,16 @@ export default {
       console.log(item)
     },
     startScenicInfo (type) {
-      this.$router.push({name: 'scenicInfo', params: {selected: type}})
+      this.$router.push({name: 'scenicInfo', params: {selected: type, content: this.scenicInfo.content}})
     },
     seeMoreComment () {
       this.$router.push({name: 'commentList', params: {scenicId: this.scenicId}})
     },
     handleTagClick (tag) {
       console.log(tag)
+    },
+    reload () {
+      this.getData()
     },
     getData () {
       this.$http(this.$urlPath.scenicDetailUrl, {
@@ -83,6 +94,7 @@ export default {
         store_id: this.sellerInfo.storeId
       }, '', (data) => {
         if (data.data) {
+          this.loadState = true
           this.imageList = data.data.scenicimages
           // 景区信息
           let info = {}
@@ -97,14 +109,17 @@ export default {
           info.tags = data.data.sceniclabel
           info.brief = data.data.brief
           info.isFavorites = data.data.is_favorites
-          this.secnicInfo = info
+          info.content = data.data.s_content
+          this.scenicInfo = info
           this.hotGoodsList = data.data.hot_goods
           this.typeGoodsList = data.data.type_list
           this.comment = data.data.comment
           this.ask = data.data.ask
+        } else {
+          this.loadState = false
         }
       }, (errorCode, error) => {
-        console.log(error)
+        this.loadState = false
       })
     }
   },
@@ -113,7 +128,8 @@ export default {
   },
   mounted () {
     this.$root.$on('ticketItemClick', (item) => {
-      this.$router.push({name: 'ticketDetail'})
+      this.$router.push({name: 'reseveDetail', query: { goods_id: item.goodsId }})
+      // this.$router.push({name: 'ticketDetail', query: { s_id: this.scenicId, goods_id: item.goodsId }})
     })
     this.getData()
   }

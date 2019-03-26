@@ -49,6 +49,8 @@ const scenicDetailModuleUrl = 'details/'
 
 export const scenicDetailUrl = scenicDetailModuleUrl + 'scenic_details'
 
+export const goodsDetailUrl = scenicDetailModuleUrl + 'goods_detail'
+
 const commentModuleUrl = 'comment/'
 
 export const commentListUrl = commentModuleUrl + 'comment_list'
@@ -66,3 +68,7 @@ export const askAnswerListUrl = askModuleUrl + 'answer_list'
 export const askAnswerLikeUrl = askModuleUrl + 'answer_like'
 
 export const askAnserGetScenicUrl = askModuleUrl + 'get_scenic'
+
+const orderModuleUrl = 'order/'
+
+export const orderReserve = orderModuleUrl + 'reserve'

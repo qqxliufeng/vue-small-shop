@@ -46,6 +46,8 @@ import ReplyMessage from '@/pages/scenicdetail/leavemessage/ReplyMessage'
 
 import City from '@/pages/city/City'
 
+import Gallary from 'common/components/gallary/Gallary'
+
 Vue.use(Router)
 
 export default new Router({
@@ -90,7 +92,10 @@ export default new Router({
     {
       path: '/resevedetail',
       name: 'reseveDetail',
-      component: ReseveDetail
+      component: ReseveDetail,
+      meta: {
+        auth: true
+      }
     },
     {
       path: '/commentlist',
@@ -284,6 +289,12 @@ export default new Router({
       path: '/city',
       name: 'city',
       component: City,
+      props: true
+    },
+    {
+      path: '/gallary',
+      name: 'gallary',
+      component: Gallary,
       props: true
     },
     {

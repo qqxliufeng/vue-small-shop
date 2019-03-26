@@ -2,24 +2,24 @@
     <div class="s-d-info-container">
         <div class="s-d-info-header-wrapper">
             <div>
-                <span>{{secnicInfo.title}}</span>
-                <span>{{secnicInfo.mark}}分</span>
+                <span>{{scenicInfo.title}}</span>
+                <span>{{scenicInfo.mark}}分</span>
             </div>
-            <div class="s-d-info-header-tags-wrapper" v-if="secnicInfo.tags">
+            <div class="s-d-info-header-tags-wrapper" v-if="scenicInfo.tags">
                 <span>
-                    <el-tag type="success" class="s-d-info-tag" size="mini" v-for="(item, index) of secnicInfo.tags" :key="index">{{item}}</el-tag>
+                    <el-tag type="success" class="s-d-info-tag" size="mini" v-for="(item, index) of scenicInfo.tags" :key="index">{{item}}</el-tag>
                 </span>
-                <span class="s-d-info-header-saller">已售{{secnicInfo.totalSales}}</span>
+                <span class="s-d-info-header-saller">已售{{scenicInfo.totalSales}}</span>
             </div>
             <div class="s-d-info-middle-wrapper">
-                <slot name="info" :secnicInfo="secnicInfo"></slot>
+                <slot name="info" :scenicInfo="scenicInfo"></slot>
                 <div class="s-d-info-scenic-location-wrapper">
                     <span class="iconfont s-d-info-scenic-location-icon">&#xe850;</span>
                     <div class="s-d-info-scenic-location">
-                        <p>{{secnicInfo.city}}</p>
-                        <p>{{secnicInfo.tel}}</p>
+                        <p>{{scenicInfo.city}}</p>
+                        <p>{{scenicInfo.tel}}</p>
                     </div>
-                    <a :href="'tel:' + secnicInfo.tel" class="iconfont s-d-info-scenic-phone">&#xe6a9;</a>
+                    <a :href="'tel:' + scenicInfo.tel" class="iconfont s-d-info-scenic-phone">&#xe6a9;</a>
                 </div>
             </div>
         </div>
@@ -39,12 +39,15 @@
 export default {
   name: 'scenicDetailInfo',
   props: {
-    secnicInfo: Object
+    scenicInfo: Object
   },
   methods: {
     startScenicInfo (type) {
       this.$router.push({name: 'scenicInfo', params: {selected: type}})
     }
+  },
+  mounted () {
+    console.log(this.scenicInfo)
   }
 }
 </script>
@@ -107,7 +110,7 @@ export default {
         .o-i-ticket-info-tag
             overflow hidden
             margin-top .2rem
-            line-height .25rem
+            line-height .3rem
             & span
                 float left
                 color #333333

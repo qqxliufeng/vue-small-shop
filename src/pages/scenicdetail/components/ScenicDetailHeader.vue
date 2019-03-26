@@ -6,7 +6,7 @@
         <div :style="{ 'background-color': top == 0 ? '#000' : 'transparent'}">
             <span
             :class="[ favorites ? 'el-icon-star-on' : 'el-icon-star-off' ]"
-            :style="{'color': top == 0 ? '#fff' : '#f00'}"
+            :style="{'color': top == 0 ? '#fff' : '#000'}"
             @click="collection"></span>
         </div>
         <div :style="opacityStyle"></div>
@@ -17,7 +17,7 @@
 export default {
   name: 'scenicDetailHeader',
   props: {
-    secnicInfo: Object
+    scenicInfo: Object
   },
   data () {
     return {
@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     tempInfo () {
-      return this.secnicInfo
+      return this.scenicInfo
     },
     favorites () {
       return this.tempInfo !== null && this.tempInfo.isFavorites === 1

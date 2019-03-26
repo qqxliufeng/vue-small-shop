@@ -1,6 +1,6 @@
 <template>
     <div class="s-d-images-container">
-        <swiper :options="swiperOption" v-if="imageList.length > 0" ref="swiper">
+        <swiper :options="swiperOption" v-if="imageList && imageList.length > 0" ref="swiper">
             <swiper-slide v-for="(item, index) of imageList" :key="index">
                 <img :src="$utils.image.getImagePath(item)" class="s-d-images-item">
             </swiper-slide>
@@ -26,8 +26,18 @@ export default {
         autoplay: {
           delay: 2500,
           disableOnInteraction: false
+        },
+        on: {
+          click: () => {
+            this.imageClick()
+          }
         }
       }
+    }
+  },
+  methods: {
+    imageClick () {
+      this.$router.push({name: 'gallary', params: {imgs: this.imageList}})
     }
   }
 }

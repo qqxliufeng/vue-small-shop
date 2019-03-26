@@ -2,7 +2,7 @@
     <div class="r-d-detail-container">
         <navi title="提交订单" :isFixed="true"></navi>
         <div class="r-d-detail-wrapper">
-            <ticket-info></ticket-info>
+            <ticket-info :ticketInfo="ticketInfo"></ticket-info>
             <ticket-user-info></ticket-user-info>
             <ticket-discount></ticket-discount>
             <div class="r-d-detail-pay-action-wrapper">
@@ -29,6 +29,25 @@ export default {
     TicketInfo,
     TicketDiscount,
     TicketUserInfo
+  },
+  data () {
+    return {
+      ticketInfo: {}
+    }
+  },
+  methods: {
+    getData () {
+      this.$http(this.$urlPath.orderReserve, {
+        goods_id: this.$route.query.goods_id
+      }, '', (data) => {
+        this.ticketInfo = data.data
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
+    }
+  },
+  mounted () {
+    this.getData()
   }
 }
 </script>

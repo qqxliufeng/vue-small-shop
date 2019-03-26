@@ -1,0 +1,69 @@
+<template>
+<div class="r-d-ticket-info-remark-content-wrapper">
+    <!-- <p class="r-d-ticket-info-remark-content-title">{{remarkInfo.title}}</p> -->
+    <p class="r-d-ticket-info-remark-content-title-info">
+        <span>
+            {{remark.title}}
+        </span>
+        <span>
+            {{value || '暂无'}}
+        </span>
+    </p>
+</div>
+</template>
+
+<script>
+
+export default {
+  name: 'ticketRemark',
+  props: {
+    remark: Object
+  },
+  computed: {
+    value () {
+      if (this.remark) {
+        for (let key in this.remark) {
+          if (key === 'title') {
+            continue
+          }
+          return this.remark[key]
+        }
+      } else {
+        return '暂无'
+      }
+    }
+  }
+}
+</script>
+<style lang='stylus' scoped>
+@import '~styles/varibles.styl'
+@import '~styles/mixin.styl'
+.r-d-ticket-info-remark-content-wrapper
+    margin rem(.3) 0
+    .r-d-ticket-info-remark-content-title
+        padding rem(.1)
+        vertical-align bottom
+        font-size rem(.3)
+        &::before
+            content ""
+            display inline-block
+            width 2px
+            height rem(.3)
+            margin-right rem(.2)
+            background-color $primary
+            vertical-align bottom
+    .r-d-ticket-info-remark-content-title-info
+        margin-left .2rem
+        & span
+            display inline-block
+        & span:nth-child(1)
+            color #333333
+            width 30%
+            font-size rem(.3)
+            vertical-align top
+        & span:nth-child(2)
+            width 60%
+            margin-left 5%
+            vertical-align middle
+            color #888888
+</style>

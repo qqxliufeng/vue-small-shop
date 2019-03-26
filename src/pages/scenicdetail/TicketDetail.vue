@@ -1,29 +1,37 @@
 <template>
     <div>
-        <ticket-header></ticket-header>
-        <ticket-images></ticket-images>
-        <ticket-info>
-            <template slot="info">
-                <p class="t-d-intro-title">产品介绍</p>
-                <p class="t-d-intro-content">趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼趵突泉位于济南市是全国最好的泉眼</p>
-            </template>
-        </ticket-info>
-        <div class="t-d-detail-buy-info">
-            <p class="t-d-detail-buy-info-title">购买须知</p>
-            <p class="t-d-detail-buy-info-content" :style="bugInfoHeight">请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，请拿好你的身份证、钱和人，</p>
-            <p class="t-d-detail-buy-info-see-more" @click="seeMore">
-                <span :class="[isSeeMore ? 'el-icon-arrow-down' : 'el-icon-arrow-up']"></span>
-            </p>
-        </div>
-        <ticket-comment></ticket-comment>
-        <!-- <transition name="slide-fade"> -->
-            <div class="t-d-detail-order-info-wrapper">
-                <p class="t-d-detail-order-info-price">
-                    总价：<span>￥55.00</span>
-                </p>
-                <p class="t-d-detail-order-info-action" @click="reseve">立即预定</p>
-            </div>
-        <!-- </transition> -->
+        <section v-if="loadState">
+          <ticket-header :scenicInfo="scenicInfo"></ticket-header>
+          <ticket-images :imageList="scenicInfo.imageList"></ticket-images>
+          <ticket-info :scenicInfo="scenicInfo">
+              <template slot="info" slot-scope="slotProps">
+                  <p class="t-d-intro-title">产品介绍</p>
+                  <p class="t-d-intro-content">{{slotProps.scenicInfo.brief}}</p>
+              </template>
+          </ticket-info>
+          <div class="t-d-detail-buy-info">
+              <p class="t-d-detail-buy-info-title">购买须知</p>
+              <p class="t-d-detail-buy-info-content" :style="bugInfoHeight">
+                <ul  v-if="remarks.length > 0">
+                  <li v-for="(item, index) of remarks" :key="index">
+                    <ticket-remark :remark="item"></ticket-remark>
+                  </li>
+                </ul>
+              </p>
+              <p class="t-d-detail-buy-info-see-more" @click="seeMore">
+                  <span :class="[isSeeMore ? 'el-icon-arrow-down' : 'el-icon-arrow-up']"></span>
+              </p>
+          </div>
+          <div class="t-d-detail-order-info-wrapper">
+              <p class="t-d-detail-order-info-price">
+                  总价：<span>￥55.00</span>
+              </p>
+              <p class="t-d-detail-order-info-action" @click="reseve">立即预定</p>
+          </div>
+        </section>
+        <section v-else>
+          <load-fail @reload="reload"></load-fail>
+        </section>
     </div>
 </template>
 
@@ -32,27 +40,35 @@ import TicketHeader from './components/ScenicDetailHeader'
 import TicketImages from './components/ScenicDetailImages'
 import TicketInfo from './components/ScenicDetailInfo'
 import TicketComment from './components/ScenicDetailComment'
+import TicketRemark from 'common/components/ticket-remark'
+import LoadFail from 'common/components/loading/load-fail'
 export default {
   name: 'TicketDetail',
   components: {
     TicketHeader,
     TicketImages,
     TicketInfo,
-    TicketComment
+    TicketComment,
+    TicketRemark,
+    LoadFail
   },
   data () {
     return {
+      loadState: true,
       bugInfoHeight: {
         maxHeight: '1.85rem'
       },
       isSeeMore: true,
-      showBuyAction: true
+      showBuyAction: true,
+      scenicInfo: {},
+      goodsInfo: {},
+      remarks: []
     }
   },
   methods: {
     seeMore () {
       if (this.isSeeMore) {
-        this.bugInfoHeight.maxHeight = '10rem'
+        this.bugInfoHeight.maxHeight = '1000rem'
       } else {
         this.bugInfoHeight.maxHeight = '1.85rem'
       }
@@ -60,7 +76,42 @@ export default {
     },
     reseve () {
       this.$router.push({name: 'reseveDetail'})
+    },
+    reload () {
+      this.getData()
+    },
+    getData () {
+      this.$http(this.$urlPath.goodsDetailUrl, {
+        s_id: this.$route.query.s_id,
+        goods_id: this.$route.query.goods_id
+      }, '', (data) => {
+        this.loadState = true
+        let info = {}
+        info.title = data.data.scenic.s_title
+        info.tel = data.data.scenic.tel
+        info.totalSales = data.data.scenic.totalSales
+        info.address = data.data.scenic.address
+        info.city = data.data.scenic.city
+        info.mark = data.data.scenic.mark
+        info.open = data.data.scenic.open
+        info.route = data.data.scenic.route
+        info.tags = data.data.scenic.sceniclabel
+        info.imageList = data.data.scenic.scenicimages
+        info.brief = data.data.scenic.brief
+        this.scenicInfo = info
+        this.goodsInfo = data.data.goods
+        for (let i in this.goodsInfo) {
+          if (this.goodsInfo[i] instanceof Object) {
+            this.remarks.push(this.goodsInfo[i])
+          }
+        }
+      }, (errorCode, error) => {
+        this.loadState = false
+      })
     }
+  },
+  mounted () {
+    this.getData()
   }
 }
 </script>

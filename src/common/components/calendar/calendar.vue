@@ -250,9 +250,9 @@
         </thead>
         <tbody>
         <tr v-for="(day,k1) in days" style="{'animation-delay',(k1*30)+'ms'}" :key="k1">
-            <td v-for="(child,k2) in day" :class="{'selected':child.selected,'disabled':child.disabled}" @click="select(k1,k2,$event)" :key="k2">
+            <td v-for="(child,k2) in day" :class="{'selected':child.selected,'disabled':child.disabled || child.eventName == undefined}" @click="select(k1,k2,$event,child)" :key="k2">
                 <span :class="{'red':k2==0||k2==6||((child.isLunarFestival||child.isGregorianFestival) && lunar)}">{{child.day}}</span>
-                <slot name="event" v-if="child.eventName!=undefined"></slot>
+                <slot name="event" v-if="child.eventName!=undefined" :event="child.eventName"></slot>
                 <!-- <div class="text" v-if="child.eventName!=undefined">{{child.eventName}}</div> -->
                 <div class="text" :class="{'isLunarFestival':child.isLunarFestival,'isGregorianFestival':child.isGregorianFestival}" v-if="lunar">{{child.lunar}}</div>
             </td>
@@ -697,7 +697,7 @@ export default {
             this.$emit('next',this.month+1,this.year)
         },
         // 选中日期
-        select(k1, k2, e) {
+        select(k1, k2, e,child) {
             if (e != undefined) e.stopPropagation()
                 // 日期范围
             if (this.range) {
@@ -762,7 +762,9 @@ export default {
                 this.days[k1][k2].selected = true
                 this.day = this.days[k1][k2].day
                 this.today = [k1, k2]
-                this.$emit('select',[this.year,this.zero?this.zeroPad(this.month + 1):this.month + 1,this.zero?this.zeroPad(this.days[k1][k2].day):this.days[k1][k2].day])
+                if (child.eventName) {
+                    this.$emit('select',[this.year,this.zero?this.zeroPad(this.month + 1):this.month + 1,this.zero?this.zeroPad(this.days[k1][k2].day):this.days[k1][k2].day],child)
+                }
             }
         },
         changeYear(){

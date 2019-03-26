@@ -17,17 +17,17 @@
         <div class="r-d-ticket-info-count-wrapper">
             <span class="r-d-ticket-info-count-title">购买数量</span>
             <div class="r-d-ticket-info-count-info">
-                <span class="r-d-ticket-info-count-info-price">￥88</span>
-                <span class="r-d-ticket-info-count-info-release-count">剩余112张</span>
+                <span class="r-d-ticket-info-count-info-price">￥{{tempTime.price || 0}}</span>
+                <span class="r-d-ticket-info-count-info-release-count">剩余{{tempTime.count || 0}}张</span>
                 <el-input-number v-model="num" size="mini" :max="10" :min="1"></el-input-number>
             </div>
         </div>
        <el-dialog title="选择日期" :visible.sync="isShowCanlendarDialog" center width="92%" :modal="false" @open="showModal = true" @close="showModal = false">
-            <calander :events="calendar.events" :lunar="calendar.lunar" :begin="calendar.begin" :end="calendar.end" :weeks="calendar.weeks" :months="calendar.months" @select="select">
-                <template slot="event">
+            <calander :events="events" :lunar="calendar.lunar" :begin="calendar.begin()" :end="calendar.end" :weeks="calendar.weeks" :months="calendar.months" @select="select">
+                <template slot="event" slot-scope="slotProps">
                     <div class="c-e-wrapper">
-                        <p>补￥278</p>
-                        <p>(余10244)</p>
+                        <p>￥{{slotProps.event.sale_price}}</p>
+                        <p>余{{slotProps.event.one_stock}}</p>
                     </div>
                 </template>
             </calander>
@@ -36,21 +36,14 @@
             <div v-show="showRemark" class="r-d-ticket-info-remark-wrapper">
                 <div class="r-d-ticket-info-remark-title-wrapper">
                     <span>预定须知</span>
-                    <!-- <span class="el-icon-circle-close-outline" @click="showRemark = false"></span> -->
                 </div>
-                <div class="r-d-ticket-info-remark-content-wrapper">
-                    <div v-for="(item, index) of remarks" :key="index">
-                        <p class="r-d-ticket-info-remark-content-title">商家信息</p>
-                        <p class="r-d-ticket-info-remark-content-title-info">
-                            <span>
-                                title
-                            </span>
-                            <span>
-                                这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容
-                            </span>
-                        </p>
-                    </div>
-                    <p class="r-d-ticket-info-remark-content-confirm" @click="showRemark = false">确定</p>
+                <div class="remark-content-wrapper">
+                    <ul>
+                      <li v-for="(item, index) of remarks" :key="index">
+                          <ticket-remark :remark="item"></ticket-remark>
+                      </li>
+                      <p class="remark-content-confirm" @click="showRemark = false">确定</p>
+                    </ul>
                 </div>
             </div>
         </transition>
@@ -60,10 +53,15 @@
 
 <script>
 import calander from 'common/components/calendar/calendar.vue'
+import TicketRemark from 'common/components/ticket-remark'
 export default {
   name: 'TicketInfo',
+  props: {
+    ticketInfo: Object
+  },
   components: {
-    calander
+    calander,
+    TicketRemark
   },
   data () {
     return {
@@ -72,63 +70,106 @@ export default {
       showRemark: false,
       showModal: false,
       calendar: {
-        value: [2018, 2, 16], // 默认日期
         weeks: ['日', '一', '二', '三', '四', '五', '六'],
         months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-        events: {
-          '2018-2-14': '$408', '2018-2-15': '$460', '2018-2-16': '$500\n111'
+        begin: () => {
+          let date = new Date()
+          return [date.getFullYear(), date.getMonth() + 1, date.getDate()]
         }
       },
       times: [
         {
-          date: '2018-02-29',
-          price: '￥24',
+          date: '',
+          price: '￥0',
+          count: 0,
           isEnable: true,
           isSelected: true
         },
         {
-          date: '02-29',
-          price: '￥25',
+          date: '',
+          price: '￥0',
+          count: 0,
           isEnable: true,
           isSelected: false
         },
         {
-          date: '02-29',
-          price: '￥26',
-          isEnable: false,
+          date: '',
+          price: '￥0',
+          count: 0,
+          isEnable: true,
           isSelected: false
         },
         {
-          date: '02-29',
-          price: '￥27',
+          date: '',
+          price: '￥0',
+          count: 0,
           isEnable: true,
           isSelected: false
         }
       ],
-      remarks: []
+      events: {},
+      tempTime: {}
     }
   },
-  mounted () {
-    for (let index = 0; index < 100; index++) {
-      this.remarks.push('这是备注' + index)
+  computed: {
+    remarks () {
+      if (this.ticketInfo) {
+        let tempRemarks = []
+        for (let key in this.ticketInfo.goods) {
+          if (this.ticketInfo.goods[key] instanceof Object) {
+            tempRemarks.push(this.ticketInfo.goods[key])
+          }
+        }
+        return tempRemarks
+      } else {
+        return []
+      }
     }
-    let date = new Date()
-    this.times.forEach((it, index) => {
-      it.date = this.$utils.dateAdd(date, index)
-    })
+  },
+  watch: {
+    ticketInfo (newVal, oldVal) {
+      if (newVal) {
+        let tempEvent = {}
+        for (let key in this.ticketInfo.calendar) {
+          let item = this.ticketInfo.calendar[key]
+          tempEvent[item.date] = item
+        }
+        this.initDate(tempEvent)
+        this.events = tempEvent
+      }
+    }
   },
   methods: {
+    initDate (tempEvent) {
+      let date = new Date()
+      this.times.forEach((it, index) => {
+        it.date = this.$utils.dateAdd(date, index)
+        it.isEnable = tempEvent.hasOwnProperty(it.date)
+        let temp = tempEvent[it.date]
+        it.count = it.isEnable ? temp.one_stock : 0
+        it.price = '￥' + (it.isEnable ? temp.sale_price : '0')
+      })
+      this.tempTime = this.times[0]
+    },
     timeItemClick (item) {
+      this.tempTime = item
       this.times.forEach(element => {
         element.isSelected = element === item
       })
     },
-    select (startDate) {
-      let date = new Date(startDate[0], startDate[1] - 1, startDate[2])
-      this.times.forEach((it, index) => {
-        it.date = this.$utils.dateAdd(date, index)
-      })
-      this.isShowCanlendarDialog = false
+    select (startDate, child) {
+      if (child.eventName) {
+        let date = new Date(startDate[0], startDate[1] - 1, startDate[2])
+        this.times.forEach((it, index) => {
+          it.date = this.$utils.dateAdd(date, index)
+          it.isEnable = this.events.hasOwnProperty(it.date)
+          it.count = it.isEnable ? child.eventName.one_stock : 0
+          it.price = '￥' + (it.isEnable ? child.eventName.sale_price : '0')
+        })
+        this.isShowCanlendarDialog = false
+      } else {
+        this.$toast('所选日期暂无票的信息，请重新选择…')
+      }
     },
     beforeEnter (el) {
       this.showModal = true
@@ -150,6 +191,11 @@ export default {
     opacity 0
 .r-d-ticket-info-container
     z-index 0
+    .c-e-wrapper
+        & p:nth-of-type(1)
+          textStyle($primary, .2)
+        & p:nth-of-type(2)
+          textStyle($primary, .2)
     .r-d-ticket-info-title-wrapper
         display flex
         padding rem(.2) 0
@@ -238,38 +284,12 @@ export default {
                 textStyle(#333, .35)
             & span:nth-child(2)
                 textStyle(#555, .5)
-        .r-d-ticket-info-remark-content-wrapper
+        .remark-content-wrapper
             position absolute
             top rem(.95)
             left 0
             right 0
-            .r-d-ticket-info-remark-content-title
-                padding rem(.25)
-                vertical-align bottom
-                font-size rem(.3)
-                &::before
-                    content ""
-                    display inline-block
-                    width 2px
-                    height rem(.3)
-                    margin-right rem(.2)
-                    background-color $primary
-                    vertical-align bottom
-            .r-d-ticket-info-remark-content-title-info
-                margin-left .7rem
-                & span
-                    display inline-block
-                & span:nth-child(1)
-                    color #333333
-                    width 30%
-                    font-size rem(.3)
-                    vertical-align top
-                & span:nth-child(2)
-                    width 60%
-                    margin-left 5%
-                    vertical-align middle
-                    color #888888
-            .r-d-ticket-info-remark-content-confirm
+            .remark-content-confirm
                 line-height rem($headerHeight)
                 text-align center
                 background $primary
