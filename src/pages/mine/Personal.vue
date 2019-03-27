@@ -161,7 +161,7 @@ export default {
           this.$router.push({name: 'leaveMessage'})
           break
         case 3:
-          this.$router.push({name: 'contacts'})
+          this.$router.push({name: 'contacts', query: {mode: 'edit'}})
           break
         case 4:
           this.$router.push({name: 'pinfo'})

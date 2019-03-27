@@ -1,7 +1,8 @@
 <template>
     <div class="r-d-user-info-container">
         <p class="r-d-user-info-title">
-            游玩人信息
+            <span>游玩人信息</span>
+            <span class="select-user-info" @click="selectContact">选择联系人<i class="el-icon-arrow-right"></i></span>
         </p>
         <div class="r-d-user-info-content-wrapper">
             <el-tag class="r-d-user-info-content"
@@ -45,6 +46,9 @@
 <script>
 export default {
   name: 'TicketUserInfo',
+  props: {
+    contacts: Array
+  },
   data () {
     return {
       showAddUserInfoDialog: false,
@@ -66,48 +70,44 @@ export default {
           this.studentId = info.studentId
         }
       },
-      userList: [
-        {
-          name: '王大宝',
-          idCard: '1',
-          schoolName: '',
-          studentId: '',
-          selected: true,
-          type: 'info'
-        },
-        {
-          name: '王大宝',
-          idCard: '2',
-          schoolName: '',
-          studentId: '',
-          selected: false,
-          type: 'info'
-        },
-        {
-          name: '王大宝',
-          idCard: '3',
-          schoolName: '',
-          studentId: '',
-          selected: false,
-          type: 'info'
-        },
-        {
-          name: '王大宝',
-          idCard: '4',
-          schoolName: '',
-          studentId: '',
-          selected: false,
-          type: 'info'
-        },
-        {
-          name: '+ 新增',
-          selected: false,
-          type: 'add'
+      userList: [],
+      addItem: {
+        name: '+ 新增',
+        selected: false,
+        type: 'add'
+      },
+      userMap: {}
+    }
+  },
+  watch: {
+    contacts (newVal, oldVal) {
+      if (newVal && newVal.length > 0) {
+        newVal.forEach((it, index) => {
+          if (!this.userMap.hasOwnProperty(it.l_name)) {
+            this.userMap[it.l_name] = it
+          }
+        })
+        this.userList.length = 0
+        for (let key in this.userMap) {
+          const it = this.userMap[key]
+          let contact = {
+            name: it.l_name,
+            idCard: it.l_id_no,
+            schoolName: it.l_school,
+            studentId: it.l_stdnostring,
+            selected: false,
+            type: 'info'
+          }
+          this.userList.unshift(contact)
         }
-      ]
+        this.userList.push(this.addItem)
+      }
     }
   },
   methods: {
+    selectContact () {
+      this.$router.push({name: 'contactsList'})
+    },
     userItemClick (item) {
       if (item.type === 'add') {
         this.showAddUserInfoDialog = true
@@ -137,15 +137,18 @@ export default {
       }
       let info = {
         name: this.tempUserInfo.name,
-        idCard: '3',
-        schoolName: '',
-        studentId: '',
+        idCard: this.tempUserInfo.idCard,
+        schoolName: this.tempUserInfo.schoolName,
+        studentId: this.tempUserInfo.studentId,
         selected: false,
         type: 'info'
       }
       this.userList.unshift(info)
       this.showAddUserInfoDialog = false
     }
+  },
+  mounted () {
+    this.userList.push(this.addItem)
   }
 }
 </script>
@@ -159,6 +162,9 @@ export default {
         textStyle(#333, .3)
         padding rem(.3)
         borderBottom()
+        .select-user-info
+            float right
+            textStyle($primary, .3)
     .r-d-user-info-content-wrapper
         padding-left rem(.2)
         padding-bottom rem(.2)

@@ -2,16 +2,16 @@
     <div class="r-d-detail-container">
         <navi title="提交订单" :isFixed="true"></navi>
         <div class="r-d-detail-wrapper">
-            <ticket-info :ticketInfo="ticketInfo"></ticket-info>
-            <ticket-user-info></ticket-user-info>
+            <ticket-info :ticketInfo="ticketInfo" @selected="onSelectedTimeItem"></ticket-info>
+            <ticket-user-info :contacts="contacts" ref="userInfo"></ticket-user-info>
             <ticket-discount></ticket-discount>
             <div class="r-d-detail-pay-action-wrapper">
-                <span class="r-d-pay-action-price">总价：<i>￥45.00</i></span>
-                <div class="r-d-pay-action-collection">
-                  <p class="el-icon-star-off"></p>
+                <span class="r-d-pay-action-price">总价：<i>￥{{totalPrice}}</i></span>
+                <div class="r-d-pay-action-collection" @click="collection">
+                  <p :class="[collectionState ===  1 ? 'el-icon-star-off' : 'el-icon-star-on']"></p>
                   <p>收藏</p>
                 </div>
-                <span class="r-d-pay-action-pay">立即预定</span>
+                <span class="r-d-pay-action-pay" :style="{'background' : totalPrice === 0 ? '#cccccc' : '#E18234', 'pointer-events': totalPrice === 0 ? 'none' : 'auto'}" @click="reserve">立即预定</span>
             </div>
         </div>
     </div>
@@ -32,7 +32,11 @@ export default {
   },
   data () {
     return {
-      ticketInfo: {}
+      ticketInfo: {},
+      totalPrice: 0,
+      contacts: [],
+      tempDate: null,
+      collectionState: 1
     }
   },
   methods: {
@@ -44,10 +48,63 @@ export default {
       }, (errorCode, error) => {
         this.$toast(error)
       })
+    },
+    onSelectedTimeItem (info) {
+      if (info.item) {
+        this.tempDate = info.item
+        this.tempDate.num = info.num
+        this.totalPrice = (Number(info.item.sale_price) * parseInt(info.num)).toFixed(2)
+      }
+    },
+    collection () {
+      this.$http(this.$urlPath.userUnFavoroteGoodsUrl, {
+        goods_id: this.$route.query.goods_id
+      }, '正在操作…', (data) => {
+        this.$toast('收藏成功')
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
+    },
+    reserve () {
+      if (this.tempDate) {
+        this.$toast('请选择游玩人日期')
+        return
+      }
+      const userList = this.$refs.userInfo.userList
+      if (userList.length === 1) {
+        this.$toast('请输入游玩人信息')
+        return
+      }
+      const postData = {}
+      postData.date = this.tempDate
+      postData.user = []
+      userList.forEach(item => {
+        postData.user.push(item)
+      })
+      this.$http(this.$urlPath.orderTest, {
+        data: JSON.stringify(postData)
+      }, '正在提交…', (data) => {
+        console.log(data)
+      }, (errorCode, error) => {
+        console.log(error)
+      })
     }
   },
   mounted () {
     this.getData()
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if (from.name === 'contactsList') {
+        if (to.params.contacts) {
+          vm.contacts = to.params.contacts
+        }
+      } else {
+        vm.totalPrice = 0
+        vm.contacts = []
+        vm.getData()
+      }
+    })
   }
 }
 </script>

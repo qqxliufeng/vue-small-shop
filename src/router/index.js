@@ -11,6 +11,7 @@ import Message from '@/pages/mine/Message'
 import PInfo from '@/pages/mine/PInfo'
 import ResetPassword from '@/pages/mine/ResetPassword'
 import Contacts from '@/pages/mine/Contacts'
+import ContactsList from '@/pages/mine/ContactsList'
 import AddContacts from '@/pages/mine/AddContacts'
 import LeaveMessage from '@/pages/mine/leavemessage/LeaveMessage'
 import Coupon from '@/pages/mine/coupon/Coupon'
@@ -94,7 +95,8 @@ export default new Router({
       name: 'reseveDetail',
       component: ReseveDetail,
       meta: {
-        auth: true
+        auth: true,
+        keepAlive: true
       }
     },
     {
@@ -192,6 +194,11 @@ export default new Router({
       meta: {
         keepAlive: true
       }
+    },
+    {
+      path: '/contactslist',
+      name: 'contactsList',
+      component: ContactsList
     },
     {
       path: '/addcontacts',

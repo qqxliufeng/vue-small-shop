@@ -6,13 +6,13 @@
         <div class="r-d-discount-item-wrapper">
             <span class="r-d-discount-item-tag">券</span>
             <span class="r-d-discount-item-name">优惠券</span>
-            <span class="r-d-discount-item-des">一张可用<i class="el-icon-arrow-right"></i></span>
+            <span class="r-d-discount-item-des">暂无可用</span>
         </div>
-        <div class="r-d-discount-item-wrapper">
+        <!-- <div class="r-d-discount-item-wrapper">
             <span class="r-d-discount-item-tag">减</span>
             <span class="r-d-discount-item-name">立减</span>
             <span class="r-d-discount-item-des">下单减5元</span>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -50,5 +50,5 @@ export default {
         .r-d-discount-item-name
             flex 1
         .r-d-discount-item-des
-            textStyle($primary, .28)
+            textStyle(#cccccc, .28)
 </style>

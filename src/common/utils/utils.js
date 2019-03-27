@@ -1,11 +1,22 @@
 import { imageUrl } from 'common/http/urlConfig'
-
+const weekMap = {
+  '1': '一',
+  '2': '二',
+  '3': '三',
+  '4': '四',
+  '5': '五',
+  '6': '六',
+  '0': '日'
+}
 export default {
   dateAdd (startDate, num = 1) {
     startDate = new Date(startDate)
     startDate = +startDate + 1000 * 60 * 60 * 24 * num
     startDate = new Date(startDate)
-    return startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate()
+    return { date: startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate(), week: startDate.getDay() }
+  },
+  getWeekByWeek (week) {
+    return weekMap[week]
   },
   validator: {
     phoneReg: /^1(3|4|5|7|8)\d{9}$/,

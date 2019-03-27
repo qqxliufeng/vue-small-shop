@@ -31,6 +31,10 @@ export const userFavoriteScenicUrl = favoritesUrl + 'favorite_scenic'
 
 export const userUnFavoroteScenicUrl = favoritesUrl + 'unfavorite_scenic'
 
+export const userFavoriteGoodsUrl = favoritesUrl + 'favorite_goods'
+
+export const userUnFavoroteGoodsUrl = favoritesUrl + 'unfavorite_goods'
+
 const personInfoUrl = 'personal/'
 
 export const linkManUrl = personInfoUrl + 'linkman'
@@ -72,3 +76,5 @@ export const askAnserGetScenicUrl = askModuleUrl + 'get_scenic'
 const orderModuleUrl = 'order/'
 
 export const orderReserve = orderModuleUrl + 'reserve'
+
+export const orderTest = orderModuleUrl + 'test'

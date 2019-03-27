@@ -5,13 +5,14 @@
             <span class="r-d-ticket-info-title-info" @click="showRemark = !showRemark">使用须知<i class="el-icon-arrow-right"></i></span>
         </div>
         <div class="r-d-ticket-info-title-wrapper">
-            <span class="r-d-ticket-info-time-title">使用日期<i>当日可用</i></span>
+            <span class="r-d-ticket-info-time-title">使用日期</span>
             <span class="r-d-ticket-info-time-more" @click="isShowCanlendarDialog = true">更多日期<i class="el-icon-arrow-right"></i></span>
         </div>
         <div class="r-d-ticket-info-time-wrapper">
             <div class="r-d-ticket-info-time-item" v-for="(item, index) of times" :key="index" @click="timeItemClick(item)" :class="[{'r-d-ticket-info-time-selected': item.isSelected},{'r-d-ticket-info-time-uneable' : !item.isEnable}]">
                 <p>{{item.date}}</p>
-                <p>{{item.price}}</p>
+                <p>周{{$utils.getWeekByWeek(item.week)}}</p>
+                <p>￥{{item.price}}</p>
             </div>
         </div>
         <div class="r-d-ticket-info-count-wrapper">
@@ -19,15 +20,15 @@
             <div class="r-d-ticket-info-count-info">
                 <span class="r-d-ticket-info-count-info-price">￥{{tempTime.price || 0}}</span>
                 <span class="r-d-ticket-info-count-info-release-count">剩余{{tempTime.count || 0}}张</span>
-                <el-input-number v-model="num" size="mini" :max="10" :min="1"></el-input-number>
+                <el-input-number v-model="num" size="mini" :max="tempTime.count || 1" :min="1" @change="onNumberChange"></el-input-number>
             </div>
         </div>
        <el-dialog title="选择日期" :visible.sync="isShowCanlendarDialog" center width="92%" :modal="false" @open="showModal = true" @close="showModal = false">
             <calander :events="events" :lunar="calendar.lunar" :begin="calendar.begin()" :end="calendar.end" :weeks="calendar.weeks" :months="calendar.months" @select="select">
                 <template slot="event" slot-scope="slotProps">
                     <div class="c-e-wrapper">
-                        <p>￥{{slotProps.event.sale_price}}</p>
-                        <p>余{{slotProps.event.one_stock}}</p>
+                        <p :style="{ 'color' : slotProps.disabled ? '#ccc' : '#64BBAE'}">￥{{slotProps.event.sale_price}}</p>
+                        <p :style="{ 'color' : slotProps.disabled ? '#ccc' : '#64BBAE'}">余{{slotProps.event.one_stock}}</p>
                     </div>
                 </template>
             </calander>
@@ -80,35 +81,54 @@ export default {
       times: [
         {
           date: '',
-          price: '￥0',
+          week: '',
+          price: '0',
           count: 0,
-          isEnable: true,
-          isSelected: true
+          salesId: '',
+          isEnable: false,
+          isSelected: false,
+          raw: {}
         },
         {
           date: '',
-          price: '￥0',
+          week: '',
+          price: '0',
           count: 0,
-          isEnable: true,
-          isSelected: false
+          salesId: '',
+          isEnable: false,
+          isSelected: false,
+          raw: {}
         },
         {
           date: '',
-          price: '￥0',
+          week: '',
+          price: '0',
           count: 0,
-          isEnable: true,
-          isSelected: false
+          salesId: '',
+          isEnable: false,
+          isSelected: false,
+          raw: {}
         },
         {
           date: '',
-          price: '￥0',
+          week: '',
+          price: '0',
           count: 0,
-          isEnable: true,
-          isSelected: false
+          salesId: '',
+          isEnable: false,
+          isSelected: false,
+          raw: {}
         }
       ],
       events: {},
-      tempTime: {}
+      tempTime: {
+        date: '',
+        price: '0',
+        count: 0,
+        isEnable: false,
+        isSelected: false,
+        raw: {}
+      }
     }
   },
   computed: {
@@ -134,42 +154,60 @@ export default {
           let item = this.ticketInfo.calendar[key]
           tempEvent[item.date] = item
         }
-        this.initDate(tempEvent)
         this.events = tempEvent
+        this.initDate()
       }
     }
   },
   methods: {
-    initDate (tempEvent) {
+    initDate () {
       let date = new Date()
       this.times.forEach((it, index) => {
-        it.date = this.$utils.dateAdd(date, index)
-        it.isEnable = tempEvent.hasOwnProperty(it.date)
-        let temp = tempEvent[it.date]
-        it.count = it.isEnable ? temp.one_stock : 0
-        it.price = '￥' + (it.isEnable ? temp.sale_price : '0')
+        this.setTimesItem(date, it, index)
       })
-      this.tempTime = this.times[0]
+      let tempArray = this.times.filter((item, index, array) => item.isEnable)
+      if (tempArray && tempArray.length > 0) {
+        tempArray[0].isSelected = true
+        this.tempTime = tempArray[0]
+        this.emit()
+      }
     },
     timeItemClick (item) {
       this.tempTime = item
+      this.num = 1
       this.times.forEach(element => {
         element.isSelected = element === item
       })
+      this.emit()
     },
     select (startDate, child) {
       if (child.eventName) {
         let date = new Date(startDate[0], startDate[1] - 1, startDate[2])
         this.times.forEach((it, index) => {
-          it.date = this.$utils.dateAdd(date, index)
-          it.isEnable = this.events.hasOwnProperty(it.date)
-          it.count = it.isEnable ? child.eventName.one_stock : 0
-          it.price = '￥' + (it.isEnable ? child.eventName.sale_price : '0')
+          this.setTimesItem(date, it, index)
         })
+        this.tempTime = this.times[0]
+        this.emit()
         this.isShowCanlendarDialog = false
       } else {
         this.$toast('所选日期暂无票的信息，请重新选择…')
       }
+    },
+    setTimesItem (date, it, index) {
+      it.date = this.$utils.dateAdd(date, index).date
+      it.week = this.$utils.dateAdd(date, index).week
+      let temp = this.events[it.date]
+      it.isEnable = this.events.hasOwnProperty(it.date) && temp && parseInt(temp.one_stock) !== 0
+      it.count = it.isEnable && temp ? temp.one_stock : 0
+      it.price = temp ? temp.sale_price : '0'
+      it.isSelected = it.isEnable && index === 0
+      it.raw = temp
+    },
+    onNumberChange () {
+      this.emit()
+    },
+    emit () {
+      this.$emit('selected', {item: this.tempTime.raw, num: this.num})
     },
     beforeEnter (el) {
       this.showModal = true
@@ -222,7 +260,7 @@ export default {
         borderBottom()
         .r-d-ticket-info-time-item
             width 25%
-            height rem(1)
+            height rem(1.35)
             margin 0 1.25%
             border #f5f5f5 solid 1px
             display flex
@@ -232,7 +270,11 @@ export default {
             border-radius rem(.1)
             color #333
             & p:nth-child(2)
-                margin-top rem(.1)
+                color #ccc
+                font-size rem(.2)
+                margin-top rem(.05)
+            & p:nth-child(3)
+                margin-top rem(.2)
                 color $orangeColor
         .r-d-ticket-info-time-selected
             border $primary solid 1px
