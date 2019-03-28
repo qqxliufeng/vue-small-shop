@@ -8,7 +8,7 @@
             <div class="r-d-detail-pay-action-wrapper">
                 <span class="r-d-pay-action-price">总价：<i>￥{{totalPrice}}</i></span>
                 <div class="r-d-pay-action-collection" @click="collection">
-                  <p :class="[collectionState ===  1 ? 'el-icon-star-off' : 'el-icon-star-on']"></p>
+                  <p :class="[collectionState ===  1 ? 'el-icon-star-on' : 'el-icon-star-off']"></p>
                   <p>收藏</p>
                 </div>
                 <span class="r-d-pay-action-pay" :style="{'background' : totalPrice === 0 ? '#cccccc' : '#E18234', 'pointer-events': totalPrice === 0 ? 'none' : 'auto'}" @click="reserve">立即预定</span>
@@ -36,7 +36,7 @@ export default {
       totalPrice: 0,
       contacts: [],
       tempDate: null,
-      collectionState: 1
+      collectionState: 0
     }
   },
   methods: {
@@ -45,6 +45,7 @@ export default {
         goods_id: this.$route.query.goods_id
       }, '', (data) => {
         this.ticketInfo = data.data
+        this.collectionState = data.data.is_favorites
       }, (errorCode, error) => {
         this.$toast(error)
       })
@@ -60,7 +61,13 @@ export default {
       this.$http(this.$urlPath.userUnFavoroteGoodsUrl, {
         goods_id: this.$route.query.goods_id
       }, '正在操作…', (data) => {
-        this.$toast('收藏成功')
+        if (this.collectionState === 1) {
+          this.$toast('取消收藏成功')
+          this.collectionState = 0
+        } else {
+          this.$toast('收藏成功')
+          this.collectionState = 1
+        }
       }, (errorCode, error) => {
         this.$toast(error)
       })

@@ -20,7 +20,7 @@
                         <div class="s-c-line"></div>
                         <div class="s-c-bottom-action-container">
                             <el-button plain size="small" class="s-c-bottom-action" @click="cancleFavorite(item)">取消收藏</el-button>
-                            <el-button type="primary" size="small" class="s-c-bottom-action">查看详情</el-button>
+                            <el-button type="primary" size="small" class="s-c-bottom-action" @click="startScenicInfo(item)">查看详情</el-button>
                         </div>
                     </el-card>
                 </li>
@@ -66,6 +66,9 @@ export default {
           this.$toast(error)
         })
       }
+    },
+    startScenicInfo (item) {
+      this.$router.push({name: 'scenicDetail', query: {scenicId: item.s_id}})
     }
   }
 }
