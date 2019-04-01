@@ -42,7 +42,9 @@ export default {
   methods: {
     getData () {
       this.$http(this.$urlPath.orderReserve, {
-        goods_id: this.$route.query.goods_id
+        goods_id: this.$route.query.goods_id,
+        identity: this.$root.state.identity,
+        store_id: this.$root.state.storeId
       }, '', (data) => {
         this.ticketInfo = data.data
         this.collectionState = data.data.is_favorites
@@ -73,8 +75,8 @@ export default {
       })
     },
     reserve () {
-      if (this.tempDate) {
-        this.$toast('请选择游玩人日期')
+      if (!this.tempDate) {
+        this.$toast('请选择游玩日期')
         return
       }
       const userList = this.$refs.userInfo.userList
@@ -88,7 +90,12 @@ export default {
       userList.forEach(item => {
         postData.user.push(item)
       })
-      this.$http(this.$urlPath.orderTest, {
+      postData.info = {
+        identity: this.$root.state.identity,
+        store_id: this.$root.state.storeId,
+        goods_source: this.ticketInfo.goods.goods_source
+      }
+      this.$http(this.$urlPath.orderCreate, {
         data: JSON.stringify(postData)
       }, '正在提交…', (data) => {
         console.log(data)
@@ -96,9 +103,6 @@ export default {
         console.log(error)
       })
     }
-  },
-  mounted () {
-    this.getData()
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {

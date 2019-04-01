@@ -77,4 +77,4 @@ const orderModuleUrl = 'order/'
 
 export const orderReserve = orderModuleUrl + 'reserve'
 
-export const orderTest = orderModuleUrl + 'test'
+export const orderCreate = orderModuleUrl + 'create'

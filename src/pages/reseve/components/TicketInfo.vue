@@ -1,7 +1,7 @@
 <template>
     <div class="r-d-ticket-info-container">
         <div class="r-d-ticket-info-title-wrapper">
-            <span class="r-d-ticket-info-title">【{{ticketInfo.goods.goods_title}}】</span>
+            <span class="r-d-ticket-info-title" v-if="ticketInfo.goods">【{{ticketInfo.goods.goods_title}}】</span>
             <span class="r-d-ticket-info-title-info" @click="showRemark = !showRemark">使用须知<i class="el-icon-arrow-right"></i></span>
         </div>
         <div class="r-d-ticket-info-title-wrapper">
