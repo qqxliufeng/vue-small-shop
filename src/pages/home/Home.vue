@@ -7,12 +7,12 @@
           <home-type :list="categoryList"></home-type>
           <div class="sperator-line-height"></div>
           <div class="h-h-title">人气推荐</div>
-          <home-hot :list="hotList"></home-hot>
+          <home-hot :list="hotList" @itemClick="startDetail"></home-hot>
           <div class="h-h-ad-wrapper" v-if="ad">
             <img :src="$utils.image.getImagePath(ad.image)" @click="adClick">
           </div>
           <div class="h-h-title">猜你喜欢</div>
-          <home-like :likeList="guessList"></home-like>
+          <home-like :likeList="guessList" @itemClick="startDetail"></home-like>
         </div>
         <home-navi :scrollTop="mScrollTop"></home-navi>
     </div>
@@ -79,6 +79,9 @@ export default {
           console.log('不能登录')
         }
       }
+    },
+    startDetail (item) {
+      this.$router.push({name: 'scenicDetail', query: {scenicId: item.s_id}})
     },
     getData () {
       this.$http(this.$urlPath.indexUrl, {

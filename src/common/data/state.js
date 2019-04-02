@@ -10,6 +10,8 @@ try {
   if (localStorage) {
     currentCity = JSON.parse(localStorage.getItem('currentCity')) || defaultCity
     token = localStorage.getItem('token')
+    identity = localStorage.getItem('identity')
+    storeId = localStorage.getItem('storeId')
   }
 } catch (error) {
   console.log(error)
@@ -39,11 +41,13 @@ export default {
   saveSallerInfo (identity, storeId) {
     this.identity = identity
     this.storeId = storeId
+    localStorage.setItem('identity', identity)
+    localStorage.setItem('storeId', storeId)
   },
   getSallerInfo () {
     return {
-      identity: this.identity,
-      storeId: this.storeId
+      identity: localStorage.getItem('identity'),
+      storeId: localStorage.getItem('storeId')
     }
   }
 }

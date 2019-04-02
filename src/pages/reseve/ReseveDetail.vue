@@ -3,7 +3,8 @@
         <navi title="提交订单" :isFixed="true"></navi>
         <div class="r-d-detail-wrapper">
             <ticket-info :ticketInfo="ticketInfo" @selected="onSelectedTimeItem"></ticket-info>
-            <ticket-user-info :contacts="contacts" ref="userInfo"></ticket-user-info>
+            <ticket-user-single-info v-if="ticketInfo.goods && ticketInfo.goods.play_info === 1" ref="userSingleInfo" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-single-info>
+            <ticket-user-info :contacts="contacts" ref="userInfo" v-if="ticketInfo.goods && ticketInfo.goods.play_info === 2" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-info>
             <ticket-discount></ticket-discount>
             <div class="r-d-detail-pay-action-wrapper">
                 <span class="r-d-pay-action-price">总价：<i>￥{{totalPrice}}</i></span>
@@ -22,13 +23,15 @@ import navi from 'common/components/navigation'
 import TicketInfo from './components/TicketInfo'
 import TicketDiscount from './components/TicketDiscount'
 import TicketUserInfo from './components/TicketUserInfo'
+import TicketUserSingleInfo from './components/TicketUserSingleInfo'
 export default {
   name: 'ReseveDetail',
   components: {
     navi,
     TicketInfo,
     TicketDiscount,
-    TicketUserInfo
+    TicketUserInfo,
+    TicketUserSingleInfo
   },
   data () {
     return {
@@ -79,36 +82,65 @@ export default {
         this.$toast('请选择游玩日期')
         return
       }
-      const userList = this.$refs.userInfo.userList
-      if (userList.length === 1) {
-        this.$toast('请输入游玩人信息')
-        return
-      }
       const postData = {}
       postData.date = this.tempDate
-      postData.user = []
-      userList.forEach(item => {
-        postData.user.push(item)
-      })
+      switch (this.ticketInfo.goods.play_info) {
+        case 1: // 只需要一个游玩人信息
+          const userName = this.$refs.userSingleInfo.tempUserInfo.name
+          const userPhone = this.$refs.userSingleInfo.tempUserInfo.phone
+          if (!userName) {
+            this.$toast('请输入游客姓名')
+            return
+          }
+          if (!userPhone) {
+            this.$toast('请输入游客手机号')
+            return
+          }
+          if (!this.$utils.validator.isPhone(userPhone)) {
+            this.$toast('请输入合法的游客手机号')
+            return
+          }
+          postData.user = [this.$refs.userSingleInfo.tempUserInfo]
+          break
+        case 2: // 只需要多个游玩人信息
+          const userList = this.$refs.userInfo.userList
+          if (userList.length - 1 !== this.tempDate.num) {
+            this.$toast('游客信息与购买数量不匹配')
+            return
+          }
+          postData.user = []
+          userList.forEach(item => {
+            if (item.type !== 'add') {
+              postData.user.push(item)
+            }
+          })
+          break
+      }
       postData.info = {
         identity: this.$root.state.identity,
         store_id: this.$root.state.storeId,
-        goods_source: this.ticketInfo.goods.goods_source
+        goods_source: this.ticketInfo.goods.goods_source,
+        goods_id: this.$route.query.goods_id
       }
       this.$http(this.$urlPath.orderCreate, {
         data: JSON.stringify(postData)
       }, '正在提交…', (data) => {
-        console.log(data)
+        this.$toast('订单提交成功')
+        this.$router.replace({name: 'orderInfoPay', query: {no: data.data.out_trade_no}})
       }, (errorCode, error) => {
-        console.log(error)
+        this.$toast(error)
       })
     }
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
       if (from.name === 'contactsList') {
-        if (to.params.contacts) {
-          vm.contacts = to.params.contacts
+        if (vm.ticketInfo.goods) {
+          if (to.params.contacts) {
+            vm.contacts = to.params.contacts
+          }
+        } else {
+          vm.getData()
         }
       } else {
         vm.totalPrice = 0
@@ -145,7 +177,7 @@ export default {
             border-top 1px solid #f5f5f5
             .r-d-pay-action-price
                 flex 1
-                text-align center
+                margin-left rem(.3)
                 & i
                    color $orangeColor
             .r-d-pay-action-collection

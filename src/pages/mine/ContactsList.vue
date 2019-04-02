@@ -5,7 +5,7 @@
         <ul class="c-item-container" v-if="contactsList">
             <li v-for="item of contactsList" :key="item.l_id">
                 <div @click="itemClick(item)">
-                    <el-checkbox class="c-checkbox" v-model="item.isChecked"/>
+                    <el-checkbox class="c-checkbox" v-model="item.isChecked" disabled/>
                     <div class="c-item-content">
                         <p>{{item.l_name}}</p>
                         <p>手机号：{{item.l_mobile}}</p>

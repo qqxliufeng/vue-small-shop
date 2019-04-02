@@ -78,3 +78,7 @@ const orderModuleUrl = 'order/'
 export const orderReserve = orderModuleUrl + 'reserve'
 
 export const orderCreate = orderModuleUrl + 'create'
+
+const payModuleUrl = 'payment/'
+
+export const orderPayUrl = payModuleUrl + 'run_pay'

@@ -1,7 +1,7 @@
 <template>
     <div class="r-d-user-info-container">
         <p class="r-d-user-info-title">
-            <span>游玩人信息</span>
+            <span>游客信息</span>
             <span class="select-user-info" @click="selectContact">选择联系人<i class="el-icon-arrow-right"></i></span>
         </p>
         <div class="r-d-user-info-content-wrapper">
@@ -12,6 +12,7 @@
                     @click.native="userItemClick(item)"
                     :closable="item.type === 'info'"
                     type="info"
+                    :style="{'color' : item.type === 'add' ? '#E18234' : '#333'}"
                     @close="userItemDelete(item)"
                     size="small">
                 {{item.name}}
@@ -19,18 +20,22 @@
         </div>
         <el-dialog :visible.sync="showAddUserInfoDialog" :modal="false" title="用户信息" width="90%">
             <div class="r-d-user-info-input-wrapper">
-                <span>姓名</span>
+                <span>姓名<i>(必填)</i></span>
                 <input type="text" placeholder="请输入姓名" v-model="tempUserInfo.name">
             </div>
              <div class="r-d-user-info-input-wrapper">
+                <span>手机号<i>(必填)</i></span>
+                <input type="text" placeholder="请输入手机号" v-model="tempUserInfo.phone">
+            </div>
+             <div class="r-d-user-info-input-wrapper"  v-if="visitorInfo.indexOf('id') !== -1">
                 <span>身份证号</span>
                 <input type="text" placeholder="请输入身份证号" v-model="tempUserInfo.idCard">
             </div>
-             <div class="r-d-user-info-input-wrapper">
+             <div class="r-d-user-info-input-wrapper" v-if="visitorInfo.indexOf('u') !== -1">
                 <span>学校</span>
                 <input type="text" placeholder="请输入学校" v-model="tempUserInfo.schoolName">
             </div>
-             <div class="r-d-user-info-input-wrapper">
+             <div class="r-d-user-info-input-wrapper" v-if="visitorInfo.indexOf('s') !== -1">
                 <span>学生证号</span>
                 <input type="text" placeholder="请输入学生证号" v-model="tempUserInfo.studentId">
             </div>
@@ -47,24 +52,28 @@
 export default {
   name: 'TicketUserInfo',
   props: {
-    contacts: Array
+    contacts: Array,
+    visitorInfo: String
   },
   data () {
     return {
       showAddUserInfoDialog: false,
       tempUserInfo: {
         name: '',
+        phone: '',
         idCard: '',
         schoolName: '',
         studentId: '',
         clear () {
           this.name = ''
+          this.phone = ''
           this.idCard = ''
           this.schoolName = ''
           this.studentId = ''
         },
         setInfo (info) {
           this.name = info.name
+          this.phone = info.phone
           this.idCard = info.idCard
           this.schoolName = info.schoolName
           this.studentId = info.studentId
@@ -92,6 +101,7 @@ export default {
           const it = this.userMap[key]
           let contact = {
             name: it.l_name,
+            phone: it.l_mobile,
             idCard: it.l_id_no,
             schoolName: it.l_school,
             studentId: it.l_stdnostring,
@@ -135,8 +145,17 @@ export default {
         this.$toast('请输入姓名')
         return
       }
+      if (!this.tempUserInfo.phone) {
+        this.$toast('请输入手机号')
+        return
+      }
+      if (!this.$utils.validator.isPhone(this.tempUserInfo.phone)) {
+        this.$toast('请输入合法的手机号')
+        return
+      }
       let info = {
         name: this.tempUserInfo.name,
+        phone: this.tempUserInfo.phone,
         idCard: this.tempUserInfo.idCard,
         schoolName: this.tempUserInfo.schoolName,
         studentId: this.tempUserInfo.studentId,
@@ -183,8 +202,10 @@ export default {
         display flex
         align-items center
         & span
-            flex 1
+            flex 1.5
             textStyle(#555555, .3)
+            & i
+                textStyle(#ccc, .2)
         & input
             flex 3
             font-size rem(.3)

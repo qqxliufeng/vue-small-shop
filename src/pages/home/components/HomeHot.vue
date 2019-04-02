@@ -3,7 +3,7 @@
         <swiper :options="swiperOption" class="h-h-hot-card">
             <swiper-slide v-for="(item, index) of list" :key="item.s_id">
                 <el-card shadow="always" :body-style="{padding: '0'}">
-                    <div class="h-h-hot-wrapper">
+                    <div class="h-h-hot-wrapper" @click="itemClick(item)">
                         <div class="h-h-hot-image-wrapper">
                             <img v-lazy="$utils.image.getImagePath(item.scenicimages)">
                         </div>
@@ -39,6 +39,11 @@ export default {
         slidesPerView: 3,
         spaceBetween: 10
       }
+    }
+  },
+  methods: {
+    itemClick (item) {
+      this.$emit('itemClick', item)
     }
   }
 }

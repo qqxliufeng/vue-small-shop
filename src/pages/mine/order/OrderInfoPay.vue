@@ -1,28 +1,34 @@
 <template>
-    <div>
+    <div v-if="info">
         <navi title="支付"></navi>
         <div class="o-i-pay-container">
             <div class="o-i-pay-time-wrapper">
                 <p>剩余支付时间</p>
-                <p>99:99</p>
+                <count-down :time="info.timeout_express * 1000" @end="countDownEnd">
+                    <template slot-scope="props">
+                        <div class="time-wrapper">
+                            {{ props.hours }}:{{ props.minutes }}:{{ props.seconds }}
+                        </div>
+                    </template>
+                </count-down>
             </div>
             <div class="o-i-pay-goods-info-wrapper">
                 <div>
-                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1550315558341&di=5eb3ae6776ef018e8eadf3eaabbeb16f&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fb3119313b07eca8043a138229c2397dda044834a.jpg">
+                    <img v-lazy="$utils.image.getImagePath(info.scenicimages)">
                 </div>
                 <div>
-                    <p>卧虎山滑雪场成人票</p>
-                    <p>￥188</p>
+                    <p>{{info.goods_title}}</p>
+                    <p>￥{{info.price}}</p>
                 </div>
             </div>
             <div class="o-i-pay-goods-info-money">
                 <span>支付金额</span>
-                <span>￥25.50</span>
+                <span>￥{{info.amount}}</span>
             </div>
             <div class="sperator-line"></div>
             <div class="o-i-pay-goods-info-money-add">
-                <span>门票补差价</span>
-                <span>￥23.99</span>
+                <span>￥{{info.price}}</span>
+                <span>x{{info.num}}</span>
             </div>
             <div class="sperator-line-height"></div>
             <div class="o-i-pay-goods-info-money">
@@ -47,10 +53,36 @@
 
 <script>
 import navi from 'common/components/navigation'
+import CountDown from 'common/components/countdown/countdown'
 export default {
   name: 'orderInfoPay',
   components: {
-    navi
+    navi,
+    CountDown
+  },
+  data () {
+    return {
+      info: null
+    }
+  },
+  methods: {
+    getData () {
+      this.$http(this.$urlPath.orderPayUrl, {
+        out_trade_no: this.$route.query.no
+      }, '', (data) => {
+        this.info = data.data
+        this.info.timeout_express = this.info.timeout_express - data.time
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
+    },
+    countDownEnd () {
+      this.$toast('订单结束，未支付，请重新下单')
+      this.$router.go(-1)
+    }
+  },
+  mounted () {
+    this.getData()
   }
 }
 </script>
@@ -69,7 +101,7 @@ export default {
         color #888
         font-size .28rem
         line-height .32rem
-    & p:nth-child(2)
+    .time-wrapper
         color #333
         font-size .5rem
         line-height .52rem
