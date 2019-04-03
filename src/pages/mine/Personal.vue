@@ -29,7 +29,7 @@
             </div>
             <div class="p-order">
                 <div class="p-order-item" v-for="(item,index) of orderItemList" :key="index">
-                  <el-badge :value="item.badage" class="item" :hidden="!item.isShow" @click.native="orderItemClick(index)">
+                  <el-badge :value="item.badage" class="item" :hidden="item.badage <= 0" @click.native="orderItemClick(index)">
                     <img :src="item.icon" alt="">
                     <p>{{item.title}}</p>
                   </el-badge>
@@ -72,25 +72,25 @@ export default {
           title: '待付款',
           icon: img02,
           badage: 0,
-          isShow: false
+          index: 'waitingPayItem'
         },
         {
           title: '待使用',
           icon: img03,
-          badage: 1,
-          isShow: true
+          badage: 0,
+          index: 'waitingUseItem'
         },
         {
           title: '待评价',
           icon: img04,
-          badage: 2,
-          isShow: true
+          badage: 0,
+          index: 'waitingCommentItem'
         },
         {
           title: '售后/退款',
           icon: img01,
-          badage: 3,
-          isShow: true
+          badage: 0,
+          index: 'afterServiceItem'
         }
       ],
       actionItemList: [
@@ -143,11 +143,17 @@ export default {
       this.$router.push({ name: 'message' })
     },
     orderItemClick (orderItemIndex) {
-      this.orderItemList[orderItemIndex].isShow = false
-      // switch (orderItemIndex) {
-      //   case 1:
-      //     break
-      // }
+      this.orderItemList[orderItemIndex].badage = 0
+      this.$router.push({name: 'orderList', query: {index: this.orderItemList[orderItemIndex].index}})
+    },
+    getData () {
+      this.$http(this.$urlPath.orderStatusNum, {}, '', (data) => {
+        this.orderItemList[0].badage = data.data.pay_count
+        this.orderItemList[1].badage = data.data.use_count
+        this.orderItemList[2].badage = data.data.comment_count
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
     },
     itemClick (index) {
       switch (index) {
@@ -198,6 +204,10 @@ export default {
   },
   activated () {
     this.$refs.pContent.scrollTop = this.contentDivScroll
+  },
+  mounted () {
+    this.$root.$on('onGetBadge', this.getData)
+    this.getData()
   }
 }
 </script>

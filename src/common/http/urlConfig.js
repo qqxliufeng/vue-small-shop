@@ -79,6 +79,10 @@ export const orderReserve = orderModuleUrl + 'reserve'
 
 export const orderCreate = orderModuleUrl + 'create'
 
+export const orderStatusNum = orderModuleUrl + 'order_status_num'
+
+export const orderList = orderModuleUrl + 'order_list'
+
 const payModuleUrl = 'payment/'
 
 export const orderPayUrl = payModuleUrl + 'run_pay'

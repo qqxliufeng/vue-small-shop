@@ -2,29 +2,36 @@
     <div id="order_list_item">
          <mescroll-vue ref="mescroll" :down="mescrollConfig.mescrollDown" :up="mescrollConfig.mescrollUp">
              <ul>
-                 <li v-for="(item,index) of orderList" :key="index">
+                 <li v-for="(item,index) of list" :key="index">
                      <el-card shadow="always"  :body-style="{ padding: '.2rem' }" class="o-l-item-card">
                         <div class="o-l-item-container" @click="orderItemClick(item)">
                             <div class="o-l-item-img-container">
-                                <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1550046367219&di=9e4765dc6953bf2e0ab8c3dfbd47855a&imgtype=0&src=http%3A%2F%2Fp2.qhimgs4.com%2Ft01d8dbb2157c53cc27.jpg">
+                                <img v-lazy="$utils.image.getImagePath(item.scenicimage)">
                             </div>
                             <div class="o-l-item-info-container">
                                 <p>
-                                  <span>{{item.name}}</span>
+                                  <span>{{item.ord_product_name}}</span>
                                   <span class="o-l-item-info-state">{{item.stateTip}}</span>
                                 </p>
                                 <p>
-                                  <span>剩余支付时间：</span>
-                                  <span>{{item.time}}</span>
+                                  <span>{{item.stateModel.time.title}}
+                                    <count-down :time="item.stateModel.time.time">
+                                        <template slot-scope="props">
+                                            <span class="time-wrapper">
+                                                {{ props.hours }}:{{ props.minutes }}:{{ props.seconds }}
+                                            </span>
+                                        </template>
+                                    </count-down>
+                                  </span>
                                 </p>
-                                <p>{{item.num}}</p>
-                                <p>{{item.totalPrice}}</p>
+                                <p>数量：{{item.ord_ticket_num}}张</p>
+                                <p>总价：￥{{item.ord_amount}}</p>
                             </div>
                         </div>
                         <div class="sperator-line"></div>
                         <div class="o-l-bottom-action-container">
-                            <el-button plain size="small" class="o-l-bottom-action">取消收藏</el-button>
-                            <el-button type="primary" size="small" class="o-l-bottom-action">查看详情</el-button>
+                            <el-button plain size="small" class="o-l-bottom-action" v-if="item.stateModel.action1.show" @click="item.stateModel.action1.action">{{item.stateModel.action1.title}}</el-button>
+                            <el-button type="primary" size="small" class="o-l-bottom-action" v-if="item.stateModel.action2.show" @click="item.stateModel.action2.action">{{item.stateModel.action2.title}}</el-button>
                         </div>
                      </el-card>
                  </li>
@@ -36,19 +43,28 @@
 <script>
 import MescrollVue from 'mescroll.js/mescroll.vue'
 import mescrollConfig from 'common/utils/mescrollerConfig'
+import CountDown from 'common/components/countdown/countdown'
+import listMixin from 'common/mixins/list-mixin'
 export default {
   name: 'orderListItem',
+  mixins: [listMixin],
+  props: {
+    state: Number
+  },
   components: {
-    MescrollVue
+    MescrollVue,
+    CountDown
   },
   data () {
     return {
       mescrollConfig: mescrollConfig('order_list_item', this.upCallBack),
-      orderList: []
+      list: [],
+      serverTime: 0
     }
   },
   methods: {
     orderItemClick (item) {
+      this.$router.push({name: 'orderInfo', params: {orderType: '1'}})
       switch (item.state) {
         case 1:
           this.$router.push({name: 'orderInfo', params: {orderType: '1'}})
@@ -65,57 +81,93 @@ export default {
       }
     },
     upCallBack (page, mescroll) {
-      setTimeout(() => {
-        this.orderList.push({
-          name: '卧虎山滑雪场成人票卧虎山滑雪场成人票卧虎山滑雪场成人票',
-          time: '0:30:19',
-          num: '数量：1/1',
-          totalPrice: '总价：￥100',
-          stateTip: '待付款',
-          state: 1
-        })
-        this.orderList.push({
-          name: '卧虎山滑雪场成人票卧虎山滑雪场成人票卧虎山滑雪场成人票',
-          time: '0:30:19',
-          num: '数量：1/1',
-          totalPrice: '总价：￥100',
-          stateTip: '待使用',
-          state: 2
-        })
-        this.orderList.push({
-          name: '卧虎山滑雪场成人票卧虎山滑雪场成人票卧虎山滑雪场成人票',
-          time: '0:30:19',
-          num: '数量：1/1',
-          totalPrice: '总价：￥100',
-          stateTip: '待评价',
-          state: 3
-        })
-        this.orderList.push({
-          name: '卧虎山滑雪场成人票卧虎山滑雪场成人票卧虎山滑雪场成人票',
-          time: '0:30:19',
-          num: '数量：1/1',
-          totalPrice: '总价：￥100',
-          stateTip: '售后中',
-          state: 4
-        })
-        if (page.num > 4) {
-          mescroll.endSuccess(0)
-        } else {
-          mescroll.endSuccess(10)
+      this.$http(this.$urlPath.orderList, {
+        status: this.state,
+        page: page.num
+      }, null, (data) => {
+        if (this.state === 1) {
+          this.serverTime = data.time
         }
-      }, 1000)
+        if (data.data && data.data instanceof Array) {
+          data.data.forEach((it, index) => {
+            switch (it.ord_pay_status) {
+              case 0: // 待付款
+                it.stateModel = {
+                  time: {
+                    title: '剩余支付时间：',
+                    time: Math.max(0, (Number(it.timeout_express) - Number(this.serverTime)) * 1000)
+                  },
+                  action1: {
+                    title: '删除订单',
+                    show: true,
+                    action: () => {
+                      let confirm = window.confirm('是否要删除些订单？')
+                      if (confirm) {
+                        console.log('删除', this)
+                      }
+                    }
+                  },
+                  action2: {
+                    title: '立即支付',
+                    show: true,
+                    action: () => {
+                      let confirm = window.confirm('是否要删除些订单？')
+                      if (confirm) {
+                        console.log('删除')
+                      }
+                    }
+                  }
+                }
+                break
+              case 1: // 已支付
+                switch (it.ord_status) {
+                  case 0: // 未使用
+                    break
+                  case 1: // 已使用
+                    switch (it.is_comment) {
+                      case 0: // 未评价
+                        break
+                      case 1: // 已评价
+                        break
+                    }
+                    break
+                  case 2: // 被取消
+                    break
+                  case 3: // 已过期
+                    break
+                }
+                break
+              case 2: // 部分退款
+                break
+              case 3: // 已退款
+                switch (it.refund_status) {
+                  case 0: // 未退票
+                    break
+                  case 1: // 部分退
+                    break
+                  case 2: // 已退
+                    break
+                }
+                break
+            }
+          })
+        }
+        this.loadSuccess(page, mescroll, data.data)
+      }, (errorCode, error) => {
+        this.loadError(mescroll)
+      })
     }
   }
 }
 </script>
-<style lang="stylus" scoped>
-@import '~styles/varibles.styl'
-@import '~styles/mixin.styl'
-.mescroll
-    mescroller()
-    .o-l-item-card
-        margin .2rem
-        .o-l-item-container
+  <style lang="stylus" scoped>
+  @import '~styles/varibles.styl'
+  @import '~styles/mixin.styl'
+  .mescroll
+      mescroller()
+      .o-l-item-card
+          margin .2rem
+          .o-l-item-container
             display flex
             .o-l-item-img-container
                 flex 1.2
@@ -150,9 +202,8 @@ export default {
                      & span:nth-child(1)
                         color #888888
                         font-size .28rem
-                     & span:nth-child(2)
-                        color $primary
-                        font-size .28rem
+                        .time-wrapper
+                            textStyle($primary, .3)
                 & p:nth-child(3) , & p:nth-child(4)
                      color #888888
                      font-size .28rem
