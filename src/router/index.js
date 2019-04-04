@@ -258,7 +258,7 @@ export default new Router({
       }
     },
     {
-      path: '/orderinfo/:orderType',
+      path: '/orderinfo/:orderId',
       name: 'orderInfo',
       component: OrderInfo,
       props: true,

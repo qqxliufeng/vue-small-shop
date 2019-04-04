@@ -7,7 +7,7 @@ export const imageUrl = baseIP
 
 const commonModuleUrl = 'common/'
 
-export const imageActionUrl = imageUrl + 'store_api/' + commonModuleUrl + 'upload'
+export const imageActionUrl = imageUrl + '/store_api/' + commonModuleUrl + 'upload'
 
 const userInfoUrl = 'user/'
 
@@ -82,6 +82,8 @@ export const orderCreate = orderModuleUrl + 'create'
 export const orderStatusNum = orderModuleUrl + 'order_status_num'
 
 export const orderList = orderModuleUrl + 'order_list'
+
+export const orderDetails = orderModuleUrl + 'details'
 
 const payModuleUrl = 'payment/'
 

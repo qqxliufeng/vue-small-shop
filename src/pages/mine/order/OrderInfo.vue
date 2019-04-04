@@ -2,10 +2,10 @@
     <div>
         <navi title="订单详情" :isFixed="true"></navi>
         <div class="o-i-container">
-            <order-info-waiting-pay v-if="orderType === '1'"></order-info-waiting-pay>
-            <order-info-waiting-use v-else-if="orderType === '2'"></order-info-waiting-use>
-            <order-info-waiting-comment v-else-if="orderType === '3'"></order-info-waiting-comment>
-            <order-info-after-service v-else-if="orderType === '4'"></order-info-after-service>
+            <order-info-waiting-pay v-if="orderType === '1'" :detail="detail"></order-info-waiting-pay>
+            <order-info-waiting-use v-else-if="orderType === '2'" :detail="detail"></order-info-waiting-use>
+            <order-info-waiting-comment v-else-if="orderType === '3'" :detail="detail"></order-info-waiting-comment>
+            <order-info-after-service v-else-if="orderType === '4'" :detail="detail"></order-info-after-service>
         </div>
     </div>
 </template>
@@ -19,9 +19,15 @@ import orderInfoAfterService from './OrderInfoAfterService'
 export default {
   name: 'orderInfo',
   props: {
-    orderType: {
+    orderId: {
       type: String,
       default: '1'
+    }
+  },
+  data () {
+    return {
+      orderType: '1',
+      detail: null
     }
   },
   components: {
@@ -30,6 +36,20 @@ export default {
     orderInfoWaitingUse,
     orderInfoWaitingComment,
     orderInfoAfterService
+  },
+  methods: {
+    getData () {
+      this.$http(this.$urlPath.orderDetails, {
+        ord_id: this.orderId
+      }, '', (data) => {
+        this.detail = data.data
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
+    }
+  },
+  mounted () {
+    this.getData()
   }
 }
 </script>

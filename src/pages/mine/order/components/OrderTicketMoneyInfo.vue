@@ -8,26 +8,26 @@
             </div>
         </div>
         <p class="o-i-ticket-info-title">
-            卧虎山滑雪场成人票
+            {{storeInfo.ticketName}}
         </p>
         <div class="o-i-ticket-info-money">
-            <span>退款金额</span>
-            <span>￥25.00</span>
+            <span>{{storeInfo.money.title}}</span>
+            <span>￥{{storeInfo.money.money}}</span>
             <span @click="toggleShowDetail">明细<i class="iconfont">{{ isShowDetail ? '&#xe797;' : '&#xe63d;'}}</i></span>
         </div>
         <div class="o-i-ticket-info-money-detail" v-show="isShowDetail">
-            <slot name="ticketMoneyDetail"></slot>
+            <slot name="ticketMoneyDetail" :moneyDetail="storeInfo.money.detail"></slot>
         </div>
         <div class="o-i-info-shop-info">
             <div class="o-i-info-shop-info-img-wrapper">
-                <img src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2111229976,2860914838&fm=58&bpow=500&bpoh=399">
+                <img v-lazy="$utils.image.getImagePath(storeInfo.store.avatar)">
             </div>
             <div class="o-i-info-shop-info-name-wrapper">
                 <p class="o-i-info-shop-info-name">
-                    <span>商家名称：XX旅游公司商家名称：XX旅游公司商家名称：XX旅游公司</span>
+                    <span>商家名称：{{storeInfo.store.company_name}}</span>
                 </p>
                 <p class="o-i-info-shop-info-phone">
-                    <span>联系方式：15000000000</span>
+                    <span>联系方式：{{storeInfo.store.linkman_phone}}</span>
                 </p>
             </div>
         </div>
@@ -37,6 +37,9 @@
 <script>
 export default {
   name: 'orderTicketMoneyInfo',
+  props: {
+    storeInfo: Object
+  },
   data () {
     return {
       isShowDetail: false

@@ -11,17 +11,18 @@
                             <div class="o-l-item-info-container">
                                 <p>
                                   <span>{{item.ord_product_name}}</span>
-                                  <span class="o-l-item-info-state">{{item.stateTip}}</span>
+                                  <span class="o-l-item-info-state">{{item.stateModel.stateTip}}</span>
                                 </p>
                                 <p>
                                   <span>{{item.stateModel.time.title}}
-                                    <count-down :time="item.stateModel.time.time">
+                                    <count-down :time="item.stateModel.time.time" v-if="item.status === 'PAY_STATUS_NO'">
                                         <template slot-scope="props">
                                             <span class="time-wrapper">
                                                 {{ props.hours }}:{{ props.minutes }}:{{ props.seconds }}
                                             </span>
                                         </template>
                                     </count-down>
+                                    <span v-else>{{item.stateModel.time.time}}</span>
                                   </span>
                                 </p>
                                 <p>数量：{{item.ord_ticket_num}}张</p>
@@ -64,35 +65,20 @@ export default {
   },
   methods: {
     orderItemClick (item) {
-      this.$router.push({name: 'orderInfo', params: {orderType: '1'}})
-      switch (item.state) {
-        case 1:
-          this.$router.push({name: 'orderInfo', params: {orderType: '1'}})
-          break
-        case 2:
-          this.$router.push({name: 'orderInfo', params: {orderType: '2'}})
-          break
-        case 3:
-          this.$router.push({name: 'orderInfo', params: {orderType: '3'}})
-          break
-        case 4:
-          this.$router.push({name: 'orderInfo', params: {orderType: '4'}})
-          break
-      }
+      this.$router.push({name: 'orderInfo', params: {orderId: item.ord_id.toString()}})
     },
     upCallBack (page, mescroll) {
       this.$http(this.$urlPath.orderList, {
         status: this.state,
         page: page.num
       }, null, (data) => {
-        if (this.state === 1) {
-          this.serverTime = data.time
-        }
+        this.serverTime = data.time
         if (data.data && data.data instanceof Array) {
           data.data.forEach((it, index) => {
-            switch (it.ord_pay_status) {
-              case 0: // 待付款
+            switch (it.status) {
+              case 'PAY_STATUS_NO': // 待付款
                 it.stateModel = {
+                  stateTip: '待付款',
                   time: {
                     title: '剩余支付时间：',
                     time: Math.max(0, (Number(it.timeout_express) - Number(this.serverTime)) * 1000)
@@ -109,7 +95,7 @@ export default {
                   },
                   action2: {
                     title: '立即支付',
-                    show: true,
+                    show: Number(it.timeout_express) - Number(this.serverTime) > 0,
                     action: () => {
                       let confirm = window.confirm('是否要删除些订单？')
                       if (confirm) {
@@ -119,35 +105,46 @@ export default {
                   }
                 }
                 break
-              case 1: // 已支付
-                switch (it.ord_status) {
-                  case 0: // 未使用
-                    break
-                  case 1: // 已使用
-                    switch (it.is_comment) {
-                      case 0: // 未评价
-                        break
-                      case 1: // 已评价
-                        break
-                    }
-                    break
-                  case 2: // 被取消
-                    break
-                  case 3: // 已过期
-                    break
+              case 'PAY_STATUS_YES': // 已支付
+                break
+              case 'PAY_STATUS_PARTIAL_REFUND': // 部分退款
+                break
+              case 'PAY_STATUS_REFUNDED': // 已退款
+                break
+              case 'USE_STATUS_NO': // 未使用
+                break
+              case 'USE_STATUS': // 已使用
+                break
+              case 'USE_STATUS_OFF': // 被取消
+                it.stateModel = {
+                  stateTip: '已过期',
+                  time: {
+                    title: '过期时间：',
+                    time: it.express_time
+                  },
+                  action1: {
+                    title: '删除订单',
+                    show: true,
+                    action: () => {}
+                  },
+                  action2: {
+                    title: '重新购票',
+                    show: true,
+                    action: () => {}
+                  }
                 }
                 break
-              case 2: // 部分退款
+              case 'USE_STATUS_EXPIRD': // 已过期
                 break
-              case 3: // 已退款
-                switch (it.refund_status) {
-                  case 0: // 未退票
-                    break
-                  case 1: // 部分退
-                    break
-                  case 2: // 已退
-                    break
-                }
+              case 'NO_COMMENT': // 没有评价
+                break
+              case 'ALREADY_COMMENT': // 已经评价
+                break
+              case 'REFUND_STATUS_NO': // 未退票
+                break
+              case 'REFUND_STATUS_PARTIAL_YES': // 部分退票
+                break
+              case 'REFUND_STATUS_YES': // 已退票
                 break
             }
           })

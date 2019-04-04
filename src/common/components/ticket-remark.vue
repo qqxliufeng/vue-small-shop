@@ -2,10 +2,10 @@
 <div class="r-d-ticket-info-remark-content-wrapper">
     <!-- <p class="r-d-ticket-info-remark-content-title">{{remarkInfo.title}}</p> -->
     <p class="r-d-ticket-info-remark-content-title-info">
-        <span>
+        <span class="remark-key">
             {{remark.title}}
         </span>
-        <span>
+        <span class="remark-value">
             {{value || '暂无'}}
         </span>
     </p>
@@ -56,12 +56,11 @@ export default {
         margin-left .2rem
         & span
             display inline-block
-        & span:nth-child(1)
+        .remark-key
             color #333333
             width 30%
-            font-size rem(.3)
             vertical-align top
-        & span:nth-child(2)
+        .remark-value
             width 60%
             margin-left 5%
             vertical-align middle

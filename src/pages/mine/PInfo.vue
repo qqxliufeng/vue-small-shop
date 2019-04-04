@@ -80,6 +80,9 @@ export default {
       city: ''
     }
   },
+  mounted () {
+    console.log(this.avatarAction)
+  },
   beforeRouteEnter (to, from, next) {
     next(vm => {
       if (from.name === 'city' && to.params.city) {
@@ -115,6 +118,7 @@ export default {
       this.$http(this.$urlPath.userInfoResetInfo, {
         username: this.userName,
         realname: this.realName,
+        avatar: this.avatar,
         email: this.email,
         gender: this.sex,
         qq: this.qq,
@@ -148,25 +152,23 @@ export default {
     beforeUpload (file) {
       let checkResult = this.$utils.image.beforeUploadImageCheck(this.$root, file)
       if (checkResult) {
-        this.loading.tip = '正在上传…'
-        this.loading.show = true
+        this.$loading('正在上传…')
       }
       return checkResult
     },
     uploadSuccess (response, file, fileList) {
       if (response.data) {
-        this.$toast('头像上传成功')
-        this.loading.show = false
-        this.avatar = this.$utils.image.getImagePath(this.$root, response.data.url)
+        this.$toast('头像上传成功，请点确定按钮提交')
+        this.$loading.close()
+        this.avatar = this.$utils.image.getImagePath(response.data.url)
         this.$root.userInfo.setUserInfoAvatar(response.data.url)
       } else {
         this.$toast(response.msg)
       }
     },
     uploadError (err, file, fileList) {
-      console.log(err)
-      this.$toast('头像上传失败')
-      this.loading.show = false
+      this.$toast('头像上传失败' + err)
+      this.$loading.close()
     }
   }
 }
