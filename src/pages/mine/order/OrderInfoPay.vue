@@ -36,7 +36,7 @@
             </div>
             <div class="sperator-line"></div>
             <div class="o-i-pay-type-wrapper">
-                <div class="o-i-pay-type-zfb-wrapper" v-if="!this.$isWeiXin">
+                <div class="o-i-pay-type-zfb-wrapper" v-if="!$isWeiXin">
                     <span>支付宝</span>
                     <i class="el-icon-success"></i>
                 </div>
@@ -45,7 +45,7 @@
                     <i class="el-icon-success"></i>
                 </div>
             </div>
-            <p class="o-i-pay-action">支付</p>
+            <p class="o-i-pay-action" @click="pay">支付</p>
             <div class="sperator-line"></div>
         </div>
     </div>
@@ -62,7 +62,8 @@ export default {
   },
   data () {
     return {
-      info: null
+      info: null,
+      payType: this.$isWeiXin ? 'wechatpay' : 'alipay'
     }
   },
   methods: {
@@ -79,6 +80,16 @@ export default {
     countDownEnd () {
       this.$toast('订单结束，未支付，请重新下单')
       this.$router.go(-1)
+    },
+    pay () {
+      this.$http(this.$urlPath.orderPay, {
+        out_trade_no: this.$route.query.no,
+        pay_type: this.payType
+      }, '正在支付…', (data) => {
+        console.log(data)
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
     }
   },
   mounted () {

@@ -250,6 +250,11 @@ export default new Router({
       }
     },
     {
+      path: '/orderAlllist',
+      name: 'orderAllList',
+      component: () => import('@/pages/mine/order/OrderAllList')
+    },
+    {
       path: '/customservice',
       name: 'customService',
       component: CustomService,
@@ -261,15 +266,13 @@ export default new Router({
       path: '/orderinfo/:orderId',
       name: 'orderInfo',
       component: OrderInfo,
-      props: true,
-      meta: {
-        keepAlive: true
-      }
+      props: true
     },
     {
       path: '/ordercodeinfo',
       name: 'orderCodeInfo',
-      component: OrderCodeInfo
+      component: OrderCodeInfo,
+      props: true
     },
     {
       path: '/orderbackmoney',

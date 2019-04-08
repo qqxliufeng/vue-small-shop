@@ -2,10 +2,7 @@
     <div>
         <navi title="我的订单" :isFixed="true"></navi>
         <el-tabs :value="index" :stretch="true" class="o-tabs" @tab-click="tabClick">
-            <el-tab-pane name="allItem" label="全部" class="o-tabs-item" :lazy="true">
-                <order-list-item ref="allItem" :state="0"></order-list-item>
-            </el-tab-pane>
-            <el-tab-pane name="waitingPayItem" label="待付款" class="o-tabs-item" :lazy="true">
+            <el-tab-pane name="waitingPayItem" label="待付款" class="o-tabs-item">
                 <order-list-item ref="waitingPayItem" :state="1"></order-list-item>
             </el-tab-pane>
             <el-tab-pane name="waitingUseItem" label="待使用" class="o-tabs-item" :lazy="true" >
@@ -33,8 +30,8 @@ export default {
   data () {
     return {
       currentRefs: null,
-      refsArray: ['allItem', 'waitingPayItem', 'waitingUseItem', 'waitingCommentItem', 'afterServiceItem'],
-      index: 'allItem'
+      refsArray: ['waitingPayItem', 'waitingUseItem', 'waitingCommentItem', 'afterServiceItem'],
+      index: 'waitingPayItem'
     }
   },
   methods: {
@@ -45,13 +42,15 @@ export default {
     }
   },
   watch: {
-    '$route' () {
-      this.index = this.$route.query.index
+    '$route' (newVal, oldVal) {
+      if (newVal.name === 'orderList') {
+        this.index = this.$route.query.index
+      }
     }
   },
   mounted () {
     this.index = this.$route.query.index
-    this.currentRefs = this.$refs['allItem'].$refs
+    this.currentRefs = this.$refs['waitingPayItem'].$refs
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {

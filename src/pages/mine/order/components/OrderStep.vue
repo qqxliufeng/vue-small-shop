@@ -1,6 +1,6 @@
 <template>
     <div class="o-i-step-container">
-        <el-steps :active="2" align-center finish-status="success" process-status="wait">
+        <el-steps :active="active" align-center finish-status="success" process-status="wait">
             <el-step title="提交" ></el-step>
             <el-step title="正在审核"></el-step>
             <el-step title="退款完成"></el-step>
@@ -10,7 +10,13 @@
 
 <script>
 export default {
-  name: 'orderStep'
+  name: 'orderStep',
+  props: {
+    active: {
+      type: Number,
+      default: 0
+    }
+  }
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
     <div class="o-i-header-container">
         <div class="o-i-header-container-title">
-            <span>待付款</span>
+            <span>{{stateTip}}</span>
             <slot name="headerTitleInfo"></slot>
         </div>
         <slot name="headerInfo"></slot>
@@ -11,7 +11,13 @@
 
 <script>
 export default {
-  name: 'orderInfoHeader'
+  name: 'orderInfoHeader',
+  props: {
+    stateTip: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>
 

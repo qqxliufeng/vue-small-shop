@@ -1,8 +1,8 @@
 <template>
     <div class="o-i-back-money-container">
         <navi title="退款申请" :isFixed="true"></navi>
-        <div class="o-i-back-content-container">
-            <order-info-header>
+        <div class="o-i-back-content-container" v-if="info">
+            <order-info-header stateTip="申请退款">
                 <template slot="headerTitleInfo">
                     <span class="o-i-back-money-remark">
                         查看退款说明
@@ -11,7 +11,7 @@
                 </template>
                 <template slot="headerTitleInfo">
                     <p class="o-i-use-info">
-                        产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用
+                        提示：
                     </p>
                 </template>
                 <template slot="headerBottomInfo">
@@ -23,12 +23,12 @@
             <p class="o-i-back-money-goods">商品</p>
             <div class="o-i-back-money-goods-info-wrapper">
                 <div>
-                    <img src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2111229976,2860914838&fm=58&bpow=500&bpoh=399">
+                    <img v-lazy="$utils.image.getImagePath(info.scenicimage)">
                 </div>
                 <div>
-                    <p>卧虎山滑雪场成人票卧虎山滑雪场成人票卧虎山滑雪场成人票</p>
-                    <p>数量：1</p>
-                    <p>总价：￥22222</p>
+                    <p>{{info.ord_product_name}}</p>
+                    <p>数量：{{info.ord_ticket_num}}</p>
+                    <p>总价：￥{{info.ord_amount}}</p>
                 </div>
             </div>
             <div class="o-i-back-l-f">
@@ -36,7 +36,7 @@
                     退款原因
                 </span>
                 <span @click="showBackMoneyReason">
-                    选择退款原因
+                    {{reason ? reason : '选择退款原因'}}
                     <i class="el-icon-arrow-right"></i>
                 </span>
             </div>
@@ -45,22 +45,22 @@
                     退票数量
                 </span>
                 <span>
-                    <el-input-number v-model="num" @change="handleChange" :min="1" :max="10" label="描述文字" size="mini"></el-input-number>
+                    <el-input-number v-model="backNum" @change="handleChange" :min="1" :max="info.ord_ticket_num" :disabled="!canInput" size="mini"></el-input-number>
                 </span>
+                <p class="back-tip">{{backTip}}</p>
             </div>
             <div class="o-i-back-l-f">
                 <span>
                     退款金额
                 </span>
                 <span>
-                    <strong>￥26.00</strong>
-                    <i class="el-icon-arrow-right"></i>
+                    <strong>￥{{backMoney.toFixed(2)}}</strong>
                 </span>
             </div>
             <div>
-                <p v-for="(item,index) of moneyDetailList" :key="index" class="o-i-info-money-detail">
-                    <span class="span-color-1" :class="{'span-color-3': index == moneyDetailList.length - 1}">{{item.name}}</span>
-                    <span class="span-color-2" :class="{'span-color-4': index == moneyDetailList.length - 1}">{{item.money}}</span>
+                <p v-for="(item,index) of tempMoneyList" :key="index" class="o-i-info-money-detail">
+                    <span class="span-color-1" :class="{'span-color-3': index == tempMoneyList.length - 1}">{{item.name}}</span>
+                    <span class="span-color-2" :class="{'span-color-4': index == tempMoneyList.length - 1}">{{item.money}}</span>
                 </p>
             </div>
             <div class="sperator-line"></div>
@@ -70,19 +70,19 @@
                     type="textarea"
                     :rows="4"
                     placeholder="请输入内容"
-                    v-model="textarea">
+                    v-model="message">
                     </el-input>
             </div>
-            <p class="o-i-back-money-submit">提交</p>
+            <p class="o-i-back-money-submit" @click="submit">提交</p>
             <el-dialog title="选择退款原因" :visible.sync="isShowReasonDialog" width="80%">
                 <div>
-                    <div v-for="(item, index) of backMoneyReasons" :key="index" class="o-i-back-money-reason-item">
-                        <el-radio v-model="radio" :label="index">{{item}}</el-radio>
+                    <div v-for="(item, index) of info.reason" :key="item.id" class="o-i-back-money-reason-item">
+                        <el-radio v-model="radio" :label="index" @change="changeReason">{{item.reason}}</el-radio>
                     </div>
                     <!-- <el-input v-model="input" placeholder="请输入内容" class="o-i-back-money-reason-input" size="medium"></el-input> -->
                 </div>
                 <span slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="dialogVisible = false" size="small">确 定</el-button>
+                    <el-button type="primary" @click="isShowReasonDialog = false" size="small">确 定</el-button>
                 </span>
             </el-dialog>
         </div>
@@ -102,43 +102,106 @@ export default {
   },
   data () {
     return {
-      num: 1,
       isShowReasonDialog: false,
-      radio: '1',
-      backMoneyReasons: [
-        '这是原因1',
-        '这是原因1',
-        '这是原因1',
-        '这是原因1',
-        '这是原因1',
-        '这是原因1',
-        '这是原因1',
-        '这是原因1'
-      ],
-      moneyDetailList: [
-        {
-          name: '成人票',
-          money: '￥29.00'
-        },
-        {
-          name: '成人票',
-          money: '￥29.00'
-        },
-        {
-          name: '成人票',
-          money: '￥29.00'
-        },
-        {
-          name: '成人票',
-          money: '￥29.00'
-        }
-      ]
+      info: null,
+      radio: -1,
+      charge: 0,
+      textarea: '',
+      backNum: 0,
+      tempMoneyList: [],
+      reason: null,
+      message: ''
+    }
+  },
+  computed: {
+    canInput () {
+    //   is_refund_part 0=部分退 ，1=一次性退完
+      return this.info && this.info.is_refund_part === 0
+    },
+    backMoney () {
+      return Number(this.info.ord_ticket_num) * Number(this.info.ord_price)
+    },
+    backTip () {
+      return this.info.is_refund_part === 0 ? '当前门票支持部分退款' : '当前门票仅支持全部退款'
     }
   },
   methods: {
+    moneyDetailList () {
+      if (this.info) {
+        this.tempMoneyList.push({
+          name: '单价：',
+          money: '￥' + this.info.ord_price
+        },
+        {
+          name: '数量：',
+          money: 'X' + this.info.ord_ticket_num
+        })
+        let charge = 0
+        switch (this.info.is_charge) {
+          case 0: // 无手续费
+            charge = 0
+            break
+          case 1: // 每笔订单收取手续费
+            charge = this.info.charge
+            break
+          case 2: // 每张门票收取手续费
+            charge = this.info.charge * this.backNum
+            break
+        }
+        this.tempMoneyList.push({
+          name: '手续费：',
+          money: '￥' + charge.toFixed(2)
+        },
+        {
+          name: '实际退款：',
+          money: '￥' + (Number(this.info.ord_amount) - Number(charge)).toFixed(2)
+        })
+      }
+    },
     showBackMoneyReason () {
       this.isShowReasonDialog = !this.isShowReasonDialog
+    },
+    getData () {
+      this.$http(this.$urlPath.orderRefundDetail, {
+        ord_id: this.$route.query.id
+      }, '', (data) => {
+        this.info = data.data
+        this.backNum = this.info.ord_ticket_num
+        this.moneyDetailList()
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
+    },
+    handleChange (num) {
+      if (this.tempMoneyList && this.info.is_charge === 2) {
+        this.tempMoneyList.length = 0
+        this.backNum = num
+        this.moneyDetailList()
+      }
+    },
+    changeReason (item) {
+      this.reason = this.info.reason[item].reason
+    },
+    submit () {
+      if (!this.reason) {
+        this.$toast('请选择退款原因')
+        return
+      }
+      this.$http(this.$urlPath.orderRefund, {
+        ord_id: this.$route.query.id,
+        num: this.backNum,
+        reason: this.reason,
+        message: this.message
+      }, '正在提交申请…', (data) => {
+        this.$toast('退款申请成功')
+        this.$router.go(-1)
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
     }
+  },
+  mounted () {
+    this.getData()
   }
 }
 </script>
@@ -206,6 +269,10 @@ export default {
                 color #888
                 & strong
                     color $orangeColor
+            & .back-tip
+                textStyle(#888, .25)
+                margin-top rem(.8)
+                text-align right
             .o-i-back-money-num
                 margin-top .14rem
         .o-i-info-money-detail
@@ -238,7 +305,7 @@ export default {
             text-align center
             color #ffffff
             font-size .35rem
-            line-height 1rem
+            line-height $headerHeight
             margin-top .3rem
             background-color $primary
         .o-i-back-money-reason-item

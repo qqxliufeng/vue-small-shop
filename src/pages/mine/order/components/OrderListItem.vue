@@ -1,5 +1,5 @@
 <template>
-    <div id="order_list_item">
+    <div :id="'order_list_item_' + state">
          <mescroll-vue ref="mescroll" :down="mescrollConfig.mescrollDown" :up="mescrollConfig.mescrollUp">
              <ul>
                  <li v-for="(item,index) of list" :key="index">
@@ -15,7 +15,9 @@
                                 </p>
                                 <p>
                                   <span>{{item.stateModel.time.title}}
-                                    <count-down :time="item.stateModel.time.time" v-if="item.status === 'PAY_STATUS_NO'">
+                                    <count-down :time="item.stateModel.time.time"
+                                                v-if="item.status === 'PAY_STATUS_NO'"
+                                                @end="countDownEnd(item)">
                                         <template slot-scope="props">
                                             <span class="time-wrapper">
                                                 {{ props.hours }}:{{ props.minutes }}:{{ props.seconds }}
@@ -58,14 +60,14 @@ export default {
   },
   data () {
     return {
-      mescrollConfig: mescrollConfig('order_list_item', this.upCallBack),
+      mescrollConfig: mescrollConfig('order_list_item_' + this.state, this.upCallBack),
       list: [],
       serverTime: 0
     }
   },
   methods: {
     orderItemClick (item) {
-      this.$router.push({name: 'orderInfo', params: {orderId: item.ord_id.toString()}})
+      this.$router.push({name: 'orderInfo', params: {orderId: item.ord_id.toString()}, query: {orderType: item.stateModel.orderType}})
     },
     upCallBack (page, mescroll) {
       this.$http(this.$urlPath.orderList, {
@@ -78,34 +80,67 @@ export default {
             switch (it.status) {
               case 'PAY_STATUS_NO': // 待付款
                 it.stateModel = {
+                  orderType: '1',
                   stateTip: '待付款',
                   time: {
                     title: '剩余支付时间：',
                     time: Math.max(0, (Number(it.timeout_express) - Number(this.serverTime)) * 1000)
                   },
                   action1: {
-                    title: '删除订单',
+                    title: '取消订单',
                     show: true,
                     action: () => {
-                      let confirm = window.confirm('是否要删除些订单？')
+                      let confirm = window.confirm('是否要取消此订单？')
                       if (confirm) {
-                        console.log('删除', this)
+                        this.$http(this.$urlPath.orderCancel, {
+                          ord_id: it.ord_id
+                        }, '正在取消…', (result) => {
+                          this.list.splice(this.list.indexOf(it), 1)
+                          this.$toast('订单取消成功')
+                        }, (errorCode, error) => {
+                          this.$toast(error)
+                        })
                       }
                     }
                   },
                   action2: {
                     title: '立即支付',
                     show: Number(it.timeout_express) - Number(this.serverTime) > 0,
-                    action: () => {
-                      let confirm = window.confirm('是否要删除些订单？')
-                      if (confirm) {
-                        console.log('删除')
-                      }
-                    }
+                    action: () => {}
                   }
                 }
                 break
               case 'PAY_STATUS_YES': // 已支付
+                it.stateModel = {
+                  orderType: '2',
+                  stateTip: '已支付',
+                  time: {
+                    title: '支付时间：',
+                    time: it.ord_play_time
+                  },
+                  action1: {
+                    title: '',
+                    show: false,
+                    action: null
+                  },
+                  action2: {
+                    title: it.is_refund === 1 ? '申请退款' : '',
+                    show: it.is_refund === 1,
+                    action: it.is_refund ? () => {
+                      this.$router.push({name: 'orderBackMoney', query: {id: it.ord_id}})
+                      // let confirm = window.confirm('是否要申请退款？')
+                      // if (confirm) {
+                      //   this.$http(this.$urlPath.orderRefund, {
+                      //     ord_id: it.ord_id
+                      //   }, '正在申请退款…', (data) => {
+                      //     console.log(data)
+                      //   }, (errorCode, error) => {
+                      //     this.$toast(error)
+                      //   })
+                      // }
+                    } : null
+                  }
+                }
                 break
               case 'PAY_STATUS_PARTIAL_REFUND': // 部分退款
                 break
@@ -125,12 +160,26 @@ export default {
                   action1: {
                     title: '删除订单',
                     show: true,
-                    action: () => {}
+                    action: () => {
+                      let confirm = window.confirm('是否要删除此订单？')
+                      if (confirm) {
+                        this.$http(this.$urlPath.orderDelete, {
+                          ord_id: it.ord_id
+                        }, '正在删除…', (result) => {
+                          this.list.splice(this.list.indexOf(it), 1)
+                          this.$toast('订单删除成功')
+                        }, (errorCode, error) => {
+                          this.$toast(error)
+                        })
+                      }
+                    }
                   },
                   action2: {
                     title: '重新购票',
                     show: true,
-                    action: () => {}
+                    action: () => {
+                      this.$router.push({name: 'reseveDetail', query: { goods_id: it.ord_goodsId }})
+                    }
                   }
                 }
                 break
@@ -153,6 +202,9 @@ export default {
       }, (errorCode, error) => {
         this.loadError(mescroll)
       })
+    },
+    countDownEnd (item) {
+      item.stateModel.action2.show = false
     }
   }
 }

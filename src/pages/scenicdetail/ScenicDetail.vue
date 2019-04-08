@@ -129,7 +129,6 @@ export default {
   mounted () {
     this.$root.$on('ticketItemClick', (item) => {
       this.$router.push({name: 'reseveDetail', query: { goods_id: item.goodsId }})
-      // this.$router.push({name: 'ticketDetail', query: { s_id: this.scenicId, goods_id: item.goodsId }})
     })
     this.getData()
   }

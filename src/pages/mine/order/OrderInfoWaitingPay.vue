@@ -1,13 +1,20 @@
 <template>
     <div v-if="detail" class="container">
-        <order-info-header>
-            <template slot="headerTitleInfo">
+        <order-info-header stateTip="待付款">
+            <template slot="headerTitleInfo" >
                 <span class="o-i-release-pay-time">
-                    剩余支付时间：2019-01-10
+                    剩余支付时间：
+                    <count-down :time="releasePayTime" @end="countDownEnd">
+                      <template slot-scope="props">
+                          <span class="time-wrapper">
+                              {{ props.hours }}:{{ props.minutes }}:{{ props.seconds }}
+                          </span>
+                      </template>
+                    </count-down>
                 </span>
             </template>
             <template slot="headerBottomInfo">
-               <p class="o-i-pay">立即支付</p>
+               <p class="o-i-pay" @click="goPay">立即支付</p>
             </template>
         </order-info-header>
         <order-ticket-money-info :storeInfo="storeInfo">
@@ -21,47 +28,17 @@
             </template>
         </order-ticket-money-info>
         <div class="sperator-line"></div>
-        <!-- <order-ticket-info>
-            <template slot="ticketInfoDetail">
-                <order-info-key-value title="有效期" value="2019-01-102019-01-102019-01-102019-01-102019-01-102019-01-102019-01-102019-01-102019-01-102019-01-102019-01-10"></order-info-key-value>
-                <order-info-key-value title="入园凭证" value="只要是用钱的买"></order-info-key-value>
-            </template>
-        </order-ticket-info> -->
-        <order-info-user-info title="游客信息" >
-            <template slot="userInfo">
-                <div v-for="(item, index) of detail.tourist" :key="index" class="user-info-container">
-                    <p class="wrapper">
-                        <span class="user-key">姓名</span>
-                        <span class="user-value">{{item.t_username ? item.t_username : '暂无'}}</span>
-                    </p>
-                    <p class="wrapper">
-                        <span class="user-key">手机号</span>
-                        <span class="user-value">{{item.t_phone ? item.t_phone : '暂无'}}</span>
-                    </p>
-                    <p class="wrapper">
-                        <span class="user-key">身份证</span>
-                        <span class="user-value">{{item.t_id_no ? item.t_id_no : '暂无'}}</span>
-                    </p>
-                    <p class="wrapper">
-                        <span class="user-key">学校</span>
-                        <span class="user-value">{{item.t_school ? item.t_school : '暂无'}}</span>
-                    </p>
-                </div>
-            </template>
+        <order-info-user-info title="游客信息" :tourist="detail.tourist">
         </order-info-user-info>
-        <order-info-user-info title="预定须知" >
-            <template slot="userInfo">
-                <ticket-remark v-for="(item, index) of remarks" :key="index" :remark="item"></ticket-remark>
-            </template>
+        <order-info-user-info title="预定须知" :remarks="remarks">
         </order-info-user-info>
         <div class="sperator-line"></div>
-        <div class="o-i-time-contianer">
-            <order-info-key-value title="入园凭证" value="只要是用钱的买"></order-info-key-value>
-            <order-info-key-value title="入园凭证" value="只要是用钱的买"></order-info-key-value>
-            <order-info-key-value title="入园凭证" value="只要是用钱的买"></order-info-key-value>
-            <order-info-key-value title="入园凭证" value="只要是用钱的买"></order-info-key-value>
-            <order-info-key-value title="入园凭证" value="只要是用钱的买"></order-info-key-value>
-        </div>
+        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :ordAddTime="detail.ord_add_time"></order-time-info>
+        <!-- <div class="o-i-time-contianer">
+            <ticket-remark :remark="{title: '下单店铺', value: detail.shop_name ? detail.shop_name :'暂无'}"></ticket-remark>
+            <ticket-remark :remark="{title: '订单编号', value: detail.out_trade_no}"></ticket-remark>
+            <ticket-remark :remark="{title: '下单时间', value: detail.ord_add_time}"></ticket-remark>
+        </div> -->
         <div class="o-i-pay-action-wrapper">
             <span>删除订单</span>
             <span @click="goPay">去支付</span>
@@ -75,7 +52,9 @@ import orderTicketMoneyInfo from './components/OrderTicketMoneyInfo'
 import orderTicketInfo from './components/OrderTicketInfo'
 import orderInfoKeyValue from './components/orderInfoKeyValue'
 import orderInfoUserInfo from './components/orderInfoUserInfo'
+import OrderTimeInfo from './components/OrderTimeInfo'
 import TicketRemark from 'common/components/ticket-remark'
+import CountDown from 'common/components/countdown/countdown'
 export default {
   name: 'orderInfoWaitingPay',
   props: {
@@ -87,10 +66,13 @@ export default {
     orderTicketInfo,
     orderInfoKeyValue,
     orderInfoUserInfo,
-    TicketRemark
+    TicketRemark,
+    OrderTimeInfo,
+    CountDown
   },
   data () {
     return {
+      hasDownEnd: false
     }
   },
   computed: {
@@ -131,20 +113,19 @@ export default {
         return []
       }
     },
-    tourist () {
-      let tourist = []
-      this.detail.tourist.forEach((element, index) => {
-        console.log(element)
-        for (let key in element) {
-          tourist[index][key].push(element[key])
-        }
-      })
-      console.log(tourist)
-      return tourist
+    releasePayTime () {
+      return Math.max(0, (Number(this.detail.timeout_express) - Number(this.detail.time)) * 1000)
     }
   },
   methods: {
+    countDownEnd () {
+      this.hasDownEnd = true
+    },
     goPay () {
+      if (this.releasePayTime === 0 || this.hasDownEnd) {
+        this.$toast('订单支付时间已过期，请重新购买')
+        return
+      }
       this.$router.push({name: 'orderInfoPay'})
     }
   }
@@ -209,20 +190,4 @@ export default {
     & span:nth-child(2)
         background-color $orangeColor
         color #ffffff
-.user-info-container
-    border-bottom 1px solid #f5f5f5
-    .wrapper
-        margin-left .2rem
-        margin .3rem .2rem
-        & span
-            display inline-block
-        & .user-key
-            color #333333
-            width 30%
-            vertical-align top
-        & .user-value
-            width 60%
-            margin-left 5%
-            vertical-align middle
-            color #888888
 </style>

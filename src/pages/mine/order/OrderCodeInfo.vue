@@ -2,15 +2,17 @@
     <div class="o-i-code-info-container">
         <div class="o-i-code-info">
             <span class="el-icon-circle-close-outline o-i-code-close" @click="close"></span>
-            <div class="o-i-code-code"></div>
-            <p class="o-i-code-info-num">2323453545</p>
-            <p class="o-i-code-info-num-desc">商家扫描二维码进行体验</p>
+            <div class="code-wrapper">
+                <canvas class="o-i-code-code" ref="qrcode"></canvas>
+                <p class="o-i-code-info-num">{{info.no}}</p>
+                <p class="o-i-code-info-num-desc">商家扫描二维码进行体验</p>
+            </div>
             <div class="o-i-code-info-ticket-info">
-                <p>卧虎山滑雪场成人票</p>
+                <p>{{info.ticketName}}</p>
                 <div>
-                    <span>待消费<i>4张</i></span>
-                    <span>已消费3张</span>
-                    <span>已退款4张</span>
+                    <span>待消费<i>{{info.waitNum}}张</i></span>
+                    <span>已消费{{info.consum}}张</span>
+                    <span>已退款{{info.backNum}}张</span>
                 </div>
             </div>
         </div>
@@ -18,18 +20,44 @@
 </template>
 
 <script>
+import QRCode from 'qrcode'
 export default {
   name: 'orderCodeInfo',
+  props: {
+    info: Object
+  },
+  watch: {
+    info (newVal, oldVal) {
+      if (newVal) {
+        this.createCode()
+      }
+    }
+  },
   methods: {
+    createCode () {
+      this.$nextTick(() => {
+        QRCode.toCanvas(this.$refs.qrcode, this.info.no, error => {
+          if (error) {
+            console.log(error)
+          } else {
+            console.log('success')
+          }
+        })
+      })
+    },
     close () {
       this.$router.back()
     }
+  },
+  mounted () {
+    this.createCode()
   }
 }
 </script>
 
 <style lang="stylus" scoped>
 @import '~styles/varibles.styl'
+@import '~styles/mixin.styl'
 .o-i-code-info-container
     background-color #939299
     display flex
@@ -46,26 +74,31 @@ export default {
         border-radius .05rem
         overflow hidden
         width 80%
-        height 75%
+        height 65vh
         .o-i-code-close
-            float right
+            position absolute
+            top 10px
+            right 0
             font-size .45rem
             padding .2rem
             color #888888
-        .o-i-code-code
-            width 80%
-            padding-bottom 75%
-            background-color $primary
-            margin .7rem auto .4rem auto
-        .o-i-code-info-num
-            text-align center
-            color #333333
-            font-size .4rem
-        .o-i-code-info-num-desc
-            text-align center
-            color #888888
-            font-size .3rem
-            margin-top .2rem
+        .code-wrapper
+            display flex
+            flex-direction column
+            align-items center
+            margin-top rem(1)
+            .o-i-code-code
+                width 200px !important
+                height 200px !important
+            .o-i-code-info-num
+                text-align center
+                color #333333
+                font-size .4rem
+            .o-i-code-info-num-desc
+                text-align center
+                color #888888
+                font-size .3rem
+                margin-top .2rem
         .o-i-code-info-ticket-info
             position absolute
             left 0

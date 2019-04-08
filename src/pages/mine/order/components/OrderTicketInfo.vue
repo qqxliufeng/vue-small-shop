@@ -1,17 +1,17 @@
 <template>
-    <div class="o-t-i-container">
+    <div class="o-t-i-container" v-if="itemInfo">
         <div :class="['o-t-i-container-title-wrapper',enableClass]">
             <div class="o-t-i-container-title-no-wrapper">
                 <p>凭证号</p>
-                <p>1234567</p>
+                <p>{{itemInfo.voucher_number}}</p>
             </div>
             <div class="o-t-i-container-title-waiting-use-num-wrapper">
                 <p>待消费</p>
-                <p>4张</p>
+                <p>{{itemInfo.buynum - itemInfo.consum}}张</p>
             </div>
             <div class="o-t-i-container-title-total-num-wrapper">
                 <p>合计</p>
-                <p>4张</p>
+                <p>{{itemInfo.consum}}张</p>
             </div>
             <div class="o-t-i-container-title-code-wrapper" @click="lookCode">
                 <span class="iconfont">&#xe71e;</span>
@@ -27,6 +27,10 @@
 <script>
 export default {
   name: 'orderTicketInfo',
+  props: {
+    itemInfo: Object,
+    ticketName: String
+  },
   data () {
     return {
       isEnable: true
@@ -39,7 +43,19 @@ export default {
   },
   methods: {
     lookCode () {
-      this.$router.push({name: 'orderCodeInfo'})
+      this.$router.push({
+        name: 'orderCodeInfo',
+        params: {
+          info: {
+            no: this.itemInfo.voucher_number,
+            waitNum: this.itemInfo.buynum - this.itemInfo.consum,
+            consum: this.itemInfo.consum,
+            backNum: this.itemInfo.backNum ? this.itemInfo.backNum : 0,
+            ticketName: this.ticketName
+          }
+        }
+      }
+      )
     }
   }
 }
@@ -62,11 +78,10 @@ export default {
             flex 1.1
             overflow hidden
             text-align center
-            & p:nth-child(1)
-                line-height .35rem
             & p:nth-child(2)
-                font-size .4rem
+                font-size .3rem
                 margin-top .2rem
+                color rgba(200, 0, 0, 1)
         .o-t-i-container-title-waiting-use-num-wrapper
             flex 1
             text-align center

@@ -23,9 +23,7 @@
             </div>
             <div class="p-order-all">
                 <span>我的订单</span>
-                <router-link :to="{name: 'orderList'}">
-                  <span class="iconfont p-order-see-all">查看全部 &#xe64c;</span>
-                </router-link>
+                <span class="iconfont p-order-see-all" @click="allOrder">查看全部 &#xe64c;</span>
             </div>
             <div class="p-order">
                 <div class="p-order-item" v-for="(item,index) of orderItemList" :key="index">
@@ -139,6 +137,9 @@ export default {
     back () {
       this.$router.back()
     },
+    allOrder () {
+      this.$router.push({name: 'orderAllList', query: {index: 'allItem'}})
+    },
     message () {
       this.$router.push({ name: 'message' })
     },
@@ -196,7 +197,6 @@ export default {
   beforeRouteLeave (to, from, next) {
     if (to.name === 'message') {
       this.isShowRedNotify = false
-      console.log(this)
       next()
     } else {
       next()

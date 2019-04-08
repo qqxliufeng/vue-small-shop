@@ -1,5 +1,5 @@
 
-const baseIP = 'http://192.168.1.100:80'
+const baseIP = 'http://192.168.1.100'
 
 export const baseUrl = baseIP + '/store_api/v1/'
 
@@ -85,6 +85,16 @@ export const orderList = orderModuleUrl + 'order_list'
 
 export const orderDetails = orderModuleUrl + 'details'
 
+export const orderCancel = orderModuleUrl + 'cancel'
+
+export const orderDelete = orderModuleUrl + 'del'
+
+export const orderRefundDetail = orderModuleUrl + 'refund_details'
+
+export const orderRefund = orderModuleUrl + 'refund'
+
 const payModuleUrl = 'payment/'
 
 export const orderPayUrl = payModuleUrl + 'run_pay'
+
+export const orderPay = payModuleUrl + 'do_pay'

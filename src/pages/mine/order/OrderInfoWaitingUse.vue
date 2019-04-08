@@ -1,20 +1,39 @@
 <template>
-    <div>
-      <order-info-header>
+    <div v-if="detail">
+      <order-info-header stateTip="待使用">
             <template slot="headerTitleInfo">
                 <p class="o-i-use-info">
-                    产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用产品已出票，请尽快使用
+                    产品已出票，请尽快使用产品。
                 </p>
             </template>
-            <template slot="headerBottomInfo">
+            <!-- <template slot="headerBottomInfo">
                 <div>
                     <order-step></order-step>
                 </div>
-            </template>
+            </template> -->
         </order-info-header>
+        <order-ticket-money-info :storeInfo="storeInfo">
+            <template slot="ticketMoneyDetail" slot-scope="props">
+                <div>
+                    <p v-for="(item,index) of props.moneyDetail" :key="index" class="o-i-info-money-detail">
+                        <span class="span-color-1" :class="{'span-color-3': index == props.moneyDetail.length - 1}">{{item.key}}</span>
+                        <span class="span-color-2" :class="{'span-color-4': index == props.moneyDetail.length - 1}">{{item.value}}</span>
+                    </p>
+                </div>
+            </template>
+        </order-ticket-money-info>
+        <order-ticket-info v-for="item of detail.voucher" :key="item.v_id" :itemInfo="item" :ticketName="detail.ord_product_name">
+        </order-ticket-info>
+        <div class="sperator-line"></div>
+        <order-info-user-info title="游客信息" :tourist="detail.tourist">
+        </order-info-user-info>
+        <order-info-user-info title="预定须知" :remarks="remarks">
+        </order-info-user-info>
+        <div class="sperator-line"></div>
+        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :ordAddTime="detail.ord_add_time"></order-time-info>
         <div class="o-i-waiting-use-action-wrapper">
-            <span @click="backMoney">退票</span>
-            <span @click="isShowCanlendarDialog = true">变更时间</span>
+            <span @click="backMoney" v-if="detail.is_refund === 1">申请退款</span>
+            <!-- <span @click="isShowCanlendarDialog = true">变更时间</span> -->
         </div>
         <el-dialog title="选择日期" :visible.sync="isShowCanlendarDialog" center width="100%">
             <calander :events="calendar1.events" :lunar="calendar1.lunar" :begin="calendar1.begin" :end="calendar1.end" :weeks="calendar1.weeks" :months="calendar1.months" @select="calendar1.select">
@@ -31,12 +50,27 @@
 
 <script>
 import orderInfoHeader from './components/OrderInfoHeader'
+import orderTicketMoneyInfo from './components/OrderTicketMoneyInfo'
+import orderTicketInfo from './components/OrderTicketInfo'
+import orderInfoKeyValue from './components/orderInfoKeyValue'
+import orderInfoUserInfo from './components/orderInfoUserInfo'
+import OrderTimeInfo from './components/OrderTimeInfo'
+import TicketRemark from 'common/components/ticket-remark'
 import orderStep from './components/OrderStep'
 import calander from 'common/components/calendar/calendar.vue'
 export default {
   name: 'orderInfoWaitingUse',
+  props: {
+    detail: Object
+  },
   components: {
     orderInfoHeader,
+    orderTicketMoneyInfo,
+    orderTicketInfo,
+    orderInfoKeyValue,
+    orderInfoUserInfo,
+    OrderTimeInfo,
+    TicketRemark,
     orderStep,
     calander
   },
@@ -55,6 +89,45 @@ export default {
         }
       },
       isShowCanlendarDialog: false
+    }
+  },
+  computed: {
+    storeInfo () {
+      return {
+        store: this.detail.store,
+        ticketName: this.detail.ord_product_name,
+        money: {
+          title: '支付金额',
+          money: this.detail.ord_amount,
+          detail: [
+            {
+              key: '数量',
+              value: 'X' + this.detail.ord_ticket_num
+            },
+            {
+              key: '单价',
+              value: '￥' + this.detail.ord_price
+            },
+            {
+              key: '总价',
+              value: '￥' + this.detail.ord_amount
+            }
+          ]
+        }
+      }
+    },
+    remarks () {
+      if (this.detail) {
+        let tempRemarks = []
+        for (let key in this.detail.goods) {
+          if (this.detail.goods[key] instanceof Object) {
+            tempRemarks.push(this.detail.goods[key])
+          }
+        }
+        return tempRemarks
+      } else {
+        return []
+      }
     }
   },
   methods: {
@@ -87,10 +160,11 @@ export default {
         justify-content center
         font-size .3rem
     & span:nth-child(1)
-        color #333333
-    & span:nth-child(2)
         background-color $primary
         color #ffffff
+    // & span:nth-child(2)
+    //     background-color $primary
+    //     color #ffffff
 .c-e-wrapper
     font-size .2rem
     margin 0 auto
@@ -100,4 +174,24 @@ export default {
     & p:nth-child(2)
         color #cccccc
         margin-top .1rem
+.o-i-info-money-detail
+    overflow hidden
+    margin .2rem 0
+    line-height .3rem
+    & span:nth-child(1)
+        float left
+    & span:nth-child(2)
+        float right
+    .span-color-1
+        color #888888
+        font-size .25rem
+    .span-color-2
+        color #333333
+        font-size .25rem
+    .span-color-3
+        color #333333
+        font-size .28rem
+    .span-color-4
+        color $orangeColor
+        font-size .28rem
 </style>

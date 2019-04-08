@@ -26,8 +26,16 @@ export default {
   },
   data () {
     return {
-      orderType: '1',
+      orderType: this.$route.query.orderType,
       detail: null
+    }
+  },
+  watch: {
+    '$route' (newVal, oldVal) {
+      if (newVal.name === 'orderInfo') {
+        this.detail = null
+        this.getData()
+      }
     }
   },
   components: {
@@ -43,6 +51,9 @@ export default {
         ord_id: this.orderId
       }, '', (data) => {
         this.detail = data.data
+        if (this.orderType === '1') {
+          this.detail.time = data.time
+        }
       }, (errorCode, error) => {
         this.$toast(error)
       })
