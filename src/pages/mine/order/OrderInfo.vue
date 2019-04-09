@@ -22,11 +22,14 @@ export default {
     orderId: {
       type: String,
       default: '1'
+    },
+    orderType: {
+      type: String,
+      default: '1'
     }
   },
   data () {
     return {
-      orderType: this.$route.query.orderType,
       detail: null
     }
   },

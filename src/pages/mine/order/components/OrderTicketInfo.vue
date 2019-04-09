@@ -64,7 +64,7 @@ export default {
 <style lang="stylus" scoped>
 @import '~styles/varibles.styl'
 .o-t-i-enable
-    background-color #D5E1DE
+    background-color #f5f7f6
     color #555555
 .o-t-i-unenable
     background-color #ECECEC

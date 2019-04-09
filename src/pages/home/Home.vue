@@ -1,20 +1,25 @@
 <template>
     <div>
-       <home-header :scrollTop="mScrollTop"></home-header>
-       <div ref="homeContent" class="h-content" id="#home">
-          <home-swiper :list="swiperList"></home-swiper>
-          <!-- <home-notice></home-notice> -->
-          <home-type :list="categoryList"></home-type>
-          <div class="sperator-line-height"></div>
-          <div class="h-h-title">人气推荐</div>
-          <home-hot :list="hotList" @itemClick="startDetail"></home-hot>
-          <div class="h-h-ad-wrapper" v-if="ad">
-            <img :src="$utils.image.getImagePath(ad.image)" @click="adClick">
+       <section v-if="loadState">
+        <home-header :scrollTop="mScrollTop"></home-header>
+        <div ref="homeContent" class="h-content" id="#home">
+            <home-swiper :list="swiperList"></home-swiper>
+            <!-- <home-notice></home-notice> -->
+            <home-type :list="categoryList"></home-type>
+            <div class="sperator-line-height"></div>
+            <div class="h-h-title">人气推荐</div>
+            <home-hot :list="hotList" @itemClick="startDetail"></home-hot>
+            <div class="h-h-ad-wrapper" v-if="ad">
+              <img :src="$utils.image.getImagePath(ad.image)" @click="adClick">
+            </div>
+            <div class="h-h-title">猜你喜欢</div>
+            <home-like :likeList="guessList" @itemClick="startDetail"></home-like>
           </div>
-          <div class="h-h-title">猜你喜欢</div>
-          <home-like :likeList="guessList" @itemClick="startDetail"></home-like>
-        </div>
-        <home-navi :scrollTop="mScrollTop"></home-navi>
+          <home-navi :scrollTop="mScrollTop"></home-navi>
+        </section>
+        <section v-else>
+          <load-fail @reload="reload"></load-fail>
+        </section>
     </div>
 </template>
 <script>
@@ -25,6 +30,7 @@ import HomeHot from './components/HomeHot'
 import HomeLike from './components/HomeLike'
 import HomeNavi from './components/HomeNavigation'
 import HomeNotice from './components/HomeNotice'
+import LoadFail from 'common/components/loading/load-fail'
 export default {
   name: 'home',
   props: {
@@ -44,7 +50,8 @@ export default {
     HomeHot,
     HomeLike,
     HomeNavi,
-    HomeNotice
+    HomeNotice,
+    LoadFail
   },
   data () {
     return {
@@ -54,7 +61,8 @@ export default {
       swiperList: [],
       hotList: [],
       ad: null,
-      categoryList: []
+      categoryList: [],
+      loadState: true
     }
   },
   methods: {
@@ -83,6 +91,9 @@ export default {
     startDetail (item) {
       this.$router.push({name: 'scenicDetail', query: {scenicId: item.s_id}})
     },
+    reload () {
+      this.getData()
+    },
     getData () {
       this.$http(this.$urlPath.indexUrl, {
         identity: this.identity,
@@ -90,14 +101,18 @@ export default {
         store_id: this.storeId
       }, '', (data) => {
         if (data.data) {
+          this.loadState = true
           this.guessList = data.data.guess_like_scenic
           this.swiperList = data.data.swiper
           this.hotList = data.data.hot_scenic
           this.ad = data.data.ad
           this.categoryList = data.data.category
+        } else {
+          this.loadState = false
         }
       }, (errorCode, error) => {
-        console.log(error)
+        this.$toast(error)
+        this.loadState = false
       })
     }
   },

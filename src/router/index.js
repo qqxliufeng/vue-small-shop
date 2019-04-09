@@ -55,8 +55,8 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      // path: '/:identity/:storeId',
-      path: '/',
+      path: '/:identity/:storeId',
+      // path: '/',
       name: 'home',
       component: Home,
       meta: {
@@ -263,7 +263,7 @@ export default new Router({
       }
     },
     {
-      path: '/orderinfo/:orderId',
+      path: '/orderinfo/:orderId/:orderType',
       name: 'orderInfo',
       component: OrderInfo,
       props: true

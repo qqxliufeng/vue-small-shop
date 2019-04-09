@@ -2,7 +2,7 @@
     <div class="c-container">
         <navi title="选择联系人" :isFixed="true" :isRightAction="true">
         </navi>
-        <ul class="c-item-container" v-if="contactsList">
+        <ul class="c-item-container" v-if="contactsList && contactsList.length > 0">
             <li v-for="item of contactsList" :key="item.l_id">
                 <div @click="itemClick(item)">
                     <el-checkbox class="c-checkbox" v-model="item.isChecked" disabled/>
@@ -12,10 +12,13 @@
                     </div>
                 </div>
             </li>
-            <li class="confirm" @click="confirm">
+            <li class="confirm" @click="confirm" v-if="contactsList && contactsList.length > 0">
               <span>确定</span>
             </li>
         </ul>
+        <div v-else class="empty-list">
+          暂无联系人
+        </div>
     </div>
 </template>
 <script>
@@ -128,4 +131,10 @@ export default {
             margin .3rem auto
             padding rem(.2)
             border-radius rem(.2)
+    .empty-list
+        textStyle(#888, .32)
+        height 95vh
+        display flex
+        justify-content center
+        align-items center
 </style>

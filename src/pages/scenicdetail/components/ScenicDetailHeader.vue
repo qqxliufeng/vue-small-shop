@@ -44,6 +44,9 @@ export default {
         opacity = Math.min(1, opacity)
         this.opacityStyle.opacity = 1 - opacity
       }
+      if (scrollTop === 0) {
+        this.opacityStyle.opacity = 0
+      }
     },
     collection () {
       if (this.$root.userInfo.isLogin()) {

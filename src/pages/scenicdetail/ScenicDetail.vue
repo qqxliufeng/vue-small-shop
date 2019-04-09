@@ -68,6 +68,8 @@ export default {
       hotGoodsList: [],
       typeGoodsList: [],
       scenicId: null,
+      identity: null,
+      storeId: null,
       show: true
     }
   },
@@ -76,7 +78,7 @@ export default {
       console.log(item)
     },
     startScenicInfo (type) {
-      this.$router.push({name: 'scenicInfo', params: {selected: type, content: this.scenicInfo.content}})
+      this.$router.push({name: 'scenicInfo', query: {id: this.scenicId}})
     },
     seeMoreComment () {
       this.$router.push({name: 'commentList', params: {scenicId: this.scenicId}})
@@ -90,8 +92,8 @@ export default {
     getData () {
       this.$http(this.$urlPath.scenicDetailUrl, {
         s_id: this.scenicId,
-        identity: this.sellerInfo.identity,
-        store_id: this.sellerInfo.storeId
+        identity: this.identity,
+        store_id: this.storeId
       }, '', (data) => {
         if (data.data) {
           this.loadState = true
@@ -125,6 +127,14 @@ export default {
   },
   created () {
     this.scenicId = this.$route.query.scenicId
+    let identity = this.$route.query.identity
+    let storeId = this.$route.query.storeId
+    if (identity && storeId) {
+      this.$root.state.saveSallerInfo(identity, storeId)
+      this.sellerInfo = this.$root.state.getSallerInfo()
+    }
+    this.identity = this.sellerInfo.identity
+    this.storeId = this.sellerInfo.storeId
   },
   mounted () {
     this.$root.$on('ticketItemClick', (item) => {

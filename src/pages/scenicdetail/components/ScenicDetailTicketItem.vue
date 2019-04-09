@@ -16,7 +16,7 @@
                         <el-tag type="success" size="mini" class="s-d-hot-item-info-info-info-tag">立减2元</el-tag>
                     </p> -->
                     <p>
-                        已售{{item.totalSales}}<span>|</span><span>预定须知</span>
+                        已售{{item.totalSales}}
                     </p>
                 </div>
                 <div class="s-d-hot-item-info-info-action">

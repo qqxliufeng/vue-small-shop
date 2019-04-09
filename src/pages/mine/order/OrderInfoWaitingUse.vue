@@ -96,6 +96,7 @@ export default {
       return {
         store: this.detail.store,
         ticketName: this.detail.ord_product_name,
+        playTime: this.detail.ord_play_time,
         money: {
           title: '支付金额',
           money: this.detail.ord_amount,

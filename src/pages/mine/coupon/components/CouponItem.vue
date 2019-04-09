@@ -1,8 +1,8 @@
 <template>
-    <div id="coupon_item">
+    <div :id="'coupon_item_' + state">
       <mescroll-vue ref="mescroll" :down="mescrollConfig.mescrollDown" :up="mescrollConfig.mescrollUp">
-        <ul>
-           <li v-for="(item,index) of couponList" :key="index">
+        <ul v-if="list">
+           <li v-for="(item,index) of list" :key="index">
                <el-card shadow="always" class="c-item-card" :body-style="{ padding: '0px' }">
                    <div class="c-content-container">
                       <div class="c-item-content-container">
@@ -46,8 +46,10 @@
 <script>
 import MescrollVue from 'mescroll.js/mescroll.vue'
 import mescrollConfig from 'common/utils/mescrollerConfig'
+import listMixins from 'common/mixins/list-mixin'
 export default {
   name: 'couponItem',
+  mixins: [listMixins],
   props: {
     state: {
       type: String,
@@ -59,8 +61,8 @@ export default {
   },
   data () {
     return {
-      mescrollConfig: mescrollConfig('coupon_item', this.upCallBack),
-      couponList: []
+      mescrollConfig: mescrollConfig('coupon_item_' + this.state, this.upCallBack),
+      list: []
     }
   },
   methods: {
@@ -75,25 +77,26 @@ export default {
       }
     },
     upCallBack (page, mescroll) {
-      setTimeout(() => {
-        this.couponList.push({
-          isShowRemark: false
-        })
-        this.couponList.push({
-          isShowRemark: false
-        })
-        this.couponList.push({
-          isShowRemark: false
-        })
-        this.couponList.push({
-          isShowRemark: false
-        })
-        if (page.num > 4) {
-          mescroll.endSuccess(0)
-        } else {
-          mescroll.endSuccess(100)
-        }
-      }, 1000)
+      mescroll.endSuccess(0)
+      // setTimeout(() => {
+      //   this.couponList.push({
+      //     isShowRemark: false
+      //   })
+      //   this.couponList.push({
+      //     isShowRemark: false
+      //   })
+      //   this.couponList.push({
+      //     isShowRemark: false
+      //   })
+      //   this.couponList.push({
+      //     isShowRemark: false
+      //   })
+      //   if (page.num > 4) {
+      //     mescroll.endSuccess(0)
+      //   } else {
+      //     mescroll.endSuccess(100)
+      //   }
+      // }, 1000)
     }
   }
 }

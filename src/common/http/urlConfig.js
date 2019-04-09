@@ -55,6 +55,8 @@ export const scenicDetailUrl = scenicDetailModuleUrl + 'scenic_details'
 
 export const goodsDetailUrl = scenicDetailModuleUrl + 'goods_detail'
 
+export const scenicNotesUrl = scenicDetailModuleUrl + 'scenic_notes'
+
 const commentModuleUrl = 'comment/'
 
 export const commentListUrl = commentModuleUrl + 'comment_list'

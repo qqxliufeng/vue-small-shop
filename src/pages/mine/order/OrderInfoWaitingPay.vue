@@ -40,7 +40,7 @@
             <ticket-remark :remark="{title: '下单时间', value: detail.ord_add_time}"></ticket-remark>
         </div> -->
         <div class="o-i-pay-action-wrapper">
-            <span>删除订单</span>
+            <span @click="cancelOrder">取消订单</span>
             <span @click="goPay">去支付</span>
         </div>
     </div>
@@ -80,6 +80,7 @@ export default {
       return {
         store: this.detail.store,
         ticketName: this.detail.ord_product_name,
+        playTime: this.detail.ord_play_time,
         money: {
           title: '支付金额',
           money: this.detail.ord_amount,
@@ -127,6 +128,20 @@ export default {
         return
       }
       this.$router.push({name: 'orderInfoPay'})
+    },
+    cancelOrder () {
+      let confrim = window.confirm('是否取消此订单？')
+      if (confrim) {
+        this.$http(this.$urlPath.orderCancel, {
+          ord_id: this.detail.ord_id
+        }, '正在取消…', (result) => {
+          this.$toast('订单取消成功')
+          this.$root.$emit('onReload')
+          this.$router.go(-1)
+        }, (errorCode, error) => {
+          this.$toast(error)
+        })
+      }
     }
   }
 }

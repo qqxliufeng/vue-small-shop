@@ -8,7 +8,8 @@
             </div>
         </div>
         <p class="o-i-ticket-info-title">
-            {{storeInfo.ticketName}}
+            <span>{{storeInfo.ticketName}}</span>
+            <span class="play-time">游玩日期：{{storeInfo.playTime}}</span>
         </p>
         <div class="o-i-ticket-info-money">
             <span>{{storeInfo.money.title}}</span>
@@ -42,7 +43,7 @@ export default {
   },
   data () {
     return {
-      isShowDetail: false
+      isShowDetail: true
     }
   },
   methods: {
@@ -81,6 +82,9 @@ export default {
         font-size .3rem
         line-height .4rem
         border-bottom .01rem solid #DDDFDE
+        & .play-time
+            textStyle($orangeColor, .25)
+            float right
     .o-i-ticket-info-money
         overflow hidden
         line-height .4rem

@@ -2,7 +2,7 @@
     <div class="r-d-detail-container">
         <navi title="提交订单" :isFixed="true"></navi>
         <div class="r-d-detail-wrapper">
-            <ticket-info :ticketInfo="ticketInfo" @selected="onSelectedTimeItem"></ticket-info>
+            <ticket-info :ticketInfo="ticketInfo" @selected="onSelectedTimeItem" ref="ticketInfo"></ticket-info>
             <ticket-user-single-info v-if="ticketInfo.goods && ticketInfo.goods.play_info === 1" ref="userSingleInfo" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-single-info>
             <ticket-user-info :contacts="contacts" ref="userInfo" v-if="ticketInfo.goods && ticketInfo.goods.play_info === 2" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-info>
             <ticket-discount></ticket-discount>
@@ -57,6 +57,11 @@ export default {
     },
     onSelectedTimeItem (info) {
       if (info.item) {
+        if (info.item.one_stock < this.ticketInfo.goods.min_number) {
+          this.totalPrice = 0
+          this.$toast('所选日期余票小于最低购买数')
+          return
+        }
         this.tempDate = info.item
         this.tempDate.num = info.num
         this.totalPrice = (Number(info.item.sale_price) * parseInt(info.num)).toFixed(2)
@@ -116,20 +121,23 @@ export default {
           })
           break
       }
-      postData.info = {
-        identity: this.$root.state.identity,
-        store_id: this.$root.state.storeId,
-        goods_source: this.ticketInfo.goods.goods_source,
-        goods_id: this.$route.query.goods_id
+      let confirm = window.confirm('我已仔细阅读购买须知')
+      if (confirm) {
+        postData.info = {
+          identity: this.$root.state.identity,
+          store_id: this.$root.state.storeId,
+          goods_source: this.ticketInfo.goods.goods_source,
+          goods_id: this.$route.query.goods_id
+        }
+        this.$http(this.$urlPath.orderCreate, {
+          data: JSON.stringify(postData)
+        }, '正在提交…', (data) => {
+          this.$toast('订单提交成功')
+          this.$router.replace({name: 'orderInfoPay', query: {no: data.data.out_trade_no}})
+        }, (errorCode, error) => {
+          this.$toast(error)
+        })
       }
-      this.$http(this.$urlPath.orderCreate, {
-        data: JSON.stringify(postData)
-      }, '正在提交…', (data) => {
-        this.$toast('订单提交成功')
-        this.$router.replace({name: 'orderInfoPay', query: {no: data.data.out_trade_no}})
-      }, (errorCode, error) => {
-        this.$toast(error)
-      })
     }
   },
   beforeRouteEnter (to, from, next) {

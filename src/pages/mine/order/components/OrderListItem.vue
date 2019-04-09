@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     orderItemClick (item) {
-      this.$router.push({name: 'orderInfo', params: {orderId: item.ord_id.toString()}, query: {orderType: item.stateModel.orderType}})
+      this.$router.push({name: 'orderInfo', params: {orderId: item.ord_id.toString(), orderType: item.stateModel.orderType}})
     },
     upCallBack (page, mescroll) {
       this.$http(this.$urlPath.orderList, {
@@ -128,16 +128,6 @@ export default {
                     show: it.is_refund === 1,
                     action: it.is_refund ? () => {
                       this.$router.push({name: 'orderBackMoney', query: {id: it.ord_id}})
-                      // let confirm = window.confirm('是否要申请退款？')
-                      // if (confirm) {
-                      //   this.$http(this.$urlPath.orderRefund, {
-                      //     ord_id: it.ord_id
-                      //   }, '正在申请退款…', (data) => {
-                      //     console.log(data)
-                      //   }, (errorCode, error) => {
-                      //     this.$toast(error)
-                      //   })
-                      // }
                     } : null
                   }
                 }
@@ -206,6 +196,13 @@ export default {
     countDownEnd (item) {
       item.stateModel.action2.show = false
     }
+  },
+  mounted () {
+    this.$root.$on('onReload', () => {
+      this.list.length = 0
+      console.log(this.$refs.mescroll)
+      this.$refs.mescroll.mescroll.resetUpScroll(true)
+    })
   }
 }
 </script>

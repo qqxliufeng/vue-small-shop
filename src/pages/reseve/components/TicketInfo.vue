@@ -2,7 +2,7 @@
     <div class="r-d-ticket-info-container">
         <div class="r-d-ticket-info-title-wrapper">
             <span class="r-d-ticket-info-title" v-if="ticketInfo.goods">【{{ticketInfo.goods.goods_title}}】</span>
-            <span class="r-d-ticket-info-title-info" @click="showRemark = !showRemark">使用须知<i class="el-icon-arrow-right"></i></span>
+            <span class="r-d-ticket-info-title-info" @click="showRemark = !showRemark">购买须知<i class="el-icon-arrow-right"></i></span>
         </div>
         <div class="r-d-ticket-info-title-wrapper">
             <span class="r-d-ticket-info-time-title">使用日期</span>
@@ -20,7 +20,7 @@
             <div class="r-d-ticket-info-count-info">
                 <span class="r-d-ticket-info-count-info-price">￥{{tempTime.price || 0}}</span>
                 <span class="r-d-ticket-info-count-info-release-count">剩余{{tempTime.count || 0}}张</span>
-                <el-input-number v-model="num" size="mini" :max="tempTime.count || 1" :min="1" @change="onNumberChange"></el-input-number>
+                <el-input-number v-model="num" size="mini" :max="tempTime.count || 1" :min="minNum" @change="onNumberChange"></el-input-number>
             </div>
         </div>
        <el-dialog title="选择日期" :visible.sync="isShowCanlendarDialog" center width="92%" :modal="false" @open="showModal = true" @close="showModal = false">
@@ -36,7 +36,7 @@
         <transition name="slide-fade" @before-enter="beforeEnter" @before-leave="beforeLeave">
             <div v-show="showRemark" class="r-d-ticket-info-remark-wrapper">
                 <div class="r-d-ticket-info-remark-title-wrapper">
-                    <span>预定须知</span>
+                    <span>购买须知</span>
                 </div>
                 <div class="remark-content-wrapper">
                     <ul>
@@ -67,6 +67,7 @@ export default {
   data () {
     return {
       num: 1,
+      minNum: 1,
       isShowCanlendarDialog: false,
       showRemark: false,
       showModal: false,
@@ -154,8 +155,11 @@ export default {
           let item = this.ticketInfo.calendar[key]
           tempEvent[item.date] = item
         }
+        this.minNum = this.ticketInfo.goods.min_number
+        this.num = this.minNum
         this.events = tempEvent
         this.initDate()
+        this.showRemark = true
       }
     }
   },
@@ -214,6 +218,9 @@ export default {
     },
     beforeLeave (el) {
       this.showModal = false
+    },
+    showRemarkDialog () {
+      this.showRemark = true
     }
   }
 }
