@@ -252,7 +252,10 @@ export default new Router({
     {
       path: '/orderAlllist',
       name: 'orderAllList',
-      component: () => import('@/pages/mine/order/OrderAllList')
+      component: () => import('@/pages/mine/order/OrderAllList'),
+      meta: {
+        keepAlive: true
+      }
     },
     {
       path: '/customservice',

@@ -86,7 +86,10 @@ export default {
         out_trade_no: this.$route.query.no,
         pay_type: this.payType
       }, '正在支付…', (data) => {
-        console.log(data)
+        this.$toast('订单支付成功')
+        this.$root.$emit('onReload')
+        this.$root.$emit('onGetBadge')
+        this.$router.go(-1)
       }, (errorCode, error) => {
         this.$toast(error)
       })

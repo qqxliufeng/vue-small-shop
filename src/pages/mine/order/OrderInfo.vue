@@ -6,6 +6,7 @@
             <order-info-waiting-use v-else-if="orderType === '2'" :detail="detail"></order-info-waiting-use>
             <order-info-waiting-comment v-else-if="orderType === '3'" :detail="detail"></order-info-waiting-comment>
             <order-info-after-service v-else-if="orderType === '4'" :detail="detail"></order-info-after-service>
+            <order-info-other v-else :detail="detail"></order-info-other>
         </div>
     </div>
 </template>
@@ -16,6 +17,7 @@ import orderInfoWaitingPay from './OrderInfoWaitingPay'
 import orderInfoWaitingUse from './OrderInfoWaitingUse'
 import orderInfoWaitingComment from './OrderInfoWaitingComment'
 import orderInfoAfterService from './OrderInfoAfterService'
+import orderInfoOther from './OrderInfoOther'
 export default {
   name: 'orderInfo',
   props: {
@@ -46,7 +48,8 @@ export default {
     orderInfoWaitingPay,
     orderInfoWaitingUse,
     orderInfoWaitingComment,
-    orderInfoAfterService
+    orderInfoAfterService,
+    orderInfoOther
   },
   methods: {
     getData () {

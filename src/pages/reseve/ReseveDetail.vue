@@ -4,7 +4,7 @@
         <div class="r-d-detail-wrapper">
             <ticket-info :ticketInfo="ticketInfo" @selected="onSelectedTimeItem" ref="ticketInfo"></ticket-info>
             <ticket-user-single-info v-if="ticketInfo.goods && ticketInfo.goods.play_info === 1" ref="userSingleInfo" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-single-info>
-            <ticket-user-info :contacts="contacts" ref="userInfo" v-if="ticketInfo.goods && ticketInfo.goods.play_info === 2" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-info>
+            <ticket-user-info :contacts="contacts" :touristCount="touristCount" ref="userInfo" v-if="ticketInfo.goods && ticketInfo.goods.play_info === 2" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-info>
             <ticket-discount></ticket-discount>
             <div class="r-d-detail-pay-action-wrapper">
                 <span class="r-d-pay-action-price">总价：<i>￥{{totalPrice}}</i></span>
@@ -39,7 +39,8 @@ export default {
       totalPrice: 0,
       contacts: [],
       tempDate: null,
-      collectionState: 0
+      collectionState: 0,
+      touristCount: 1
     }
   },
   methods: {
@@ -64,6 +65,7 @@ export default {
         }
         this.tempDate = info.item
         this.tempDate.num = info.num
+        this.touristCount = info.num
         this.totalPrice = (Number(info.item.sale_price) * parseInt(info.num)).toFixed(2)
       }
     },
@@ -133,6 +135,8 @@ export default {
           data: JSON.stringify(postData)
         }, '正在提交…', (data) => {
           this.$toast('订单提交成功')
+          this.$root.$emit('onReload')
+          this.$root.$emit('onGetBadge')
           this.$router.replace({name: 'orderInfoPay', query: {no: data.data.out_trade_no}})
         }, (errorCode, error) => {
           this.$toast(error)

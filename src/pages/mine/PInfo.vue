@@ -80,9 +80,6 @@ export default {
       city: ''
     }
   },
-  mounted () {
-    console.log(this.avatarAction)
-  },
   beforeRouteEnter (to, from, next) {
     next(vm => {
       if (from.name === 'city' && to.params.city) {

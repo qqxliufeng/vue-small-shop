@@ -60,7 +60,7 @@ export default {
 .o-i-ticket-info-container
     .o-i-ticket-safe-container
         background-color #EDF8F7
-        border-bottom .02rem solid #DDDFDE
+        border-bottom .02rem solid #f5f5f5
         padding .2rem
         & p
             color $primary
@@ -81,14 +81,14 @@ export default {
         color #333333
         font-size .3rem
         line-height .4rem
-        border-bottom .01rem solid #DDDFDE
+        border-bottom .01rem solid #f5f5f5
         & .play-time
             textStyle($orangeColor, .25)
             float right
     .o-i-ticket-info-money
         overflow hidden
         line-height .4rem
-        border-bottom .01rem solid #DDDFDE
+        border-bottom .01rem solid #f5f5f5
         padding .2rem
         & span:nth-child(1)
             color #333333
@@ -105,7 +105,7 @@ export default {
             float right
     .o-i-ticket-info-money-detail
         padding 0 .2rem
-        border-bottom .01rem solid #DDDFDE
+        border-bottom .01rem solid #f5f5f5
     .o-i-info-shop-info
         display flex
         padding .2rem

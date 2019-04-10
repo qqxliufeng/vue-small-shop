@@ -11,7 +11,7 @@
                 </template>
                 <template slot="headerTitleInfo">
                     <p class="o-i-use-info">
-                        提示：
+                        提示：申请退款，下单时所使用优惠券将无法退回你的账户
                     </p>
                 </template>
                 <template slot="headerBottomInfo">

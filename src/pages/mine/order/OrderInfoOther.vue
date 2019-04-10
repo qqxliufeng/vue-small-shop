@@ -1,6 +1,6 @@
 <template>
     <div v-if="detail">
-      <order-info-header stateTip="待评价">
+      <order-info-header :stateTip="stateTip">
             <template slot="headerTitleInfo">
                 <p class="o-i-use-info">
                     快来和小伙伴们分享一下这次出游的感受吧
@@ -26,9 +26,6 @@
         </order-info-user-info>
         <div class="sperator-line"></div>
         <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :ordAddTime="detail.ord_add_time"></order-time-info>
-        <div class="o-i-waiting-use-action-wrapper" @click="comment">
-            <span>评价</span>
-        </div>
     </div>
 </template>
 
@@ -60,12 +57,53 @@ export default {
   },
   data () {
     return {
+      stateTip: ''
     }
   },
   watch: {
     detail (newVal, oldVal) {
-      if (newVal.status !== 'NO_COMMENT') {
-        this.$router.go(-1)
+      if (newVal) {
+        switch (newVal.status) {
+          case 'PAY_STATUS_NO': // 待付款
+            this.stateTip = '待付款'
+            break
+          case 'PAY_STATUS_YES': // 已支付
+            this.stateTip = '已支付'
+            break
+          case 'PAY_STATUS_PARTIAL_REFUND': // 部分退款
+            this.stateTip = '退款/售后'
+            break
+          case 'PAY_STATUS_REFUNDED': // 已退款
+            this.stateTip = '已退款'
+            break
+          case 'USE_STATUS_NO': // 未使用
+            this.stateTip = '待使用'
+            break
+          case 'USE_STATUS': // 已使用
+            this.stateTip = '已使用'
+            break
+          case 'USE_STATUS_OFF': // 被取消
+            this.stateTip = '已取消'
+            break
+          case 'USE_STATUS_EXPIRD': // 已过期
+            this.stateTip = '已过期'
+            break
+          case 'NO_COMMENT': // 待评价
+            this.stateTip = '待评价'
+            break
+          case 'ALREADY_COMMENT': // 已经评价
+            this.stateTip = '已完成'
+            break
+          case 'REFUND_STATUS_NO': // 未退票
+            this.stateTip = '待付款'
+            break
+          case 'REFUND_STATUS_PENDING': // 退款中
+            this.stateTip = '退款/售后'
+            break
+          case 'REFUND_STATUS_YES': // 已退票
+            this.stateTip = '已退款'
+            break
+        }
       }
     }
   },
@@ -107,11 +145,6 @@ export default {
       } else {
         return []
       }
-    }
-  },
-  methods: {
-    comment () {
-      this.$router.push({name: 'orderComment', query: {orderId: this.detail.ord_id}})
     }
   }
 }

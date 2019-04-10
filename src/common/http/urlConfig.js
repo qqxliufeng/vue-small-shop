@@ -61,6 +61,8 @@ const commentModuleUrl = 'comment/'
 
 export const commentListUrl = commentModuleUrl + 'comment_list'
 
+export const addCommentUrl = commentModuleUrl + 'add_comment'
+
 const askModuleUrl = 'ask/'
 
 export const askListUrl = askModuleUrl + 'ask_list'
@@ -94,6 +96,8 @@ export const orderDelete = orderModuleUrl + 'del'
 export const orderRefundDetail = orderModuleUrl + 'refund_details'
 
 export const orderRefund = orderModuleUrl + 'refund'
+
+export const orderRefundList = orderModuleUrl + 'afer_sales_list'
 
 const payModuleUrl = 'payment/'
 

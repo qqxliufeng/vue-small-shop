@@ -277,7 +277,7 @@ export default {
             border-radius rem(.1)
             color #333
             & p:nth-child(2)
-                color #ccc
+                color #888
                 font-size rem(.2)
                 margin-top rem(.05)
             & p:nth-child(3)
@@ -288,8 +288,8 @@ export default {
         .r-d-ticket-info-time-uneable
             color #888
             pointer-events none
-            & p:nth-child(2)
-                color #888
+            & p
+                color #ccc !important
     .r-d-ticket-info-count-wrapper
         display flex
         padding rem(.3)

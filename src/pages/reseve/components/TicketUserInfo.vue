@@ -1,7 +1,7 @@
 <template>
     <div class="r-d-user-info-container">
         <p class="r-d-user-info-title">
-            <span>游客信息</span>
+            <span>游客信息<i class="tourist-count">(需要提供<i>{{touristCount}}</i>位游客信息)</i></span>
             <span class="select-user-info" @click="selectContact">选择联系人<i class="el-icon-arrow-right"></i></span>
         </p>
         <div class="r-d-user-info-content-wrapper">
@@ -53,7 +53,8 @@ export default {
   name: 'TicketUserInfo',
   props: {
     contacts: Array,
-    visitorInfo: String
+    visitorInfo: String,
+    touristCount: Number
   },
   data () {
     return {
@@ -181,6 +182,11 @@ export default {
         textStyle(#333, .3)
         padding rem(.3)
         borderBottom()
+        .tourist-count
+            textStyle(#888, .25)
+            & i
+              textStyle($orangeColor, .25)
+              font-weight bold
         .select-user-info
             float right
             textStyle($primary, .3)

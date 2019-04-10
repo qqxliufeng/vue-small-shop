@@ -11,8 +11,8 @@
             <el-tab-pane name="waitingCommentItem" label="待评价" class="o-tabs-item" :lazy="true" >
                 <order-list-item ref="waitingCommentItem" :state="3"></order-list-item>
             </el-tab-pane>
-            <el-tab-pane name="afterServiceItem" label="售后" class="o-tabs-item" :lazy="true" >
-                <order-list-item ref="afterServiceItem" :state="4"></order-list-item>
+            <el-tab-pane name="afterServiceItem" label="退款/售后" class="o-tabs-item" :lazy="true" >
+                <order-refund-list-item ref="afterServiceItem" :state="4"></order-refund-list-item>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -21,11 +21,13 @@
 <script>
 import navi from 'common/components/navigation'
 import orderListItem from './components/OrderListItem'
+import orderRefundListItem from './components/OrderRefundListItem'
 export default {
   name: 'orderList',
   components: {
     navi,
-    orderListItem
+    orderListItem,
+    orderRefundListItem
   },
   data () {
     return {

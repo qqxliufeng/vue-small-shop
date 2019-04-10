@@ -84,7 +84,7 @@ export default {
   beforeRouteEnter (to, from, next) {
     next(vm => {
       if (vm.$root.userInfo.isLogin()) {
-        this.$router.replace({name: this.backName.name, query: this.backName.query, params: this.backName.params})
+        vm.$router.replace({name: vm.backName.name, query: vm.backName.query, params: vm.backName.params})
       }
     })
   }

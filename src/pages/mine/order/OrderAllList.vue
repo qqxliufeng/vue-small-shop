@@ -28,6 +28,15 @@ export default {
   mounted () {
     this.index = this.$route.query.index
     this.currentRefs = this.$refs['allItem'].$refs
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.$data.currentRefs.mescroll && vm.$data.currentRefs.mescroll.beforeRouteEnter()
+    })
+  },
+  beforeRouteLeave (to, from, next) {
+    this.currentRefs.mescroll && this.currentRefs.mescroll.beforeRouteLeave()
+    next()
   }
 }
 </script>

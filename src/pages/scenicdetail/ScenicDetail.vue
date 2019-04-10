@@ -25,7 +25,7 @@
           <scenic-detail-hot :hotGoodsList="hotGoodsList"></scenic-detail-hot>
           <scenic-detail-ticket-type :typeGoodsList="typeGoodsList"></scenic-detail-ticket-type>
           <scenic-detail-leave-message :ask="ask"></scenic-detail-leave-message>
-          <scenic-detail-comment :comment="comment" :tagCanSelected="false" @tagClick="handleTagClick"></scenic-detail-comment>
+          <scenic-detail-comment :comment="comment" :tagCanSelected="false"></scenic-detail-comment>
           <div class="s-d-l-m-comment-info-see-more" @click="seeMoreComment">
             查看更多
           </div>
@@ -82,9 +82,6 @@ export default {
     },
     seeMoreComment () {
       this.$router.push({name: 'commentList', params: {scenicId: this.scenicId}})
-    },
-    handleTagClick (tag) {
-      console.log(tag)
     },
     reload () {
       this.getData()

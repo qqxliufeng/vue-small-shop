@@ -6,11 +6,6 @@
                     产品已出票，请尽快使用产品。
                 </p>
             </template>
-            <!-- <template slot="headerBottomInfo">
-                <div>
-                    <order-step></order-step>
-                </div>
-            </template> -->
         </order-info-header>
         <order-ticket-money-info :storeInfo="storeInfo">
             <template slot="ticketMoneyDetail" slot-scope="props">
@@ -31,8 +26,8 @@
         </order-info-user-info>
         <div class="sperator-line"></div>
         <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :ordAddTime="detail.ord_add_time"></order-time-info>
-        <div class="o-i-waiting-use-action-wrapper">
-            <span @click="backMoney" v-if="detail.is_refund === 1">申请退款</span>
+        <div class="o-i-waiting-use-action-wrapper" v-if="detail.is_refund === 1">
+            <span @click="backMoney">申请退款</span>
             <!-- <span @click="isShowCanlendarDialog = true">变更时间</span> -->
         </div>
         <el-dialog title="选择日期" :visible.sync="isShowCanlendarDialog" center width="100%">
@@ -91,6 +86,13 @@ export default {
       isShowCanlendarDialog: false
     }
   },
+  watch: {
+    detail (newVal, oldVal) {
+      if (newVal.status !== 'PAY_STATUS_YES') {
+        this.$router.go(-1)
+      }
+    }
+  },
   computed: {
     storeInfo () {
       return {
@@ -133,7 +135,7 @@ export default {
   },
   methods: {
     backMoney () {
-      this.$router.push({name: 'orderBackMoney'})
+      this.$router.push({name: 'orderBackMoney', query: {id: this.detail.ord_id}})
     }
   },
   mounted () {

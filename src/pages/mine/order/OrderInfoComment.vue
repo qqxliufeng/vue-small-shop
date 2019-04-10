@@ -4,36 +4,20 @@
         <div class="o-i-comment-container">
             <div class="o-i-comment-container-start-wrapper">
                 <span class="black-text-style">星级评价</span>
-                 <el-rate class="o-i-comment-container-start" void-icon-class="el-icon-star-off"></el-rate>
+                 <el-rate class="o-i-comment-container-start" void-icon-class="el-icon-star-off" v-model="rate"></el-rate>
             </div>
             <p class="black-text-style">文字评价</p>
             <div class="o-i-comment-content-wrapper">
-                <el-input type="textarea" placeholder="请输入评论内容" :rows="7"></el-input>
+                <el-input type="textarea" placeholder="请输入评论内容" :rows="7" v-model="content" maxLength="200"></el-input>
             </div>
              <p class="black-text-style">上传图片<span>最多三张</span></p>
              <div class="o-i-comment-upload-wrapper">
-                <!-- <div v-for="(item,index) of fileList" :key="index" class="o-i-comment-upload-item">
-                    <img :src="item.url" v-show='!item.showProgress'>
-                    <el-progress type="circle" :percentage="item.percent" class="o-i-comment-upload-progress" :width="80" status="success" :show-text="false" v-show='item.showProgress'></el-progress>
-                </div> -->
-                <!-- <el-upload
-                    class="o-i-comment-upload-item dash-border"
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    :on-progress="onProgress"
-                    :on-success="onSuccess"
-                    :on-error="onError"
-                    list-type="picture-card"
-                    :limit="3"
-                    :file-list="fileList"
-                    :before-upload="beforeUpload">
-                    <i class="el-icon-plus"></i>
-                </el-upload> -->
                 <el-upload
                     class="o-i-comment-upload-item dash-border"
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    :on-progress="onProgress"
-                    :on-success="onSuccess"
-                    :on-error="onError"
+                    :action="uploadPath"
+                    :before-upload="beforeUpload"
+                    :on-success="uploadSuccess"
+                    :on-error="uploadError"
                     list-type="picture-card"
                     :limit="3"
                     :on-exceed="onExceed">
@@ -41,7 +25,7 @@
                 </el-upload>
             </div>
             <div>
-                <el-button type="primary" class="o-i-comment-submit">确定</el-button>
+                <el-button type="primary" class="o-i-comment-submit" @click="upload">确定</el-button>
             </div>
         </div>
     </div>
@@ -56,26 +40,62 @@ export default {
   },
   data () {
     return {
-      fileList: []
+      rate: 5,
+      orderId: this.$route.query.orderId,
+      imageList: [],
+      content: ''
+    }
+  },
+  computed: {
+    uploadPath () {
+      return this.$urlPath.imageActionUrl + '?token=' + this.$root.userInfo.state.token
     }
   },
   methods: {
-    onProgress (event, file, fileList) {
-    //   this.fileList[this.fileList.length - 1].percent = event.percent
+    upload () {
+      if (!this.content) {
+        this.$toast('请输入评论内容')
+        return
+      }
+      if (this.content.length > 200) {
+        this.$toast('评论内容最多200字')
+        return
+      }
+      this.$http(this.$urlPath.addCommentUrl, {
+        ord_id: this.orderId,
+        mark: this.rate,
+        content: this.content,
+        images: this.imageList.join(',')
+      }, '正在上传…', (data) => {
+        this.$toast('评论发表成功')
+        this.$root.$emit('onReload')
+        this.$router.go(-1)
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
     },
-    onSuccess (response, file, fileList) {
-    //   this.fileList[this.fileList.length - 1].showProgress = false
-    //   if (this.fileList.length === 3) {
-    //     this.showUpload = false
-    //   }
+    beforeUpload (file) {
+      let checkResult = this.$utils.image.beforeUploadImageCheck(this.$root, file)
+      if (checkResult) {
+        this.$loading('正在上传…')
+      }
+      return checkResult
     },
-    onError (err, file, fileList) {
-      console.log(err)
-      this.$toast('上传失败…')
-    //   this.fileList.splice(this.fileList.length - 1, 1)
+    uploadSuccess (response, file, fileList) {
+      if (response.data) {
+        this.imageList.push(response.data.url)
+        this.$toast('图片上传成功')
+        this.$loading.close()
+      } else {
+        this.$toast(response.msg)
+      }
+    },
+    uploadError (err, file, fileList) {
+      this.$toast('图片上传失败' + err)
+      this.$loading.close()
     },
     onExceed (file, fileList) {
-      this.$toast('最大上传三张')
+      this.$toast('最多只能上传三张')
     }
   }
 }

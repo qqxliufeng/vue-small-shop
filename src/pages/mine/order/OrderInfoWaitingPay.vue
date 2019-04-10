@@ -118,6 +118,14 @@ export default {
       return Math.max(0, (Number(this.detail.timeout_express) - Number(this.detail.time)) * 1000)
     }
   },
+  watch: {
+    detail (newVal, oldVal) {
+      console.log(newVal)
+      if (newVal.status !== 'PAY_STATUS_NO') {
+        this.$router.go(-1)
+      }
+    }
+  },
   methods: {
     countDownEnd () {
       this.hasDownEnd = true
@@ -127,7 +135,7 @@ export default {
         this.$toast('订单支付时间已过期，请重新购买')
         return
       }
-      this.$router.push({name: 'orderInfoPay'})
+      this.$router.push({name: 'orderInfoPay', query: {no: this.detail.out_trade_no}})
     },
     cancelOrder () {
       let confrim = window.confirm('是否取消此订单？')

@@ -29,11 +29,14 @@ export default {
   name: 'orderTicketInfo',
   props: {
     itemInfo: Object,
-    ticketName: String
+    ticketName: String,
+    isEnable: {
+      type: Boolean,
+      default: true
+    }
   },
   data () {
     return {
-      isEnable: true
     }
   },
   computed: {
@@ -43,19 +46,21 @@ export default {
   },
   methods: {
     lookCode () {
-      this.$router.push({
-        name: 'orderCodeInfo',
-        params: {
-          info: {
-            no: this.itemInfo.voucher_number,
-            waitNum: this.itemInfo.buynum - this.itemInfo.consum,
-            consum: this.itemInfo.consum,
-            backNum: this.itemInfo.backNum ? this.itemInfo.backNum : 0,
-            ticketName: this.ticketName
+      if (this.isEnable) {
+        this.$router.push({
+          name: 'orderCodeInfo',
+          params: {
+            info: {
+              no: this.itemInfo.voucher_number,
+              waitNum: this.itemInfo.buynum - this.itemInfo.consum,
+              consum: this.itemInfo.consum,
+              backNum: this.itemInfo.backNum ? this.itemInfo.backNum : 0,
+              ticketName: this.ticketName
+            }
           }
         }
+        )
       }
-      )
     }
   }
 }
