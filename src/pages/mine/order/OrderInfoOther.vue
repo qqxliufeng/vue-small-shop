@@ -1,9 +1,9 @@
 <template>
     <div v-if="detail">
-      <order-info-header :stateTip="stateTip">
+      <order-info-header :stateTip="stateModel.stateTip">
             <template slot="headerTitleInfo">
                 <p class="o-i-use-info">
-                    快来和小伙伴们分享一下这次出游的感受吧
+                    {{stateModel.discription}}
                 </p>
             </template>
         </order-info-header>
@@ -25,7 +25,7 @@
         <order-info-user-info title="预定须知" :remarks="remarks">
         </order-info-user-info>
         <div class="sperator-line"></div>
-        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :ordAddTime="detail.ord_add_time"></order-time-info>
+        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :remarks="times"></order-time-info>
     </div>
 </template>
 
@@ -39,8 +39,10 @@ import OrderTimeInfo from './components/OrderTimeInfo'
 import TicketRemark from 'common/components/ticket-remark'
 import orderStep from './components/OrderStep'
 import calander from 'common/components/calendar/calendar.vue'
+import orderMixin from 'common/mixins/order-mixin'
 export default {
   name: 'orderInfoWaitingUse',
+  mixins: [orderMixin],
   props: {
     detail: Object
   },
@@ -57,93 +59,56 @@ export default {
   },
   data () {
     return {
-      stateTip: ''
+      stateModel: {}
     }
   },
   watch: {
     detail (newVal, oldVal) {
       if (newVal) {
         switch (newVal.status) {
-          case 'PAY_STATUS_NO': // 待付款
-            this.stateTip = '待付款'
-            break
-          case 'PAY_STATUS_YES': // 已支付
-            this.stateTip = '已支付'
-            break
-          case 'PAY_STATUS_PARTIAL_REFUND': // 部分退款
-            this.stateTip = '退款/售后'
-            break
-          case 'PAY_STATUS_REFUNDED': // 已退款
-            this.stateTip = '已退款'
-            break
-          case 'USE_STATUS_NO': // 未使用
-            this.stateTip = '待使用'
-            break
-          case 'USE_STATUS': // 已使用
-            this.stateTip = '已使用'
-            break
           case 'USE_STATUS_OFF': // 被取消
-            this.stateTip = '已取消'
+            this.stateModel.stateTip = '已取消'
+            this.stateModel.discription = '订单已经取消，如有需要请重新下单购买'
             break
           case 'USE_STATUS_EXPIRD': // 已过期
-            this.stateTip = '已过期'
-            break
-          case 'NO_COMMENT': // 待评价
-            this.stateTip = '待评价'
+            this.stateModel.stateTip = '已过期'
+            this.stateModel.discription = '订单已经过期，如有需要请重新下单购买'
             break
           case 'ALREADY_COMMENT': // 已经评价
-            this.stateTip = '已完成'
+            this.stateModel.stateTip = '已完成'
+            this.stateModel.discription = '感谢您的本次消费，订单已经完结'
             break
-          case 'REFUND_STATUS_NO': // 未退票
-            this.stateTip = '待付款'
-            break
-          case 'REFUND_STATUS_PENDING': // 退款中
-            this.stateTip = '退款/售后'
-            break
-          case 'REFUND_STATUS_YES': // 已退票
-            this.stateTip = '已退款'
-            break
+          // case 'PAY_STATUS_NO': // 待付款
+          //   this.stateTip = '待付款'
+          //   break
+          // case 'PAY_STATUS_YES': // 已支付
+          //   this.stateTip = '已支付'
+          //   break
+          // case 'PAY_STATUS_PARTIAL_REFUND': // 部分退款
+          //   this.stateTip = '退款/售后'
+          //   break
+          // case 'PAY_STATUS_REFUNDED': // 已退款
+          //   this.stateTip = '已退款'
+          //   break
+          // case 'USE_STATUS_NO': // 未使用
+          //   this.stateTip = '待使用'
+          //   break
+          // case 'USE_STATUS': // 已使用
+          //   this.stateTip = '已使用'
+          //   break
+          // case 'NO_COMMENT': // 待评价
+          //   this.stateTip = '待评价'
+          //   break
+          // case 'REFUND_STATUS_NO': // 未退票
+          //   this.stateTip = '待付款'
+          //   break
+          // case 'REFUND_STATUS_PENDING': // 退款中
+          //   this.stateTip = '退款/售后'
+          //   break
+          // case 'REFUND_STATUS_YES': // 已退票
+          //   this.stateTip = '已退款'
+          //   break
         }
-      }
-    }
-  },
-  computed: {
-    storeInfo () {
-      return {
-        store: this.detail.store,
-        ticketName: this.detail.ord_product_name,
-        playTime: this.detail.ord_play_time,
-        money: {
-          title: '支付金额',
-          money: this.detail.ord_amount,
-          detail: [
-            {
-              key: '数量',
-              value: 'X' + this.detail.ord_ticket_num
-            },
-            {
-              key: '单价',
-              value: '￥' + this.detail.ord_price
-            },
-            {
-              key: '总价',
-              value: '￥' + this.detail.ord_amount
-            }
-          ]
-        }
-      }
-    },
-    remarks () {
-      if (this.detail) {
-        let tempRemarks = []
-        for (let key in this.detail.goods) {
-          if (this.detail.goods[key] instanceof Object) {
-            tempRemarks.push(this.detail.goods[key])
-          }
-        }
-        return tempRemarks
-      } else {
-        return []
       }
     }
   }

@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     orderItemClick (item) {
-      this.$router.push({name: 'orderInfo', params: {orderId: item.order_id.toString(), orderType: item.stateModel.orderType}})
+      this.$router.push({name: 'orderInfo', params: {orderId: item.rid.toString(), orderType: item.stateModel.orderType}})
     },
     upCallBack (page, mescroll) {
       this.$http(this.$urlPath.orderRefundList, {

@@ -150,7 +150,7 @@ export default {
         }
         this.tempMoneyList.push({
           name: '手续费：',
-          money: '￥' + charge.toFixed(2)
+          money: '￥' + Number(charge).toFixed(2)
         },
         {
           name: '实际退款：',
@@ -194,6 +194,7 @@ export default {
         message: this.message
       }, '正在提交申请…', (data) => {
         this.$toast('退款申请成功')
+        this.$root.$emit('onReload')
         this.$router.go(-1)
       }, (errorCode, error) => {
         this.$toast(error)

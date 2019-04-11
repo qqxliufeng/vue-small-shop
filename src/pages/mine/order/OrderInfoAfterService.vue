@@ -3,12 +3,13 @@
       <order-info-header stateTip="退款/售后">
             <template slot="headerTitleInfo">
                 <p class="o-i-use-info">
-                    此订单已经申请售后，请耐心等待审核，在退款过程中，此门票无法使用
+                    退款原因：{{detail.refund_reason}}
                 </p>
+                <p v-if="detail.refund_failed_desc" class="o-i-check-failed">审核失败：{{detail.refund_failed_desc}}</p>
             </template>
             <template slot="headerBottomInfo">
                 <div>
-                    <order-step :active="2"></order-step>
+                    <order-step :active="detail.refundModel.refundProgress.progress" :status="detail.refundModel.refundProgress.status"></order-step>
                 </div>
                 </template>
         </order-info-header>
@@ -22,18 +23,19 @@
                 </div>
             </template>
         </order-ticket-money-info>
-        <order-ticket-info v-for="item of detail.voucher" :key="item.v_id" :itemInfo="item" :ticketName="detail.ord_product_name" :isEnable="false">
+        <order-ticket-info v-for="item of detail.orders.voucher" :key="item.v_id" :itemInfo="item" :ticketName="detail.ord_product_name" :isEnable="false">
         </order-ticket-info>
         <div class="sperator-line"></div>
-        <order-info-user-info title="游客信息" :tourist="detail.tourist">
+        <order-info-user-info title="游客信息" :tourist="detail.orders.tourist">
         </order-info-user-info>
         <order-info-user-info title="预定须知" :remarks="remarks">
         </order-info-user-info>
         <div class="sperator-line"></div>
-        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :ordAddTime="detail.ord_add_time"></order-time-info>
-        <div class="o-i-waiting-use-action-wrapper" @click="cancelBack">
+        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :remarks="times"></order-time-info>
+        <div class="o-i-waiting-use-action-wrapper" @click="cancelBack" v-if="detail.refundModel.showBottomAction">
             <span>取消退款</span>
         </div>
+        <confirm-dialog content="是否要取消退款？" ref="confirmDialog" @dialogConfirm="dialogConfirm"></confirm-dialog>
     </div>
 </template>
 
@@ -47,10 +49,11 @@ import OrderTimeInfo from './components/OrderTimeInfo'
 import TicketRemark from 'common/components/ticket-remark'
 import orderStep from './components/OrderStep'
 import calander from 'common/components/calendar/calendar.vue'
+import confirmDialog from 'common/components/confirm-dialog'
 export default {
   name: 'orderInfoWaitingUse',
   props: {
-    detail: Object
+    orderId: String
   },
   components: {
     orderInfoHeader,
@@ -61,33 +64,36 @@ export default {
     OrderTimeInfo,
     TicketRemark,
     orderStep,
-    calander
+    calander,
+    confirmDialog
   },
   data () {
     return {
+      detail: null,
+      centerDialogVisible: false
     }
   },
   computed: {
     storeInfo () {
       return {
-        store: this.detail.store,
-        ticketName: this.detail.ord_product_name,
-        playTime: this.detail.ord_play_time,
+        store: this.detail.orders.store,
+        ticketName: this.detail.orders.ord_product_name,
+        playTime: this.detail.orders.ord_play_time,
         money: {
           title: '支付金额',
-          money: this.detail.ord_amount,
+          money: this.detail.orders.ord_amount,
           detail: [
             {
               key: '数量',
-              value: 'X' + this.detail.ord_ticket_num
+              value: 'X' + this.detail.orders.ord_ticket_num
             },
             {
               key: '单价',
-              value: '￥' + this.detail.ord_price
+              value: '￥' + this.detail.orders.ord_price
             },
             {
               key: '总价',
-              value: '￥' + this.detail.ord_amount
+              value: '￥' + this.detail.orders.ord_amount
             }
           ]
         }
@@ -105,12 +111,97 @@ export default {
       } else {
         return []
       }
+    },
+    times () {
+      let items = []
+      items.push({
+        title: '退款编号',
+        value: this.detail.out_refund_no
+      })
+      this.detail.refund_log.forEach(element => {
+        items.push({
+          title: element.type,
+          value: element.ctime
+        })
+      })
+      return items
     }
   },
   methods: {
+    getData () {
+      this.$http(this.$urlPath.orderRefundAfterDetail, {
+        rid: this.orderId
+      }, '', (data) => {
+        this.detail = data.data
+        switch (this.detail.status) {
+          case 'REFUND_STATUS': // 退款待审核
+            this.detail.refundModel = {
+              showBottomAction: true,
+              refundProgress: {
+                progress: 2,
+                status: 0
+              }
+            }
+            break
+          case 'REFUND_STATUS_YES': // 退款审核成功
+            this.detail.refundModel = {
+              showBottomAction: false,
+              refundProgress: {
+                progress: 2,
+                status: 1
+              }
+            }
+            break
+          case 'REFUND_STATUS_NO': // 退款审核失败
+            this.detail.refundModel = {
+              showBottomAction: false,
+              refundProgress: {
+                progress: 2,
+                status: 2
+              }
+            }
+            break
+          case 'REFUND_PAY': // 退款待支付
+            this.detail.refundModel = {
+              showBottomAction: false,
+              refundProgress: {
+                progress: 3,
+                status: 0
+              }
+            }
+            break
+          case 'REFUND_PAY_YES': // 退款支付成功
+            this.detail.refundModel = {
+              showBottomAction: false,
+              refundProgress: {
+                progress: 3,
+                status: 1
+              }
+            }
+            break
+          case 'REFUND_PAY_NO': // 退款支付失败
+            this.detail.refundModel = {
+              showBottomAction: false,
+              refundProgress: {
+                progress: 3,
+                status: 2
+              }
+            }
+            break
+        }
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
+    },
     cancelBack () {
-      this.$router.push({name: 'orderComment', query: {orderId: this.detail.ord_id}})
+      this.$refs.confirmDialog.showDialog()
+    },
+    dialogConfirm () {
+      this.$toast('退款')
     }
+  },
+  mounted () {
+    this.getData()
   }
 }
 </script>
@@ -118,6 +209,11 @@ export default {
 @import '~styles/varibles.styl'
 .o-i-use-info
     color #eeeeee
+    font-size .25rem
+    margin-top .2rem
+    line-height .3rem
+.o-i-check-failed
+    color #ffffff
     font-size .25rem
     margin-top .2rem
     line-height .3rem
@@ -164,4 +260,6 @@ export default {
     .span-color-4
         color $orangeColor
         font-size .28rem
+>>> .el-dialog
+        margin-top 30vh !important
 </style>

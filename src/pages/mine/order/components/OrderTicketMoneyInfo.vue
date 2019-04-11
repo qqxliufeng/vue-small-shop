@@ -67,7 +67,7 @@ export default {
         .o-i-ticket-info-tag
             overflow hidden
             margin-top .2rem
-            line-height .25rem
+            line-height .27rem
             & span
                 float left
                 color #333333

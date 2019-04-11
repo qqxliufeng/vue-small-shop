@@ -33,12 +33,7 @@
         <order-info-user-info title="预定须知" :remarks="remarks">
         </order-info-user-info>
         <div class="sperator-line"></div>
-        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :ordAddTime="detail.ord_add_time"></order-time-info>
-        <!-- <div class="o-i-time-contianer">
-            <ticket-remark :remark="{title: '下单店铺', value: detail.shop_name ? detail.shop_name :'暂无'}"></ticket-remark>
-            <ticket-remark :remark="{title: '订单编号', value: detail.out_trade_no}"></ticket-remark>
-            <ticket-remark :remark="{title: '下单时间', value: detail.ord_add_time}"></ticket-remark>
-        </div> -->
+        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :remarks="times"></order-time-info>
         <div class="o-i-pay-action-wrapper">
             <span @click="cancelOrder">取消订单</span>
             <span @click="goPay">去支付</span>
@@ -55,8 +50,10 @@ import orderInfoUserInfo from './components/orderInfoUserInfo'
 import OrderTimeInfo from './components/OrderTimeInfo'
 import TicketRemark from 'common/components/ticket-remark'
 import CountDown from 'common/components/countdown/countdown'
+import orderMixin from 'common/mixins/order-mixin'
 export default {
   name: 'orderInfoWaitingPay',
+  mixins: [orderMixin],
   props: {
     detail: Object
   },
@@ -76,51 +73,12 @@ export default {
     }
   },
   computed: {
-    storeInfo () {
-      return {
-        store: this.detail.store,
-        ticketName: this.detail.ord_product_name,
-        playTime: this.detail.ord_play_time,
-        money: {
-          title: '支付金额',
-          money: this.detail.ord_amount,
-          detail: [
-            {
-              key: '数量',
-              value: 'X' + this.detail.ord_ticket_num
-            },
-            {
-              key: '单价',
-              value: '￥' + this.detail.ord_price
-            },
-            {
-              key: '总价',
-              value: '￥' + this.detail.ord_amount
-            }
-          ]
-        }
-      }
-    },
-    remarks () {
-      if (this.detail) {
-        let tempRemarks = []
-        for (let key in this.detail.goods) {
-          if (this.detail.goods[key] instanceof Object) {
-            tempRemarks.push(this.detail.goods[key])
-          }
-        }
-        return tempRemarks
-      } else {
-        return []
-      }
-    },
     releasePayTime () {
       return Math.max(0, (Number(this.detail.timeout_express) - Number(this.detail.time)) * 1000)
     }
   },
   watch: {
     detail (newVal, oldVal) {
-      console.log(newVal)
       if (newVal.status !== 'PAY_STATUS_NO') {
         this.$router.go(-1)
       }
@@ -132,7 +90,7 @@ export default {
     },
     goPay () {
       if (this.releasePayTime === 0 || this.hasDownEnd) {
-        this.$toast('订单支付时间已过期，请重新购买')
+        this.$toast('订单长时间未支付，已自动取消')
         return
       }
       this.$router.push({name: 'orderInfoPay', query: {no: this.detail.out_trade_no}})

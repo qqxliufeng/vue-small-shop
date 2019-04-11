@@ -3,7 +3,7 @@
         <div :class="['o-t-i-container-title-wrapper',enableClass]">
             <div class="o-t-i-container-title-no-wrapper">
                 <p>凭证号</p>
-                <p>{{itemInfo.voucher_number}}</p>
+                <p class="number">{{itemInfo.voucher_number}}</p>
             </div>
             <div class="o-t-i-container-title-waiting-use-num-wrapper">
                 <p>待消费</p>
@@ -74,6 +74,8 @@ export default {
 .o-t-i-unenable
     background-color #ECECEC
     color #B6B6B6
+    & .number
+        color #B6B6B6 !important
 .o-t-i-container
     background-color #ffffff
     .o-t-i-container-title-wrapper
@@ -83,7 +85,7 @@ export default {
             flex 1.1
             overflow hidden
             text-align center
-            & p:nth-child(2)
+            .number
                 font-size .3rem
                 margin-top .2rem
                 color rgba(200, 0, 0, 1)
@@ -106,6 +108,4 @@ export default {
                 font-size .4rem
             & p
                 margin-top .1rem
-.o-t-i-container-detail-wrapper
-    padding .2rem
 </style>

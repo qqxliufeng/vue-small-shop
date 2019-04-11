@@ -58,6 +58,6 @@ export default {
     align-items center
     & input
         flex 1
-        background #f5f5f5
+        background #f9f9f9
         padding rem(.1)
 </style>

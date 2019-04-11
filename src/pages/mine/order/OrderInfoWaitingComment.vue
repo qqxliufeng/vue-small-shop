@@ -25,7 +25,7 @@
         <order-info-user-info title="预定须知" :remarks="remarks">
         </order-info-user-info>
         <div class="sperator-line"></div>
-        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :ordAddTime="detail.ord_add_time"></order-time-info>
+        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :remarks="times"></order-time-info>
         <div class="o-i-waiting-use-action-wrapper" @click="comment">
             <span>评价</span>
         </div>
@@ -42,8 +42,10 @@ import OrderTimeInfo from './components/OrderTimeInfo'
 import TicketRemark from 'common/components/ticket-remark'
 import orderStep from './components/OrderStep'
 import calander from 'common/components/calendar/calendar.vue'
+import orderMixin from 'common/mixins/order-mixin'
 export default {
   name: 'orderInfoWaitingUse',
+  mixins: [orderMixin],
   props: {
     detail: Object
   },
@@ -66,46 +68,6 @@ export default {
     detail (newVal, oldVal) {
       if (newVal.status !== 'NO_COMMENT') {
         this.$router.go(-1)
-      }
-    }
-  },
-  computed: {
-    storeInfo () {
-      return {
-        store: this.detail.store,
-        ticketName: this.detail.ord_product_name,
-        playTime: this.detail.ord_play_time,
-        money: {
-          title: '支付金额',
-          money: this.detail.ord_amount,
-          detail: [
-            {
-              key: '数量',
-              value: 'X' + this.detail.ord_ticket_num
-            },
-            {
-              key: '单价',
-              value: '￥' + this.detail.ord_price
-            },
-            {
-              key: '总价',
-              value: '￥' + this.detail.ord_amount
-            }
-          ]
-        }
-      }
-    },
-    remarks () {
-      if (this.detail) {
-        let tempRemarks = []
-        for (let key in this.detail.goods) {
-          if (this.detail.goods[key] instanceof Object) {
-            tempRemarks.push(this.detail.goods[key])
-          }
-        }
-        return tempRemarks
-      } else {
-        return []
       }
     }
   },

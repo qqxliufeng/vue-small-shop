@@ -55,9 +55,16 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/:identity/:storeId',
-      // path: '/',
+      path: '/',
       name: 'home',
+      component: Home,
+      meta: {
+        keepAlive: true
+      },
+      props: true
+    },
+    {
+      path: '/index/:identity/:storeId',
       component: Home,
       meta: {
         keepAlive: true

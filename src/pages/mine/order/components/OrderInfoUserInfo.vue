@@ -53,6 +53,8 @@ export default {
 
 <style lang="stylus" scoped>
 @import '~styles/varibles.styl'
+>>> .el-collapse-item__content
+    padding-bottom 0
 .o-i-use-info-title
     color #333333
     font-size .28rem

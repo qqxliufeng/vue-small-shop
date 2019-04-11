@@ -25,12 +25,12 @@
         <order-info-user-info title="预定须知" :remarks="remarks">
         </order-info-user-info>
         <div class="sperator-line"></div>
-        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :ordAddTime="detail.ord_add_time"></order-time-info>
+        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :remarks="times"></order-time-info>
         <div class="o-i-waiting-use-action-wrapper" v-if="detail.is_refund === 1">
             <span @click="backMoney">申请退款</span>
             <!-- <span @click="isShowCanlendarDialog = true">变更时间</span> -->
         </div>
-        <el-dialog title="选择日期" :visible.sync="isShowCanlendarDialog" center width="100%">
+        <!-- <el-dialog title="选择日期" :visible.sync="isShowCanlendarDialog" center width="100%">
             <calander :events="calendar1.events" :lunar="calendar1.lunar" :begin="calendar1.begin" :end="calendar1.end" :weeks="calendar1.weeks" :months="calendar1.months" @select="calendar1.select">
                 <template slot="event">
                     <div class="c-e-wrapper">
@@ -39,7 +39,7 @@
                     </div>
                 </template>
             </calander>
-        </el-dialog>
+        </el-dialog> -->
     </div>
 </template>
 
@@ -53,8 +53,10 @@ import OrderTimeInfo from './components/OrderTimeInfo'
 import TicketRemark from 'common/components/ticket-remark'
 import orderStep from './components/OrderStep'
 import calander from 'common/components/calendar/calendar.vue'
+import orderMixin from 'common/mixins/order-mixin'
 export default {
   name: 'orderInfoWaitingUse',
+  mixins: [orderMixin],
   props: {
     detail: Object
   },
@@ -71,18 +73,18 @@ export default {
   },
   data () {
     return {
-      calendar1: {
-        value: [2018, 2, 16], // 默认日期
-        // lunar:true, //显示农历
-        weeks: ['日', '一', '二', '三', '四', '五', '六'],
-        months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-        events: {
-          '2018-2-14': '$408', '2018-2-15': '$460', '2018-2-16': '$500\n111'
-        },
-        select (value) {
-          console.log(value.toString())
-        }
-      },
+      // calendar1: {
+      //   value: [2018, 2, 16], // 默认日期
+      //   // lunar:true, //显示农历
+      //   weeks: ['日', '一', '二', '三', '四', '五', '六'],
+      //   months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+      //   events: {
+      //     '2018-2-14': '$408', '2018-2-15': '$460', '2018-2-16': '$500\n111'
+      //   },
+      //   select (value) {
+      //     console.log(value.toString())
+      //   }
+      // },
       isShowCanlendarDialog: false
     }
   },
@@ -93,54 +95,14 @@ export default {
       }
     }
   },
-  computed: {
-    storeInfo () {
-      return {
-        store: this.detail.store,
-        ticketName: this.detail.ord_product_name,
-        playTime: this.detail.ord_play_time,
-        money: {
-          title: '支付金额',
-          money: this.detail.ord_amount,
-          detail: [
-            {
-              key: '数量',
-              value: 'X' + this.detail.ord_ticket_num
-            },
-            {
-              key: '单价',
-              value: '￥' + this.detail.ord_price
-            },
-            {
-              key: '总价',
-              value: '￥' + this.detail.ord_amount
-            }
-          ]
-        }
-      }
-    },
-    remarks () {
-      if (this.detail) {
-        let tempRemarks = []
-        for (let key in this.detail.goods) {
-          if (this.detail.goods[key] instanceof Object) {
-            tempRemarks.push(this.detail.goods[key])
-          }
-        }
-        return tempRemarks
-      } else {
-        return []
-      }
-    }
-  },
   methods: {
     backMoney () {
       this.$router.push({name: 'orderBackMoney', query: {id: this.detail.ord_id}})
     }
   },
   mounted () {
-    let date = new Date()
-    this.calendar1.value = [date.getFullYear, date.getMonth, date.getDay]
+    // let date = new Date()
+    // this.calendar1.value = [date.getFullYear, date.getMonth, date.getDay]
   }
 }
 </script>

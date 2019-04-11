@@ -2,7 +2,7 @@
 <div class="o-i-time-contianer">
     <ticket-remark :remark="{title: '下单店铺', value: shopName ? shopName :'暂无'}"></ticket-remark>
     <ticket-remark :remark="{title: '订单编号', value: outTradeNo}"></ticket-remark>
-    <ticket-remark :remark="{title: '下单时间', value: ordAddTime}"></ticket-remark>
+    <ticket-remark v-for="(item, index) of remarks" :key="index" :remark="item"></ticket-remark>
 </div>
 </template>
 
@@ -13,7 +13,8 @@ export default {
   props: {
     shopName: String,
     outTradeNo: String,
-    ordAddTime: String
+    ordAddTime: String,
+    remarks: Array
   },
   components: {
     TicketRemark

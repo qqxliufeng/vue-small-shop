@@ -97,6 +97,9 @@ export default {
                         }, '正在取消…', (result) => {
                           this.list.splice(this.list.indexOf(it), 1)
                           this.$toast('订单取消成功')
+                          if (this.list.length === 0) {
+                            mescroll.endSuccess(0)
+                          }
                         }, (errorCode, error) => {
                           this.$toast(error)
                         })
@@ -113,12 +116,13 @@ export default {
                 }
                 break
               case 'PAY_STATUS_YES': // 已支付
+              case 'USE_STATUS_NO': // 未使用
                 it.stateModel = {
                   orderType: '2',
                   stateTip: '已支付',
                   time: {
-                    title: '支付时间：',
-                    time: it.ord_play_time
+                    title: '下单时间：',
+                    time: it.ord_add_time
                   },
                   action1: {
                     title: '',
@@ -134,21 +138,13 @@ export default {
                   }
                 }
                 break
-              case 'PAY_STATUS_PARTIAL_REFUND': // 部分退款
-                break
-              case 'PAY_STATUS_REFUNDED': // 已退款
-                break
-              case 'USE_STATUS_NO': // 未使用
-                break
-              case 'USE_STATUS': // 已使用
-                break
               case 'USE_STATUS_OFF': // 被取消
                 it.stateModel = {
                   orderType: '6',
                   stateTip: '已取消',
                   time: {
-                    title: '过期时间：',
-                    time: it.express_time
+                    title: '下单时间：',
+                    time: it.ord_add_time
                   },
                   action1: {
                     title: '删除订单',
@@ -181,8 +177,8 @@ export default {
                   orderType: '7',
                   stateTip: '已过期',
                   time: {
-                    title: '过期时间：',
-                    time: it.express_time
+                    title: '下单时间：',
+                    time: it.ord_add_time
                   },
                   action1: {
                     title: '删除订单',
@@ -211,12 +207,13 @@ export default {
                 }
                 break
               case 'NO_COMMENT': // 待评价
+              case 'USE_STATUS': // 已使用
                 it.stateModel = {
                   orderType: '3',
                   stateTip: '待评价',
                   time: {
-                    title: '验票时间：',
-                    time: it.express_time
+                    title: '下单时间：',
+                    time: it.ord_add_time
                   },
                   action1: {
                     title: '',
@@ -237,8 +234,8 @@ export default {
                   orderType: '5',
                   stateTip: '已完成',
                   time: {
-                    title: '评价时间:',
-                    time: it.express_time
+                    title: '下单时间：',
+                    time: it.ord_add_time
                   },
                   action1: {
                     title: '',
@@ -252,15 +249,15 @@ export default {
                   }
                 }
                 break
-              case 'REFUND_STATUS_NO': // 未退票
+              case 'USE_STATUS_PARTIAL': // 部分使用
                 break
               case 'REFUND_STATUS_PENDING': // 退款中
                 it.stateModel = {
                   orderType: '4',
                   stateTip: '退款/售后',
                   time: {
-                    title: '申请退款时间:',
-                    time: it.express_time
+                    title: '下单时间：',
+                    time: it.ord_add_time
                   },
                   action1: {
                     title: '',
@@ -277,6 +274,12 @@ export default {
                 }
                 break
               case 'REFUND_STATUS_YES': // 已退票
+                break
+              case 'PAY_STATUS_PARTIAL_REFUND': // 部分退款
+                break
+              case 'PAY_STATUS_REFUNDED': // 已退款
+                break
+              case 'REFUND_STATUS_NO': // 未退票
                 break
             }
           })
