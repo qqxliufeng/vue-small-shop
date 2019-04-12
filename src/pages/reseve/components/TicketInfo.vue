@@ -221,6 +221,11 @@ export default {
     },
     showRemarkDialog () {
       this.showRemark = true
+    },
+    routeLeave () {
+      this.showRemark = false
+      this.isShowCanlendarDialog = false
+      this.showRemark = false
     }
   }
 }

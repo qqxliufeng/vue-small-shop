@@ -68,7 +68,7 @@ export default {
       }
     },
     back () {
-      this.$router.back()
+      this.$emit('back')
     }
   },
   mounted () {

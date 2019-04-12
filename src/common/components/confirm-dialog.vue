@@ -43,5 +43,6 @@ export default {
 <style lang='stylus' scoped>
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
-
+>>> .el-dialog
+        margin-top 30vh !important
 </style>

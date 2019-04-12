@@ -109,6 +109,7 @@ export default {
     .o-i-info-shop-info
         display flex
         padding .2rem
+        borderBottom()
         .o-i-info-shop-info-img-wrapper
             flex 1
             overflow hidden

@@ -67,7 +67,7 @@ export default {
         justify-content center
         align-items center
         min-height rem(2)
-        normalTextStyle(#888, .35)
+        normalTextStyle(#888, .3)
     .s-d-l-m-message-info-item
         display flex
         align-items center

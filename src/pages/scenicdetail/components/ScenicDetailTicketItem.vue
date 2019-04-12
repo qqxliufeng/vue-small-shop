@@ -1,6 +1,6 @@
 <template>
     <div class="s-d-hot-item-wrapper">
-        <div class="s-d-hot-item-info">
+        <div class="s-d-hot-item-info" @click="itemClick">
             <div class="s-d-hot-item-info-title-wrapper">
                 <p class="s-d-hot-item-info-title">{{item.goodsTitle}}</p>
                 <p class="s-d-hot-item-info-price"><span>￥{{item.minPrice}}</span><i>起</i></p>
@@ -20,7 +20,7 @@
                     </p>
                 </div>
                 <div class="s-d-hot-item-info-info-action">
-                    <el-button type="primary" size="mini" @click="itemClick">立即预定</el-button>
+                    <el-button type="primary" size="mini" @click="itemClick" class="button">立即预定</el-button>
                 </div>
             </div>
         </div>
@@ -94,6 +94,9 @@ export default {
                     normalTextStyle(#888888, .25)
                     & span:nth-child(1)
                         margin 0 rem(.2)
+        .button
+            background $orangeColor
+            border-color $orangeColor
     .s-d-hot-item-will-online
         background-color #FEEBC6
         normalTextStyle($orangeColor, .28)

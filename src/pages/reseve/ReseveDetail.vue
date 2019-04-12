@@ -95,6 +95,7 @@ export default {
         case 1: // 只需要一个游玩人信息
           const userName = this.$refs.userSingleInfo.tempUserInfo.name
           const userPhone = this.$refs.userSingleInfo.tempUserInfo.phone
+          const idCard = this.$refs.userSingleInfo.tempUserInfo.idCard
           if (!userName) {
             this.$toast('请输入游客姓名')
             return
@@ -105,6 +106,10 @@ export default {
           }
           if (!this.$utils.validator.isPhone(userPhone)) {
             this.$toast('请输入合法的游客手机号')
+            return
+          }
+          if (!idCard) {
+            this.$toast('请输入游客身份证号')
             return
           }
           postData.user = [this.$refs.userSingleInfo.tempUserInfo]
@@ -123,25 +128,22 @@ export default {
           })
           break
       }
-      let confirm = window.confirm('我已仔细阅读购买须知')
-      if (confirm) {
-        postData.info = {
-          identity: this.$root.state.identity,
-          store_id: this.$root.state.storeId,
-          goods_source: this.ticketInfo.goods.goods_source,
-          goods_id: this.$route.query.goods_id
-        }
-        this.$http(this.$urlPath.orderCreate, {
-          data: JSON.stringify(postData)
-        }, '正在提交…', (data) => {
-          this.$toast('订单提交成功')
-          this.$root.$emit('onReload')
-          this.$root.$emit('onGetBadge')
-          this.$router.replace({name: 'orderInfoPay', query: {no: data.data.out_trade_no}})
-        }, (errorCode, error) => {
-          this.$toast(error)
-        })
+      postData.info = {
+        identity: this.$root.state.identity,
+        store_id: this.$root.state.storeId,
+        goods_source: this.ticketInfo.goods.goods_source,
+        goods_id: this.$route.query.goods_id
       }
+      this.$http(this.$urlPath.orderCreate, {
+        data: JSON.stringify(postData)
+      }, '正在提交…', (data) => {
+        this.$toast('订单提交成功')
+        this.$root.$emit('onReload')
+        this.$root.$emit('onGetBadge')
+        this.$router.replace({name: 'orderInfoPay', query: {no: data.data.out_trade_no}})
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -160,6 +162,10 @@ export default {
         vm.getData()
       }
     })
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$refs.ticketInfo.routeLeave()
+    next()
   }
 }
 </script>

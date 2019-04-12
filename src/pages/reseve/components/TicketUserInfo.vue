@@ -112,6 +112,9 @@ export default {
           this.userList.unshift(contact)
         }
         this.userList.push(this.addItem)
+      } else {
+        this.userList = []
+        this.userList.push(this.addItem)
       }
     }
   },

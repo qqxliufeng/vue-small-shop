@@ -6,7 +6,7 @@
                      <el-card shadow="always"  :body-style="{ padding: '.2rem' }" class="o-l-item-card">
                         <div class="o-l-item-container" @click="orderItemClick(item)">
                             <div class="o-l-item-img-container">
-                                <img v-lazy="$utils.image.getImagePath(item.scenicimage)">
+                                <img v-lazy="$utils.image.getImagePath(item.scenicimage)" :key="item.scenicimage">
                             </div>
                             <div class="o-l-item-info-container">
                                 <p>
@@ -95,7 +95,7 @@ export default {
                         this.$http(this.$urlPath.orderCancel, {
                           ord_id: it.ord_id
                         }, '正在取消…', (result) => {
-                          this.list.splice(this.list.indexOf(it), 1)
+                          this.reload()
                           this.$toast('订单取消成功')
                           if (this.list.length === 0) {
                             mescroll.endSuccess(0)
@@ -155,7 +155,7 @@ export default {
                         this.$http(this.$urlPath.orderDelete, {
                           ord_id: it.ord_id
                         }, '正在删除…', (result) => {
-                          this.list.splice(this.list.indexOf(it), 1)
+                          this.reload()
                           this.$toast('订单删除成功')
                         }, (errorCode, error) => {
                           this.$toast(error)
@@ -189,7 +189,7 @@ export default {
                         this.$http(this.$urlPath.orderDelete, {
                           ord_id: it.ord_id
                         }, '正在删除…', (result) => {
-                          this.list.splice(this.list.indexOf(it), 1)
+                          this.reload()
                           this.$toast('订单删除成功')
                         }, (errorCode, error) => {
                           this.$toast(error)
@@ -291,12 +291,17 @@ export default {
     },
     countDownEnd (item) {
       item.stateModel.action2.show = false
+    },
+    reload () {
+      this.list.length = 0
+      this.$refs.mescroll.mescroll.resetUpScroll(true)
     }
   },
   mounted () {
     this.$root.$on('onReload', () => {
-      this.list.length = 0
-      this.$refs.mescroll.mescroll.resetUpScroll(true)
+      if (this.$refs.mescroll) {
+        this.reload()
+      }
     })
   }
 }

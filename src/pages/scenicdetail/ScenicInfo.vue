@@ -5,7 +5,7 @@
             <el-tab-pane name="scenicInfoForIntro" label="景区介绍" class="c-tabs-item">
                 <div class="s-i-content" v-html="content"></div>
             </el-tab-pane>
-            <el-tab-pane name="scenicInfoForOrderNotify" label="预定须知" class="c-tabs-item">
+            <el-tab-pane name="scenicInfoForOrderNotify" label="使用须知" class="c-tabs-item">
                 <div v-for="(item, index) of remarks" :key="index" class="info-wrapper">
                   <p class="s-i-info-title">{{item.title}}</p>
                   <p v-if="showLine(item)" class="s-i-info-line">{{item.value}}</p>

@@ -1,7 +1,7 @@
 <template>
     <div>
        <section v-if="loadState">
-        <home-header :scrollTop="mScrollTop"></home-header>
+        <home-header :scrollTop="mScrollTop" @changeCity="changeCity"></home-header>
         <div ref="homeContent" class="h-content" id="#home">
             <home-swiper :list="swiperList"></home-swiper>
             <!-- <home-notice></home-notice> -->
@@ -94,6 +94,10 @@ export default {
     reload () {
       this.getData()
     },
+    changeCity () {
+      this.getData()
+      console.log(this.$root.state.currentCity)
+    },
     getData () {
       this.$http(this.$urlPath.indexUrl, {
         identity: this.identity,
@@ -123,6 +127,15 @@ export default {
     window.addEventListener('scroll', this.handleScroll, true)
     // this.autoLogin()
     this.getData()
+  },
+  beforeRouteEnter (to, from, next) {
+    if (from.name === 'personal') {
+      next(vm => {
+        vm.getData()
+      })
+    } else {
+      next()
+    }
   },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll)

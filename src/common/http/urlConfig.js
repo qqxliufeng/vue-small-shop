@@ -101,6 +101,8 @@ export const orderRefundList = orderModuleUrl + 'afer_sales_list'
 
 export const orderRefundAfterDetail = orderModuleUrl + 'afer_sales_details'
 
+export const orderCancelRefund = orderModuleUrl + 'cancel_refund'
+
 const payModuleUrl = 'payment/'
 
 export const orderPayUrl = payModuleUrl + 'run_pay'

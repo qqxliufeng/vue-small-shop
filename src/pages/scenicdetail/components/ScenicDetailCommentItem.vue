@@ -1,7 +1,7 @@
 <template>
     <div class="s-d-comment-item-container">
         <div class="s-d-comment-item-title-wrapper">
-            <img v-lazy="$utils.image.getImagePath(item.avatar)">
+            <img v-lazy="$utils.image.getImagePath(item.avatar)" :key="item.avatar">
             <span class="s-d-comment-item-title-nickname">{{item.username}}</span>
             <span></span>
             <span class="s-d-comment-item-title-rating">
@@ -17,7 +17,7 @@
             </p>
         </div>
         <div class="s-d-comment-item-imags-wrapper" v-lazy-container="{ selector: 'img' }">
-            <img v-for="(image, index) of item.images" :key="index" :data-src="$utils.image.getImagePath(image)">
+            <img v-for="(image, index) of item.images" :key="index" :data-src="$utils.image.getImagePath(image)" @click="imageClick">
         </div>
     </div>
 </template>
@@ -48,6 +48,9 @@ export default {
         this.contentHeight.maxHeight = '1rem'
       }
       this.isCollapse = !this.isCollapse
+    },
+    imageClick () {
+      this.$router.push({name: 'gallary', params: {imgs: this.item.images}})
     }
   }
 }

@@ -45,9 +45,6 @@ export default {
     startScenicInfo (type) {
       this.$router.push({name: 'scenicInfo', params: {selected: type}})
     }
-  },
-  mounted () {
-    console.log(this.scenicInfo)
   }
 }
 </script>

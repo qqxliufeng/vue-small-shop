@@ -1,7 +1,7 @@
 <template>
     <div>
         <section v-if="loadState">
-          <scenic-detail-header :scenicInfo="scenicInfo"></scenic-detail-header>
+          <scenic-detail-header :scenicInfo="scenicInfo" @back="back"></scenic-detail-header>
           <scenic-detail-images :imageList="imageList"></scenic-detail-images>
           <scenic-detail-info :scenicInfo="scenicInfo">
             <template slot="info" slot-scope="slotPropes">
@@ -70,7 +70,8 @@ export default {
       scenicId: null,
       identity: null,
       storeId: null,
-      show: true
+      show: true,
+      from: null
     }
   },
   methods: {
@@ -120,6 +121,18 @@ export default {
       }, (errorCode, error) => {
         this.loadState = false
       })
+    },
+    back () {
+      if (this.from) {
+        if (this.from.name) {
+          this.$router.go(-1)
+        } else {
+          console.log('asdfa')
+          this.$router.replace({path: '/'})
+        }
+      } else {
+        this.$router.go(-1)
+      }
     }
   },
   created () {
@@ -138,6 +151,11 @@ export default {
       this.$router.push({name: 'reseveDetail', query: { goods_id: item.goodsId }})
     })
     this.getData()
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.from = from
+    })
   }
 }
 </script>

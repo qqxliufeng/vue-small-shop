@@ -6,7 +6,7 @@
                      <el-card shadow="always"  :body-style="{ padding: '.2rem' }" class="o-l-item-card">
                         <div class="o-l-item-container" @click="orderItemClick(item)">
                             <div class="o-l-item-img-container">
-                                <img v-lazy="$utils.image.getImagePath(item.scenicimage)">
+                                <img v-lazy="$utils.image.getImagePath(item.scenicimage)" :key="item.scenicimage">
                             </div>
                             <div class="o-l-item-info-container">
                                 <p>
@@ -90,24 +90,24 @@ export default {
                     title: '联系客服',
                     show: true,
                     action: () => {
-                      let confirm = window.confirm('是否要取消此订单？')
-                      if (confirm) {
-                        this.$http(this.$urlPath.orderCancel, {
-                          ord_id: it.ord_id
-                        }, '正在取消…', (result) => {
-                          this.list.splice(this.list.indexOf(it), 1)
-                          this.$toast('订单取消成功')
-                        }, (errorCode, error) => {
-                          this.$toast(error)
-                        })
-                      }
                     }
                   },
                   action2: {
                     title: '取消退款',
                     show: true,
                     action: () => {
-                      this.$router.push({name: 'orderInfoPay', query: {no: it.out_trade_no}})
+                      let confirm = window.confirm('是否要取消退款？')
+                      if (confirm) {
+                        this.$http(this.$urlPath.orderCancelRefund, {
+                          rid: it.rid
+                        }, '正在取消…', (result) => {
+                          this.reload()
+                          this.$root.$emit('onReload')
+                          this.$toast('取消退款成功')
+                        }, (errorCode, error) => {
+                          this.$toast(error)
+                        })
+                      }
                     }
                   }
                 }
@@ -124,17 +124,6 @@ export default {
                     title: '联系客服',
                     show: true,
                     action: () => {
-                      let confirm = window.confirm('是否要取消此订单？')
-                      if (confirm) {
-                        this.$http(this.$urlPath.orderCancel, {
-                          ord_id: it.ord_id
-                        }, '正在取消…', (result) => {
-                          this.list.splice(this.list.indexOf(it), 1)
-                          this.$toast('订单取消成功')
-                        }, (errorCode, error) => {
-                          this.$toast(error)
-                        })
-                      }
                     }
                   },
                   action2: {
@@ -156,17 +145,6 @@ export default {
                     title: '联系客服',
                     show: true,
                     action: () => {
-                      let confirm = window.confirm('是否要取消此订单？')
-                      if (confirm) {
-                        this.$http(this.$urlPath.orderCancel, {
-                          ord_id: it.ord_id
-                        }, '正在取消…', (result) => {
-                          this.list.splice(this.list.indexOf(it), 1)
-                          this.$toast('订单取消成功')
-                        }, (errorCode, error) => {
-                          this.$toast(error)
-                        })
-                      }
                     }
                   },
                   action2: {
@@ -188,17 +166,6 @@ export default {
                     title: '联系客服',
                     show: true,
                     action: () => {
-                      let confirm = window.confirm('是否要取消此订单？')
-                      if (confirm) {
-                        this.$http(this.$urlPath.orderCancel, {
-                          ord_id: it.ord_id
-                        }, '正在取消…', (result) => {
-                          this.list.splice(this.list.indexOf(it), 1)
-                          this.$toast('订单取消成功')
-                        }, (errorCode, error) => {
-                          this.$toast(error)
-                        })
-                      }
                     }
                   },
                   action2: {
@@ -220,17 +187,6 @@ export default {
                     title: '联系客服',
                     show: true,
                     action: () => {
-                      let confirm = window.confirm('是否要取消此订单？')
-                      if (confirm) {
-                        this.$http(this.$urlPath.orderCancel, {
-                          ord_id: it.ord_id
-                        }, '正在取消…', (result) => {
-                          this.list.splice(this.list.indexOf(it), 1)
-                          this.$toast('订单取消成功')
-                        }, (errorCode, error) => {
-                          this.$toast(error)
-                        })
-                      }
                     }
                   },
                   action2: {
@@ -252,17 +208,6 @@ export default {
                     title: '联系客服',
                     show: true,
                     action: () => {
-                      let confirm = window.confirm('是否要取消此订单？')
-                      if (confirm) {
-                        this.$http(this.$urlPath.orderCancel, {
-                          ord_id: it.ord_id
-                        }, '正在取消…', (result) => {
-                          this.list.splice(this.list.indexOf(it), 1)
-                          this.$toast('订单取消成功')
-                        }, (errorCode, error) => {
-                          this.$toast(error)
-                        })
-                      }
                     }
                   },
                   action2: {
@@ -282,12 +227,17 @@ export default {
     },
     countDownEnd (item) {
       item.stateModel.action2.show = false
+    },
+    reload () {
+      this.list.length = 0
+      this.$refs.mescroll.mescroll.resetUpScroll(true)
     }
   },
   mounted () {
     this.$root.$on('onReload', () => {
-      this.list.length = 0
-      this.$refs.mescroll.mescroll.resetUpScroll(true)
+      if (this.$refs.mescroll) {
+        this.reload()
+      }
     })
   }
 }

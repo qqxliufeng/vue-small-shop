@@ -71,9 +71,6 @@ const userInfo = {
     this.state.token = ''
     this.state.phone = ''
     sessionStorage.clear()
-    if (localStorage) {
-      localStorage.clear()
-    }
   }
 }
 

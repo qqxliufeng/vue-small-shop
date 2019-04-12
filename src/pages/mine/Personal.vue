@@ -46,6 +46,7 @@
               <button class="p-logout" @click="logout">退出登录</button>
             </div>
         </div>
+        <confirm-dialog content="是否要退出当前账号？" @dialogConfirm="confirmLogout" ref="confirmDialog"></confirm-dialog>
     </div>
 </template>
 <script>
@@ -61,8 +62,12 @@ import img08 from 'images/img_personal_04.png'
 import img09 from 'images/img_personal_05.png'
 import img10 from 'images/img_personal_06.png'
 import img11 from 'images/img_personal_07.png'
+import ConfirmDialog from 'common/components/confirm-dialog'
 export default {
   name: 'personal',
+  components: {
+    ConfirmDialog
+  },
   data () {
     return {
       orderItemList: [
@@ -187,11 +192,11 @@ export default {
       }
     },
     logout () {
-      let confirm = window.confirm('是否要退出当前帐号？')
-      if (confirm) {
-        this.$root.userInfo.clearInfoAction()
-        this.$router.replace({name: 'home'})
-      }
+      this.$refs.confirmDialog.showDialog()
+    },
+    confirmLogout () {
+      this.$root.userInfo.clearInfoAction()
+      this.$router.replace({name: 'home'})
     }
   },
   beforeRouteLeave (to, from, next) {

@@ -37,10 +37,12 @@
             <div class="sperator-line"></div>
             <div class="o-i-pay-type-wrapper">
                 <div class="o-i-pay-type-zfb-wrapper" v-if="!$isWeiXin">
+                    <img :src="ZFBIcon" class="icon">
                     <span>支付宝</span>
                     <i class="el-icon-success"></i>
                 </div>
                 <div class="o-i-pay-type-zfb-wrapper" v-else>
+                    <img :src="WXIcon" class="icon">
                     <span>微信</span>
                     <i class="el-icon-success"></i>
                 </div>
@@ -54,6 +56,8 @@
 <script>
 import navi from 'common/components/navigation'
 import CountDown from 'common/components/countdown/countdown'
+import ZFBIcon from 'images/img_zfb_icon.png'
+import WXIcon from 'images/img_weixin_icon.png'
 export default {
   name: 'orderInfoPay',
   components: {
@@ -62,6 +66,8 @@ export default {
   },
   data () {
     return {
+      ZFBIcon,
+      WXIcon,
       info: null,
       payType: this.$isWeiXin ? 'wechatpay' : 'alipay'
     }
@@ -187,8 +193,14 @@ export default {
     overflow hidden
     padding rem(.3)
     & span
-        normalTextStyle(#333333, .3)
+        textStyle(#333333, .3)
+        vertical-align middle
     & i
         normalTextStyle($primary, .3)
         float right
+    .icon
+        width rem(.5)
+        height rem(.5)
+        margin-right rem(.2)
+        vertical-align middle
 </style>

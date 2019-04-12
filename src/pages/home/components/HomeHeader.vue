@@ -65,8 +65,8 @@ export default {
     getCityData () {
       let city = this.$route.params.city
       if (city) {
-        // this.currentCity = city.city
         this.$root.state.changeCity(city.city)
+        this.$emit('changeCity')
       }
     }
   },

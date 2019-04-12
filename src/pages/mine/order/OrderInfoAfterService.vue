@@ -23,7 +23,7 @@
                 </div>
             </template>
         </order-ticket-money-info>
-        <order-ticket-info v-for="item of detail.orders.voucher" :key="item.v_id" :itemInfo="item" :ticketName="detail.ord_product_name" :isEnable="false">
+        <order-ticket-info v-for="item of detail.orders.voucher" :key="item.v_id" :itemInfo="item" :ticketName="detail.ord_product_name">
         </order-ticket-info>
         <div class="sperator-line"></div>
         <order-info-user-info title="游客信息" :tourist="detail.orders.tourist">
@@ -80,20 +80,20 @@ export default {
         ticketName: this.detail.orders.ord_product_name,
         playTime: this.detail.orders.ord_play_time,
         money: {
-          title: '支付金额',
+          title: '退款金额',
           money: this.detail.orders.ord_amount,
           detail: [
             {
-              key: '数量',
-              value: 'X' + this.detail.orders.ord_ticket_num
+              key: '退票数量',
+              value: 'X' + this.detail.refund_num
             },
             {
-              key: '单价',
-              value: '￥' + this.detail.orders.ord_price
+              key: '手续费',
+              value: '￥' + this.detail.refund_charge
             },
             {
-              key: '总价',
-              value: '￥' + this.detail.orders.ord_amount
+              key: '退款总额',
+              value: '￥' + this.detail.refund_amount
             }
           ]
         }
@@ -197,7 +197,15 @@ export default {
       this.$refs.confirmDialog.showDialog()
     },
     dialogConfirm () {
-      this.$toast('退款')
+      this.$http(this.$urlPath.orderCancelRefund, {
+        rid: this.detail.rid
+      }, '正在取消…', (result) => {
+        this.$root.$emit('onReload')
+        this.$toast('取消退款成功')
+        this.$router.go(-1)
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
     }
   },
   mounted () {
@@ -260,6 +268,4 @@ export default {
     .span-color-4
         color $orangeColor
         font-size .28rem
->>> .el-dialog
-        margin-top 30vh !important
 </style>
