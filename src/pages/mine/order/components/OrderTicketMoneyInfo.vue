@@ -14,7 +14,7 @@
         <div class="o-i-ticket-info-money">
             <span>{{storeInfo.money.title}}</span>
             <span>￥{{storeInfo.money.money}}</span>
-            <span @click="toggleShowDetail">明细<i class="iconfont">{{ isShowDetail ? '&#xe797;' : '&#xe63d;'}}</i></span>
+            <span @click="toggleShowDetail">明细<i class="iconfont">{{ isShowDetail ? '&#xe63d;' : '&#xe797;'}}</i></span>
         </div>
         <div class="o-i-ticket-info-money-detail" v-show="isShowDetail">
             <slot name="ticketMoneyDetail" :moneyDetail="storeInfo.money.detail"></slot>

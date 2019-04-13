@@ -97,12 +97,11 @@ export default {
                         }, '正在取消…', (result) => {
                           this.reload()
                           this.$toast('订单取消成功')
-                          if (this.list.length === 0) {
-                            mescroll.endSuccess(0)
-                          }
                         }, (errorCode, error) => {
                           this.$toast(error)
                         })
+                      } else {
+                        this.$refs.mescroll.mescroll.resetUpScroll(true)
                       }
                     }
                   },
@@ -115,7 +114,6 @@ export default {
                   }
                 }
                 break
-              case 'PAY_STATUS_YES': // 已支付
               case 'USE_STATUS_NO': // 未使用
                 it.stateModel = {
                   orderType: '2',
@@ -138,7 +136,7 @@ export default {
                   }
                 }
                 break
-              case 'USE_STATUS_OFF': // 被取消
+              case 'USE_STATUS_OFF': // 取消
                 it.stateModel = {
                   orderType: '6',
                   stateTip: '已取消',
@@ -206,7 +204,6 @@ export default {
                   }
                 }
                 break
-              case 'NO_COMMENT': // 待评价
               case 'USE_STATUS': // 已使用
                 it.stateModel = {
                   orderType: '3',
@@ -249,38 +246,6 @@ export default {
                   }
                 }
                 break
-              case 'USE_STATUS_PARTIAL': // 部分使用
-                break
-              case 'REFUND_STATUS_PENDING': // 退款中
-                it.stateModel = {
-                  orderType: '4',
-                  stateTip: '退款/售后',
-                  time: {
-                    title: '下单时间：',
-                    time: it.ord_add_time
-                  },
-                  action1: {
-                    title: '',
-                    show: false,
-                    action: null
-                  },
-                  action2: {
-                    title: '查看进度',
-                    show: true,
-                    action: () => {
-                      this.$router.push({name: 'orderComment', params: {orderId: it.ord_id.toString()}})
-                    }
-                  }
-                }
-                break
-              case 'REFUND_STATUS_YES': // 已退票
-                break
-              case 'PAY_STATUS_PARTIAL_REFUND': // 部分退款
-                break
-              case 'PAY_STATUS_REFUNDED': // 已退款
-                break
-              case 'REFUND_STATUS_NO': // 未退票
-                break
             }
           })
         }
@@ -293,7 +258,7 @@ export default {
       item.stateModel.action2.show = false
     },
     reload () {
-      this.list.length = 0
+      this.list = []
       this.$refs.mescroll.mescroll.resetUpScroll(true)
     }
   },

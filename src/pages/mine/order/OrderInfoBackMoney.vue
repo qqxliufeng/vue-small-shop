@@ -27,7 +27,7 @@
                 </div>
                 <div>
                     <p>{{info.ord_product_name}}</p>
-                    <p>数量：{{info.ord_ticket_num}}</p>
+                    <p>数量：{{info.ord_ticket_num}}张</p>
                     <p>总价：￥{{info.ord_amount}}</p>
                 </div>
             </div>
@@ -119,7 +119,7 @@ export default {
       return this.info && this.info.is_refund_part === 0
     },
     backMoney () {
-      return Number(this.info.ord_ticket_num) * Number(this.info.ord_price)
+      return Number(this.backNum) * Number(this.info.ord_price)
     },
     backTip () {
       return this.info.is_refund_part === 0 ? '当前门票支持部分退款' : '当前门票仅支持全部退款'
@@ -134,27 +134,30 @@ export default {
         },
         {
           name: '数量：',
-          money: 'X' + this.info.ord_ticket_num
+          money: 'X' + this.backNum
         })
         let charge = 0
+        let chargeName = '手续费：'
         switch (this.info.is_charge) {
           case 0: // 无手续费
             charge = 0
             break
           case 1: // 每笔订单收取手续费
             charge = this.info.charge
+            chargeName = '手续费(每次)：'
             break
           case 2: // 每张门票收取手续费
             charge = this.info.charge * this.backNum
+            chargeName = '手续费(每张)：'
             break
         }
         this.tempMoneyList.push({
-          name: '手续费：',
+          name: chargeName,
           money: '￥' + Number(charge).toFixed(2)
         },
         {
           name: '实际退款：',
-          money: '￥' + (Number(this.info.ord_amount) - Number(charge)).toFixed(2)
+          money: '￥' + (this.backMoney - Number(charge)).toFixed(2)
         })
       }
     },
@@ -173,11 +176,9 @@ export default {
       })
     },
     handleChange (num) {
-      if (this.tempMoneyList && this.info.is_charge === 2) {
-        this.tempMoneyList.length = 0
-        this.backNum = num
-        this.moneyDetailList()
-      }
+      this.tempMoneyList = []
+      this.backNum = num
+      this.moneyDetailList()
     },
     changeReason (item) {
       this.reason = this.info.reason[item].reason

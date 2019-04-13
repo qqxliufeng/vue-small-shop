@@ -90,7 +90,7 @@ export default {
   },
   watch: {
     detail (newVal, oldVal) {
-      if (newVal.status !== 'PAY_STATUS_YES') {
+      if (newVal.status !== 'USE_STATUS_NO') {
         this.$router.go(-1)
       }
     }
