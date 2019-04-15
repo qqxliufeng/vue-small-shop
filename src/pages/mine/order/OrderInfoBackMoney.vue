@@ -3,12 +3,12 @@
         <navi title="退款申请" :isFixed="true"></navi>
         <div class="o-i-back-content-container" v-if="info">
             <order-info-header stateTip="申请退款">
-                <template slot="headerTitleInfo">
+                <!-- <template slot="headerTitleInfo">
                     <span class="o-i-back-money-remark">
                         查看退款说明
                         <i class="el-icon-question"></i>
                     </span>
-                </template>
+                </template> -->
                 <template slot="headerTitleInfo">
                     <p class="o-i-use-info">
                         提示：申请退款，下单时所使用优惠券将无法退回你的账户
@@ -45,7 +45,7 @@
                     退票数量
                 </span>
                 <span>
-                    <el-input-number v-model="backNum" @change="handleChange" :min="1" :max="info.ord_ticket_num" :disabled="!canInput" size="mini"></el-input-number>
+                    <el-input-number v-model="backNum" @change="handleChange" :min="1" :max="info.remain_num" :disabled="!canInput" size="mini"></el-input-number>
                 </span>
                 <p class="back-tip">{{backTip}}</p>
             </div>

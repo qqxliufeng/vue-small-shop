@@ -21,8 +21,8 @@
                         <div class="s-c-line"></div>
                         <div class="s-c-bottom-action-container">
                             <!-- <span>剩余时间:2天10时10分</span> -->
-                            <el-button type="primary" size="small" class="s-c-bottom-action">查看详情</el-button>
-                            <el-button plain size="small" class="s-c-bottom-action">取消收藏</el-button>
+                            <el-button type="primary" size="small" class="s-c-bottom-action" @click="ticketDetail(item)">查看详情</el-button>
+                            <el-button plain size="small" class="s-c-bottom-action" @click="cancelCollection(item)">取消收藏</el-button>
                         </div>
                     </el-card>
                 </li>
@@ -56,6 +56,22 @@ export default {
       }, (errorCode, error) => {
         this.loadError(mescroll)
       })
+    },
+    cancelCollection (item) {
+      let confirm = window.confirm('是否要取消收藏？')
+      if (confirm) {
+        this.$http(this.$urlPath.userUnFavoroteGoodsUrl, {
+          goods_id: item.goods_id
+        }, '正在操作…', (data) => {
+          this.$toast('取消收藏成功')
+          this.$refs.mescroll.mescroll.resetUpScroll(true)
+        }, (errorCode, error) => {
+          this.$toast(error)
+        })
+      }
+    },
+    ticketDetail (item) {
+      this.$router.push({name: 'ticketDetail', query: {s_id: item.scenicId, goods_id: item.goods_id}})
     }
   }
 }

@@ -16,26 +16,16 @@ export default {
   },
   data () {
     return {
-      currentRefs: null,
-      index: 'allItem'
+      currentRefs: null
     }
-  },
-  watch: {
-    '$route' () {
-      this.index = this.$route.query.index
-    }
-  },
-  mounted () {
-    this.index = this.$route.query.index
-    this.currentRefs = this.$refs['allItem'].$refs
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      vm.$data.currentRefs.mescroll && vm.$data.currentRefs.mescroll.beforeRouteEnter()
+      vm.$refs.allItem.$refs.mescroll && vm.$refs.allItem.$refs.mescroll.beforeRouteEnter()
     })
   },
   beforeRouteLeave (to, from, next) {
-    this.currentRefs.mescroll && this.currentRefs.mescroll.beforeRouteLeave()
+    this.$refs.allItem.$refs.mescroll && this.$refs.allItem.$refs.mescroll.beforeRouteLeave()
     next()
   }
 }

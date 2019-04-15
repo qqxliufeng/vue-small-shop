@@ -42,6 +42,15 @@ export default {
         studentId: ''
       }
     }
+  },
+  methods: {
+    clearUserInfo () {
+      this.tempUserInfo.name = null
+      this.tempUserInfo.phone = null
+      this.tempUserInfo.idCard = null
+      this.tempUserInfo.schoolName = null
+      this.tempUserInfo.studentId = null
+    }
   }
 }
 </script>

@@ -157,6 +157,7 @@ export default {
         this.orderItemList[0].badage = data.data.pay_count
         this.orderItemList[1].badage = data.data.use_count
         this.orderItemList[2].badage = data.data.comment_count
+        this.orderItemList[3].badage = data.data.refund_count
       }, (errorCode, error) => {
         this.$toast(error)
       })
@@ -202,10 +203,8 @@ export default {
   beforeRouteLeave (to, from, next) {
     if (to.name === 'message') {
       this.isShowRedNotify = false
-      next()
-    } else {
-      next()
     }
+    next()
   },
   activated () {
     this.$refs.pContent.scrollTop = this.contentDivScroll

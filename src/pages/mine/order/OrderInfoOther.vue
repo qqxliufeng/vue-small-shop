@@ -17,7 +17,7 @@
                 </div>
             </template>
         </order-ticket-money-info>
-        <order-ticket-info v-for="item of detail.voucher" :key="item.v_id" :itemInfo="item" :ticketName="detail.ord_product_name" :isEnable="false">
+        <order-ticket-info v-for="item of detail.voucher" :key="item.v_id" :itemInfo="item" :ticketName="detail.ord_product_name" :refundNum="detail.refund_num">
         </order-ticket-info>
         <div class="sperator-line"></div>
         <order-info-user-info title="游客信息" :tourist="detail.tourist">
@@ -78,9 +78,10 @@ export default {
             this.stateModel.stateTip = '已完成'
             this.stateModel.discription = '感谢您的本次消费，订单已经完结'
             break
-          // case 'PAY_STATUS_NO': // 待付款
-          //   this.stateTip = '待付款'
-          //   break
+          case 'USE_STATUS_REVOKE': // 已退款
+            this.stateModel.stateTip = '已退款'
+            this.stateModel.discription = '感谢您的本次消费，订单已经退款，请耐心等待！'
+            break
           // case 'PAY_STATUS_YES': // 已支付
           //   this.stateTip = '已支付'
           //   break

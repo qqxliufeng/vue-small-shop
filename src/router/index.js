@@ -23,7 +23,6 @@ import OrderBackMoney from '@/pages/mine/order/OrderInfoBackMoney'
 import OrderComment from '@/pages/mine/order/OrderInfoComment'
 import OrderInfoPay from '@/pages/mine/order/OrderInfoPay'
 import CustomService from '@/pages/mine/CustomService'
-import TestScroller from '@/pages/mine/TestScroller'
 // home
 import Home from '@/pages/home/Home'
 import HomeSearch from '@/pages/home/HomeSearch'
@@ -241,14 +240,6 @@ export default new Router({
       }
     },
     {
-      path: '/test',
-      name: 'testScroller',
-      component: TestScroller,
-      meta: {
-        keepAlive: true
-      }
-    },
-    {
       path: '/orderlist',
       name: 'orderList',
       component: OrderList,
@@ -259,10 +250,7 @@ export default new Router({
     {
       path: '/orderAlllist',
       name: 'orderAllList',
-      component: () => import('@/pages/mine/order/OrderAllList'),
-      meta: {
-        keepAlive: true
-      }
+      component: () => import('@/pages/mine/order/OrderAllList')
     },
     {
       path: '/customservice',

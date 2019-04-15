@@ -29,7 +29,8 @@ export default {
   name: 'orderTicketInfo',
   props: {
     itemInfo: Object,
-    ticketName: String
+    ticketName: String,
+    refundNum: Number
   },
   data () {
     return {
@@ -48,9 +49,9 @@ export default {
           params: {
             info: {
               no: this.itemInfo.voucher_number,
-              waitNum: this.itemInfo.buynum - this.itemInfo.consum,
+              waitNum: this.itemInfo.no_check_num,
               consum: this.itemInfo.consum,
-              backNum: this.itemInfo.backNum ? this.itemInfo.backNum : 0,
+              backNum: this.refundNum,
               ticketName: this.ticketName
             }
           }

@@ -159,6 +159,9 @@ export default {
       } else {
         vm.totalPrice = 0
         vm.contacts = []
+        if (vm.$refs.userSingleInfo) {
+          vm.$refs.userSingleInfo.clearUserInfo()
+        }
         vm.getData()
       }
     })

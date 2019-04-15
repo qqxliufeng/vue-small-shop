@@ -23,7 +23,7 @@
                 </div>
             </template>
         </order-ticket-money-info>
-        <order-ticket-info v-for="item of detail.orders.voucher" :key="item.v_id" :itemInfo="item" :ticketName="detail.ord_product_name">
+        <order-ticket-info v-for="item of detail.orders.voucher" :key="item.v_id" :itemInfo="item" :ticketName="detail.ord_product_name" :refundNum="detail.refund_num">
         </order-ticket-info>
         <div class="sperator-line"></div>
         <order-info-user-info title="游客信息" :tourist="detail.orders.tourist">
@@ -81,8 +81,12 @@ export default {
         playTime: this.detail.orders.ord_play_time,
         money: {
           title: '退款金额',
-          money: this.detail.orders.ord_amount,
+          money: this.detail.refund_amount,
           detail: [
+            {
+              key: '门票总数',
+              value: 'X' + this.detail.orders.ord_ticket_num
+            },
             {
               key: '退票数量',
               value: 'X' + this.detail.refund_num
@@ -93,7 +97,7 @@ export default {
             },
             {
               key: '退款总额',
-              value: '￥' + this.detail.refund_amount
+              value: '￥' + this.detail.refund_actual_amount
             }
           ]
         }

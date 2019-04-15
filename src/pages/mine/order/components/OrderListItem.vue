@@ -31,7 +31,7 @@
                                 <p>总价：￥{{item.ord_amount}}</p>
                             </div>
                         </div>
-                        <div class="sperator-line"></div>
+                        <div class="sperator-line" v-if="item.stateModel.action1.show || item.stateModel.action2.show"></div>
                         <div class="o-l-bottom-action-container">
                             <el-button plain size="small" class="o-l-bottom-action" v-if="item.stateModel.action1.show" @click="item.stateModel.action1.action">{{item.stateModel.action1.title}}</el-button>
                             <el-button type="primary" size="small" class="o-l-bottom-action" v-if="item.stateModel.action2.show" @click="item.stateModel.action2.action">{{item.stateModel.action2.title}}</el-button>
@@ -67,7 +67,11 @@ export default {
   },
   methods: {
     orderItemClick (item) {
-      this.$router.push({name: 'orderInfo', params: {orderId: item.ord_id.toString(), orderType: item.stateModel.orderType}})
+      if (item.refund) {
+        this.$router.push({name: 'orderInfo', params: {orderId: item.refund.rid.toString(), orderType: item.stateModel.orderType}})
+      } else {
+        this.$router.push({name: 'orderInfo', params: {orderId: item.ord_id.toString(), orderType: item.stateModel.orderType}})
+      }
     },
     upCallBack (page, mescroll) {
       this.$http(this.$urlPath.orderList, {
@@ -100,8 +104,6 @@ export default {
                         }, (errorCode, error) => {
                           this.$toast(error)
                         })
-                      } else {
-                        this.$refs.mescroll.mescroll.resetUpScroll(true)
                       }
                     }
                   },
@@ -133,6 +135,48 @@ export default {
                     action: it.is_refund ? () => {
                       this.$router.push({name: 'orderBackMoney', query: {id: it.ord_id}})
                     } : null
+                  }
+                }
+                if (it.refund && it.refund.refund_status === 0) {
+                  it.stateModel.stateTip = '退款中'
+                  it.stateModel.action2.title = '取消退款'
+                  it.stateModel.action2.show = true
+                  it.stateModel.action2.action = () => {
+                    let confirm = window.confirm('是否要取消退款？')
+                    if (confirm) {
+                      this.$http(this.$urlPath.orderCancelRefund, {
+                        rid: it.refund.rid
+                      }, '正在取消…', (result) => {
+                        this.reload()
+                        this.$root.$emit('onReload')
+                        this.$toast('取消退款成功')
+                      }, (errorCode, error) => {
+                        this.$toast(error)
+                      })
+                    }
+                  }
+                }
+                break
+              case 'NO_COMMENT':
+              case 'USE_STATUS': // 已使用
+                it.stateModel = {
+                  orderType: '3',
+                  stateTip: '待评价',
+                  time: {
+                    title: '下单时间：',
+                    time: it.ord_add_time
+                  },
+                  action1: {
+                    title: '',
+                    show: false,
+                    action: null
+                  },
+                  action2: {
+                    title: '去评价',
+                    show: true,
+                    action: () => {
+                      this.$router.push({name: 'orderComment', params: {orderId: it.ord_id.toString()}})
+                    }
                   }
                 }
                 break
@@ -204,10 +248,10 @@ export default {
                   }
                 }
                 break
-              case 'USE_STATUS': // 已使用
+              case 'ALREADY_COMMENT': // 已经评价
                 it.stateModel = {
-                  orderType: '3',
-                  stateTip: '待评价',
+                  orderType: '5',
+                  stateTip: '已完成',
                   time: {
                     title: '下单时间：',
                     time: it.ord_add_time
@@ -218,17 +262,35 @@ export default {
                     action: null
                   },
                   action2: {
-                    title: '去评价',
-                    show: true,
-                    action: () => {
-                      this.$router.push({name: 'orderComment', params: {orderId: it.ord_id.toString()}})
-                    }
+                    title: '',
+                    show: false,
+                    action: null
                   }
                 }
                 break
-              case 'ALREADY_COMMENT': // 已经评价
+              case 'USE_STATUS_REVOKE': // 退款
                 it.stateModel = {
-                  orderType: '5',
+                  orderType: '10',
+                  stateTip: '已退款',
+                  time: {
+                    title: '下单时间：',
+                    time: it.ord_add_time
+                  },
+                  action1: {
+                    title: '',
+                    show: false,
+                    action: null
+                  },
+                  action2: {
+                    title: '',
+                    show: false,
+                    action: null
+                  }
+                }
+                break
+              case 'USE_STATUS_OVER': // 订单已完结
+                it.stateModel = {
+                  orderType: '9',
                   stateTip: '已完成',
                   time: {
                     title: '下单时间：',

@@ -59,9 +59,10 @@ export default {
       let confirm = window.confirm('是否要取消收藏？')
       if (confirm) {
         this.$http(this.$urlPath.userUnFavoroteScenicUrl, {
-          fs_id: item.fs_id
+          scenic_id: item.s_id
         }, '正在取消', (data) => {
-          this.list.splice(this.list.indexOf(item), 1)
+          this.$toast('取消收藏成功')
+          this.$refs.mescroll.mescroll.resetUpScroll(true)
         }, (errorCode, error) => {
           this.$toast(error)
         })

@@ -1,7 +1,7 @@
 <template>
     <div>
         <section v-if="loadState">
-          <ticket-header :scenicInfo="scenicInfo"></ticket-header>
+          <ticket-header :scenicInfo="scenicInfo" @back="back"></ticket-header>
           <ticket-images :imageList="scenicInfo.imageList"></ticket-images>
           <ticket-info :scenicInfo="scenicInfo">
               <template slot="info" slot-scope="slotProps">
@@ -24,7 +24,7 @@
           </div>
           <div class="t-d-detail-order-info-wrapper">
               <p class="t-d-detail-order-info-price">
-                  总价：<span>￥55.00</span>
+                  门票价格：<span>￥{{scenicInfo.price}}</span>
               </p>
               <p class="t-d-detail-order-info-action" @click="reseve">立即预定</p>
           </div>
@@ -62,7 +62,8 @@ export default {
       showBuyAction: true,
       scenicInfo: {},
       goodsInfo: {},
-      remarks: []
+      remarks: [],
+      from: null
     }
   },
   methods: {
@@ -75,7 +76,7 @@ export default {
       this.isSeeMore = !this.isSeeMore
     },
     reseve () {
-      this.$router.push({name: 'reseveDetail'})
+      this.$router.push({name: 'reseveDetail', query: { goods_id: this.$route.query.goods_id }})
     },
     reload () {
       this.getData()
@@ -98,6 +99,7 @@ export default {
         info.tags = data.data.scenic.sceniclabel
         info.imageList = data.data.scenic.scenicimages
         info.brief = data.data.scenic.brief
+        info.price = data.data.scenic.minPrice
         this.scenicInfo = info
         this.goodsInfo = data.data.goods
         for (let i in this.goodsInfo) {
@@ -108,10 +110,27 @@ export default {
       }, (errorCode, error) => {
         this.loadState = false
       })
+    },
+    back () {
+      if (this.from) {
+        if (this.from.name) {
+          this.$router.go(-1)
+        } else {
+          console.log('asdfa')
+          this.$router.replace({path: '/'})
+        }
+      } else {
+        this.$router.go(-1)
+      }
     }
   },
   mounted () {
     this.getData()
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.from = from
+    })
   }
 }
 </script>

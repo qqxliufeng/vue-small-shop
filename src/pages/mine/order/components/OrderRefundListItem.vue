@@ -31,7 +31,7 @@
                                 <p>退款金额:￥{{item.refund_amount}}</p>
                             </div>
                         </div>
-                        <div class="sperator-line"></div>
+                        <div class="sperator-line" v-if="item.stateModel.action1.show || item.stateModel.action2.show"></div>
                         <div class="o-l-bottom-action-container">
                             <el-button plain size="small" class="o-l-bottom-action" v-if="item.stateModel.action1.show" @click="item.stateModel.action1.action">{{item.stateModel.action1.title}}</el-button>
                             <el-button type="primary" size="small" class="o-l-bottom-action" v-if="item.stateModel.action2.show" @click="item.stateModel.action2.action">{{item.stateModel.action2.title}}</el-button>
@@ -178,16 +178,15 @@ export default {
               case 'REFUND_PAY_YES': // 退款支付成功
                 it.stateModel = {
                   stateTip: '审核成功',
-                  orderType: '5',
+                  orderType: '4',
                   time: {
                     title: '申请时间:',
                     time: it.refund_create_time
                   },
                   action1: {
-                    title: '联系客服',
-                    show: true,
-                    action: () => {
-                    }
+                    title: '',
+                    show: false,
+                    action: null
                   },
                   action2: {
                     title: '取消退款',

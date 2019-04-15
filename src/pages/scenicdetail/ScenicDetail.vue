@@ -127,7 +127,6 @@ export default {
         if (this.from.name) {
           this.$router.go(-1)
         } else {
-          console.log('asdfa')
           this.$router.replace({path: '/'})
         }
       } else {

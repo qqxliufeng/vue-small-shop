@@ -1,18 +1,25 @@
 <template>
-    <transition name="slide-fade">
-      <div class="h-n-navi-container" v-show="show">
-        <span class="h-n-navi-item" @click="startLogin">{{loginTip}}</span>
-        <div class="sperator-line">|</div>
-        <span class="h-n-navi-item" @click="startMine">{{personCenterTip}}</span>
-        <div class="sperator-line">|</div>
-        <span class="h-n-navi-item" @click="startCustomService">联系客服</span>
-      </div>
-    </transition>
+    <div>
+      <transition name="slide-fade">
+        <div class="h-n-navi-container" v-show="show">
+          <span class="h-n-navi-item" @click="startLogin">{{loginTip}}</span>
+          <div class="sperator-line">|</div>
+          <span class="h-n-navi-item" @click="startMine">{{personCenterTip}}</span>
+          <div class="sperator-line">|</div>
+          <span class="h-n-navi-item" @click="startCustomService">联系客服</span>
+        </div>
+      </transition>
+      <confirm-dialog content="是否要退出当前账号？" @dialogConfirm="confirmLogout" ref="homeConfirmDialog"></confirm-dialog>
+    </div>
 </template>
 
 <script>
+import ConfirmDialog from 'common/components/confirm-dialog'
 export default {
   name: 'homeNavi',
+  components: {
+    ConfirmDialog
+  },
   props: {
     scrollTop: {
       type: Number,
@@ -54,10 +61,7 @@ export default {
   methods: {
     startLogin () {
       if (this.$root.userInfo.isLogin()) {
-        let confirm = window.confirm('是否要退出登录？')
-        if (confirm) {
-          this.$root.userInfo.clearInfoAction()
-        }
+        this.$refs.homeConfirmDialog.showDialog()
       } else {
         this.$router.push({name: 'login'})
       }
@@ -67,6 +71,9 @@ export default {
     },
     startCustomService () {
       this.$router.push({name: 'customService'})
+    },
+    confirmLogout () {
+      this.$root.userInfo.clearInfoAction()
     }
   }
 }
