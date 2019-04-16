@@ -3,10 +3,10 @@
         <navi title="留言板" :isFixed="true"></navi>
         <el-tabs :stretch="true" value='first' class="l-tabs">
             <el-tab-pane label="我的问题" name="first" class="l-tab-item">
-                <my-question></my-question>
+                <my-question ref="myAsk"></my-question>
             </el-tab-pane>
-            <el-tab-pane label="我的回复" name="second" class="l-tab-item">
-                <my-reply></my-reply>
+            <el-tab-pane label="我的回复" name="second" class="l-tab-item" ref="myAnswer">
+                <my-reply ref="myAnswer"></my-reply>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -21,6 +21,14 @@ export default {
     navi,
     myQuestion,
     myReply
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if (from.name === 'personal') {
+        vm.$refs.myAsk.$refs.mescroll.mescroll.resetUpScroll(true)
+        vm.$refs.myAnswer.$refs.mescroll.mescroll.resetUpScroll(true)
+      }
+    })
   }
 }
 </script>

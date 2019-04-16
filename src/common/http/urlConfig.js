@@ -77,6 +77,10 @@ export const askAnswerLikeUrl = askModuleUrl + 'answer_like'
 
 export const askAnserGetScenicUrl = askModuleUrl + 'get_scenic'
 
+export const myAnswerUrl = askModuleUrl + 'my_answer'
+
+export const myAskUrl = askModuleUrl + 'my_ask_list'
+
 const orderModuleUrl = 'order/'
 
 export const orderReserve = orderModuleUrl + 'reserve'
@@ -108,3 +112,11 @@ const payModuleUrl = 'payment/'
 export const orderPayUrl = payModuleUrl + 'run_pay'
 
 export const orderPay = payModuleUrl + 'do_pay'
+
+const messageModuleUrl = 'sys/'
+
+export const messageList = messageModuleUrl + 'message_list'
+
+export const messageDetails = messageModuleUrl + 'message_details'
+
+export const customService = messageModuleUrl + 'customservice'

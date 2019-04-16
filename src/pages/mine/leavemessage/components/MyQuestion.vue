@@ -2,26 +2,26 @@
     <div id="my_question_item">
         <mescroll-vue ref="mescroll" :down="mescrollConfig.mescrollDown" :up="mescrollConfig.mescrollUp">
             <ul>
-                <li v-for="(item,index) of questionList" :key="index">
+                <li v-for="(item,index) of list" :key="index">
                     <el-card shadow="always" class="l-q-card" :body-style="{ padding:'.2rem' }">
-                        <div class="l-q-title-container">
+                        <!-- <div class="l-q-title-container">
                             <span>{{item.title}}</span>
                             <span class="iconfont">景区详情&#xe64c;</span>
-                        </div>
+                        </div> -->
                         <div class="l-q-content-container">
                             <span>问</span>
-                            <span>请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？</span>
+                            <span>{{item.content}}</span>
                         </div>
-                        <div class="l-q-no-reply" v-if="item.isReply">
+                        <div class="l-q-no-reply" v-if="!item.answer">
                             很遗憾暂时还没有人回复您的问题呢，请耐心等待哦~
                         </div>
                         <div v-else class="l-q-content-r-container">
                             <span>答</span>
-                            <span>请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？</span>
+                            <span>{{item.answer.answer_text}}</span>
                         </div>
-                        <div class="l-q-footer-container">
-                            <span class="iconfont">&#xe790; 1天前</span>
-                            <span>查看其它答案</span>
+                        <div class="l-q-footer-container" v-if="item.answer">
+                            <span class="iconfont">&#xe790; {{item.answer.create_time}}</span>
+                            <span @click="startMessageInfo(item)">查看其它答案</span>
                         </div>
                     </el-card>
                 </li>
@@ -32,29 +32,32 @@
 <script>
 import MescrollVue from 'mescroll.js/mescroll.vue'
 import mescrollConfig from 'common/utils/mescrollerConfig'
+import listMixin from 'common/mixins/list-mixin'
 export default {
   name: 'question',
+  mixins: [listMixin],
   components: {
     MescrollVue
   },
   data () {
     return {
       mescrollConfig: mescrollConfig('my_question_item', this.upCallback),
-      questionList: []
+      list: []
     }
   },
   methods: {
     upCallback (page, mescroll) {
-      setTimeout(() => {
-        for (let index = 0; index < 4; index++) {
-          this.questionList.push({ title: '滑雪场', isReply: false })
-        }
-        if (page.num > 4) {
-          mescroll.endSuccess(0)
-        } else {
-          mescroll.endSuccess(100)
-        }
-      }, 1000)
+      this.$http(this.$urlPath.myAskUrl, {
+        page: page.num
+      }, null, (data) => {
+        this.loadSuccess(page, mescroll, data.data)
+      }, (errorCode, error) => {
+        this.$toast(error)
+        this.loadError(mescroll)
+      })
+    },
+    startMessageInfo (item) {
+      this.$router.push({name: 'leaveMessageInfo', query: {s_id: item.sid, aid: item.aid}})
     }
   }
 }

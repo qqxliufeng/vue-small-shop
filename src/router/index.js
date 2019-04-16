@@ -181,7 +181,15 @@ export default new Router({
     {
       path: '/message',
       name: 'message',
-      component: Message
+      component: Message,
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/messageinfo',
+      name: 'messageInfo',
+      component: () => import('@/pages/mine/MessageInfo')
     },
     {
       path: '/pinfo',
@@ -218,7 +226,8 @@ export default new Router({
       component: LeaveMessage,
       meta: {
         'x5-fullscreen': true,
-        'apple-mobile-web-app-capable': 'yes'
+        'apple-mobile-web-app-capable': 'yes',
+        keepAlive: true
       }
     },
     {

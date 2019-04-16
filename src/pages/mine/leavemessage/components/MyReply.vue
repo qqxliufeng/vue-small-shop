@@ -2,24 +2,24 @@
     <div id="my_reply_item">
         <mescroll-vue ref="mescroll" :down="mescrollConfig.mescrollDown" :up="mescrollConfig.mescrollUp">
             <ul>
-                <li v-for="(item,index) of replyList" :key="index">
+                <li v-for="(item,index) of list" :key="index">
                     <el-card shadow="always" class="l-q-card" :body-style="{ padding:'.2rem' }">
-                        <div class="l-q-title-container">
+                        <!-- <div class="l-q-title-container">
                             <span>{{item.title}}</span>
                             <span class="iconfont">景区详情&#xe64c;</span>
-                        </div>
+                        </div> -->
                         <div class="l-q-content-container">
                             <span>问</span>
-                            <span>请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？</span>
+                            <span>{{item.ask.content}}</span>
                         </div>
                         <div class="l-q-content-r-container">
                             <span>答</span>
-                            <span>请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？请问滑雪好玩吗？</span>
+                            <span>{{item.answer_text}}</span>
                         </div>
                         <div class="l-q-footer-container">
-                            <span class="iconfont">&#xe790; 1天前</span>
-                            <span class="iconfont">&#xe605; 2333个赞</span>
-                            <span>查看其它答案</span>
+                            <span class="iconfont">&#xe790; {{item.ask.add_time}}</span>
+                            <span class="iconfont">&#xe605; {{item.like}}个赞</span>
+                            <span @click="startMessageInfo(item)">查看其它答案</span>
                         </div>
                     </el-card>
                 </li>
@@ -30,29 +30,32 @@
 <script>
 import MescrollVue from 'mescroll.js/mescroll.vue'
 import mescrollConfig from 'common/utils/mescrollerConfig'
+import listMixin from 'common/mixins/list-mixin'
 export default {
   name: 'reply',
+  mixins: [listMixin],
   components: {
     MescrollVue
   },
   data () {
     return {
       mescrollConfig: mescrollConfig('my_reply_item', this.upCallback),
-      replyList: []
+      list: []
     }
   },
   methods: {
     upCallback (page, mescroll) {
-      setTimeout(() => {
-        for (let index = 0; index < 4; index++) {
-          this.replyList.push({ title: '滑雪场', isReply: false })
-        }
-        if (page.num > 4) {
-          mescroll.endSuccess(0)
-        } else {
-          mescroll.endSuccess(100)
-        }
-      }, 1000)
+      this.$http(this.$urlPath.myAnswerUrl, {
+        page: page.num
+      }, null, (data) => {
+        this.loadSuccess(page, mescroll, data.data)
+      }, (errorCode, error) => {
+        this.$toast(error)
+        this.loadError(mescroll)
+      })
+    },
+    startMessageInfo (item) {
+      this.$router.push({name: 'leaveMessageInfo', query: {s_id: item.ask.sid, aid: item.a_id}})
     }
   }
 }

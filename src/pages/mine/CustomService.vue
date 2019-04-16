@@ -6,16 +6,34 @@
                 <i></i>
                 店铺客服
             </p>
-            <p v-for="(item,index) of shopServiceInfoMap" :key="index">
-                <span>
-                    {{item.name}}
-                </span>
-                <span>
-                    {{item.info}}
-                </span>
-            </p>
-            <div class="sperator-line"></div>
-            <p class="c-s-title">
+            <div v-if="info">
+                <p class="item">
+                  <span>
+                      店铺名称
+                  </span>
+                  <span>
+                      {{info.store_name}}
+                  </span>
+                </p>
+                <p class="item">
+                  <span>
+                      联系人
+                  </span>
+                  <span>
+                      {{info.link_name}}
+                  </span>
+                </p>
+                <p class="item">
+                  <span>
+                      手机号
+                  </span>
+                  <span>
+                      {{info.phone}}
+                  </span>
+                </p>
+            </div>
+            <!-- <div class="sperator-line"></div> -->
+            <!-- <p class="c-s-title">
                 <i></i>
                 平台客服
             </p>
@@ -26,7 +44,7 @@
                 <span>
                     {{item.info}}
                 </span>
-            </p>
+            </p> -->
         </div>
     </div>
 </template>
@@ -40,43 +58,25 @@ export default {
   },
   data () {
     return {
-      shopServiceInfoMap: [
-        {
-          name: '王大宝的信息',
-          info: '王大宝的信息王大宝的王大宝的信息王大宝的'
-        },
-        {
-          name: '王大宝的信息',
-          info: '王大宝的信息'
-        },
-        {
-          name: '王大宝的',
-          info: '王大宝的信息'
-        },
-        {
-          name: '王大宝的',
-          info: '王大宝的信息'
-        }
-      ],
-      platServiceInfoMap: [
-        {
-          name: '王大宝的',
-          info: '王大宝的信息'
-        },
-        {
-          name: '王大宝的信息',
-          info: '王大宝的信息'
-        },
-        {
-          name: '王大宝的',
-          info: '王大宝的信息'
-        },
-        {
-          name: '王大宝的信息',
-          info: '王大宝的信息'
-        }
-      ]
+      info: null
     }
+  },
+  methods: {
+    getData () {
+      this.$http(this.$urlPath.customService, {
+        identity: this.$root.state.identity,
+        store_id: this.$root.state.storeId
+      }, '', (data) => {
+        if (data.data) {
+          this.info = data.data
+        }
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
+    }
+  },
+  mounted () {
+    this.getData()
   }
 }
 </script>
@@ -85,7 +85,7 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .c-s-container
-    & > p
+    & > div
         padding .2rem
         margin-left .7rem
         & span
@@ -98,6 +98,8 @@ export default {
             width 60%
             margin-left 5%
             vertical-align middle
+    .item
+        padding .2rem
     .c-s-title
         color #333333
         font-size .36rem

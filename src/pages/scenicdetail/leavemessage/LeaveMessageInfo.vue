@@ -3,7 +3,7 @@
   <navi title="留言板详情" :isFixed="true"></navi>
   <div class="content-container" v-if="ask">
       <el-card :body-style="{ padding: '.2rem' }" shadow="always">
-        <scenic-info :scenicInfo="scenicInfo"></scenic-info>
+        <scenic-info></scenic-info>
         <div class="reply-title-wrapper">
               <span>问</span>
               <span>{{ask.content}}</span>
@@ -55,7 +55,7 @@ export default {
   methods: {
     reply () {
       if (this.ask) {
-        this.$router.push({name: 'replyMessage', query: {aid: this.ask.aid}, params: {askTitle: this.ask.content, scenicInfo: this.scenicInfo}})
+        this.$router.push({name: 'replyMessage', query: {s_id: this.$route.query.s_id, aid: this.$route.query.aid}, params: {askTitle: this.ask.content, scenicInfo: this.scenicInfo}})
       }
     },
     getData () {
