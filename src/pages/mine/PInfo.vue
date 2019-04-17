@@ -69,6 +69,7 @@ export default {
   data () {
     return {
       avatar: this.$urlPath.imageUrl + this.$root.userInfo.state.avatar,
+      uploadAvatar: null,
       userName: this.$root.userInfo.state.name,
       realName: this.$root.userInfo.state.realName,
       email: this.$root.userInfo.state.email,
@@ -115,7 +116,7 @@ export default {
       this.$http(this.$urlPath.userInfoResetInfo, {
         username: this.userName,
         realname: this.realName,
-        avatar: this.avatar,
+        avatar: this.uploadAvatar,
         email: this.email,
         gender: this.sex,
         qq: this.qq,
@@ -157,6 +158,7 @@ export default {
       if (response.data) {
         this.$toast('头像上传成功，请点确定按钮提交')
         this.$loading.close()
+        this.uploadAvatar = response.data.url
         this.avatar = this.$utils.image.getImagePath(response.data.url)
         this.$root.userInfo.setUserInfoAvatar(response.data.url)
       } else {

@@ -175,7 +175,7 @@ export default {
                     title: '去评价',
                     show: true,
                     action: () => {
-                      this.$router.push({name: 'orderComment', params: {orderId: it.ord_id.toString()}})
+                      this.$router.push({name: 'orderComment', query: {orderId: it.ord_id.toString()}})
                     }
                   }
                 }

@@ -118,8 +118,8 @@ export default {
         password: this.password,
         captcha: this.verifyCode
       }, '正在注册…', (data) => {
-        this.$toast(data.msg)
-        this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
+        this.$toast('注册成功，请登录！')
+        // this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
         this.$router.back()
       }, (errorCode, error) => {
         this.$toast(error)

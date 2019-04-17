@@ -9,7 +9,7 @@
                         </div>
                         <p class="h-h-hot-wrapper-title">{{item.s_title}}</p>
                         <el-rate
-                            :value="item.mark_avg"
+                            :value="Number(item.mark_avg)"
                             disabled
                             show-score
                             text-color="#ff9900"

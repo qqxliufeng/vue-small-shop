@@ -34,14 +34,15 @@ export default {
   },
   image: {
     beforeUploadImageCheck (vue, file) {
+      let maxSize = 2
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
-      const isLt2M = file.size / 1024 / 1024 < 1
+      const isLt2M = file.size / 1024 / 1024 < maxSize
       if (!isJPG) {
         vue.$message.error('上传头像图片只能是 JPG 或 png 格式!')
         return false
       }
       if (!isLt2M) {
-        vue.$message.error('上传头像图片大小不能超过 1MB!')
+        vue.$message.error('上传头像图片大小不能超过 ' + maxSize + 'MB!')
         return false
       }
       return isJPG && isLt2M

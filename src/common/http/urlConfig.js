@@ -120,3 +120,15 @@ export const messageList = messageModuleUrl + 'message_list'
 export const messageDetails = messageModuleUrl + 'message_details'
 
 export const customService = messageModuleUrl + 'customservice'
+
+export const registerProtocol = messageModuleUrl + 'protocol'
+
+const searchModuleUrl = 'search/'
+
+export const hotSearch = searchModuleUrl + 'hot_search'
+
+export const runSeacher = searchModuleUrl + 'run_seacher'
+
+const categoryModuleUrl = 'category/'
+
+export const categoryIndex = categoryModuleUrl + 'index'

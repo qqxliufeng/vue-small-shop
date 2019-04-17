@@ -3,9 +3,9 @@
       <scenic-header></scenic-header>
       <div class="s-l-content-wrapper">
         <mescroll-vue ref="mescroll" :down="mescrollConfig.mescrollDown" :up="mescrollConfig.mescrollUp">
-          <scenic-type></scenic-type>
+          <scenic-type :tags="tags"></scenic-type>
           <ul>
-              <li v-for="(item, index) of scenicList" :key="index">
+              <li v-for="(item, index) of list" :key="index">
                 <scenic-list-item></scenic-list-item>
               </li>
           </ul>
@@ -20,8 +20,10 @@ import ScenicType from './components/ScenicListType'
 import ScenicListItem from './components/ScenicListItem'
 import MescrollVue from 'mescroll.js/mescroll.vue'
 import mescrollConfig from 'common/utils/mescrollerConfig'
+import listMixin from 'common/mixins/list-mixin'
 export default {
   name: 'scenicList',
+  mixins: [listMixin],
   components: {
     ScenicHeader,
     ScenicType,
@@ -31,30 +33,24 @@ export default {
   data () {
     return {
       mescrollConfig: mescrollConfig('scenicListContainer', this.upCallBack),
-      scenicList: []
+      list: [],
+      tags: null
     }
   },
   methods: {
     upCallBack (page, mescroll) {
-      setTimeout(() => {
-        this.scenicList.push({
-          name: '卧虎山滑雪场'
-        })
-        this.scenicList.push({
-          name: '卧虎山滑雪场'
-        })
-        this.scenicList.push({
-          name: '卧虎山滑雪场'
-        })
-        this.scenicList.push({
-          name: '卧虎山滑雪场'
-        })
-        if (page.num > 4) {
-          mescroll.endSuccess(0)
-        } else {
-          mescroll.endSuccess(10)
-        }
-      }, 1000)
+      this.$http(this.$urlPath.categoryIndex, {
+        cate_id: this.$route.query.categoryId,
+        page: page.num,
+        identity: this.$root.state.identity,
+        store_id: this.$root.state.storeId
+      }, null, (data) => {
+        this.tags = data.data.label
+        this.loadSuccess(page, mescroll, data.data.scenic)
+      }, (errorCode, error) => {
+        this.$toast(error)
+        this.loadError(mescroll)
+      })
     }
   }
 }

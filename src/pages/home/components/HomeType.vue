@@ -3,8 +3,8 @@
         <swiper :options="swiperOption" v-if="list">
             <swiper-slide v-for="(items, slideIndex) of slideItems" :key="slideIndex">
                 <div class="h-t-type-container">
-                    <div v-for="(item, index) of items" :key="item.id" class="h-t-type-wrapper" @click="homeTypeClick(index)">
-                        <img :src="$utils.image.getImagePath(item.image)" class="h-t-type-icon">
+                    <div v-for="item of items" :key="item.id" class="h-t-type-wrapper" @click="homeTypeClick(item)">
+                        <img :src="$utils.image.getImagePath(item.image)" class="h-t-type-icon" :key="item.image">
                         <p class="h-t-type-title">{{item.name}}</p>
                     </div>
                 </div>
@@ -43,8 +43,8 @@ export default {
     }
   },
   methods: {
-    homeTypeClick (index) {
-      this.$router.push({name: 'scenicList'})
+    homeTypeClick (item) {
+      this.$router.push({name: 'scenicList', query: {categoryId: item.id}})
     }
   }
 }

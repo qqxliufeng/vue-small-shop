@@ -61,11 +61,12 @@ export default {
         this.$toast('评论内容最多200字')
         return
       }
+      const image = this.imageList.join(',')
       this.$http(this.$urlPath.addCommentUrl, {
-        ord_id: this.orderId,
+        ord_id: this.$route.query.orderId,
         mark: this.rate,
         content: this.content,
-        images: this.imageList.join(',')
+        images: image
       }, '正在上传…', (data) => {
         this.$toast('评论发表成功')
         this.$root.$emit('onReload')

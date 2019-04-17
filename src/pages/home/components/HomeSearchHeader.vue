@@ -2,18 +2,32 @@
     <div class="h-s-header-container">
         <div class="h-s-header-input-wrapper">
             <span class="iconfont h-s-back" @click="back">&#xe625;</span>
-            <el-input placeholder="景点名称、关键字">
+            <el-input placeholder="景点名称、关键字" v-model="searchContent">
                 <i class="el-icon-search"></i>
             </el-input>
-            <span class="h-s-search-action">搜索</span>
+            <span class="h-s-search-action" @click="search">搜索</span>
         </div>
     </div>
 </template>
 
 <script>
+import SearchHistory from 'common/mixins/search-history'
 export default {
   name: 'homeSearchHeader',
+  mixins: [SearchHistory],
+  data () {
+    return {
+      searchContent: ''
+    }
+  },
   methods: {
+    search () {
+      if (this.searchContent && this.$root.userInfo.isLogin()) {
+        this.saveHistory(this.$root.userInfo.state.id, this.searchContent)
+      }
+      this.$emit('search', this.searchContent)
+      this.searchContent = ''
+    },
     back () {
       this.$router.back()
     }
@@ -31,6 +45,7 @@ export default {
     right 0
     height rem($headerHeight)
     z-index 999
+    background #fff
     .h-s-header-input-wrapper
         display flex
         align-items center

@@ -7,42 +7,22 @@
 <script>
 export default {
   name: 'ScenicListType',
+  props: {
+    tags: Array
+  },
   data () {
     return {
-      tagsList: [
-        {
-          name: '随买随用',
-          selected: true
-        },
-        {
-          name: '热门产品',
-          selected: false
-        },
-        {
-          name: '随买随用随买随用',
-          selected: false
-        },
-        {
-          name: '随买',
-          selected: false
-        },
-        {
-          name: '随买随用',
-          selected: false
-        },
-        {
-          name: '热门产品',
-          selected: false
-        },
-        {
-          name: '随买随用随买随用',
-          selected: false
-        },
-        {
-          name: '随买',
-          selected: false
-        }
-      ]
+      tagsList: null
+    }
+  },
+  watch: {
+    tags (newVal, oldVal) {
+      if (newVal) {
+        this.tagsList = this.tags
+        this.tagsList.forEach((item, index) => {
+          item.selected = index === 0
+        })
+      }
     }
   },
   methods: {
