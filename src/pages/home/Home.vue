@@ -33,16 +33,6 @@ import HomeNotice from './components/HomeNotice'
 import LoadFail from 'common/components/loading/load-fail'
 export default {
   name: 'home',
-  props: {
-    identity: {
-      type: String,
-      default: '1'
-    },
-    storeId: {
-      type: String,
-      default: '1'
-    }
-  },
   components: {
     HomeHeader,
     HomeSwiper,
@@ -62,7 +52,10 @@ export default {
       hotList: [],
       ad: null,
       categoryList: [],
-      loadState: true
+      loadState: true,
+      sellerInfo: this.$root.state.getSallerInfo(),
+      identity: null,
+      storeId: null
     }
   },
   methods: {
@@ -97,7 +90,6 @@ export default {
     },
     changeCity () {
       this.getData()
-      console.log(this.$root.state.currentCity)
     },
     getData () {
       this.$http(this.$urlPath.indexUrl, {
@@ -122,7 +114,17 @@ export default {
     }
   },
   created () {
-    this.$root.state.saveSallerInfo(this.identity, this.storeId)
+    const tempIdentity = this.$route.params.identity
+    const tempStoreId = this.$route.params.storeId
+    if (tempIdentity && tempStoreId) {
+      this.identity = tempIdentity
+      this.storeId = tempStoreId
+      this.$root.state.saveSallerInfo(tempIdentity, tempStoreId)
+      this.sellerInfo = this.$root.state.getSallerInfo()
+    }
+    // 如果没有这两个属性，则存默认的，这是防止用户直接访问根路径
+    this.identity = this.sellerInfo.identity
+    this.storeId = this.sellerInfo.storeId
   },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)

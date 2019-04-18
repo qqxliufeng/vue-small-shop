@@ -126,8 +126,11 @@ export default {
       if (this.from) {
         if (this.from.name) {
           this.$router.go(-1)
+          if (this.$router.currentRoute.name === 'scenicDetail') {
+            this.$router.replace({path: '/index/' + this.identity + '/' + this.storeId})
+          }
         } else {
-          this.$router.replace({path: '/'})
+          this.$router.replace({path: '/index/' + this.identity + '/' + this.storeId})
         }
       } else {
         this.$router.go(-1)
@@ -136,10 +139,11 @@ export default {
   },
   created () {
     this.scenicId = this.$route.query.scenicId
-    let identity = this.$route.query.identity
-    let storeId = this.$route.query.storeId
-    if (identity && storeId) {
-      this.$root.state.saveSallerInfo(identity, storeId)
+    let tempIdentity = this.$route.query.identity
+    let tempStoreId = this.$route.query.storeId
+    // 如果是直接从分享页面过来的，则要存一下identity 和 storeId
+    if (tempIdentity && tempStoreId) {
+      this.$root.state.saveSallerInfo(tempIdentity, tempStoreId)
       this.sellerInfo = this.$root.state.getSallerInfo()
     }
     this.identity = this.sellerInfo.identity

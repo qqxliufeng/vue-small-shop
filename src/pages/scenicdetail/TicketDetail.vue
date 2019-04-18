@@ -63,7 +63,9 @@ export default {
       scenicInfo: {},
       goodsInfo: {},
       remarks: [],
-      from: null
+      from: null,
+      identity: null,
+      storeId: null
     }
   },
   methods: {
@@ -84,7 +86,9 @@ export default {
     getData () {
       this.$http(this.$urlPath.goodsDetailUrl, {
         s_id: this.$route.query.s_id,
-        goods_id: this.$route.query.goods_id
+        goods_id: this.$route.query.goods_id,
+        identity: this.identity,
+        store_id: this.storeId
       }, '', (data) => {
         this.loadState = true
         let info = {}
@@ -115,14 +119,28 @@ export default {
       if (this.from) {
         if (this.from.name) {
           this.$router.go(-1)
+          if (this.$router.currentRoute.name === 'ticketDetail') {
+            this.$router.replace({path: '/index/' + this.identity + '/' + this.storeId})
+          }
         } else {
-          console.log('asdfa')
-          this.$router.replace({path: '/'})
+          this.$router.replace({path: '/index/' + this.identity + '/' + this.storeId})
         }
       } else {
         this.$router.go(-1)
       }
     }
+  },
+  created () {
+    this.scenicId = this.$route.query.scenicId
+    let tempIdentity = this.$route.query.identity
+    let tempStoreId = this.$route.query.storeId
+    // 如果是直接从分享页面过来的，则要存一下identity 和 storeId
+    if (tempIdentity && tempStoreId) {
+      this.$root.state.saveSallerInfo(tempIdentity, tempStoreId)
+      this.sellerInfo = this.$root.state.getSallerInfo()
+    }
+    this.identity = this.sellerInfo.identity
+    this.storeId = this.sellerInfo.storeId
   },
   mounted () {
     this.getData()
