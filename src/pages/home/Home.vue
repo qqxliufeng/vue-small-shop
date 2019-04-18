@@ -80,11 +80,12 @@ export default {
       if (!this.$root.userInfo.isLogin()) {
         let state = this.$root.state
         if (state.token) {
-          this.$http(this.$urlPath.userInfoLoginUrl, null, null, (data) => {
-            console.log(data)
+          this.$http(this.$urlPath.userInfo, {
+            token: state.token
+          }, null, (data) => {
+            data.data.token = state.token
+            this.$root.$data.userInfo.setUserInfo(data.data)
           }, null)
-        } else {
-          console.log('不能登录')
         }
       }
     },
@@ -125,7 +126,7 @@ export default {
   },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)
-    // this.autoLogin()
+    this.autoLogin()
     this.getData()
   },
   beforeRouteEnter (to, from, next) {

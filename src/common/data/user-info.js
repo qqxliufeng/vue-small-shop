@@ -2,7 +2,7 @@ const userInfo = {
   debug: true,
   state: {
     id: sessionStorage.getItem('userId'),
-    token: sessionStorage.getItem('token'),
+    token: localStorage.getItem('token'),
     name: sessionStorage.getItem('name'),
     realName: sessionStorage.getItem('realName'),
     phone: sessionStorage.getItem('phone'),
@@ -28,7 +28,7 @@ const userInfo = {
     this.state.qq = userInfo.qq
     this.state.city = userInfo.province + userInfo.town
     sessionStorage.setItem('userId', this.state.id)
-    sessionStorage.setItem('token', this.state.token)
+    localStorage.setItem('token', this.state.token)
     sessionStorage.setItem('name', this.state.name)
     sessionStorage.setItem('phone', this.state.phone)
     sessionStorage.setItem('avatar', this.state.avatar)
@@ -71,6 +71,7 @@ const userInfo = {
     this.state.token = ''
     this.state.phone = ''
     sessionStorage.clear()
+    localStorage.removeItem('token')
   }
 }
 

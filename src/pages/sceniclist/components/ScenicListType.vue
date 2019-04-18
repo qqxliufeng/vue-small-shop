@@ -1,6 +1,12 @@
 <template>
     <div class="s-l-tags-container">
-        <span v-for="(item, index) of tagsList" :key="index" class="s-l-tags-item" :class="{ 's-l-tags-item-selected': item.selected }" @click="itemClick(item)">{{item.name}}</span>
+        <span v-for="(item, index) of tagsList"
+              :key="index"
+              class="s-l-tags-item"
+              :class="{ 's-l-tags-item-selected': item.selected }"
+              @click="itemClick(item)">
+        {{item.name}}
+        </span>
     </div>
 </template>
 
@@ -19,8 +25,8 @@ export default {
     tags (newVal, oldVal) {
       if (newVal) {
         this.tagsList = this.tags
-        this.tagsList.forEach((item, index) => {
-          item.selected = index === 0
+        this.tagsList.forEach(element => {
+          this.$set(element, 'selected', false)
         })
       }
     }
@@ -30,6 +36,7 @@ export default {
       this.tagsList.forEach(element => {
         element.selected = element === item
       })
+      this.$emit('tagsClick', item)
     }
   }
 }

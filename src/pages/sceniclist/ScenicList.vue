@@ -3,12 +3,15 @@
       <scenic-header></scenic-header>
       <div class="s-l-content-wrapper">
         <mescroll-vue ref="mescroll" :down="mescrollConfig.mescrollDown" :up="mescrollConfig.mescrollUp">
-          <scenic-type :tags="tags"></scenic-type>
-          <ul>
+          <scenic-type :tags="tags" @tagsClick="tagsClick"></scenic-type>
+          <ul v-if="list && list.length > 0">
               <li v-for="(item, index) of list" :key="index">
-                <scenic-list-item></scenic-list-item>
+                <scenic-list-item :item="item"></scenic-list-item>
               </li>
           </ul>
+          <div v-else class="empty">
+            暂无搜索内容
+          </div>
         </mescroll-vue>
       </div>
     </div>
@@ -34,23 +37,32 @@ export default {
     return {
       mescrollConfig: mescrollConfig('scenicListContainer', this.upCallBack),
       list: [],
-      tags: null
+      tags: null,
+      tempTag: null
     }
   },
   methods: {
     upCallBack (page, mescroll) {
+      let lebelId = this.tempTag ? this.tempTag.id : ''
       this.$http(this.$urlPath.categoryIndex, {
         cate_id: this.$route.query.categoryId,
         page: page.num,
         identity: this.$root.state.identity,
-        store_id: this.$root.state.storeId
+        store_id: this.$root.state.storeId,
+        label_id: lebelId
       }, null, (data) => {
-        this.tags = data.data.label
+        if (!this.tags) {
+          this.tags = data.data.label
+        }
         this.loadSuccess(page, mescroll, data.data.scenic)
       }, (errorCode, error) => {
         this.$toast(error)
         this.loadError(mescroll)
       })
+    },
+    tagsClick (item) {
+      this.tempTag = item
+      this.$refs.mescroll.mescroll.resetUpScroll(true)
     }
   }
 }
@@ -67,4 +79,10 @@ export default {
   height 100%
   padding-bottom $headerHeight * 1.2
   box-sizing border-box
+  .empty
+    display flex
+    align-items center
+    justify-content center
+    height 80vh
+    textStyle(#888, .32)
 </style>

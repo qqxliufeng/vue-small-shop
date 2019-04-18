@@ -2,9 +2,12 @@
     <div class="s-l-header-container">
         <span class="iconfont s-l-header-back" @click="back">&#xe625;</span>
         <div class="s-l-header-info-wrapper">
-            <span class="s-l-header-location">济南<i class="el-icon-arrow-down"></i></span>
-            <span class="vertical-line"></span>
-            <span class="s-l-header-input">景点、门票</span>
+            <!-- <span class="s-l-header-location">济南<i class="el-icon-arrow-down"></i></span> -->
+            <!-- <span class="vertical-line"></span> -->
+            <span class="s-l-header-input" @click="search">
+                <i class="el-icon-search"></i>
+                景点、门票
+            </span>
         </div>
     </div>
 </template>
@@ -15,6 +18,9 @@ export default {
   methods: {
     back () {
       this.$router.back()
+    },
+    search () {
+      this.$router.push({name: 'homeSearch'})
     }
   }
 }
@@ -45,7 +51,7 @@ export default {
         border-radius rem(.1)
         flex 1
         margin 0 rem(.2)
-        line-height rem(.75)
+        line-height rem(.65)
         display flex
         .s-l-header-location
             color #333

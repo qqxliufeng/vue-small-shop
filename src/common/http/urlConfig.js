@@ -25,6 +25,8 @@ export const userInfoResetPWUrl = userInfoUrl + 'eidtpwd'
 
 export const userInfoResetInfo = userInfoUrl + 'profile'
 
+export const userInfo = userInfoUrl + 'user_info'
+
 const favoritesUrl = 'favorites/'
 
 export const userFavoriteScenicUrl = favoritesUrl + 'favorite_scenic'
