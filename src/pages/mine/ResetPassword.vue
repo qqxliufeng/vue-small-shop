@@ -88,7 +88,7 @@ export default {
 <style lang="stylus" scoped>
 @import '~styles/varibles.styl'
 .input-container
-  margin 1.86rem .5rem
+  margin .86rem .5rem
   position relative
   .user-name
     width 100%

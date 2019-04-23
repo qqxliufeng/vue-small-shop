@@ -1,7 +1,7 @@
 
-const baseIP = 'http://192.168.1.100'
+// const baseIP = 'http://192.168.1.100'
 
-// const baseIP = 'http://www.test.youdaike.com'
+const baseIP = 'http://www.test.youdaike.com'
 
 export const baseUrl = baseIP + '/store_api/v1/'
 

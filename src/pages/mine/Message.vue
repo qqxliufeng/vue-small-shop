@@ -1,9 +1,9 @@
 <template>
    <div>
      <navi title="我的消息" class="navi" :isFixed="true"></navi>
-     <div class="content" id="message_content">
+     <div class="content">
        <mescroll-vue ref="mescroll" :down="mescrollConfig.mescrollDown" :up="mescrollConfig.mescrollUp">
-          <ul>
+          <ul id="message_content">
             <li v-for="item of list" :key="item.id" class="m-tabs-item-li" @click="itemClick(item)">
               <div class="m-s-title-container">
                 <span class="m-s-title"><i v-show="!item.is_read"></i>{{item.title}}</span>
