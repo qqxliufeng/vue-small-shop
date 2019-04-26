@@ -297,6 +297,12 @@ export default new Router({
       component: OrderInfoPay
     },
     {
+      path: '/orderbackprogress',
+      name: 'orderBackProgress',
+      component: () => import('@/pages/mine/order/OrderBackProgress'),
+      props: true
+    },
+    {
       path: '/adsdetail',
       name: 'adsDetail',
       component: () => import('@/pages/ads/AdsDetail'),

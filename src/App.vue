@@ -1,17 +1,21 @@
 <template>
   <div id="app">
-    <keep-alive>
-      <router-view v-if="$route.meta.keepAlive"/>
-    </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"></router-view>
+    <div v-if="this.$isMobile() || this.NODE_DEVELOPMENT">
+      <keep-alive>
+        <router-view v-if="$route.meta.keepAlive"/>
+      </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive"></router-view>
+    </div>
+    <open-mobile v-else></open-mobile>
   </div>
 </template>
 
 <script>
+import OpenMobile from 'common/components/open-mobile'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    OpenMobile
+  }
 }
 </script>
-
-<style>
-</style>

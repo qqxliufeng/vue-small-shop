@@ -1,10 +1,16 @@
 <template>
     <div v-if="detail">
-      <order-info-header stateTip="待使用">
+      <order-info-header :stateTip="tipTitle">
             <template slot="headerTitleInfo">
                 <p class="o-i-use-info">
-                    产品已出票，请尽快使用产品。
+                    {{tipContent}}
                 </p>
+            </template>
+            <template slot="headerBottomInfo" v-if="detail.refund_mark !== '0'">
+                <div class="after-service-wrapper">
+                    <span>退票记录：{{detail.refund_count}}</span>
+                    <span @click="orderBackProgress">查看进度></span>
+                </div>
             </template>
         </order-info-header>
         <order-ticket-money-info :storeInfo="storeInfo">
@@ -88,16 +94,27 @@ export default {
       isShowCanlendarDialog: false
     }
   },
-  watch: {
-    detail (newVal, oldVal) {
-      if (newVal.status !== 'USE_STATUS_NO') {
-        this.$router.go(-1)
-      }
+  // watch: {
+  //   detail (newVal, oldVal) {
+  //     if (newVal.status !== 'USE_STATUS_NO') {
+  //       this.$router.go(-1)
+  //     }
+  //   }
+  // },
+  computed: {
+    tipTitle () {
+      return this.detail.refund_mark === 2 ? '已退款' : '待使用'
+    },
+    tipContent () {
+      return this.detail.refund_mark === 2 ? '您的订单已退款' : '产品已出票，请尽快使用产品'
     }
   },
   methods: {
     backMoney () {
       this.$router.push({name: 'orderBackMoney', query: {id: this.detail.ord_id}})
+    },
+    orderBackProgress () {
+      this.$router.push({name: 'orderBackProgress', query: {id: this.detail.ord_id}})
     }
   },
   mounted () {
@@ -108,6 +125,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 @import '~styles/varibles.styl'
+@import '~styles/mixin.styl'
 .o-i-use-info
     color #eeeeee
     font-size .25rem
@@ -159,4 +177,18 @@ export default {
     .span-color-4
         color $orangeColor
         font-size .28rem
+.after-service-wrapper
+    margin-top rem(.2)
+    border-radius rem(.08)
+    background #ffffff
+    opacity .8
+    line-height rem(.3)
+    padding rem(.2)
+    overflow hidden
+    color #888
+    font-size rem(.25)
+    & span:nth-of-type(1)
+        float left
+    & span:nth-of-type(2)
+        float right
 </style>

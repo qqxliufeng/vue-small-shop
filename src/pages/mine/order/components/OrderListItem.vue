@@ -67,11 +67,12 @@ export default {
   },
   methods: {
     orderItemClick (item) {
-      if (item.refund) {
-        this.$router.push({name: 'orderInfo', params: {orderId: item.refund.rid.toString(), orderType: item.stateModel.orderType}})
-      } else {
-        this.$router.push({name: 'orderInfo', params: {orderId: item.ord_id.toString(), orderType: item.stateModel.orderType}})
-      }
+      // if (item.refund && item.stateModel.orderType === '4') { // 全部退款的状态
+      //   this.$router.push({name: 'orderInfo', params: {orderId: item.refund.rid.toString(), orderType: item.stateModel.orderType}})
+      // } else {
+      //   this.$router.push({name: 'orderInfo', params: {orderId: item.ord_id.toString(), orderType: item.stateModel.orderType}})
+      // }
+      this.$router.push({name: 'orderInfo', params: {orderId: item.ord_id.toString(), orderType: item.stateModel.orderType}})
     },
     upCallBack (page, mescroll) {
       this.$http(this.$urlPath.orderList, {
@@ -80,236 +81,259 @@ export default {
       }, null, (data) => {
         this.serverTime = data.time
         if (data.data && data.data instanceof Array) {
-          data.data.forEach((it, index) => {
-            switch (it.status) {
-              case 'PAY_STATUS_NO': // 待付款
-                it.stateModel = {
-                  orderType: '1',
-                  stateTip: '待付款',
-                  time: {
-                    title: '剩余支付时间：',
-                    time: Math.max(0, (Number(it.timeout_express) - Number(this.serverTime)) * 1000)
-                  },
-                  action1: {
-                    title: '取消订单',
-                    show: true,
-                    action: () => {
-                      let confirm = window.confirm('是否要取消此订单？')
+          if (this.state === 4) { // 售后订单列表
+            data.data.forEach((it, index) => {
+              it.stateModel = {
+                orderType: '2',
+                stateTip: '已退款',
+                time: {
+                  title: '下单时间：',
+                  time: it.ord_add_time
+                },
+                action1: {
+                  title: '',
+                  show: false,
+                  action: null
+                },
+                action2: {
+                  title: '',
+                  show: false,
+                  action: null
+                }
+              }
+            })
+          } else {
+            data.data.forEach((it, index) => {
+              switch (it.status) {
+                case 'PAY_STATUS_NO': // 待付款
+                  it.stateModel = {
+                    orderType: '1',
+                    stateTip: '待付款',
+                    time: {
+                      title: '剩余支付时间：',
+                      time: Math.max(0, (Number(it.timeout_express) - Number(this.serverTime)) * 1000)
+                    },
+                    action1: {
+                      title: '取消订单',
+                      show: true,
+                      action: () => {
+                        let confirm = window.confirm('是否要取消此订单？')
+                        if (confirm) {
+                          this.$http(this.$urlPath.orderCancel, {
+                            ord_id: it.ord_id
+                          }, '正在取消…', (result) => {
+                            this.reload()
+                            this.$toast('订单取消成功')
+                          }, (errorCode, error) => {
+                            this.$toast(error)
+                          })
+                        }
+                      }
+                    },
+                    action2: {
+                      title: '立即支付',
+                      show: Number(it.timeout_express) - Number(this.serverTime) > 0,
+                      action: () => {
+                        this.$router.push({name: 'orderInfoPay', query: {no: it.out_trade_no}})
+                      }
+                    }
+                  }
+                  break
+                case 'USE_STATUS_NO': // 未使用
+                  it.stateModel = {
+                    orderType: '2',
+                    stateTip: '已支付',
+                    time: {
+                      title: '下单时间：',
+                      time: it.ord_add_time
+                    },
+                    action1: {
+                      title: '',
+                      show: false,
+                      action: null
+                    },
+                    action2: {
+                      title: it.is_refund === 1 ? '申请退款' : '',
+                      show: it.is_refund === 1,
+                      action: it.is_refund ? () => {
+                        this.$router.push({name: 'orderBackMoney', query: {id: it.ord_id}})
+                      } : null
+                    }
+                  }
+                  if (it.refund && it.refund.refund_status === 0) {
+                    it.stateModel.stateTip = '退款中'
+                    it.stateModel.action2.title = '取消退款'
+                    it.stateModel.action2.show = true
+                    it.stateModel.action2.action = () => {
+                      let confirm = window.confirm('是否要取消退款？')
                       if (confirm) {
-                        this.$http(this.$urlPath.orderCancel, {
-                          ord_id: it.ord_id
+                        this.$http(this.$urlPath.orderCancelRefund, {
+                          rid: it.refund.rid
                         }, '正在取消…', (result) => {
                           this.reload()
-                          this.$toast('订单取消成功')
+                          this.$root.$emit('onReload')
+                          this.$toast('取消退款成功')
                         }, (errorCode, error) => {
                           this.$toast(error)
                         })
                       }
                     }
-                  },
-                  action2: {
-                    title: '立即支付',
-                    show: Number(it.timeout_express) - Number(this.serverTime) > 0,
-                    action: () => {
-                      this.$router.push({name: 'orderInfoPay', query: {no: it.out_trade_no}})
-                    }
                   }
-                }
-                break
-              case 'USE_STATUS_NO': // 未使用
-                it.stateModel = {
-                  orderType: '2',
-                  stateTip: '已支付',
-                  time: {
-                    title: '下单时间：',
-                    time: it.ord_add_time
-                  },
-                  action1: {
-                    title: '',
-                    show: false,
-                    action: null
-                  },
-                  action2: {
-                    title: it.is_refund === 1 ? '申请退款' : '',
-                    show: it.is_refund === 1,
-                    action: it.is_refund ? () => {
-                      this.$router.push({name: 'orderBackMoney', query: {id: it.ord_id}})
-                    } : null
-                  }
-                }
-                if (it.refund && it.refund.refund_status === 0) {
-                  it.stateModel.stateTip = '退款中'
-                  it.stateModel.action2.title = '取消退款'
-                  it.stateModel.action2.show = true
-                  it.stateModel.action2.action = () => {
-                    let confirm = window.confirm('是否要取消退款？')
-                    if (confirm) {
-                      this.$http(this.$urlPath.orderCancelRefund, {
-                        rid: it.refund.rid
-                      }, '正在取消…', (result) => {
-                        this.reload()
-                        this.$root.$emit('onReload')
-                        this.$toast('取消退款成功')
-                      }, (errorCode, error) => {
-                        this.$toast(error)
-                      })
-                    }
-                  }
-                }
-                break
-              case 'NO_COMMENT':
-              case 'USE_STATUS': // 已使用
-                it.stateModel = {
-                  orderType: '3',
-                  stateTip: '待评价',
-                  time: {
-                    title: '下单时间：',
-                    time: it.ord_add_time
-                  },
-                  action1: {
-                    title: '',
-                    show: false,
-                    action: null
-                  },
-                  action2: {
-                    title: '去评价',
-                    show: true,
-                    action: () => {
-                      this.$router.push({name: 'orderComment', query: {orderId: it.ord_id.toString()}})
-                    }
-                  }
-                }
-                break
-              case 'USE_STATUS_OFF': // 取消
-                it.stateModel = {
-                  orderType: '6',
-                  stateTip: '已取消',
-                  time: {
-                    title: '下单时间：',
-                    time: it.ord_add_time
-                  },
-                  action1: {
-                    title: '删除订单',
-                    show: true,
-                    action: () => {
-                      let confirm = window.confirm('是否要删除此订单？')
-                      if (confirm) {
-                        this.$http(this.$urlPath.orderDelete, {
-                          ord_id: it.ord_id
-                        }, '正在删除…', (result) => {
-                          this.reload()
-                          this.$toast('订单删除成功')
-                        }, (errorCode, error) => {
-                          this.$toast(error)
-                        })
+                  break
+                case 'NO_COMMENT':
+                case 'USE_STATUS': // 已使用
+                  it.stateModel = {
+                    orderType: '3',
+                    stateTip: '待评价',
+                    time: {
+                      title: '下单时间：',
+                      time: it.ord_add_time
+                    },
+                    action1: {
+                      title: '',
+                      show: false,
+                      action: null
+                    },
+                    action2: {
+                      title: '去评价',
+                      show: true,
+                      action: () => {
+                        this.$router.push({name: 'orderComment', query: {orderId: it.ord_id.toString()}})
                       }
                     }
-                  },
-                  action2: {
-                    title: '重新购票',
-                    show: true,
-                    action: () => {
-                      this.$router.push({name: 'reseveDetail', query: { goods_id: it.ord_goodsId }})
-                    }
                   }
-                }
-                break
-              case 'USE_STATUS_EXPIRD': // 已过期
-                it.stateModel = {
-                  orderType: '7',
-                  stateTip: '已过期',
-                  time: {
-                    title: '下单时间：',
-                    time: it.ord_add_time
-                  },
-                  action1: {
-                    title: '删除订单',
-                    show: true,
-                    action: () => {
-                      let confirm = window.confirm('是否要删除此订单？')
-                      if (confirm) {
-                        this.$http(this.$urlPath.orderDelete, {
-                          ord_id: it.ord_id
-                        }, '正在删除…', (result) => {
-                          this.reload()
-                          this.$toast('订单删除成功')
-                        }, (errorCode, error) => {
-                          this.$toast(error)
-                        })
+                  break
+                case 'USE_STATUS_OFF': // 取消
+                  it.stateModel = {
+                    orderType: '6',
+                    stateTip: '已取消',
+                    time: {
+                      title: '下单时间：',
+                      time: it.ord_add_time
+                    },
+                    action1: {
+                      title: '删除订单',
+                      show: true,
+                      action: () => {
+                        let confirm = window.confirm('是否要删除此订单？')
+                        if (confirm) {
+                          this.$http(this.$urlPath.orderDelete, {
+                            ord_id: it.ord_id
+                          }, '正在删除…', (result) => {
+                            this.reload()
+                            this.$toast('订单删除成功')
+                          }, (errorCode, error) => {
+                            this.$toast(error)
+                          })
+                        }
+                      }
+                    },
+                    action2: {
+                      title: '重新购票',
+                      show: true,
+                      action: () => {
+                        this.$router.push({name: 'reseveDetail', query: { goods_id: it.ord_goodsId }})
                       }
                     }
-                  },
-                  action2: {
-                    title: '重新购票',
-                    show: true,
-                    action: () => {
-                      this.$router.push({name: 'reseveDetail', query: { goods_id: it.ord_goodsId }})
+                  }
+                  break
+                case 'USE_STATUS_EXPIRD': // 已过期
+                  it.stateModel = {
+                    orderType: '7',
+                    stateTip: '已过期',
+                    time: {
+                      title: '下单时间：',
+                      time: it.ord_add_time
+                    },
+                    action1: {
+                      title: '删除订单',
+                      show: true,
+                      action: () => {
+                        let confirm = window.confirm('是否要删除此订单？')
+                        if (confirm) {
+                          this.$http(this.$urlPath.orderDelete, {
+                            ord_id: it.ord_id
+                          }, '正在删除…', (result) => {
+                            this.reload()
+                            this.$toast('订单删除成功')
+                          }, (errorCode, error) => {
+                            this.$toast(error)
+                          })
+                        }
+                      }
+                    },
+                    action2: {
+                      title: '重新购票',
+                      show: true,
+                      action: () => {
+                        this.$router.push({name: 'reseveDetail', query: { goods_id: it.ord_goodsId }})
+                      }
                     }
                   }
-                }
-                break
-              case 'ALREADY_COMMENT': // 已经评价
-                it.stateModel = {
-                  orderType: '5',
-                  stateTip: '已完成',
-                  time: {
-                    title: '下单时间：',
-                    time: it.ord_add_time
-                  },
-                  action1: {
-                    title: '',
-                    show: false,
-                    action: null
-                  },
-                  action2: {
-                    title: '',
-                    show: false,
-                    action: null
+                  break
+                case 'ALREADY_COMMENT': // 已经评价
+                  it.stateModel = {
+                    orderType: '5',
+                    stateTip: '已完成',
+                    time: {
+                      title: '下单时间：',
+                      time: it.ord_add_time
+                    },
+                    action1: {
+                      title: '',
+                      show: false,
+                      action: null
+                    },
+                    action2: {
+                      title: '',
+                      show: false,
+                      action: null
+                    }
                   }
-                }
-                break
-              case 'USE_STATUS_REVOKE': // 退款
-                it.stateModel = {
-                  orderType: '10',
-                  stateTip: '已退款',
-                  time: {
-                    title: '下单时间：',
-                    time: it.ord_add_time
-                  },
-                  action1: {
-                    title: '',
-                    show: false,
-                    action: null
-                  },
-                  action2: {
-                    title: '',
-                    show: false,
-                    action: null
+                  break
+                case 'USE_STATUS_REVOKE': // 退款
+                  it.stateModel = {
+                    orderType: '4',
+                    stateTip: '已退款',
+                    time: {
+                      title: '下单时间：',
+                      time: it.ord_add_time
+                    },
+                    action1: {
+                      title: '',
+                      show: false,
+                      action: null
+                    },
+                    action2: {
+                      title: '',
+                      show: false,
+                      action: null
+                    }
                   }
-                }
-                break
-              case 'USE_STATUS_OVER': // 订单已完结
-                it.stateModel = {
-                  orderType: '9',
-                  stateTip: '已完成',
-                  time: {
-                    title: '下单时间：',
-                    time: it.ord_add_time
-                  },
-                  action1: {
-                    title: '',
-                    show: false,
-                    action: null
-                  },
-                  action2: {
-                    title: '',
-                    show: false,
-                    action: null
+                  break
+                case 'USE_STATUS_OVER': // 订单已完结
+                  it.stateModel = {
+                    orderType: '9',
+                    stateTip: '已完成',
+                    time: {
+                      title: '下单时间：',
+                      time: it.ord_add_time
+                    },
+                    action1: {
+                      title: '',
+                      show: false,
+                      action: null
+                    },
+                    action2: {
+                      title: '',
+                      show: false,
+                      action: null
+                    }
                   }
-                }
-                break
-            }
-          })
+                  break
+              }
+            })
+          }
         }
         this.loadSuccess(page, mescroll, data.data)
       }, (errorCode, error) => {

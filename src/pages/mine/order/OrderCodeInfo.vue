@@ -12,7 +12,7 @@
                 <div>
                     <span>待消费<i>{{info.waitNum}}张</i></span>
                     <span>已消费{{info.consum}}张</span>
-                    <span>已退款{{info.backNum}}张</span>
+                    <!-- <span>已退款{{info.backNum || 0}}张</span> -->
                 </div>
             </div>
         </div>

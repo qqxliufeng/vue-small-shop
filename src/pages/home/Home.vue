@@ -2,7 +2,7 @@
     <div>
        <section v-if="loadState">
         <home-header :scrollTop="mScrollTop" @changeCity="changeCity"></home-header>
-        <div ref="homeContent" class="h-content" id="#home">
+        <div ref="homeContent" class="h-content" id="home">
             <home-swiper :list="swiperList"></home-swiper>
             <!-- <home-notice></home-notice> -->
             <home-type :list="categoryList"></home-type>
@@ -83,7 +83,7 @@ export default {
       }
     },
     startDetail (item) {
-      this.$router.push({name: 'scenicDetail', query: {scenicId: item.s_id}})
+      this.$router.push({name: 'scenicDetail', query: {scenicId: item.s_id, identity: this.identity, storeId: this.storeId}})
     },
     reload () {
       this.getData()

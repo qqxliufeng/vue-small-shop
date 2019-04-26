@@ -1,7 +1,7 @@
 
-// const baseIP = 'http://192.168.1.100'
+const baseIP = 'http://192.168.1.100'
 
-const baseIP = 'http://www.test.youdaike.com'
+// const baseIP = 'http://www.test.youdaike.com'
 
 export const baseUrl = baseIP + '/store_api/v1/'
 
@@ -110,6 +110,8 @@ export const orderRefundList = orderModuleUrl + 'afer_sales_list'
 export const orderRefundAfterDetail = orderModuleUrl + 'afer_sales_details'
 
 export const orderCancelRefund = orderModuleUrl + 'cancel_refund'
+
+export const orderAfterSalesLog = orderModuleUrl + 'after_sales_log'
 
 const payModuleUrl = 'payment/'
 

@@ -70,7 +70,7 @@ export default {
       this.$router.push({name: 'orderInfo', params: {orderId: item.rid.toString(), orderType: item.stateModel.orderType}})
     },
     upCallBack (page, mescroll) {
-      this.$http(this.$urlPath.orderRefundList, {
+      this.$http(this.$urlPath.orderList, {
         status: this.state,
         page: page.num
       }, null, (data) => {
@@ -88,7 +88,7 @@ export default {
                   },
                   action1: {
                     title: '联系客服',
-                    show: true,
+                    show: false,
                     action: () => {
                     }
                   },
@@ -122,7 +122,7 @@ export default {
                   },
                   action1: {
                     title: '联系客服',
-                    show: true,
+                    show: false,
                     action: () => {
                     }
                   },
@@ -143,7 +143,7 @@ export default {
                   },
                   action1: {
                     title: '联系客服',
-                    show: true,
+                    show: false,
                     action: () => {
                     }
                   },
@@ -205,7 +205,7 @@ export default {
                   },
                   action1: {
                     title: '联系客服',
-                    show: true,
+                    show: false,
                     action: () => {
                     }
                   },

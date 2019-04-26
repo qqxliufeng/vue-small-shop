@@ -40,6 +40,9 @@ Vue.prototype.$isWeiXin = navigator.userAgent.toLowerCase().indexOf('micromessen
 Vue.prototype.$utils = utils
 Vue.prototype.$urlPath = urlPath
 Vue.prototype.NODE_DEVELOPMENT = process.env.NODE_ENV === 'development'
+Vue.prototype.$isMobile = function () {
+  return navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+}
 Vue.prototype.$http = function (url, params = {}, loadingTip, onRequestSuccess, onRequestFail) {
   try {
     if (!url) {

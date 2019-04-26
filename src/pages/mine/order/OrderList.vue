@@ -12,7 +12,7 @@
                 <order-list-item ref="waitingCommentItem" :state="3"></order-list-item>
             </el-tab-pane>
             <el-tab-pane name="afterServiceItem" label="退款/售后" class="o-tabs-item" :lazy="true" >
-                <order-refund-list-item ref="afterServiceItem" :state="4"></order-refund-list-item>
+                <order-list-item ref="afterServiceItem" :state="4"></order-list-item>
             </el-tab-pane>
         </el-tabs>
     </div>

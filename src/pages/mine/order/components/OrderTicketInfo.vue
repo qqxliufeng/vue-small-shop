@@ -51,7 +51,7 @@ export default {
               no: this.itemInfo.voucher_number,
               waitNum: this.itemInfo.no_check_num,
               consum: this.itemInfo.consum,
-              backNum: this.refundNum,
+              backNum: Number(this.itemInfo.buynum) - Number(this.itemInfo.no_check_num) - Number(this.itemInfo.consum),
               ticketName: this.ticketName
             }
           }
