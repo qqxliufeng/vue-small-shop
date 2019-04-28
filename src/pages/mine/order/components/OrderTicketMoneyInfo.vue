@@ -28,7 +28,7 @@
                     <span>商家名称：{{storeInfo.store.company_name}}</span>
                 </p>
                 <p class="o-i-info-shop-info-phone">
-                    <span>联系方式：{{storeInfo.store.linkman_phone}}</span>
+                    <span>联系方式：{{storeInfo.store.linkman_phone || '暂无'}}</span>
                 </p>
             </div>
         </div>
@@ -111,12 +111,12 @@ export default {
         padding .2rem
         borderBottom()
         .o-i-info-shop-info-img-wrapper
-            flex 1
             overflow hidden
             height 1rem
             & img
-                width 100%
-                height 100%
+                width rem(1)
+                height rem(1)
+                border-radius 50%
                 object-fit cover
         .o-i-info-shop-info-name-wrapper
             display flex

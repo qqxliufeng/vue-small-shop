@@ -1,7 +1,7 @@
 <template>
   <div class="mobile-container">
     <canvas ref="codeCanvas" class="code-canvas"></canvas>
-    <p class="title">请使用手机浏览器打开此页面</p>
+    <p class="title">请使用手机扫描二维码打开此页面</p>
   </div>
 </template>
 
@@ -18,7 +18,7 @@ export default {
   methods: {
     creatQrCode () {
       this.$nextTick(() => {
-        QRCode.toCanvas(this.$refs.codeCanvas, 'http://www.test.youdaike.com/shop/', (data) => {
+        QRCode.toCanvas(this.$refs.codeCanvas, window.location.href, (data) => {
         })
       })
     }

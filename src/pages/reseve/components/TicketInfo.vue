@@ -213,7 +213,7 @@ export default {
       } else if (count === -2) {
         return '禁售'
       } else {
-        return '余' + count
+        return '余' + count + '张'
       }
     },
     maxCount (count) {
