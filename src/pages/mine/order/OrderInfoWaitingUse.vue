@@ -6,7 +6,7 @@
                     {{tipContent}}
                 </p>
             </template>
-            <template slot="headerBottomInfo" v-if="detail.refund_mark !== '0'">
+            <template slot="headerBottomInfo" v-if="detail.refund_mark !== 0">
                 <div class="after-service-wrapper">
                     <span>退票记录：{{detail.refund_count}}</span>
                     <span @click="orderBackProgress">查看进度></span>
@@ -26,13 +26,13 @@
         <order-ticket-info v-for="item of detail.voucher" :key="item.v_id" :itemInfo="item" :ticketName="detail.ord_product_name" :refundNum="detail.refund_num">
         </order-ticket-info>
         <div class="sperator-line"></div>
-        <order-info-user-info title="游客信息" :tourist="detail.tourist">
+        <order-info-user-info title="游客信息" :tourist="detail.tourist" v-if="detail.tourist && detail.tourist.length > 0">
         </order-info-user-info>
         <order-info-user-info title="预定须知" :remarks="remarks">
         </order-info-user-info>
         <div class="sperator-line"></div>
         <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :remarks="times"></order-time-info>
-        <div class="o-i-waiting-use-action-wrapper" v-if="detail.is_refund === 1">
+        <div class="o-i-waiting-use-action-wrapper" v-if="detail.is_refund === 1 && detail.refund_mark !== 2">
             <span @click="backMoney">申请退款</span>
             <!-- <span @click="isShowCanlendarDialog = true">变更时间</span> -->
         </div>

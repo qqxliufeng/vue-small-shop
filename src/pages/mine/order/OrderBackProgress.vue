@@ -5,7 +5,10 @@
       <ul>
         <li v-for="(item, index) in list" :key="item.rid">
           <el-card :body-style="{padding : '.2rem'}" class="el-card">
-            <p class="title">{{item.stateTip}}</p>
+            <p class="title">
+              <span>{{item.stateTip}}</span>
+              <el-button type="primary" size="small" class="cancel-back" v-if="item.status === 'REFUND_STATUS'" @click="cancelBack(item)">取消退款</el-button>
+            </p>
             <p class="time">申请时间：{{item.refund_create_time}}</p>
             <p class="time">更新时间：{{item.refund_update_time || '暂无'}}</p>
             <div class="line"></div>
@@ -14,7 +17,7 @@
               <span class="open" @click="openInfo(item)">{{item.opened ? '收起' : '展开'}}<i :class="{'el-icon-arrow-down' : !item.opened, 'el-icon-arrow-up' : item.opened}"></i></span>
             </div>
             <div v-show="item.opened">
-              <p class="time">退款账户：原路退回</p>
+              <p class="time">退款账户：{{getBackPay(item)}}</p>
               <p class="time">退款单号：{{item.out_refund_no}}</p>
               <div class="time-line-wrapper">
                 <el-timeline>
@@ -35,24 +38,36 @@
         </li>
       </ul>
     </div>
+    <confirm-dialog content="是否要取消退款？" ref="confirmDialog" @dialogConfirm="dialogConfirm"></confirm-dialog>
   </div>
 </template>
 
 <script>
 import navi from 'common/components/navigation'
+import confirmDialog from 'common/components/confirm-dialog'
 export default {
   name: 'orderBackProgress',
   components: {
+    confirmDialog,
     navi
   },
   data () {
     return {
-      list: null
+      list: null,
+      tempItem: null
     }
   },
   methods: {
     openInfo (item) {
       item.opened = !item.opened
+    },
+    getBackPay (item) {
+      switch (item.refund_pay_type) {
+        case 'alipay':
+          return '支付宝'
+        case 'wechatpay':
+          return '微信'
+      }
     },
     getData () {
       this.$http(this.$urlPath.orderAfterSalesLog, {
@@ -108,6 +123,12 @@ export default {
                   item.stateType = 'primary'
                   item.size = 'large'
                   break
+                case 5:
+                  item.des = '取消退款成功'
+                  item.icon = 'el-icon-success'
+                  item.stateType = 'primary'
+                  item.size = 'large'
+                  break
               }
             })
           })
@@ -115,6 +136,23 @@ export default {
       }, (errorCode, error) => {
         this.$toast(error)
       })
+    },
+    cancelBack (item) {
+      this.tempItem = item
+      this.$refs.confirmDialog.showDialog()
+    },
+    dialogConfirm () {
+      if (this.tempItem) {
+        this.$http(this.$urlPath.orderCancelRefund, {
+          rid: this.tempItem.rid
+        }, '正在取消…', (result) => {
+          this.$root.$emit('onReload')
+          this.$toast('取消退款成功')
+          this.getData()
+        }, (errorCode, error) => {
+          this.$toast(error)
+        })
+      }
     }
   },
   mounted () {
@@ -133,6 +171,11 @@ export default {
         position relative
         .title
             textStyle(#333, .35)
+            line-height rem(.5)
+            .cancel-back
+                height rem(.5)
+                line-height 0
+                margin 0 rem(.2)
         .time
             textStyle(#555, .28)
             margin rem(.3) 0

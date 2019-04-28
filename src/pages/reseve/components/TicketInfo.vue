@@ -19,8 +19,8 @@
             <span class="r-d-ticket-info-count-title">购买数量</span>
             <div class="r-d-ticket-info-count-info">
                 <span class="r-d-ticket-info-count-info-price">￥{{tempTime.price || 0}}</span>
-                <span class="r-d-ticket-info-count-info-release-count">剩余{{tempTime.count || 0}}张</span>
-                <el-input-number v-model="num" size="mini" :max="tempTime.count || 1" :min="minNum" @change="onNumberChange"></el-input-number>
+                <span class="r-d-ticket-info-count-info-release-count" v-show="tempTime.count >= 0">剩余{{tempTime.count || 0}}张</span>
+                <el-input-number v-model="num" size="mini" :max="maxCount(tempTime.count || 1)" :min="minNum" @change="onNumberChange"></el-input-number>
             </div>
         </div>
        <el-dialog title="选择日期" :visible.sync="isShowCanlendarDialog" center width="92%" :modal="false" @open="showModal = true" @close="showModal = false">
@@ -28,7 +28,7 @@
                 <template slot="event" slot-scope="slotProps">
                     <div class="c-e-wrapper">
                         <p :style="{ 'color' : slotProps.disabled ? '#ccc' : '#64BBAE'}">￥{{slotProps.event.sale_price}}</p>
-                        <p :style="{ 'color' : slotProps.disabled ? '#ccc' : '#64BBAE'}">余{{slotProps.event.one_stock}}</p>
+                        <p :style="{ 'color' : slotProps.disabled ? '#ccc' : '#64BBAE'}">{{releaseCount(slotProps.event.one_stock)}}</p>
                     </div>
                 </template>
             </calander>
@@ -201,11 +201,29 @@ export default {
       it.date = this.$utils.dateAdd(date, index).date
       it.week = this.$utils.dateAdd(date, index).week
       let temp = this.events[it.date]
-      it.isEnable = this.events.hasOwnProperty(it.date) && temp && parseInt(temp.one_stock) !== 0
+      it.isEnable = this.events.hasOwnProperty(it.date) && temp && parseInt(temp.one_stock) !== 0 && parseInt(temp.one_stock) !== -2
       it.count = it.isEnable && temp ? temp.one_stock : 0
       it.price = temp ? temp.sale_price : '0'
       it.isSelected = it.isEnable && index === 0
       it.raw = temp
+    },
+    releaseCount (count) {
+      if (count === -1) {
+        return '不限量'
+      } else if (count === -2) {
+        return '禁售'
+      } else {
+        return '余' + count
+      }
+    },
+    maxCount (count) {
+      if (count === -1) {
+        return Number.MAX_VALUE
+      } else if (count === -2) {
+        return 1
+      } else {
+        return count || 1
+      }
     },
     onNumberChange () {
       this.emit()
@@ -308,6 +326,7 @@ export default {
             align-items center
             .r-d-ticket-info-count-info-price
                 textStyle($orangeColor, .3)
+                margin 0 rem(.1)
             .r-d-ticket-info-count-info-release-count
                 textStyle(#888, .28)
                 margin 0 rem(.2)

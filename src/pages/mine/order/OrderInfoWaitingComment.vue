@@ -20,7 +20,7 @@
         <order-ticket-info v-for="item of detail.voucher" :key="item.v_id" :itemInfo="item" :ticketName="detail.ord_product_name">
         </order-ticket-info>
         <div class="sperator-line"></div>
-        <order-info-user-info title="游客信息" :tourist="detail.tourist">
+        <order-info-user-info title="游客信息" :tourist="detail.tourist"  v-if="detail.tourist && detail.tourist.length > 0">
         </order-info-user-info>
         <order-info-user-info title="预定须知" :remarks="remarks">
         </order-info-user-info>

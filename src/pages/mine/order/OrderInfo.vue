@@ -5,7 +5,7 @@
             <order-info-waiting-pay v-if="orderType === '1'" :detail="detail"></order-info-waiting-pay>
             <order-info-waiting-use v-else-if="orderType === '2'" :detail="detail"></order-info-waiting-use>
             <order-info-waiting-comment v-else-if="orderType === '3'" :detail="detail"></order-info-waiting-comment>
-            <order-info-after-service v-else-if="orderType === '4'" :orderId="orderId"></order-info-after-service>
+            <!-- <order-info-after-service v-else-if="orderType === '4'" :orderId="orderId"></order-info-after-service> -->
             <order-info-other v-else :detail="detail"></order-info-other>
         </div>
     </div>
@@ -66,9 +66,9 @@ export default {
     }
   },
   mounted () {
-    if (this.orderType !== '4') {
-      this.getData()
-    }
+    // if (this.orderType !== '4') {
+    this.getData()
+    // }
   }
 }
 </script>

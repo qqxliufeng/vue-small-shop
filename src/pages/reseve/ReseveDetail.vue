@@ -58,15 +58,25 @@ export default {
     },
     onSelectedTimeItem (info) {
       if (info.item) {
-        if (info.item.one_stock < this.ticketInfo.goods.min_number) {
-          this.totalPrice = 0
-          this.$toast('所选日期余票小于最低购买数')
-          return
+        // 禁售
+        if (info.item.one_stock === -2) {
+          this.$toast('此票在所选日期禁售')
+        } else if (info.item.one_stock === -1) { // 不限量卖
+          this.tempDate = info.item
+          this.tempDate.num = info.num
+          this.touristCount = info.num
+          this.totalPrice = (Number(info.item.sale_price) * parseInt(info.num)).toFixed(2)
+        } else {
+          if (info.item.one_stock < this.ticketInfo.goods.min_number) {
+            this.totalPrice = 0
+            this.$toast('所选日期余票小于最低购买数')
+            return
+          }
+          this.tempDate = info.item
+          this.tempDate.num = info.num
+          this.touristCount = info.num
+          this.totalPrice = (Number(info.item.sale_price) * parseInt(info.num)).toFixed(2)
         }
-        this.tempDate = info.item
-        this.tempDate.num = info.num
-        this.touristCount = info.num
-        this.totalPrice = (Number(info.item.sale_price) * parseInt(info.num)).toFixed(2)
       }
     },
     collection () {
