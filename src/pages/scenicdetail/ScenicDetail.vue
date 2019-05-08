@@ -1,7 +1,7 @@
 <template>
     <div>
         <section v-if="loadState">
-          <scenic-detail-header :scenicInfo="scenicInfo" @back="back"></scenic-detail-header>
+          <scenic-detail-header :scenicInfo="scenicInfo" @back="back" @collection="collection" :isFavorites="scenicInfo.isFavorites"></scenic-detail-header>
           <scenic-detail-images :imageList="imageList"></scenic-detail-images>
           <scenic-detail-info :scenicInfo="scenicInfo">
             <template slot="info" slot-scope="slotPropes">
@@ -22,11 +22,11 @@
               </div>
             </template>
           </scenic-detail-info>
-          <scenic-detail-hot :hotGoodsList="hotGoodsList"></scenic-detail-hot>
+          <scenic-detail-hot :hotGoodsList="hotGoodsList" v-if="hotGoodsList && hotGoodsList.length > 0"></scenic-detail-hot>
           <scenic-detail-ticket-type :typeGoodsList="typeGoodsList"></scenic-detail-ticket-type>
           <scenic-detail-leave-message :ask="ask"></scenic-detail-leave-message>
           <scenic-detail-comment :comment="comment" :tagCanSelected="false"></scenic-detail-comment>
-          <div class="s-d-l-m-comment-info-see-more" @click="seeMoreComment">
+          <div class="s-d-l-m-comment-info-see-more" @click="seeMoreComment" v-if="comment && comment.length > 0">
             查看更多
           </div>
         </section>
@@ -86,6 +86,25 @@ export default {
     },
     reload () {
       this.getData()
+    },
+    collection () {
+      if (this.$root.userInfo.isLogin()) {
+        this.$http(this.$urlPath.userUnFavoroteScenicUrl, {
+          scenic_id: this.scenicId
+        }, '', (data) => {
+          if (this.scenicInfo.isFavorites) {
+            this.$toast('取消收藏成功')
+            this.scenicInfo.isFavorites = 0
+          } else {
+            this.$toast('收藏成功')
+            this.scenicInfo.isFavorites = 1
+          }
+        }, (errorCode, error) => {
+          this.$toast(error)
+        })
+      } else {
+        this.$router.push({name: 'login'})
+      }
     },
     getData () {
       this.$http(this.$urlPath.scenicDetailUrl, {
@@ -189,6 +208,7 @@ export default {
     .s-d-info-scenic-info-info
         margin-top rem(.2)
         normalTextStyle(#888888, .25)
+        muitlLineEllipsis(4)
 .s-d-info-scenic-open-time-wrapper
     background-color #f5f5f5
     padding rem(.1)

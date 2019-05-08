@@ -80,14 +80,18 @@ export default {
             this.stateModel.stateTip = '已过期'
             this.stateModel.discription = '订单已经过期，如有需要请重新下单购买'
             break
+          case 'USE_STATUS_OVER':
           case 'ALREADY_COMMENT': // 已经评价
             this.stateModel.stateTip = '已完成'
             this.stateModel.discription = '感谢您的本次消费，订单已经完结'
             break
           case 'USE_STATUS_REVOKE': // 已退款
-            this.stateModel.stateTip = '已退款'
-            this.stateModel.discription = '感谢您的本次消费，订单已经退款，请耐心等待！'
+            this.stateModel.stateTip = '退款/售后'
+            this.stateModel.discription = '您的订单有退款申请，请及时查看'
             break
+          case 'USE_STATUS_NO': // 待使用
+            this.stateModel.stateTip = '待使用'
+            this.stateModel.discription = '产品已出票，请尽快使用产品'
           // case 'PAY_STATUS_YES': // 已支付
           //   this.stateTip = '已支付'
           //   break

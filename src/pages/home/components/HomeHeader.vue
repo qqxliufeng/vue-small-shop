@@ -25,10 +25,15 @@ export default {
         events: {
           init: (amap) => {
             amap.getCityInfo((status, result) => {
-              this.$root.state.changeCity({
-                value: result.city,
-                code: '-1'
-              })
+              let saveCity = this.$root.state.currentCity.value
+              if (saveCity !== result.city) {
+                this.$emit('cityDiffrent', {city: result.city})
+              } else {
+                this.$root.state.changeCity({
+                  value: result.city,
+                  code: '-1'
+                })
+              }
             })
           }
         }
@@ -61,17 +66,15 @@ export default {
     },
     citySelector () {
       this.$router.push({name: 'city', params: { backName: 'home' }})
-    },
-    getCityData () {
-      let city = this.$route.params.city
-      if (city) {
-        this.$root.state.changeCity(city.city)
-        this.$emit('changeCity')
-      }
     }
   },
-  watch: {
-    '$route': 'getCityData'
+  mounted () {
+    this.$root.$on('selectedCity', (data) => {
+      if (data.city) {
+        this.$root.state.changeCity(data.city.city)
+        this.$emit('changeCity')
+      }
+    })
   }
 }
 </script>

@@ -1,21 +1,18 @@
 <template>
     <div class="h-h-hot-container">
         <swiper :options="swiperOption" class="h-h-hot-card">
-            <swiper-slide v-for="(item, index) of list" :key="item.s_id">
+            <swiper-slide v-for="(item, index) of list" :key="item.goods_id">
                 <el-card shadow="always" :body-style="{padding: '0'}">
                     <div class="h-h-hot-wrapper" @click="itemClick(item)">
                         <div class="h-h-hot-image-wrapper">
-                            <img v-lazy="$utils.image.getImagePath(item.scenicimages)">
+                            <img v-lazy="$utils.image.getImagePath(item.scenic.scenicimages)">
                         </div>
-                        <p class="h-h-hot-wrapper-title">{{item.s_title}}</p>
-                        <el-rate
-                            :value="Number(item.mark_avg)"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}"
-                            class="h-h-hot-rating">
-                        </el-rate>
+                        <p class="h-h-hot-wrapper-title">{{item.goodsTitle}}</p>
+                        <div class="h-h-hot-wrapper-prices">
+                            <span>价格：￥{{item.minPrice}}</span>
+                            <!-- <span>￥{{item.retailPrice}}</span> -->
+                        </div>
+                        <p class="h-h-hot-wrapper-sales">销量：{{item.totalSales}}</p>
                         <div class="h-h-hot-tag-wrapper" v-if="index < 3">
                             <p>TOP</p>
                             <p>{{index+1}}</p>
@@ -43,7 +40,18 @@ export default {
   },
   methods: {
     itemClick (item) {
-      this.$emit('itemClick', item)
+      this.$router.push(
+        {
+          name: 'ticketDetail',
+          query:
+          {
+            scenicId: item.scenic.s_id,
+            goods_id: item.goodsId,
+            identity: this.$root.state.getSallerInfo().identity,
+            storeId: this.$root.state.getSallerInfo().storeId
+          }
+        }
+      )
     }
   }
 }
@@ -66,8 +74,20 @@ export default {
             .h-h-hot-wrapper-title
                 normalTextStyle(#333, .25)
                 ellipsis()
-                text-align center
                 padding rem(.25) rem(.1) rem(.05) rem(.1)
+            .h-h-hot-wrapper-sales
+                ellipsis()
+                padding rem(.1)
+                textStyle(#888, .2)
+            .h-h-hot-wrapper-prices
+                padding rem(.1)
+                textStyle(#888, .2)
+                display flex
+                justify-content space-between
+                & span:nth-of-type(1)
+                    color $orangeColor
+                & span:nth-of-type(2)
+                    text-decoration line-through
             .h-h-hot-rating
                 text-align center
             & >>> .el-rate__icon

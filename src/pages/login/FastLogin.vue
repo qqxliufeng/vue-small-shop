@@ -18,6 +18,9 @@
 import navi from 'common/components/navigation'
 export default {
   name: 'login',
+  props: {
+    backName: Object
+  },
   components: {
     navi
   },
@@ -90,6 +93,10 @@ export default {
         this.$toast(error)
       })
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    to.params.backName = this.backName
+    next()
   }
 }
 </script>

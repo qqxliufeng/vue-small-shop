@@ -24,7 +24,18 @@ export default {
   },
   methods: {
     selectedCity (data) {
-      this.$router.replace({name: this.backName, params: {city: data}})
+      if (this.backName === 'home') {
+        this.$root.$emit('selectedCity', {city: data})
+        this.$router.go(-1)
+      } else {
+        this.$router.replace({name: this.backName, params: {city: data}})
+      }
+      // this.$router.replace({name: this.backName, params: {city: data}})
+      // if (this.backName === 'home') {
+      //   this.$router.replace({path: '/index/' + this.$root.state.getSallerInfo().identity + '/' + this.$root.state.getSallerInfo().storeId, params: {city: data}})
+      // } else {
+      //   this.$router.replace({name: this.backName, params: {city: data}})
+      // }
     }
   }
 }

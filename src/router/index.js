@@ -55,7 +55,6 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
       component: Home,
       meta: {
         keepAlive: true
@@ -64,6 +63,7 @@ export default new Router({
     },
     {
       path: '/index/:identity/:storeId',
+      name: 'home',
       component: Home,
       meta: {
         keepAlive: true
@@ -166,7 +166,8 @@ export default new Router({
     {
       path: '/fastlogin',
       name: 'fastLogin',
-      component: FastLogin
+      component: FastLogin,
+      props: true
     },
     // 个人中心
     {

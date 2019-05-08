@@ -1,7 +1,7 @@
 <template>
     <div class="o-i-code-info-container">
         <div class="o-i-code-info">
-            <span class="el-icon-circle-close-outline o-i-code-close" @click="close"></span>
+            <span class="el-icon-close o-i-code-close" @click="close"></span>
             <div class="code-wrapper">
                 <canvas class="o-i-code-code" ref="qrcode"></canvas>
                 <p class="o-i-code-info-num">{{info.no}}</p>

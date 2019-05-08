@@ -30,7 +30,7 @@
            </li>
            <li>
                <div class="p-i-item">
-                   <span class="p-i-left">E-MAIL</span>
+                   <span class="p-i-left">email</span>
                    <input class="p-i-right p-i-text" placeholder="请输入邮箱" maxlength="20" v-model="email"/>
                </div>
            </li>
@@ -156,12 +156,20 @@ export default {
     },
     uploadSuccess (response, file, fileList) {
       if (response.data) {
-        this.$toast('头像上传成功，请点确定按钮提交')
-        this.$loading.close()
         this.uploadAvatar = response.data.url
-        this.avatar = this.$utils.image.getImagePath(response.data.url)
-        this.$root.userInfo.setUserInfoAvatar(response.data.url)
+        this.$http(this.$urlPath.userInfoResetInfo, {
+          avatar: this.uploadAvatar
+        }, null, (data) => {
+          this.$toast('头像上传成功')
+          this.$loading.close()
+          this.avatar = this.$utils.image.getImagePath(response.data.url)
+          this.$root.userInfo.setUserInfoAvatar(response.data.url)
+        }, (errorCode, error) => {
+          this.$toast(error)
+          this.$loading.close()
+        })
       } else {
+        this.$loading.close()
         this.$toast(response.msg)
       }
     },

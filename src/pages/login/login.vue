@@ -14,7 +14,7 @@
             </div>
             <el-button type="primary" class="input-login" @click="login">登录</el-button>
             <div>
-                <router-link :to="{name: 'fastLogin'}">
+                <router-link :to="{name: 'fastLogin', params: { backName }}">
                   <span class="input-fast-phone">手机快捷登录</span>
                 </router-link>
                 <router-link to="/register">
@@ -83,6 +83,9 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
+      if (!vm.backName) {
+        vm.backName = to.params.backName
+      }
       if (vm.$root.userInfo.isLogin()) {
         vm.$router.replace({name: vm.backName.name, query: vm.backName.query, params: vm.backName.params})
       }

@@ -1,10 +1,10 @@
 <template>
-    <div class="s-d-t-type-container">
+    <div class="s-d-t-type-container" v-if="typeGoodsList && typeGoodsList.length > 0">
         <div class="s-d-t-type-title-wrapper">
              <span>门票类型</span>
         </div>
         <div>
-            <el-tabs v-if="typeGoodsList">
+            <el-tabs>
                 <el-tab-pane v-for="tabItem of typeGoodsList" :label="tabItem.goodsTypeName" :key="tabItem.goodsTypeId">
                     <ul v-if="tabItem.goods_list && tabItem.goods_list.length > 0">
                         <li v-for="item of tabItem.goods_list" :key="item.goodsId">

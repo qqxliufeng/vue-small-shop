@@ -17,7 +17,8 @@
 export default {
   name: 'scenicDetailHeader',
   props: {
-    scenicInfo: Object
+    scenicInfo: Object,
+    isFavorites: Number
   },
   data () {
     return {
@@ -32,7 +33,7 @@ export default {
       return this.scenicInfo
     },
     favorites () {
-      return this.tempInfo !== null && this.tempInfo.isFavorites === 1
+      return this.isFavorites === 1
     }
   },
   methods: {
@@ -49,23 +50,7 @@ export default {
       }
     },
     collection () {
-      if (this.$root.userInfo.isLogin()) {
-        this.$http(this.$urlPath.userUnFavoroteScenicUrl, {
-          scenic_id: this.$parent.scenicId
-        }, '', (data) => {
-          if (this.favorites) {
-            this.$toast('取消收藏成功')
-            this.tempInfo.isFavorites = 0
-          } else {
-            this.$toast('收藏成功')
-            this.tempInfo.isFavorites = 1
-          }
-        }, (errorCode, error) => {
-          this.$toast(error)
-        })
-      } else {
-        this.$router.push({name: 'login'})
-      }
+      this.$emit('collection')
     },
     back () {
       this.$emit('back')

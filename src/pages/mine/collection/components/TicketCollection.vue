@@ -10,7 +10,6 @@
                             </div>
                             <div class="s-t-info-container">
                                 <span class="s-t-info-title">{{item.goodsTitle}}</span>
-                                <span class="s-t-info-remark">{{item.before}}</span>
                                 <div class="s-t-info-info">
                                     <!-- <span class="s-t-info-tag-1">立减1元</span>
                                     <span class="s-t-info-tag-2">即买即用</span> -->
@@ -71,7 +70,7 @@ export default {
       }
     },
     ticketDetail (item) {
-      this.$router.push({name: 'ticketDetail', query: {s_id: item.scenicId, goods_id: item.goods_id}})
+      this.$router.push({name: 'ticketDetail', query: {scenicId: item.scenicId, goods_id: item.goods_id, identity: this.$root.state.getSallerInfo().identity, storeId: this.$root.state.getSallerInfo().storeId}})
     }
   }
 }
@@ -89,7 +88,6 @@ export default {
             overflow hidden
             & div:nth-child(1)
                 flex 1.5
-                background-color red
                 height 1.7rem
                 & img
                     width 100%

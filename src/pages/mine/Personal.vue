@@ -9,18 +9,18 @@
             </div>
         </div>
         <div class="p-content-container" @scroll="divScroll" ref="pContent">
-            <div class="p-info-container">
-                <img class="p-info-header" :src="avatar"/>
-                <router-link :to="{ name: 'pinfo' }">
-                  <div>
-                      <div class="p-info-header-vip-container">
-                          <span class="p-info-header-vip">会员</span>
-                          <span>{{userPhone}}</span>
-                      </div>
-                      <p class="p-info-header-id">ID: {{this.$root.userInfo.state.id}}</p>
-                  </div>
-                </router-link>
-            </div>
+          <router-link :to="{ name: 'pinfo' }">
+              <div class="p-info-container">
+                  <img class="p-info-header" :src="avatar"/>
+                    <div>
+                        <div class="p-info-header-vip-container">
+                            <span class="p-info-header-vip">会员</span>
+                            <span>{{userPhone}}</span>
+                        </div>
+                        <p class="p-info-header-id">ID: {{this.$root.userInfo.state.id}}</p>
+                    </div>
+              </div>
+            </router-link>
             <div class="p-order-all">
                 <span>我的订单</span>
                 <span class="iconfont p-order-see-all" @click="allOrder">查看全部 &#xe64c;</span>
@@ -132,7 +132,7 @@ export default {
   },
   computed: {
     userPhone () {
-      return this.$root.userInfo.state.name
+      return this.$root.userInfo.state.name || this.$root.userInfo.state.phone
     },
     avatar () {
       return this.$utils.image.getImagePath(this.$root.userInfo.state.avatar)

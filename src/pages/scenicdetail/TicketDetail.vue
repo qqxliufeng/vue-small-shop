@@ -1,11 +1,13 @@
 <template>
     <div>
-        <section v-if="loadState">
-          <ticket-header :scenicInfo="scenicInfo" @back="back"></ticket-header>
+        <section v-if="loadState && scenicInfo">
+          <ticket-header :scenicInfo="scenicInfo" @back="back" @collection="collection" :isFavorites="this.goodsInfo.is_favorites"></ticket-header>
           <ticket-images :imageList="scenicInfo.imageList"></ticket-images>
           <ticket-info :scenicInfo="scenicInfo">
               <template slot="info" slot-scope="slotProps">
-                  <p class="t-d-intro-title">产品介绍</p>
+                  <p class="t-d-intro-title">门票名称</p>
+                  <p class="t-d-intro-ticket-name">{{goodsInfo.goods_title}}</p>
+                  <p class="t-d-intro-title">景区介绍</p>
                   <p class="t-d-intro-content">{{slotProps.scenicInfo.brief}}</p>
               </template>
           </ticket-info>
@@ -29,7 +31,7 @@
               <p class="t-d-detail-order-info-action" @click="reseve">立即预定</p>
           </div>
         </section>
-        <section v-else>
+        <section v-else-if="!loadState">
           <load-fail @reload="reload"></load-fail>
         </section>
     </div>
@@ -60,12 +62,14 @@ export default {
       },
       isSeeMore: true,
       showBuyAction: true,
-      scenicInfo: {},
+      scenicInfo: null,
       goodsInfo: {},
       remarks: [],
       from: null,
       identity: null,
-      storeId: null
+      storeId: null,
+      scenicId: null,
+      goodsId: null
     }
   },
   methods: {
@@ -78,15 +82,32 @@ export default {
       this.isSeeMore = !this.isSeeMore
     },
     reseve () {
-      this.$router.push({name: 'reseveDetail', query: { goods_id: this.$route.query.goods_id }})
+      this.$router.push({name: 'reseveDetail', query: { goods_id: this.goodsId }})
     },
     reload () {
       this.getData()
     },
+    collection () {
+      if (confirm) {
+        this.$http(this.$urlPath.userUnFavoroteGoodsUrl, {
+          goods_id: this.goodsId
+        }, '正在操作…', (data) => {
+          if (this.goodsInfo.is_favorites) {
+            this.$toast('取消收藏成功')
+            this.goodsInfo.is_favorites = 0
+          } else {
+            this.$toast('收藏成功')
+            this.goodsInfo.is_favorites = 1
+          }
+        }, (errorCode, error) => {
+          this.$toast(error)
+        })
+      }
+    },
     getData () {
       this.$http(this.$urlPath.goodsDetailUrl, {
-        s_id: this.$route.query.s_id,
-        goods_id: this.$route.query.goods_id,
+        s_id: this.scenicId,
+        goods_id: this.goodsId,
         identity: this.identity,
         store_id: this.storeId
       }, '', (data) => {
@@ -132,6 +153,7 @@ export default {
   },
   created () {
     this.scenicId = this.$route.query.scenicId
+    this.goodsId = this.$route.query.goods_id
     let tempIdentity = this.$route.query.identity
     let tempStoreId = this.$route.query.storeId
     // 如果是直接从分享页面过来的，则要存一下identity 和 storeId
@@ -161,10 +183,15 @@ export default {
 .slide-fade-enter, .slide-fade-leave-to
     transform translateY($headerHeight)
 .t-d-intro-title
-    textStyle(#333, .35)
+    textStyle(#333, .32)
+    margin-top rem(.2)
 .t-d-intro-content
     margin-top rem(.2)
-    normalTextStyle(#888, .3)
+    normalTextStyle(#888, .25)
+.t-d-intro-ticket-name
+    textStyle($orangeColor, .3)
+    padding rem(.3) 0
+    borderBottom()
 .t-d-intro-back-money
     padding rem(.2)
     overflow hidden
@@ -205,7 +232,7 @@ export default {
     & p
         flex 1
     .t-d-detail-order-info-price
-        text-align center
+        margin-left rem(.2)
         background-color #ffffff
         line-height $headerHeight
         textStyle(#333, .3)

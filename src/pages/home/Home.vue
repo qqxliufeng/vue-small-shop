@@ -1,7 +1,7 @@
 <template>
     <div>
        <section v-if="loadState">
-        <home-header :scrollTop="mScrollTop" @changeCity="changeCity"></home-header>
+        <home-header :scrollTop="mScrollTop" @changeCity="changeCity" @cityDiffrent="cityDiffrent"></home-header>
         <div ref="homeContent" class="h-content" id="home">
             <home-swiper :list="swiperList"></home-swiper>
             <!-- <home-notice></home-notice> -->
@@ -20,6 +20,16 @@
         <section v-else>
           <load-fail @reload="reload"></load-fail>
         </section>
+        <el-dialog
+          title="提示"
+          :visible.sync="dialogVisible"
+          width="90%">
+          <span>{{dialogTipContent}}</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false" size="mini">取 消</el-button>
+            <el-button type="primary" @click="changeDiffrentCity" size="mini">确 定</el-button>
+          </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -55,7 +65,10 @@ export default {
       loadState: true,
       sellerInfo: this.$root.state.getSallerInfo(),
       identity: null,
-      storeId: null
+      storeId: null,
+      dialogVisible: false,
+      dialogTipContent: '',
+      diffrentCity: null
     }
   },
   methods: {
@@ -88,20 +101,35 @@ export default {
     reload () {
       this.getData()
     },
+    changeDiffrentCity () {
+      this.dialogVisible = false
+      if (this.diffrentCity) {
+        this.$root.state.changeCity({
+          value: this.diffrentCity.city,
+          code: '-1'
+        })
+        this.changeCity()
+      }
+    },
     changeCity () {
       this.getData()
+    },
+    cityDiffrent (city) {
+      this.diffrentCity = city
+      this.dialogVisible = true
+      this.dialogTipContent = '当前城市为：' + city.city + '，是否切换'
     },
     getData () {
       this.$http(this.$urlPath.indexUrl, {
         identity: this.identity,
-        district: '济南市',
+        district: this.$root.state.currentCity.value,
         store_id: this.storeId
       }, '', (data) => {
         if (data.data) {
           this.loadState = true
           this.guessList = data.data.guess_like_scenic
           this.swiperList = data.data.swiper
-          this.hotList = data.data.hot_scenic
+          this.hotList = data.data.popularity_goods
           this.ad = data.data.ad
           this.categoryList = data.data.category
         } else {
