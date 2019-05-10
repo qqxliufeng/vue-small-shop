@@ -50,6 +50,16 @@
             <p class="o-i-pay-action" @click="pay">支付</p>
             <div class="sperator-line"></div>
         </div>
+        <el-dialog
+          title="提示"
+          :visible.sync="dialogVisible"
+          width="90%">
+          <span>购买成功~</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="close" size="mini">再逛逛</el-button>
+            <el-button type="primary" @click="seeOrder" size="mini">查看订单</el-button>
+          </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -69,7 +79,9 @@ export default {
       ZFBIcon,
       WXIcon,
       info: null,
-      payType: this.$isWeiXin ? 'wechatpay' : 'alipay'
+      payType: this.$isWeiXin ? 'wechatpay' : 'alipay',
+      dialogVisible: false,
+      orderId: null
     }
   },
   methods: {
@@ -93,12 +105,23 @@ export default {
         pay_type: this.payType
       }, '正在支付…', (data) => {
         this.$toast('订单支付成功')
+        this.dialogVisible = true
         this.$root.$emit('onReload')
         this.$root.$emit('onGetBadge')
-        this.$router.go(-1)
       }, (errorCode, error) => {
         this.$toast(error)
       })
+    },
+    seeOrder () {
+      this.dialogVisible = false
+      this.$router.replace({name: 'orderInfo', params: {orderId: '103', orderType: '2'}})
+    //   if (this.orderId) {
+    //     this.$router.replace({name: 'orderInfo', params: {orderId: '103', orderType: '2'}})
+    //   }
+    },
+    close () {
+      this.dialogVisible = false
+      this.$router.go(-1)
     }
   },
   mounted () {

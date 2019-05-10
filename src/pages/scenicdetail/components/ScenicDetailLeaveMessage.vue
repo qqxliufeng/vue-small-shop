@@ -5,7 +5,7 @@
             <span>{{ask.ask_count}}条留言</span>
         </div>
         <div v-if="showEmpty" class="s-d-l-m-message-empty">
-            <span>暂无留言哦~</span>
+            <el-button size="mini" type="warning" @click="startLeaveMessage">去留言</el-button>
         </div>
         <div v-else class="s-d-l-m-message-info-wrapper">
             <ul>
@@ -42,6 +42,9 @@ export default {
   methods: {
     seeMoreLeaveMessage () {
       this.$router.push({name: 'leaveMessageList', query: {s_id: this.$parent.scenicId}})
+    },
+    startLeaveMessage () {
+      this.$router.push({name: 'askMessage', query: {s_id: this.$parent.scenicId}})
     }
   }
 }

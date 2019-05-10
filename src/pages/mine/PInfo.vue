@@ -101,17 +101,11 @@ export default {
         this.$toast('用户名不能为空')
         return
       }
-      if (!this.realName) {
-        this.$toast('真实姓名不能为空')
-        return
-      }
-      if (!this.email) {
-        this.$toast('邮箱不能为空')
-        return
-      }
-      if (!this.$utils.validator.isEmail(this.email)) {
-        this.$toast('请输入合法的邮箱')
-        return
+      if (this.email) {
+        if (!this.$utils.validator.isEmail(this.email)) {
+          this.$toast('请输入合法的邮箱')
+          return
+        }
       }
       this.$http(this.$urlPath.userInfoResetInfo, {
         username: this.userName,
@@ -127,22 +121,11 @@ export default {
         if (this.userName) {
           this.$root.userInfo.setUserInfoName(this.userName)
         }
-        if (this.realName) {
-          this.$root.userInfo.setUserInfoRealName(this.realName)
-        }
-        if (this.email) {
-          this.$root.userInfo.setUserInfoEmail(this.email)
-        }
-        if (this.sex) {
-          this.$root.userInfo.setUserInfoGender(this.sex)
-        }
-        if (this.qq) {
-          this.$root.userInfo.setUserInfoQQ(this.qq)
-        }
-        if (this.province) {
-          this.$root.userInfo.setUserInfoCity(this.location)
-        }
-        this.$router.go(-1)
+        this.$root.userInfo.setUserInfoRealName(this.realName)
+        this.$root.userInfo.setUserInfoEmail(this.email)
+        this.$root.userInfo.setUserInfoGender(this.sex)
+        this.$root.userInfo.setUserInfoQQ(this.qq)
+        this.$root.userInfo.setUserInfoCity(this.location)
       }, (errorCode, error) => {
         this.$toast(error)
       })

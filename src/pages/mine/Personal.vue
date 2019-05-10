@@ -15,7 +15,7 @@
                     <div>
                         <div class="p-info-header-vip-container">
                             <span class="p-info-header-vip">会员</span>
-                            <span>{{userPhone}}</span>
+                            <span>{{$utils.common.hiddenMobile(userPhone)}}</span>
                         </div>
                         <p class="p-info-header-id">ID: {{this.$root.userInfo.state.id}}</p>
                     </div>

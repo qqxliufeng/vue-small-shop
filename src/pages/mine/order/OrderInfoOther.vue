@@ -92,6 +92,11 @@ export default {
           case 'USE_STATUS_NO': // 待使用
             this.stateModel.stateTip = '待使用'
             this.stateModel.discription = '产品已出票，请尽快使用产品'
+            break
+          case 'NO_COMMENT': // 待评价
+            this.stateModel.stateTip = '待评价'
+            this.stateModel.discription = '快来和小伙伴们分享一下这次出游的感受吧'
+            break
           // case 'PAY_STATUS_YES': // 已支付
           //   this.stateTip = '已支付'
           //   break

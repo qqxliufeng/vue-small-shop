@@ -44,7 +44,7 @@ export default {
         content: this.askContent
       }, '正在发布…', (data) => {
         this.$message({
-          message: '恭喜, 提问成功~',
+          message: '提问成功~',
           type: 'success'
         })
         this.$router.go(-1)
