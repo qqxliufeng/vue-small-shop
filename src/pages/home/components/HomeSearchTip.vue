@@ -9,14 +9,14 @@
                 <el-tag size="small" type="info" v-for="(item, index) of historyTagList" :key="index" class="h-t-tip-tag-item" @click.native="historyTagClick(item)">{{item}}</el-tag>
             </div>
         </div>
-        <div class="h-t-tip-wrapper">
+        <!-- <div class="h-t-tip-wrapper">
             <div class="h-t-tip-title">
                 <span><i class="iconfont">&#xe6a0;</i>热门搜索</span>
             </div>
             <div class="h-t-tip-tags-wrapper">
                 <el-tag size="small" type="info" v-for="(item, index) of hotTagList" :key="index" class="h-t-tip-tag-item" @click.native="historyTagClick(item.s_title)">{{item.s_title}}</el-tag>
             </div>
-        </div>
+        </div> -->
         <confirm-dialog content='是否要清空历史记录？' @dialogConfirm="dialogConfirm" ref='confirmDialog'></confirm-dialog>
     </div>
 </template>
@@ -65,7 +65,7 @@ export default {
         this.historyTagList = history.reverse()
       }
     }
-    this.getData()
+    // this.getData()
   }
 }
 </script>

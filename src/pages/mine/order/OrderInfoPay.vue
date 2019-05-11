@@ -53,7 +53,8 @@
         <el-dialog
           title="提示"
           :visible.sync="dialogVisible"
-          width="90%">
+          width="90%"
+          @close="close">
           <span>购买成功~</span>
           <span slot="footer" class="dialog-footer">
             <el-button @click="close" size="mini">再逛逛</el-button>
