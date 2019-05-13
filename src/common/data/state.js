@@ -6,8 +6,6 @@ let currentCity = defaultCity
 let token = ''
 let identity = '1'
 let storeId = '1'
-localStorage.setItem('identity', identity)
-localStorage.setItem('storeId', storeId)
 try {
   if (localStorage) {
     currentCity = JSON.parse(localStorage.getItem('currentCity')) || defaultCity

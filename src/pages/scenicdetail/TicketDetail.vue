@@ -217,9 +217,8 @@ export default {
     .t-d-detail-buy-info-content
         overflow hidden
         normalTextStyle(#888, .3)
-        padding rem(.2) 0
     .t-d-detail-buy-info-see-more
-        normalTextStyle(#aaa, .4)
+        textStyle(#aaa, .4)
         text-align center
 .t-d-detail-order-info-wrapper
     display flex

@@ -47,8 +47,8 @@ export default {
     getData () {
       this.$http(this.$urlPath.orderReserve, {
         goods_id: this.$route.query.goods_id,
-        identity: this.$root.state.identity,
-        store_id: this.$root.state.storeId
+        identity: this.$root.state.getSallerInfo().identity,
+        store_id: this.$root.state.getSallerInfo().storeId
       }, '', (data) => {
         this.ticketInfo = data.data
         this.collectionState = data.data.is_favorites
@@ -118,7 +118,7 @@ export default {
             this.$toast('请输入合法的游客手机号')
             return
           }
-          if (!idCard) {
+          if (!idCard && this.ticketInfo.goods.visitor_info.indexOf('id') !== -1) {
             this.$toast('请输入游客身份证号')
             return
           }
@@ -139,8 +139,8 @@ export default {
           break
       }
       postData.info = {
-        identity: this.$root.state.identity,
-        store_id: this.$root.state.storeId,
+        identity: this.$root.state.getSallerInfo().identity,
+        store_id: this.$root.state.getSallerInfo().storeId,
         goods_source: this.ticketInfo.goods.goods_source,
         goods_id: this.$route.query.goods_id
       }

@@ -19,6 +19,7 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 import VueLazyLoad from 'vue-lazyload'
 import VueAMap from 'vue-amap'
+import 'common/utils/weixin.js'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)

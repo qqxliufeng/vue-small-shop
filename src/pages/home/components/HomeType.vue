@@ -71,7 +71,7 @@ export default {
             .h-t-type-wrapper
                 text-align center
                 float left
-                width 25%
+                width 20%
                 height 25vw
                 padding-top rem(.25)
                 box-sizing border-box
@@ -79,6 +79,6 @@ export default {
                     width rem(.9)
                     object-fit cover
                 .h-t-type-title
-                    normalTextStyle(#333, .2)
+                    normalTextStyle(#333, .25)
                     margin-top rem(.2)
 </style>

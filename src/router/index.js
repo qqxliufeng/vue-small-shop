@@ -175,7 +175,6 @@ export default new Router({
       name: 'personal',
       component: Personal,
       meta: {
-        keepAlive: true,
         auth: true
       }
     },

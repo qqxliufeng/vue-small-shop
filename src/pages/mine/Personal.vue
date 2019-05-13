@@ -153,7 +153,7 @@ export default {
       this.$router.push({name: 'orderList', query: {index: this.orderItemList[orderItemIndex].index}})
     },
     getData () {
-      this.$http(this.$urlPath.orderStatusNum, {}, '', (data) => {
+      this.$http(this.$urlPath.orderStatusNum, {}, null, (data) => {
         this.orderItemList[0].badage = data.data.pay_count
         this.orderItemList[1].badage = data.data.use_count
         this.orderItemList[2].badage = data.data.comment_count
@@ -197,7 +197,7 @@ export default {
     },
     confirmLogout () {
       this.$root.userInfo.clearInfoAction()
-      this.$router.replace({name: 'home'})
+      this.$router.replace({path: '/index/' + this.$root.state.getSallerInfo().identity + '/' + this.$root.state.getSallerInfo().storeId})
     }
   },
   beforeRouteLeave (to, from, next) {
