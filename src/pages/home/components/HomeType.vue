@@ -81,4 +81,5 @@ export default {
                 .h-t-type-title
                     normalTextStyle(#333, .25)
                     margin-top rem(.2)
+                    ellipsis()
 </style>

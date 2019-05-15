@@ -48,7 +48,8 @@ export default {
       this.$http(this.$urlPath.orderReserve, {
         goods_id: this.$route.query.goods_id,
         identity: this.$root.state.getSallerInfo().identity,
-        store_id: this.$root.state.getSallerInfo().storeId
+        store_id: this.$root.state.getSallerInfo().storeId,
+        goods_source: this.$route.query.goods_source || ''
       }, '', (data) => {
         this.ticketInfo = data.data
         this.collectionState = data.data.is_favorites

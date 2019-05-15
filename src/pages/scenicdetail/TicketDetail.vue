@@ -82,7 +82,7 @@ export default {
       this.isSeeMore = !this.isSeeMore
     },
     reseve () {
-      this.$router.push({name: 'reseveDetail', query: { goods_id: this.goodsId }})
+      this.$router.push({name: 'reseveDetail', query: { goods_id: this.goodsId, goods_source: this.$route.query.goods_source }})
     },
     reload () {
       this.getData()

@@ -48,7 +48,8 @@ export default {
             scenicId: item.scenic.s_id,
             goods_id: item.goodsId,
             identity: this.$root.state.getSallerInfo().identity,
-            storeId: this.$root.state.getSallerInfo().storeId
+            storeId: this.$root.state.getSallerInfo().storeId,
+            goods_source: item.goods_source
           }
         }
       )
