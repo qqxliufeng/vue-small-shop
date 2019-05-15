@@ -1,5 +1,5 @@
 <template>
-    <div class="s-d-comment-container">
+    <div class="s-d-comment-container" v-if="comment">
         <div class="s-d-comment-title-wrapper" v-if="comment">
             <span>综合评价：<i>{{Number(comment.avg_mark).toFixed(1)}}</i></span>
             <span>{{comment.count}}次评价</span>

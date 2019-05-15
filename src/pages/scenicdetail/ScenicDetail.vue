@@ -61,7 +61,7 @@ export default {
     return {
       loadState: true,
       sellerInfo: this.$root.state.getSallerInfo(),
-      comment: {},
+      comment: null,
       ask: {},
       imageList: [],
       scenicInfo: {},

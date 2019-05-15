@@ -1,5 +1,5 @@
 <template>
-    <div id="commentList" class='c-l-comment-list-container'>
+    <div id="commentList" class='c-l-comment-list-container' v-if="comment">
         <navi title="评论列表" :isFixed="true"></navi>
         <mescroll-vue ref="mescroll" :down="mescrollConfig.mescrollDown" :up="mescrollConfig.mescrollUp" @init="mescrollInit">
           <div class="s-d-comment-container">
@@ -38,7 +38,7 @@ export default {
     return {
       mescrollConfig: mescrollConfig('commentList', this.upCallback),
       mescroll: null,
-      comment: {},
+      comment: null,
       list: [],
       mark: 0,
       tagsList: [

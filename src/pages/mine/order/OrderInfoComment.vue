@@ -110,6 +110,18 @@ export default {
     font-size .32rem
 .o-i-comment-container
     margin-top $headerHeight
+    & >>> .el-upload--picture-card
+    & >>> .el-upload-list--picture-card
+    & >>> .el-upload-list__item
+            width rem(1.6)
+            height rem(1.6)
+            line-height rem(1.6)
+    & >>> .el-upload-list__item.is-success
+          .el-upload-list__item-status-label
+            display none
+    & >>> .el-progress-circle
+            width rem(1)
+            height rem(1)
     .o-i-comment-container-start-wrapper
         padding .3rem
         line-height .5rem
@@ -160,15 +172,4 @@ export default {
         width 85%
         display block
         margin 1rem auto
->>> .el-upload--picture-card
->>> .el-upload-list--picture-card
->>> .el-upload-list__item
-        width rem(1.6)
-        height rem(1.6)
-        line-height rem(1.6)
->>> .el-upload-list__item.is-success .el-upload-list__item-status-label
-        display none
->>> .el-progress-circle
-        width rem(1)
-        height rem(1)
 </style>

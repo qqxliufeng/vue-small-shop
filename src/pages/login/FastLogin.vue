@@ -72,23 +72,23 @@ export default {
         this.$toast('请输入正确的手机号')
         return
       }
-      this.disabled = true
-      let count = 60
-      let time = setInterval(() => {
-        this.disabled = true
-        count--
-        this.countTitle = count + ' s'
-        if (count <= 0) {
-          clearInterval(time)
-          this.disabled = false
-          this.countTitle = '重新获取？'
-        }
-      }, 1000)
       this.$http(this.$urlPath.userInfoGetSMSCodeUrl, {
         mobile: this.phone,
         event: 'mobilelogin'
       }, null, (data) => {
         this.$toast('短信发送成功，请注意查收')
+        this.disabled = true
+        let count = 60
+        let time = setInterval(() => {
+          this.disabled = true
+          count--
+          this.countTitle = count + ' s'
+          if (count <= 0) {
+            clearInterval(time)
+            this.disabled = false
+            this.countTitle = '重新获取？'
+          }
+        }, 1000)
       }, (errorCode, error) => {
         this.$toast(error)
       })

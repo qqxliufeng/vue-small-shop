@@ -74,6 +74,7 @@ export default {
     color #B6B6B6
     & .number
         color #B6B6B6 !important
+        text-decoration line-through
 .title
     textStyle(#888, .25)
 .o-t-i-container

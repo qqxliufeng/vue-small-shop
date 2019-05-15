@@ -87,7 +87,11 @@ export default {
         vm.backName = to.params.backName
       }
       if (vm.$root.userInfo.isLogin()) {
-        vm.$router.replace({name: vm.backName.name, query: vm.backName.query, params: vm.backName.params})
+        if (vm.backName) {
+          vm.$router.replace({name: vm.backName.name, query: vm.backName.query, params: vm.backName.params})
+        } else {
+          vm.$router.replace({path: '/index/' + vm.$root.state.getSallerInfo().identity + '/' + vm.$root.state.getSallerInfo().storeId})
+        }
       }
     })
   }
