@@ -84,7 +84,7 @@ export default {
           if (this.state === 4) { // 售后订单列表
             data.data.forEach((it, index) => {
               it.stateModel = {
-                orderType: '2',
+                orderType: '2', // 进入待使用详情，因为有可能是部分退款
                 stateTip: '退款/售后',
                 time: {
                   title: '下单时间：',

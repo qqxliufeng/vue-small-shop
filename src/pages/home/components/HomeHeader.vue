@@ -25,16 +25,19 @@ export default {
         events: {
           init: (amap) => {
             amap.getCityInfo((status, result) => {
-              let saveCity = this.$root.state.currentCity.value
-              if (saveCity !== result.city) {
-                this.$emit('cityDiffrent', {city: result.city})
-              } else {
-                this.$root.state.changeCity({
-                  value: result.city,
-                  code: '-1'
-                })
+              if (result.city) {
+                let saveCity = this.$root.state.currentCity.value
+                if (saveCity !== result.city) {
+                  this.$emit('cityDiffrent', {city: result.city})
+                } else {
+                  this.$root.state.changeCity({
+                    value: result.city,
+                    code: '-1'
+                  })
+                }
               }
-            })
+            }
+            )
           }
         }
       }]
