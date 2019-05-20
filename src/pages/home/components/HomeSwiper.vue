@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     startScenicDetail (item) {
-      this.$router.push({name: 'scenicDetail'})
+      // this.$router.push({name: 'scenicDetail'})
     }
   }
 }
