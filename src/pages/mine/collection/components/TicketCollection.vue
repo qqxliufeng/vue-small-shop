@@ -10,16 +10,11 @@
                             </div>
                             <div class="s-t-info-container">
                                 <span class="s-t-info-title">{{item.goodsTitle}}</span>
-                                <div class="s-t-info-info">
-                                    <!-- <span class="s-t-info-tag-1">立减1元</span>
-                                    <span class="s-t-info-tag-2">即买即用</span> -->
-                                    <span><i>￥</i><i>{{item.minPrice}}</i><i>起</i></span>
-                                </div>
+                                <span class="s-t-info-price"><i>￥</i><i>{{item.minPrice}}</i><i>起</i></span>
                             </div>
                         </div>
                         <div class="s-c-line"></div>
                         <div class="s-c-bottom-action-container">
-                            <!-- <span>剩余时间:2天10时10分</span> -->
                             <el-button type="primary" size="small" class="s-c-bottom-action" @click="ticketDetail(item)">查看详情</el-button>
                             <el-button plain size="small" class="s-c-bottom-action" @click="cancelCollection(item)">取消收藏</el-button>
                         </div>
@@ -87,8 +82,8 @@ export default {
             display flex
             overflow hidden
             & div:nth-child(1)
-                flex 1.5
-                height 1.7rem
+                flex 1.2
+                height 1.5rem
                 & img
                     width 100%
                     height 100%
@@ -109,32 +104,16 @@ export default {
                     color #888888
                     font-size .25rem
                     margin .2rem 0
-                .s-t-info-info
-                    .s-t-info-tag-1
-                        border .01rem solid #EFA184
-                        color #EFA184
-                        padding .03rem .08rem
-                        border-radius .05rem
-                        font-size .15rem
-                    .s-t-info-tag-2
-                        border .01rem solid $primary
+                .s-t-info-price
+                    & i:nth-child(1)
                         color $primary
-                        padding .03rem .08rem
-                        border-radius .05rem
-                        font-size .15rem
-                        margin-left .1rem
-                        margin-bottom .1rem
-                    & span:nth-child(1)
-                        float right
-                        & i:nth-child(1)
-                            color $primary
-                            font-size .2rem
-                        & i:nth-child(2)
-                            color $primary
-                            font-size .35rem
-                        & i:nth-child(3)
-                            color #cccccc
-                            font-size .2rem
+                        font-size .2rem
+                    & i:nth-child(2)
+                        color $primary
+                        font-size .35rem
+                    & i:nth-child(3)
+                        color #cccccc
+                        font-size .2rem
         .s-c-line
             border .01rem solid #f5f5f5
             margin .2rem 0

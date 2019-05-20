@@ -38,9 +38,8 @@ export default {
         borderBottom()
         .s-d-hot-title-icon
             color $orangeColor
-            font-size rem(.5)
+            font-size rem(.4)
             vertical-align middle
-            margin-right rem(.2)
             & + span
                 vertical-align middle
                 font-size rem(.35)
