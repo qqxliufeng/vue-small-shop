@@ -16,7 +16,7 @@
                 <span :class="[isCollapse ? 'el-icon-arrow-down' : 'el-icon-arrow-up']" @click="seeMoreContent"></span>
             </p>
         </div>
-        <div class="s-d-comment-item-imags-wrapper" v-lazy-container="{ selector: 'img' }">
+        <div v-if="item.images && item.images.length > 0" class="s-d-comment-item-imags-wrapper" v-lazy-container="{ selector: 'img' }">
             <img v-for="(image, index) of item.images" :key="index" :data-src="$utils.image.getImagePath(image)" @click="imageClick">
         </div>
     </div>
