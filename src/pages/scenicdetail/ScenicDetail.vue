@@ -26,7 +26,7 @@
           <scenic-detail-ticket-type :typeGoodsList="typeGoodsList"></scenic-detail-ticket-type>
           <scenic-detail-leave-message :ask="ask"></scenic-detail-leave-message>
           <scenic-detail-comment :comment="comment" :tagCanSelected="false"></scenic-detail-comment>
-          <div class="s-d-l-m-comment-info-see-more" @click="seeMoreComment" v-if="comment && comment.length > 0">
+          <div class="s-d-l-m-comment-info-see-more" @click="seeMoreComment" v-if="comment && comment.comment_list.length > 0">
             查看更多
           </div>
         </section>

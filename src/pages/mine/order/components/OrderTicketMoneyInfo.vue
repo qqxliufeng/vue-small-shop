@@ -25,7 +25,7 @@
             </div>
             <div class="o-i-info-shop-info-name-wrapper">
                 <p class="o-i-info-shop-info-name">
-                    <span>商家名称：{{storeInfo.store.company_name}}</span>
+                    <span>商家名称：{{storeInfo.store.store_name}}</span>
                 </p>
                 <p class="o-i-info-shop-info-phone">
                     <span>联系方式：{{storeInfo.store.linkman_phone || '暂无'}}</span>
