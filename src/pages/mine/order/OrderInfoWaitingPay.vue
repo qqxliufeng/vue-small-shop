@@ -34,6 +34,7 @@
         </order-info-user-info>
         <div class="sperator-line"></div>
         <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :remarks="times"></order-time-info>
+        <div class="sperator-line-2"></div>
         <div class="o-i-pay-action-wrapper">
             <span @click="cancelOrder">取消订单</span>
             <span @click="goPay">去支付</span>
@@ -155,11 +156,18 @@ export default {
     height .1rem
 .o-i-time-contianer
     padding .2rem
+.sperator-line-2
+    height $headerHeight
 .o-i-pay-action-wrapper
     display flex
     border-top .01rem solid #cccccc
     height .8rem
     text-align center
+    position fixed
+    bottom 0
+    left 0
+    right 0
+    background #ffffff
     & span
         flex 1
         display flex

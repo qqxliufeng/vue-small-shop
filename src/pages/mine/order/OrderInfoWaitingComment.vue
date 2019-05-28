@@ -26,8 +26,9 @@
         </order-info-user-info>
         <div class="sperator-line"></div>
         <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :remarks="times"></order-time-info>
+        <div class="sperator-line-2"></div>
         <div class="o-i-waiting-use-action-wrapper" @click="comment">
-            <span>评价</span>
+            <span>去评价</span>
         </div>
     </div>
 </template>
@@ -87,6 +88,10 @@ export default {
     line-height .3rem
 .o-i-waiting-use-action-wrapper
     display flex
+    position fixed
+    bottom 0
+    left 0
+    right 0
     border-top .01rem solid #cccccc
     height .8rem
     text-align center
@@ -99,6 +104,8 @@ export default {
     & span:nth-child(1)
         background-color $primary
         color #ffffff
+.sperator-line-2
+    height $headerHeight
 .c-e-wrapper
     font-size .2rem
     margin 0 auto

@@ -24,6 +24,7 @@
                   <span :class="[isSeeMore ? 'el-icon-arrow-down' : 'el-icon-arrow-up']"></span>
               </p>
           </div>
+          <div class="sperator-line-2"></div>
           <div class="t-d-detail-order-info-wrapper">
               <p class="t-d-detail-order-info-price">
                   门票价格：<span>￥{{scenicInfo.price}}</span>
@@ -208,6 +209,8 @@ export default {
         background-color $orangeColor
         border-radius rem(.1)
         padding rem(.1) rem(.2)
+.sperator-line-2
+    height $headerHeight
 .t-d-detail-buy-info
     padding rem(.2)
     .t-d-detail-buy-info-title
@@ -222,10 +225,10 @@ export default {
         text-align center
 .t-d-detail-order-info-wrapper
     display flex
-    // position fixed
-    // bottom 0
-    // left 0
-    // right 0
+    position fixed
+    bottom 0
+    left 0
+    right 0
     border-top #f5f5f5 solid 1px
     height $headerHeight
     & p

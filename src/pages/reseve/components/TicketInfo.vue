@@ -6,13 +6,16 @@
         </div>
         <div class="r-d-ticket-info-title-wrapper">
             <span class="r-d-ticket-info-time-title">使用日期</span>
-            <span class="r-d-ticket-info-time-more" @click="isShowCanlendarDialog = true">更多日期<i class="el-icon-arrow-right"></i></span>
+            <!-- <span class="r-d-ticket-info-time-more" >更多日期<i class="el-icon-arrow-right"></i></span> -->
         </div>
         <div class="r-d-ticket-info-time-wrapper">
             <div class="r-d-ticket-info-time-item" v-for="(item, index) of times" :key="index" @click="timeItemClick(item)" :class="[{'r-d-ticket-info-time-selected': item.isSelected},{'r-d-ticket-info-time-uneable' : !item.isEnable}]">
                 <p>{{item.date}}</p>
                 <p>周{{$utils.getWeekByWeek(item.week)}}</p>
                 <p>￥{{item.price}}</p>
+            </div>
+            <div class="r-d-ticket-info-time-item" style="border: #63BBB0 solid 1px" @click="isShowCanlendarDialog = true">
+                <p class="more-date">更多日期></p>
             </div>
         </div>
         <div class="r-d-ticket-info-count-wrapper">
@@ -37,13 +40,14 @@
             <div v-show="showRemark" class="r-d-ticket-info-remark-wrapper">
                 <div class="r-d-ticket-info-remark-title-wrapper">
                     <span>购买须知</span>
+                    <span class="el-icon-circle-close" @click="showRemark = false"></span>
                 </div>
                 <div class="remark-content-wrapper">
                     <ul>
                       <li v-for="(item, index) of remarks" :key="index">
                           <ticket-remark :remark="item"></ticket-remark>
                       </li>
-                      <p class="remark-content-confirm" @click="showRemark = false">确定</p>
+                      <p class="remark-content-confirm" @click="showRemark = false">下一步</p>
                     </ul>
                 </div>
             </div>
@@ -109,17 +113,17 @@ export default {
           isEnable: false,
           isSelected: false,
           raw: {}
-        },
-        {
-          date: '',
-          week: '',
-          price: '0',
-          count: 0,
-          salesId: '',
-          isEnable: false,
-          isSelected: false,
-          raw: {}
         }
+        // {
+        //   date: '',
+        //   week: '',
+        //   price: '0',
+        //   count: 0,
+        //   salesId: '',
+        //   isEnable: false,
+        //   isSelected: false,
+        //   raw: {}
+        // }
       ],
       events: {},
       tempTime: {
@@ -306,6 +310,9 @@ export default {
             & p:nth-child(3)
                 margin-top rem(.2)
                 color $orangeColor
+              .more-date
+                  color $primary
+                  font-size rem(.23)
         .r-d-ticket-info-time-selected
             border $primary solid 1px
         .r-d-ticket-info-time-uneable
