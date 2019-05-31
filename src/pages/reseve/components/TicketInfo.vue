@@ -324,7 +324,7 @@ export default {
         display flex
         padding rem(.3)
         align-items center
-        borderBottom()
+        border-bottom: rem(.2) solid #f5f5f5
         .r-d-ticket-info-count-title
             textStyle(#333, .3)
             flex 1

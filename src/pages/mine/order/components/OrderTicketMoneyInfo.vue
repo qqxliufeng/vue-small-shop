@@ -1,12 +1,6 @@
 <template>
     <div class="o-i-ticket-info-container">
-        <div class="o-i-ticket-safe-container">
-            <p>优待客消费保障</p>
-            <div class="o-i-ticket-info-tag">
-                <span><i class="iconfont">&#xe69e;</i> 入园保障</span>
-                <span><i class="iconfont">&#xe69e;</i> 官方</span>
-            </div>
-        </div>
+        <safe-protect></safe-protect>
         <p class="o-i-ticket-info-title">
             <span>{{storeInfo.ticketName}}</span>
             <span class="play-time">游玩日期：{{storeInfo.playTime}}</span>
@@ -19,27 +13,18 @@
         <div class="o-i-ticket-info-money-detail" v-show="isShowDetail">
             <slot name="ticketMoneyDetail" :moneyDetail="storeInfo.money.detail"></slot>
         </div>
-        <div class="o-i-info-shop-info">
-            <div class="o-i-info-shop-info-img-wrapper">
-                <img v-lazy="$utils.image.getImagePath(storeInfo.store.avatar)">
-            </div>
-            <div class="o-i-info-shop-info-name-wrapper">
-                <p class="o-i-info-shop-info-name">
-                    <span>商家名称：{{storeInfo.store.store_name}}</span>
-                </p>
-                <p class="o-i-info-shop-info-phone">
-                    <span>联系方式：{{storeInfo.store.linkman_phone || '暂无'}}</span>
-                </p>
-            </div>
-        </div>
     </div>
 </template>
 
 <script>
+import SafeProtect from '@/common/components/safe-protect'
 export default {
   name: 'orderTicketMoneyInfo',
   props: {
     storeInfo: Object
+  },
+  components: {
+    SafeProtect
   },
   data () {
     return {
@@ -58,24 +43,6 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .o-i-ticket-info-container
-    .o-i-ticket-safe-container
-        background-color #EDF8F7
-        border-bottom .02rem solid #f5f5f5
-        padding .2rem
-        & p
-            color $primary
-        .o-i-ticket-info-tag
-            overflow hidden
-            margin-top .2rem
-            line-height .27rem
-            & span
-                float left
-                color #333333
-                font-size .2rem
-                margin-right .3rem
-                & i
-                    color $primary
-                    font-size .2rem
     .o-i-ticket-info-title
         padding .2rem
         color #333333
@@ -106,27 +73,4 @@ export default {
     .o-i-ticket-info-money-detail
         padding 0 .2rem
         border-bottom .01rem solid #f5f5f5
-    .o-i-info-shop-info
-        display flex
-        padding .2rem
-        borderBottom()
-        .o-i-info-shop-info-img-wrapper
-            overflow hidden
-            height 1rem
-            & img
-                width rem(1)
-                height rem(1)
-                border-radius 50%
-                object-fit cover
-        .o-i-info-shop-info-name-wrapper
-            display flex
-            flex-direction column
-            justify-content space-around
-            flex 5
-            margin-left .1rem
-            color #888888
-            overflow hidden
-            .o-i-info-shop-info-name
-                line-height .5rem
-                ellipsis()
 </style>

@@ -3,7 +3,7 @@
         <navi :title="title" :isFixed="true"></navi>
         <el-tabs :value="mSelected" @tab-click="handleClick" class="c-tabs" :stretch="true" v-if="info">
             <el-tab-pane name="scenicInfoForIntro" label="景区介绍" class="c-tabs-item">
-                <div class="s-i-content" v-html="content"></div>
+                <div class="s-i-content" v-html="content" ref="content"></div>
             </el-tab-pane>
             <el-tab-pane name="scenicInfoForOrderNotify" label="使用须知" class="c-tabs-item">
                 <div v-for="(item, index) of remarks" :key="index" class="info-wrapper">
@@ -90,6 +90,13 @@ export default {
   },
   mounted () {
     this.getData()
+  },
+  updated () {
+    let array = document.getElementsByTagName('a')
+    for (let i = 0; i < array.length; i++) {
+      let a = array[i]
+      a.removeAttribute('href')
+    }
   }
 }
 </script>
@@ -113,6 +120,16 @@ export default {
         .s-i-content
             padding rem(.2)
             normalTextStyle(#333, .35)
+            & >>> img
+                width 100%
+                margin-top rem(.1)
+                object-fit cover
+            & >>> p span
+                color #333 !important
+                font-size rem(.28) !important
+            & >>> p a
+                color #333 !important
+                font-size rem(.28) !important
     .info-wrapper
         padding rem(.2)
         .s-i-info-title

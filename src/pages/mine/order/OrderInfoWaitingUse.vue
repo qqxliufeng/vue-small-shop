@@ -31,7 +31,7 @@
         <order-info-user-info title="预定须知" :remarks="remarks">
         </order-info-user-info>
         <div class="sperator-line"></div>
-        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :remarks="times"></order-time-info>
+        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :remarks="times" :store="storeInfo.store"></order-time-info>
         <div class="o-i-waiting-use-action-wrapper" v-if="detail.status === 'USE_STATUS_NO' && detail.is_refund === 1 && detail.refund_mark !== 2">
             <span @click="backMoney">申请退款</span>
             <!-- <span @click="isShowCanlendarDialog = true">变更时间</span> -->

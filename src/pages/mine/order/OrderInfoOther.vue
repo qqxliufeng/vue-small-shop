@@ -31,7 +31,7 @@
         <order-info-user-info title="预定须知" :remarks="remarks">
         </order-info-user-info>
         <div class="sperator-line"></div>
-        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :remarks="times"></order-time-info>
+        <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :remarks="times" :store="storeInfo.store"></order-time-info>
     </div>
 </template>
 

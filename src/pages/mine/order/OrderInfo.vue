@@ -14,7 +14,8 @@
 <script>
 import navi from 'common/components/navigation'
 import orderInfoWaitingPay from './OrderInfoWaitingPay'
-import orderInfoWaitingUse from './OrderInfoWaitingUse'
+// import orderInfoWaitingUse from './OrderInfoWaitingUse'
+import orderInfoWaitingUse from './orderInfo/OrderInfoUse'
 import orderInfoWaitingComment from './OrderInfoWaitingComment'
 import orderInfoAfterService from './OrderInfoAfterService'
 import orderInfoOther from './OrderInfoOther'

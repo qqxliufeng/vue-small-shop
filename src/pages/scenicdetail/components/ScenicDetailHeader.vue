@@ -41,7 +41,7 @@ export default {
       let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       this.top = scrollTop
       if (scrollTop > 1) {
-        let opacity = 43 / scrollTop
+        let opacity = 10 / scrollTop
         opacity = Math.min(1, opacity)
         this.opacityStyle.opacity = 1 - opacity
       }

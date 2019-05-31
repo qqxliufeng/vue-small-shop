@@ -53,7 +53,7 @@ export default {
             background-color $primary
             vertical-align bottom
     .r-d-ticket-info-remark-content-title-info
-        margin-left .2rem
+        margin-left .55rem
         & span
             display inline-block
         .remark-key

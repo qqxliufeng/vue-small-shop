@@ -25,21 +25,19 @@
         </div>
         <slot name="bottomInfo"></slot>
         <div class="sperator-line"></div>
-        <div class="o-i-ticket-safe-container">
-            <p>优待客消费保障</p>
-            <div class="o-i-ticket-info-tag">
-                <span><i class="iconfont">&#xe69e;</i> 入园保障</span>
-                <span><i class="iconfont">&#xe69e;</i> 官方</span>
-            </div>
-        </div>
+        <safe-protect></safe-protect>
     </div>
 </template>
 
 <script>
+import SafeProtect from 'common/components/safe-protect'
 export default {
   name: 'scenicDetailInfo',
   props: {
     scenicInfo: Object
+  },
+  components: {
+    SafeProtect
   },
   methods: {
     startScenicInfo (type) {
