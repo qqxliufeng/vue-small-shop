@@ -1,14 +1,17 @@
 <template>
   <div class='t-n-container'>
-    <p class="title"><span class="title-info">预定须知</span></p>
-    <ticket-remark :remark="{title: 'asdf', value: 'asdfasdfasdf'}"></ticket-remark>
-    <ticket-remark :remark="{title: 'asdf', value: 'asdfasdfasdf'}"></ticket-remark>
+    <p class="title"><span class="title-info">{{title || ''}}</span></p>
+    <ticket-remark v-for="(item, index) of remarks" :key="index" :remark="item"></ticket-remark>
   </div>
 </template>
 <script>
 import TicketRemark from 'common/components/ticket-remark'
 export default {
-  name: '',
+  name: 'ticketNotice',
+  props: {
+    title: String,
+    remarks: Array
+  },
   components: {
     TicketRemark
   },
@@ -27,7 +30,7 @@ export default {
         &:before
             content ''
             width 3px
-            height rem(.5)
+            height rem(.3)
             background-color $primary
             display inline-block
             vertical-align middle

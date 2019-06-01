@@ -48,7 +48,7 @@ export default {
   data () {
     return {
       headerHeight: 0.86 * 50,
-      offsetTop: null,
+      offsetTop: 0,
       isFixed: false,
       isScroll: false,
       swiperOption: {
@@ -69,12 +69,14 @@ export default {
   },
   methods: {
     handlerScroll () {
-      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      if (!this.offsetTop) {
-        this.offsetTop = this.$refs.type.offsetTop
+      if (this.$refs.type) {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        if (!this.offsetTop) {
+          this.offsetTop = this.$refs.type.offsetTop
+        }
+        this.isFixed = scrollTop + this.headerHeight >= this.offsetTop
+        this.isScroll = false
       }
-      this.isFixed = scrollTop + this.headerHeight >= this.offsetTop
-      this.isScroll = false
     },
     positionType () {
       if (this.isFixed) {

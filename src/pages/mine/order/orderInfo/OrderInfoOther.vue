@@ -1,9 +1,9 @@
 <template>
   <div class='o-i-container' v-if="detail">
-    <order-info-header :stateTip="tipTitle">
+    <order-info-header :stateTip="stateModel.stateTip">
         <template slot="headerTitleInfo">
             <p class="o-i-use-info">
-                {{tipContent}}
+                {{stateModel.discription}}
             </p>
         </template>
         <template slot="headerBottomInfo" v-if="detail.refund_mark !== 0">
@@ -25,12 +25,6 @@
     <div class="bottom-action-wrapper">
       <span class="back-top" @click="backTop">
         返回到顶部
-      </span>
-      <span class="back-money" @click="backMoney" v-if="detail.status === 'USE_STATUS_NO' && detail.is_refund === 1 && detail.refund_mark !== 2">
-        申请退款
-      </span>
-      <span class="comment" @click="comment">
-        评价
       </span>
     </div>
   </div>
@@ -58,37 +52,48 @@ export default {
   },
   data () {
     return {
+      stateModel: {}
     }
   },
-  computed: {
-    tipTitle () {
-      if (this.detail.status === 'USE_STATUS_NO') { // 部分退款包含待使用的票
-        return this.detail.refund_mark === 2 ? '退款/售后' : '待使用'
-      } else if (this.detail.status === 'USE_STATUS_REVOKE') { // 全部退款
-        return '退款/售后'
-      } else if (this.detail.status === 'NO_COMMENT') { // 验证完了，进入待评价状态
-        return '待评价'
-      }
-    },
-    tipContent () {
-      if (this.detail.status === 'USE_STATUS_NO') {
-        return this.detail.refund_mark === 2 ? '您的订单有退款申请，请及时查看' : '产品已出票，请尽快使用产品'
-      } else if (this.detail.status === 'USE_STATUS_REVOKE') {
-        return '您的订单有退款申请，请及时查看'
-      } else if (this.detail.status === 'NO_COMMENT') {
-        return '快来和小伙伴们分享一下这次出游的感受吧'
+  watch: {
+    detail (newVal, oldVal) {
+      if (newVal) {
+        switch (newVal.status) {
+          case 'USE_STATUS_OFF': // 被取消
+            this.stateModel.stateTip = '已取消'
+            this.stateModel.discription = '订单已经取消，如有需要请重新下单购买'
+            break
+          case 'USE_STATUS_EXPIRD': // 已过期
+            this.stateModel.stateTip = '已过期'
+            this.stateModel.discription = '订单已经过期，如有需要请重新下单购买'
+            break
+          case 'USE_STATUS_OVER':
+          case 'ALREADY_COMMENT': // 已经评价
+            this.stateModel.stateTip = '已完成'
+            this.stateModel.discription = '感谢您的本次消费，订单已经完结'
+            break
+          case 'USE_STATUS_REVOKE': // 已退款
+            this.stateModel.stateTip = '退款/售后'
+            this.stateModel.discription = '您的订单有退款申请，请及时查看'
+            break
+          case 'USE_STATUS_NO': // 待使用
+            this.stateModel.stateTip = '待使用'
+            this.stateModel.discription = '产品已出票，请尽快使用产品'
+            break
+          case 'NO_COMMENT': // 待评价
+            this.stateModel.stateTip = '待评价'
+            this.stateModel.discription = '快来和小伙伴们分享一下这次出游的感受吧'
+            break
+        }
       }
     }
   },
   methods: {
+    orderBackProgress () {
+      this.$router.push({name: 'orderBackProgress', query: {id: this.detail.ord_id}})
+    },
     backTop () {
       this.$emit('backTop')
-    },
-    backMoney () {
-      this.$router.push({name: 'orderBackMoney', query: {id: this.detail.ord_id}})
-    },
-    comment () {
-      this.$toast('当前订单还未进行消费')
     }
   }
 }

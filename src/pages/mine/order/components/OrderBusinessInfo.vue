@@ -11,6 +11,7 @@
               <span>联系方式：{{store.linkman_phone || '暂无'}}</span>
           </p>
       </div>
+      <a class="el-icon-phone-outline phone" :href=" 'tel:' + store.linkman_phone"></a>
   </div>
 </template>
 
@@ -32,26 +33,41 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .o-i-info-shop-info
+    position relative
+    display flex
+    padding .2rem
+    border-top rem(.1) solid #f5f5f5
+    border-bottom rem(.1) solid #f5f5f5
+    .o-i-info-shop-info-img-wrapper
+        overflow hidden
+        height 1rem
+        & img
+            width rem(1)
+            height rem(1)
+            border-radius 50%
+            object-fit cover
+    .o-i-info-shop-info-name-wrapper
         display flex
-        padding .2rem
-        borderBottom()
-        .o-i-info-shop-info-img-wrapper
-            overflow hidden
-            height 1rem
-            & img
-                width rem(1)
-                height rem(1)
-                border-radius 50%
-                object-fit cover
-        .o-i-info-shop-info-name-wrapper
-            display flex
-            flex-direction column
-            justify-content space-around
-            flex 5
-            margin-left .1rem
-            color #888888
-            overflow hidden
-            .o-i-info-shop-info-name
-                line-height .5rem
-                ellipsis()
+        flex-direction column
+        justify-content space-around
+        flex 5
+        margin-left .1rem
+        color #888888
+        overflow hidden
+        .o-i-info-shop-info-name
+            line-height .5rem
+            ellipsis()
+    .phone
+        border-radius 50%
+        border 1px solid $primary
+        display inline-block
+        width rem(.7)
+        height rem(.7)
+        line-height rem(.7)
+        text-align center
+        position absolute
+        top 30%
+        color $primary
+        font-size rem(.5)
+        right rem(.3)
 </style>

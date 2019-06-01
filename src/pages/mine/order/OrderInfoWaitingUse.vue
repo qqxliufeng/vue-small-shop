@@ -34,18 +34,7 @@
         <order-time-info :shopName="detail.shop_name" :outTradeNo="detail.out_trade_no" :remarks="times" :store="storeInfo.store"></order-time-info>
         <div class="o-i-waiting-use-action-wrapper" v-if="detail.status === 'USE_STATUS_NO' && detail.is_refund === 1 && detail.refund_mark !== 2">
             <span @click="backMoney">申请退款</span>
-            <!-- <span @click="isShowCanlendarDialog = true">变更时间</span> -->
         </div>
-        <!-- <el-dialog title="选择日期" :visible.sync="isShowCanlendarDialog" center width="100%">
-            <calander :events="calendar1.events" :lunar="calendar1.lunar" :begin="calendar1.begin" :end="calendar1.end" :weeks="calendar1.weeks" :months="calendar1.months" @select="calendar1.select">
-                <template slot="event">
-                    <div class="c-e-wrapper">
-                        <p>补￥278</p>
-                        <p>(余10244)</p>
-                    </div>
-                </template>
-            </calander>
-        </el-dialog> -->
     </div>
 </template>
 
@@ -79,28 +68,9 @@ export default {
   },
   data () {
     return {
-      // calendar1: {
-      //   value: [2018, 2, 16], // 默认日期
-      //   // lunar:true, //显示农历
-      //   weeks: ['日', '一', '二', '三', '四', '五', '六'],
-      //   months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-      //   events: {
-      //     '2018-2-14': '$408', '2018-2-15': '$460', '2018-2-16': '$500\n111'
-      //   },
-      //   select (value) {
-      //     console.log(value.toString())
-      //   }
-      // },
       isShowCanlendarDialog: false
     }
   },
-  // watch: {
-  //   detail (newVal, oldVal) {
-  //     if (newVal.status !== 'USE_STATUS_NO') {
-  //       this.$router.go(-1)
-  //     }
-  //   }
-  // },
   computed: {
     tipTitle () {
       if (this.detail.status === 'USE_STATUS_NO') { // 部分退款包含待使用的票
@@ -128,10 +98,6 @@ export default {
     orderBackProgress () {
       this.$router.push({name: 'orderBackProgress', query: {id: this.detail.ord_id}})
     }
-  },
-  mounted () {
-    // let date = new Date()
-    // this.calendar1.value = [date.getFullYear, date.getMonth, date.getDay]
   }
 }
 </script>

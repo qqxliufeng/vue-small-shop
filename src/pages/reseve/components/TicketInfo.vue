@@ -6,7 +6,6 @@
         </div>
         <div class="r-d-ticket-info-title-wrapper">
             <span class="r-d-ticket-info-time-title">使用日期</span>
-            <!-- <span class="r-d-ticket-info-time-more" >更多日期<i class="el-icon-arrow-right"></i></span> -->
         </div>
         <div class="r-d-ticket-info-time-wrapper">
             <div class="r-d-ticket-info-time-item" v-for="(item, index) of times" :key="index" @click="timeItemClick(item)" :class="[{'r-d-ticket-info-time-selected': item.isSelected},{'r-d-ticket-info-time-uneable' : !item.isEnable}]">
@@ -37,19 +36,8 @@
             </calander>
         </el-dialog>
         <transition name="slide-fade" @before-enter="beforeEnter" @before-leave="beforeLeave">
-            <div v-show="showRemark" class="r-d-ticket-info-remark-wrapper">
-                <div class="r-d-ticket-info-remark-title-wrapper">
-                    <span>购买须知</span>
-                    <span class="el-icon-circle-close" @click="showRemark = false"></span>
-                </div>
-                <div class="remark-content-wrapper">
-                    <ul>
-                      <li v-for="(item, index) of remarks" :key="index">
-                          <ticket-remark :remark="item"></ticket-remark>
-                      </li>
-                      <p class="remark-content-confirm" @click="showRemark = false">下一步</p>
-                    </ul>
-                </div>
+            <div v-if="showRemark" class="r-d-ticket-info-remark-wrapper">
+              <reseve-notice v-if="ticketInfo" :goods="ticketInfo.goods" :scenic="ticketInfo.scenic"></reseve-notice>
             </div>
         </transition>
         <div class="v-modal" v-show="showModal" @click="showRemark = false"></div>
@@ -59,6 +47,7 @@
 <script>
 import calander from 'common/components/calendar/calendar.vue'
 import TicketRemark from 'common/components/ticket-remark'
+import ReseveNotice from './ReseveNotice'
 export default {
   name: 'TicketInfo',
   props: {
@@ -66,7 +55,8 @@ export default {
   },
   components: {
     calander,
-    TicketRemark
+    TicketRemark,
+    ReseveNotice
   },
   data () {
     return {
@@ -249,6 +239,11 @@ export default {
       this.isShowCanlendarDialog = false
       this.showRemark = false
     }
+  },
+  mounted () {
+    this.$root.$on('closeDialog', () => {
+      this.showRemark = false
+    })
   }
 }
 </script>
@@ -347,7 +342,10 @@ export default {
         right 0
         z-index 1001
         overflow-y scroll
-        background-color #fff
+        background-color #ffffff
+        border-top-left-radius rem(.2)
+        border-top-right-radius rem(.2)
+        padding-top rem(.2)
         .r-d-ticket-info-remark-title-wrapper
             display flex
             padding rem(.2)

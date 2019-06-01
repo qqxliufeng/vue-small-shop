@@ -9,10 +9,6 @@
       <span>联系人手机：</span>
       <input type="text" maxlength="11" placeholder="请输入联系人手机号" v-model="tempUserInfo.phone">
     </div>
-    <div class="user-info-container">
-      <input type="text" maxlength="6" placeholder="请输入手机号验证码" v-model="tempUserInfo.code">
-      <el-button type="primary" size="mini" class="get-code" @click="getCode" :disabled="disabled">{{codeTip}}</el-button>
-    </div>
     <div class="user-info-container"  v-if="visitorInfo.indexOf('id') !== -1">
       <span>身份证号：</span>
       <input type="text" placeholder="请输入身份证号" v-model="tempUserInfo.idCard" maxlength="18">
@@ -48,8 +44,7 @@ export default {
         phone: '',
         idCard: '',
         schoolName: '',
-        studentId: '',
-        code: ''
+        studentId: ''
       },
       showVerifyDialog: false,
       width: document.body.clientWidth * 0.9 - 40,

@@ -1,16 +1,10 @@
 <template>
   <div class='o-i-container' v-if="detail">
-    <order-info-header :stateTip="tipTitle">
+    <order-info-header stateTip="待评价">
         <template slot="headerTitleInfo">
             <p class="o-i-use-info">
-                {{tipContent}}
+                快来和小伙伴们分享一下这次出游的感受吧
             </p>
-        </template>
-        <template slot="headerBottomInfo" v-if="detail.refund_mark !== 0">
-            <div class="after-service-wrapper">
-                <span>退票记录：{{detail.refund_count}}</span>
-                <span @click="orderBackProgress">查看进度></span>
-            </div>
         </template>
     </order-info-header>
     <order-info-content :scenic="detail.scenic" :voucher="detail.voucher" :ticketName="detail.ord_product_name" :ticketNum="detail.ord_ticket_num"></order-info-content>
@@ -25,9 +19,6 @@
     <div class="bottom-action-wrapper">
       <span class="back-top" @click="backTop">
         返回到顶部
-      </span>
-      <span class="back-money" @click="backMoney" v-if="detail.status === 'USE_STATUS_NO' && detail.is_refund === 1 && detail.refund_mark !== 2">
-        申请退款
       </span>
       <span class="comment" @click="comment">
         评价
@@ -60,23 +51,10 @@ export default {
     return {
     }
   },
-  computed: {
-    tipTitle () {
-      if (this.detail.status === 'USE_STATUS_NO') { // 部分退款包含待使用的票
-        return this.detail.refund_mark === 2 ? '退款/售后' : '待使用'
-      } else if (this.detail.status === 'USE_STATUS_REVOKE') { // 全部退款
-        return '退款/售后'
-      } else if (this.detail.status === 'NO_COMMENT') { // 验证完了，进入待评价状态
-        return '待评价'
-      }
-    },
-    tipContent () {
-      if (this.detail.status === 'USE_STATUS_NO') {
-        return this.detail.refund_mark === 2 ? '您的订单有退款申请，请及时查看' : '产品已出票，请尽快使用产品'
-      } else if (this.detail.status === 'USE_STATUS_REVOKE') {
-        return '您的订单有退款申请，请及时查看'
-      } else if (this.detail.status === 'NO_COMMENT') {
-        return '快来和小伙伴们分享一下这次出游的感受吧'
+  watch: {
+    detail (newVal, oldVal) {
+      if (newVal.status !== 'NO_COMMENT') {
+        this.$router.go(-1)
       }
     }
   },
@@ -84,11 +62,8 @@ export default {
     backTop () {
       this.$emit('backTop')
     },
-    backMoney () {
-      this.$router.push({name: 'orderBackMoney', query: {id: this.detail.ord_id}})
-    },
     comment () {
-      this.$toast('当前订单还未进行消费')
+      this.$router.push({name: 'orderComment', query: {orderId: this.detail.ord_id}})
     }
   }
 }

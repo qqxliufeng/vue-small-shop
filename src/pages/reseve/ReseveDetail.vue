@@ -52,7 +52,8 @@ export default {
         goods_id: this.$route.query.goods_id,
         identity: this.$root.state.getSallerInfo().identity,
         store_id: this.$root.state.getSallerInfo().storeId,
-        goods_source: this.$route.query.goods_source || ''
+        goods_source: this.$route.query.goods_source || '',
+        s_id: this.$route.query.scenicId
       }, '', (data) => {
         this.ticketInfo = data.data
         this.collectionState = data.data.is_favorites
@@ -107,12 +108,12 @@ export default {
       postData.date = this.tempDate
       switch (this.ticketInfo.goods.play_info) {
         case 1: // 只需要一个游玩人信息
+        case 0: // 不需要游玩人信息，但是联系人是必选的
           const userName = this.$refs.userSingleInfo.tempUserInfo.name
           const userPhone = this.$refs.userSingleInfo.tempUserInfo.phone
           const idCard = this.$refs.userSingleInfo.tempUserInfo.idCard
           const schoolName = this.$refs.userSingleInfo.tempUserInfo.schoolName
           const studentId = this.$refs.userSingleInfo.tempUserInfo.studentId
-          const code = this.$refs.userSingleInfo.tempUserInfo.code
           if (!userName) {
             this.$toast('请输入联系人姓名')
             return
@@ -123,10 +124,6 @@ export default {
           }
           if (!this.$utils.validator.isPhone(userPhone)) {
             this.$toast('请输入合法的联系人手机号')
-            return
-          }
-          if (!code) {
-            this.$toast('请输入手机号验证码')
             return
           }
           if (!idCard && this.ticketInfo.goods.visitor_info.indexOf('id') !== -1) {
@@ -141,9 +138,9 @@ export default {
             this.$toast('请输入联系人学生证号')
             return
           }
-          postData.user = [this.$refs.userSingleInfo.tempUserInfo]
+          postData.contact = this.$refs.userSingleInfo.tempUserInfo
           break
-        case 2: // 只需要多个游玩人信息
+        case 2: // 需要多个游玩人信息
           const userList = this.$refs.userInfo.userList
           if (userList.length - 1 !== this.tempDate.num) {
             this.$toast('游客信息与购买数量不匹配')
