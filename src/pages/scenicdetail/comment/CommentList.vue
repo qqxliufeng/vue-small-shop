@@ -72,7 +72,8 @@ export default {
           select: false,
           mark: 1
         }
-      ]
+      ],
+      report: null
     }
   },
   methods: {
@@ -81,11 +82,12 @@ export default {
     },
     upCallback (page, mescroll) {
       this.$http(this.$urlPath.commentListUrl, {
-        s_id: this.$route.params.scenicId,
+        s_id: this.$route.query.scenicId,
         page: page.num,
         mark: this.mark
       }, null, (data) => {
         this.comment = data.data
+        this.report = data.report
         this.loadSuccess(page, mescroll, this.comment.comment_list)
       }, (errorCode, error) => {
         this.loadError(mescroll)

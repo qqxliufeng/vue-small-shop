@@ -1,7 +1,7 @@
 
 // const baseIP = 'http://192.168.1.100'
 
-const baseIP = 'http://www.test.youdaike.com'
+const baseIP = 'http://www.huiqintuan.com'
 
 export const baseUrl = baseIP + '/store_api/v1/'
 
@@ -52,6 +52,8 @@ export const deleteLinkManUrl = personInfoUrl + 'del_linkman'
 const indexModuleUrl = 'index/'
 
 export const indexUrl = indexModuleUrl + 'index'
+
+export const noticeDetails = indexModuleUrl + 'notice_details'
 
 const scenicDetailModuleUrl = 'details/'
 
@@ -138,3 +140,9 @@ export const runSeacher = searchModuleUrl + 'run_seacher'
 const categoryModuleUrl = 'category/'
 
 export const categoryIndex = categoryModuleUrl + 'index'
+
+const reportModuleUrl = 'report/'
+
+export const reportUrl = reportModuleUrl + 'reports'
+
+export const doReport = reportModuleUrl + 'add'

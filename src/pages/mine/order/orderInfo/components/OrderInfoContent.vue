@@ -4,23 +4,26 @@
     <div class="sperator"></div>
     <div ref="download">
         <p class="item-info" id="download">{{ticketName}} X {{ticketNum}}</p>
-        <p class="item-info">下单时间：{{scenic.ticket_check_info}}</p>
-        <p class="item-info">支付时间：{{scenic.ticket_check_info}}</p>
+        <p class="item-info">下单时间：{{createOrderTime || '暂无'}}</p>
+        <p class="item-info">支付时间：{{payOrderTime || '暂无'}}</p>
         <p class="item-info">验票时间：{{scenic.ticket_check}}</p>
         <p class="item-info">验票地点：{{scenic.ticket_check_info}}</p>
         <div  v-if="voucher && voucher.length > 0">
           <p class="item-info">入园凭证：</p>
-          <div class="ticket-info-container">
-            <div class="code-wrapper">
+          <div class="ticket-info-container" v-if="sendCode === 0">
+            <div class="code-wrapper" @click="showFullCode">
               <canvas class="canvas-code" ref="qrcode" :style="{ 'opacity': this.voucher[0].use_status === 0 ? '1': '0.4' }"></canvas>
               <p :class="['code-text', enableClass]">{{voucher[0].voucher_number}}</p>
             </div>
-            <p class="download-img" @click="downloadImg"><span class="el-icon-download"></span>下载图片</p>
+            <p class="download-img" @click="downloadImg" v-if="this.voucher[0].use_status === 0"><span class="el-icon-download"></span>下载图片</p>
             <div class="sperator-2"></div>
             <div class="info-count-wrapper">
               <span class="info-count-item">待消费：{{voucher[0].no_check_num}}张</span>
               <span class="info-count-item">已消费：{{voucher[0].consum}}张</span>
             </div>
+          </div>
+          <div v-else>
+            <order-ticket-info v-for="item of voucher" :key="item.v_id" :itemInfo="item" :ticketName="ticketName"></order-ticket-info>
           </div>
         </div>
     </div>
@@ -31,25 +34,36 @@
         </div>
     </el-dialog>
     <div class="v-modal" v-show="showDialog"></div>
+    <div class="fixed-code-wrapper" v-show="showCode" @click="showCode = false">
+      <canvas class="canvas-code1" ref="qrcode1" style="background-color: red"></canvas>
+    </div>
   </div>
 </template>
 <script>
 import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
+import orderTicketInfo from '../../components/OrderTicketInfo'
 export default {
   name: 'orderInfoContent',
   props: {
     scenic: Object,
     voucher: Array,
     ticketName: String,
-    ticketNum: Number
+    ticketNum: Number,
+    sendCode: Number,
+    timeLog: Array
   },
-  components: {},
+  components: {
+    orderTicketInfo
+  },
   data () {
     return {
       showDialog: false,
       postUrl: '',
-      dialogTitle: '长按保存图片到手机'
+      dialogTitle: '长按保存图片到手机',
+      showCode: false,
+      createOrderTime: '',
+      payOrderTime: ''
     }
   },
   computed: {
@@ -60,6 +74,12 @@ export default {
   methods: {
     createCode () {
       QRCode.toCanvas(this.$refs['qrcode'], this.voucher[0].voucher_number, error => {
+        console.log(error)
+      })
+    },
+    showFullCode () {
+      this.showCode = true
+      QRCode.toCanvas(this.$refs['qrcode1'], this.voucher[0].voucher_number, error => {
         console.log(error)
       })
     },
@@ -85,7 +105,16 @@ export default {
     }
   },
   mounted () {
-    if (this.voucher && this.voucher.length > 0) {
+    if (this.timeLog) {
+      this.timeLog.forEach((item, index) => {
+        if (item.type === '下单时间') {
+          this.createOrderTime = item.ctime
+        } else if (item.type === '支付时间') {
+          this.payOrderTime = item.ctime
+        }
+      })
+    }
+    if (this.voucher && this.voucher.length > 0 && this.sendCode === 0) {
       this.createCode()
     }
   }
@@ -100,6 +129,20 @@ export default {
     color #B6B6B6 !important
     text-decoration line-through
 .o-i-content-container
+    .fixed-code-wrapper
+        position fixed
+        top 0
+        bottom 0
+        left 0
+        right 0
+        background-color #333
+        z-index 1000
+        display flex
+        justify-content center
+        align-items center
+        .canvas-code1
+            width rem(4) !important
+            height rem(4) !important
     .sperator
         background-color #f5f5f5
         height 1px
@@ -108,9 +151,9 @@ export default {
         padding rem(.3) rem(.2)
         textStyle(#333, .3)
     .item-info
-        margin rem(.2) 0
         padding rem(.1) rem(.2)
         textStyle(#666, .28)
+        line-height rem(.4)
     .ticket-info-container
         display flex
         flex-direction column

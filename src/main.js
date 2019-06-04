@@ -118,6 +118,7 @@ new Vue({
   template: '<App/>',
   data: {
     userInfo,
-    state
+    state,
+    report: null
   }
 })

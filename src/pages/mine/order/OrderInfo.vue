@@ -20,7 +20,7 @@ import orderInfoWaitingPay from './orderInfo/OrderInfoPay'
 import orderInfoWaitingUse from './orderInfo/OrderInfoUse'
 // import orderInfoWaitingComment from './OrderInfoWaitingComment'
 import orderInfoWaitingComment from './orderInfo/OrderInfoComment'
-import orderInfoAfterService from './OrderInfoAfterService'
+// import orderInfoAfterService from './OrderInfoAfterService'
 // import orderInfoOther from './OrderInfoOther'
 import orderInfoOther from './orderInfo/OrderInfoOther'
 export default {
@@ -53,7 +53,7 @@ export default {
     orderInfoWaitingPay,
     orderInfoWaitingUse,
     orderInfoWaitingComment,
-    orderInfoAfterService,
+    // orderInfoAfterService,
     orderInfoOther
   },
   methods: {

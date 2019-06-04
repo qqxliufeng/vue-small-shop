@@ -34,6 +34,7 @@
       <ticket-notice title="退还说明" :remarks="goods.refund"></ticket-notice>
       <div class="sperator-1"></div>
       <ticket-notice title="商家说明" :remarks="goods.explain"></ticket-notice>
+      <div class="sperator-2"></div>
       <div class="next" @click="close">下一步</div>
     </div>
 </template>
@@ -123,10 +124,16 @@ export default {
         background-color #f5f5f5
         width 90%
         margin 0 auto
+    .sperator-2
+        height $headerHeight
     .next
         height $headerHeight
         line-height $headerHeight
         background-color $primary
         text-align center
         textStyle(#fff, .3)
+        position fixed
+        bottom 0
+        left 0
+        right 0
 </style>

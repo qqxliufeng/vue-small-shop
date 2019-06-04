@@ -51,7 +51,7 @@ export default {
         answer_text: this.content
       }, '正在提交…', (data) => {
         this.$message({
-          message: '恭喜, 提问成功~',
+          message: '恭喜, 回复成功~',
           type: 'success'
         })
         this.$router.go(-1)

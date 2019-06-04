@@ -65,4 +65,5 @@ export default {
             margin-left 5%
             vertical-align middle
             color #888888
+            line-height rem(.4)
 </style>

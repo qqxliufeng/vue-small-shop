@@ -309,6 +309,11 @@ export default new Router({
       props: true
     },
     {
+      path: '/noticedetail',
+      name: 'noticeDetail',
+      component: () => import('@/pages/notice/NoticeDetail')
+    },
+    {
       path: '/city',
       name: 'city',
       component: City,

@@ -19,12 +19,22 @@
         <div v-if="item.images && item.images.length > 0" class="s-d-comment-item-imags-wrapper" v-lazy-container="{ selector: 'img' }">
             <img v-for="(image, index) of item.images" :key="index" :data-src="$utils.image.getImagePath(image)" @click="imageClick">
         </div>
+        <div class="report-wrapper" v-if="$root.report">
+          <el-dropdown :command="command">
+            <span class="report">举报<i class="el-icon-arrow-down el-icon--right"></i></span>
+            <el-dropdown-menu slot="dropdown" >
+              <el-dropdown-item v-for="reportItem of report" :key="reportItem.id" @click.native="doReport(1, item.cid, reportItem.name)">{{reportItem.name}}</el-dropdown-item>
+          </el-dropdown-menu>
+          </el-dropdown>
+        </div>
     </div>
 </template>
 
 <script>
+import report from 'common/mixins/report-mixin'
 export default {
   name: 'scenicDetailCommentItem',
+  mixins: [report],
   props: {
     item: Object
   },
@@ -51,6 +61,9 @@ export default {
     },
     imageClick () {
       this.$router.push({name: 'gallary', params: {imgs: this.item.images}})
+    },
+    command (index) {
+      console.log(index)
     }
   }
 }
@@ -102,4 +115,16 @@ export default {
             height 100%
             object-fit cover
             margin-left 2.5%
+    .report-wrapper
+      overflow hidden
+      text-align right
+      padding rem(.1) 0
+      margin-top rem(.3)
+      & >>> .el-dropdown
+          display block
+      .report
+          border-radius rem(.3)
+          border 1px solid #eee
+          padding rem(.05) rem(.2)
+          textStyle(#888, .25)
 </style>

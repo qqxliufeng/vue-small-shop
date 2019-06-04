@@ -82,7 +82,7 @@ export default {
       this.$router.push({name: 'scenicInfo', query: {id: this.scenicId}})
     },
     seeMoreComment () {
-      this.$router.push({name: 'commentList', params: {scenicId: this.scenicId}})
+      this.$router.push({name: 'commentList', query: {scenicId: this.scenicId}})
     },
     reload () {
       this.getData()

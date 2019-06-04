@@ -6,24 +6,25 @@
         联系人
       </p>
       <p class="content-info">
-        姓名：王大宝
+        姓名：{{detail.ord_check_taker_name || '暂无'}}
       </p>
       <p class="content-info">
-        手机号：15910101111
-      </p>
-    </div>
-    <div class="content-wrapper">
-      <p class="content-title">
-        游玩人1
-      </p>
-      <p class="content-info">
-        姓名：王大宝
-      </p>
-      <p class="content-info">
-        手机号：15910101111
+        手机号：{{detail.ord_check_taker_phone || '暂无'}}
       </p>
     </div>
     <div class="sperator-1"></div>
+    <div class="content-wrapper" v-for="(item, index) of detail.tourist" :key="item.t_id">
+      <p class="content-title">
+        游玩人{{index+1}}
+      </p>
+      <p class="content-info">
+        姓名：{{item.t_username}}
+      </p>
+      <p class="content-info">
+        手机号：{{item.t_phone}}
+      </p>
+    </div>
+    <div class="sperator-1" v-if="detail.tourist && detail.tourist.length > 0"></div>
     <div class="content-wrapper">
       <p class="content-title">
         订单金额

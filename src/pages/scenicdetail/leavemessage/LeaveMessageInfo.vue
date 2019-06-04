@@ -21,6 +21,14 @@
                 <div class="user-info-container">
                   <img v-lazy="$utils.image.getImagePath(item.avatar)">
                   <span>{{item.username}}</span>
+                  <div class="report-wrapper">
+                    <el-dropdown>
+                      <span class="report">举报<i class="el-icon-arrow-down el-icon--right"></i></span>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item v-for="reportItem of report" :key="reportItem.id" @click.native="doReport(1, item.a_id, reportItem.name)">{{reportItem.name}}</el-dropdown-item>
+                    </el-dropdown-menu>
+                    </el-dropdown>
+                  </div>
                 </div>
                 <p class="item-content">{{item.answer_text}}</p>
                 <div class="item-info-container">
@@ -40,8 +48,10 @@
 <script>
 import navi from 'common/components/navigation'
 import scenicInfo from './components/LeaveMessageScenicInfo'
+import report from 'common/mixins/report-mixin'
 export default {
   name: 'leaveMessageInfo',
+  mixins: [report],
   components: {
     navi,
     scenicInfo
@@ -111,8 +121,18 @@ export default {
                   padding-bottom rem(.2)
           .item-container
               padding rem(.2)
+              overflow hidden
               borderBottom()
               .user-info-container
+                  .report-wrapper
+                      float right
+                      padding rem(.1) 0
+                      & .el-dropdown
+                          text-align right
+                      .report
+                          border-radius rem(.3)
+                          padding rem(.05) rem(.2)
+                          textStyle(#888, .25)
                   & img
                       width rem(.5)
                       height rem(.5)

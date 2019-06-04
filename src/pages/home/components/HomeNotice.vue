@@ -1,7 +1,7 @@
 <template>
 <div class='h-n-notice-container'>
-    <span>公告：这个店铺很好哦，马上来吧这个店铺很好哦，马上来吧这个店铺很好哦，马上来吧这个店铺很好哦，马上来吧</span>
-    <span>详情<i class="el-icon-arrow-right"></i></span>
+    <span>公告：{{title}}</span>
+    <span @click="noticeDetail">详情<i class="el-icon-arrow-right"></i></span>
 </div>
 </template>
 
@@ -9,9 +9,14 @@
 
 export default {
   name: 'homeNotice',
+  props: ['title', 'identity', 'storeId'],
   data () {
     return {
-
+    }
+  },
+  methods: {
+    noticeDetail () {
+      this.$router.push({name: 'noticeDetail', query: {identity: this.identity, storeId: this.storeId}})
     }
   }
 }

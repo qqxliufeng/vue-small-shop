@@ -106,53 +106,51 @@ export default {
       }
       const postData = {}
       postData.date = this.tempDate
-      switch (this.ticketInfo.goods.play_info) {
-        case 1: // 只需要一个游玩人信息
-        case 0: // 不需要游玩人信息，但是联系人是必选的
-          const userName = this.$refs.userSingleInfo.tempUserInfo.name
-          const userPhone = this.$refs.userSingleInfo.tempUserInfo.phone
-          const idCard = this.$refs.userSingleInfo.tempUserInfo.idCard
-          const schoolName = this.$refs.userSingleInfo.tempUserInfo.schoolName
-          const studentId = this.$refs.userSingleInfo.tempUserInfo.studentId
-          if (!userName) {
-            this.$toast('请输入联系人姓名')
-            return
+      const userName = this.$refs.userSingleInfo.tempUserInfo.name
+      const userPhone = this.$refs.userSingleInfo.tempUserInfo.phone
+      const idCard = this.$refs.userSingleInfo.tempUserInfo.idCard
+      const schoolName = this.$refs.userSingleInfo.tempUserInfo.schoolName
+      const studentId = this.$refs.userSingleInfo.tempUserInfo.studentId
+      if (!userName) {
+        this.$toast('请输入联系人姓名')
+        return
+      }
+      if (!userPhone) {
+        this.$toast('请输入联系人手机号')
+        return
+      }
+      if (!this.$utils.validator.isPhone(userPhone)) {
+        this.$toast('请输入合法的联系人手机号')
+        return
+      }
+      if (!idCard && this.ticketInfo.goods.visitor_info.indexOf('id') !== -1) {
+        this.$toast('请输入联系人身份证号')
+        return
+      }
+      if (!schoolName && this.ticketInfo.goods.visitor_info.indexOf('u') !== -1) {
+        this.$toast('请输入联系人学校')
+        return
+      }
+      if (!studentId && this.ticketInfo.goods.visitor_info.indexOf('s') !== -1) {
+        this.$toast('请输入联系人学生证号')
+        return
+      }
+      postData.contact = this.$refs.userSingleInfo.tempUserInfo
+      if (this.ticketInfo.goods.play_info === 2) {
+        const userList = this.$refs.userInfo.userList
+        if (userList.length - 1 !== this.tempDate.num) {
+          this.$toast('游客信息与购买数量不匹配')
+          return
+        }
+        postData.user = []
+        userList.forEach(item => {
+          if (item.type !== 'add') {
+            postData.user.push(item)
           }
-          if (!userPhone) {
-            this.$toast('请输入联系人手机号')
-            return
-          }
-          if (!this.$utils.validator.isPhone(userPhone)) {
-            this.$toast('请输入合法的联系人手机号')
-            return
-          }
-          if (!idCard && this.ticketInfo.goods.visitor_info.indexOf('id') !== -1) {
-            this.$toast('请输入联系人身份证号')
-            return
-          }
-          if (!schoolName && this.ticketInfo.goods.visitor_info.indexOf('u') !== -1) {
-            this.$toast('请输入联系人学校')
-            return
-          }
-          if (!studentId && this.ticketInfo.goods.visitor_info.indexOf('s') !== -1) {
-            this.$toast('请输入联系人学生证号')
-            return
-          }
-          postData.contact = this.$refs.userSingleInfo.tempUserInfo
-          break
-        case 2: // 需要多个游玩人信息
-          const userList = this.$refs.userInfo.userList
-          if (userList.length - 1 !== this.tempDate.num) {
-            this.$toast('游客信息与购买数量不匹配')
-            return
-          }
-          postData.user = []
-          userList.forEach(item => {
-            if (item.type !== 'add') {
-              postData.user.push(item)
-            }
-          })
-          break
+        })
+        postData.user.push(this.$refs.userSingleInfo.tempUserInfo) // 把联系人也放到游玩人信息里面
+      } else if (this.ticketInfo.goods.play_info === 1) { // 只需要一个游玩人信息
+        postData.user = [this.$refs.userSingleInfo.tempUserInfo]
       }
       postData.info = {
         identity: this.$root.state.getSallerInfo().identity,

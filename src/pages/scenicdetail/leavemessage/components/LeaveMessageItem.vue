@@ -17,14 +17,23 @@
                 <span @click="replyMessage" class="l-q-footer-to-answer">我要回答</span>
               </p>
           </div>
+          <div class="report-wrapper">
+            <el-dropdown>
+              <span class="report">举报<i class="el-icon-arrow-down el-icon--right"></i></span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-for="reportItem of report" :key="reportItem.id" @click.native="doReport(1, item.aid, reportItem.name)">{{reportItem.name}}</el-dropdown-item>
+            </el-dropdown-menu>
+            </el-dropdown>
+          </div>
       </el-card>
     </div>
 </template>
 
 <script>
-
+import report from 'common/mixins/report-mixin'
 export default {
   name: 'leaveMessageItem',
+  mixins: [report],
   props: {
     item: {
       type: Object
@@ -103,6 +112,7 @@ export default {
         .l-q-footer-container
             margin-top .3rem
             padding-left .4rem
+            overflow hidden
             .l-q-footer-time
                 color #D0D0D0
                 font-size .25rem
@@ -111,4 +121,14 @@ export default {
                 float right
                 margin-bottom .2rem
                 font-size .25rem
+        .report-wrapper
+            overflow hidden
+            padding rem(.1) 0
+            & >>> .el-dropdown
+                display inline
+            .report
+                border-radius rem(.3)
+                border 1px solid #eee
+                padding rem(.05) rem(.2)
+                textStyle(#888, .25)
 </style>

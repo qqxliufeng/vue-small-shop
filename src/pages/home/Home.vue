@@ -4,7 +4,7 @@
         <home-header :scrollTop="mScrollTop" @changeCity="changeCity" @cityDiffrent="cityDiffrent"></home-header>
         <div ref="homeContent" class="h-content" id="home">
             <home-swiper :list="swiperList"></home-swiper>
-            <!-- <home-notice></home-notice> -->
+            <home-notice v-if="notice.notice_title !== undefined && notice.notice_title" :title="notice.notice_title" :identity="identity" :storeId="storeId"></home-notice>
             <home-type :list="categoryList"></home-type>
             <div class="sperator-line-height"></div>
             <div class="h-h-title">人气推荐</div>
@@ -59,6 +59,7 @@ export default {
       isFirstLoad: true,
       guessList: [],
       swiperList: [],
+      notice: {},
       hotList: [],
       ad: null,
       categoryList: [],
@@ -128,6 +129,7 @@ export default {
         if (data.data) {
           this.loadState = true
           this.guessList = data.data.guess_like_scenic
+          this.notice = data.data.notice
           this.swiperList = data.data.swiper
           this.hotList = data.data.popularity_goods
           this.ad = data.data.ad
