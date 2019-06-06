@@ -2,7 +2,7 @@
     <div class="r-d-detail-container">
         <navi title="提交订单" :isFixed="true"></navi>
         <div class="r-d-detail-wrapper">
-            <ticket-info :ticketInfo="ticketInfo" @selected="onSelectedTimeItem" ref="ticketInfo"></ticket-info>
+            <ticket-info :ticketInfo="ticketInfo" @selected="onSelectedTimeItem" ref="ticketInfo" @collection="collection"></ticket-info>
             <ticket-contact v-if="ticketInfo.goods" ref="userSingleInfo" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-contact>
             <!-- <ticket-user-single-info v-if="ticketInfo.goods && ticketInfo.goods.play_info === 1" ref="userSingleInfo" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-single-info> -->
             <ticket-user-info :contacts="contacts" :touristCount="touristCount" ref="userInfo" v-if="ticketInfo.goods && ticketInfo.goods.play_info === 2" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-info>
@@ -91,9 +91,11 @@ export default {
         if (this.collectionState === 1) {
           this.$toast('取消收藏成功')
           this.collectionState = 0
+          this.ticketInfo.is_favorites = this.collectionState
         } else {
           this.$toast('收藏成功')
           this.collectionState = 1
+          this.ticketInfo.is_favorites = this.collectionState
         }
       }, (errorCode, error) => {
         this.$toast(error)

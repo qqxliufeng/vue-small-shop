@@ -13,16 +13,11 @@
           </ticket-info>
           <div class="t-d-detail-buy-info">
               <p class="t-d-detail-buy-info-title">购买须知</p>
-              <p class="t-d-detail-buy-info-content" :style="bugInfoHeight">
-                <ul  v-if="remarks.length > 0">
-                  <li v-for="(item, index) of remarks" :key="index">
-                    <ticket-remark :remark="item"></ticket-remark>
-                  </li>
-                </ul>
-              </p>
-              <p class="t-d-detail-buy-info-see-more" @click="seeMore">
-                  <span :class="[isSeeMore ? 'el-icon-arrow-down' : 'el-icon-arrow-up']"></span>
-              </p>
+              <ticket-notice title="入园方式" :remarks="goodsInfo.entrance"></ticket-notice>
+              <div class="sperator-1"></div>
+              <ticket-notice title="退票说明" :remarks="goodsInfo.refund"></ticket-notice>
+              <div class="sperator-1"></div>
+              <ticket-notice title="商家说明" :remarks="goodsInfo.explain"></ticket-notice>
           </div>
           <div class="sperator-line-2"></div>
           <div class="t-d-detail-order-info-wrapper">
@@ -43,6 +38,7 @@ import TicketHeader from './components/ScenicDetailHeader'
 import TicketImages from './components/ScenicDetailImages'
 import TicketInfo from './components/ScenicDetailInfo'
 import TicketComment from './components/ScenicDetailComment'
+import ticketNotice from 'common/components/ticket-notice'
 import TicketRemark from 'common/components/ticket-remark'
 import LoadFail from 'common/components/loading/load-fail'
 export default {
@@ -52,6 +48,7 @@ export default {
     TicketImages,
     TicketInfo,
     TicketComment,
+    ticketNotice,
     TicketRemark,
     LoadFail
   },
@@ -223,6 +220,11 @@ export default {
     .t-d-detail-buy-info-see-more
         textStyle(#aaa, .4)
         text-align center
+    .sperator-1
+        background-color #f5f5f5
+        height 2px
+        width 90%
+        margin 0 auto
 .t-d-detail-order-info-wrapper
     display flex
     position fixed

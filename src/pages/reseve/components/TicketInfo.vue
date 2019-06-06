@@ -37,7 +37,7 @@
         </el-dialog>
         <transition name="slide-fade" @before-enter="beforeEnter" @before-leave="beforeLeave">
             <div v-if="showRemark" class="r-d-ticket-info-remark-wrapper">
-              <reseve-notice v-if="ticketInfo" :goods="ticketInfo.goods" :scenic="ticketInfo.scenic"></reseve-notice>
+              <reseve-notice v-if="ticketInfo" :goods="ticketInfo.goods" :scenic="ticketInfo.scenic" :collectionState="ticketInfo.is_favorites" @colletion="collection"></reseve-notice>
             </div>
         </transition>
         <div class="v-modal" v-show="showModal" @click="showRemark = false"></div>
@@ -202,10 +202,8 @@ export default {
       it.raw = temp
     },
     releaseCount (count) {
-      if (count === -1) {
-        return '不限量'
-      } else if (count === -2) {
-        return '禁售'
+      if (count === -1 || count === -2) {
+        return ''
       } else {
         return '余' + count + '张'
       }
@@ -218,6 +216,9 @@ export default {
       } else {
         return count || 1
       }
+    },
+    collection () {
+      this.$emit('collection')
     },
     onNumberChange () {
       this.emit()

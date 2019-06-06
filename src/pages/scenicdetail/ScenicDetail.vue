@@ -10,11 +10,6 @@
                       <p class="s-d-info-scenic-info-title">景区介绍</p>
                       <p class="s-d-info-scenic-info-info">{{slotPropes.scenicInfo.brief}}</p>
                   </div>
-                  <!-- <div class="vertical-line"></div>
-                  <div @click="startScenicInfo('scenicInfoForOrderNotify')">
-                      <p class="s-d-info-scenic-info-title">预定须知</p>
-                      <p class="s-d-info-scenic-info-info">预定须知预定须知预定须知预定须知预定须知预定须知</p>
-                  </div> -->
               </div>
               <div class="s-d-info-scenic-open-time-wrapper">
                   <p>营业时间</p>
@@ -208,7 +203,7 @@ export default {
     .s-d-info-scenic-info-info
         margin-top rem(.2)
         normalTextStyle(#888888, .25)
-        muitlLineEllipsis(4)
+        muitlLineEllipsis(2)
 .s-d-info-scenic-open-time-wrapper
     background-color #f5f5f5
     padding rem(.1)

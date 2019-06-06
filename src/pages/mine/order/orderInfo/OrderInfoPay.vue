@@ -1,6 +1,6 @@
 <template>
   <div class='o-i-container' v-if="detail">
-    <order-info-header stateTip="待付款">
+    <order-info-header :stateTip="title">
         <template slot="headerTitleInfo" >
             <span class="o-i-release-pay-time">
                 剩余支付时间：
@@ -14,7 +14,8 @@
             </span>
         </template>
         <template slot="headerBottomInfo">
-            <p class="o-i-pay" @click="goPay">立即支付</p>
+            <p class="o-i-pay" @click="goPay" v-if="!hasDownEnd">立即支付</p>
+            <p v-else class="auto-cancel-tip">订单长时间未支付，已自动取消。</p>
         </template>
     </order-info-header>
     <order-info-content :scenic="detail.scenic" :voucher="detail.voucher" :ticketName="detail.ord_product_name" :ticketNum="detail.ord_ticket_num" :timeLog="detail.order_log"></order-info-content>
@@ -30,10 +31,10 @@
       <span class="back-top" @click="backTop">
         返回到顶部
       </span>
-      <span class="back-money" @click="goPay">
+      <span class="back-money" @click="goPay" v-if="!hasDownEnd">
         立即支付
       </span>
-      <span class="comment" @click="cancelOrder">
+      <span class="comment" @click="cancelOrder" v-if="!hasDownEnd">
         取消订单
       </span>
     </div>
@@ -77,6 +78,9 @@ export default {
   computed: {
     releasePayTime () {
       return Math.max(0, (Number(this.detail.timeout_express) - Number(this.detail.time)) * 1000)
+    },
+    title () {
+      return this.hasDownEnd ? '已取消' : '待付款'
     }
   },
   methods: {
@@ -128,6 +132,10 @@ export default {
         border-radius .1rem
         margin-top .5rem
         font-size .3rem
+    .auto-cancel-tip
+        color #fff
+        margin-top .2rem
+        font-size rem(.25)
     .o-i-use-info
         color #eeeeee
         font-size .25rem

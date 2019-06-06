@@ -10,12 +10,13 @@
         <div class="ask-title-wrapper">
             <span>问</span>
             <span>我的提问</span>
+            <span class="submit" @click="submitAsk">发 布</span>
         </div>
         <textarea cols="30" rows="10" class="ask-content" placeholder="请输入您的问题哦~，最多100字" maxlength="100" v-model="askContent"></textarea>
       </div>
     </el-card>
   </div>
-  <div class="a-m-message-submit" @click="submitAsk">发 布</div>
+  <!-- <div class="a-m-message-submit" @click="submitAsk">发 布</div> -->
 </div>
 </template>
 <script>
@@ -82,6 +83,11 @@ export default {
                     askAnswerWrapper($primary)
                     borderBottom()
                     padding-bottom rem(.2)
+                    .submit
+                        background-color $primary
+                        border-radius rem(.05)
+                        color #fff
+                        padding rem(.1) rem(.2)
                 .ask-content
                     border 1px solid #f5f5f5
                     width 100%

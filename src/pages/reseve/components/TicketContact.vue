@@ -41,7 +41,7 @@ export default {
     return {
       tempUserInfo: {
         name: '',
-        phone: '',
+        phone: this.$root.userInfo.state.phone || '',
         idCard: '',
         schoolName: '',
         studentId: ''

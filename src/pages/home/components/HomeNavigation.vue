@@ -2,24 +2,19 @@
     <div>
       <transition name="slide-fade">
         <div class="h-n-navi-container" v-show="show">
-          <span class="h-n-navi-item" @click="startLogin">{{loginTip}}</span>
-          <div class="sperator-line">|</div>
-          <span class="h-n-navi-item" @click="startMine">{{personCenterTip}}</span>
-          <div class="sperator-line">|</div>
           <span class="h-n-navi-item" @click="startCustomService">联系客服</span>
+          <div class="sperator-line">|</div>
+          <span class="h-n-navi-item" @click="startOrder">我的订单</span>
+          <div class="sperator-line">|</div>
+          <span class="h-n-navi-item" @click="startMine">个人中心</span>
         </div>
       </transition>
-      <confirm-dialog content="是否要退出当前账号？" @dialogConfirm="confirmLogout" ref="homeConfirmDialog"></confirm-dialog>
     </div>
 </template>
 
 <script>
-import ConfirmDialog from 'common/components/confirm-dialog'
 export default {
   name: 'homeNavi',
-  components: {
-    ConfirmDialog
-  },
   props: {
     scrollTop: {
       type: Number,
@@ -30,14 +25,6 @@ export default {
     return {
       show: true,
       top: 0
-    }
-  },
-  computed: {
-    loginTip () {
-      return this.$root.userInfo.isLogin() ? '退出' : '登录'
-    },
-    personCenterTip () {
-      return this.$root.userInfo.isLogin() ? '[' + this.$utils.common.hiddenMobile(this.$root.userInfo.state.phone) + ']' : '个人中心'
     }
   },
   watch: {
@@ -59,21 +46,14 @@ export default {
     }
   },
   methods: {
-    startLogin () {
-      if (this.$root.userInfo.isLogin()) {
-        this.$refs.homeConfirmDialog.showDialog()
-      } else {
-        this.$router.push({name: 'login'})
-      }
+    startOrder () {
+      this.$router.push({name: 'orderAllList'})
     },
     startMine () {
       this.$router.push({name: 'personal', params: {backName: 'personal'}})
     },
     startCustomService () {
       this.$router.push({name: 'customService'})
-    },
-    confirmLogout () {
-      this.$root.userInfo.clearInfoAction()
     }
   }
 }
