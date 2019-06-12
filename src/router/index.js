@@ -57,7 +57,8 @@ export default new Router({
       path: '/',
       component: Home,
       meta: {
-        keepAlive: true
+        keepAlive: true,
+        showTab: true
       },
       props: true
     },
@@ -66,7 +67,8 @@ export default new Router({
       name: 'home',
       component: Home,
       meta: {
-        keepAlive: true
+        keepAlive: true,
+        showTab: true
       },
       props: true
     },
@@ -175,7 +177,8 @@ export default new Router({
       name: 'personal',
       component: Personal,
       meta: {
-        auth: true
+        auth: true,
+        showTab: true
       }
     },
     {
@@ -261,7 +264,9 @@ export default new Router({
       name: 'orderAllList',
       component: () => import('@/pages/mine/order/OrderAllList'),
       meta: {
-        auth: true
+        auth: true,
+        showTab: true,
+        keepAlive: true
       }
     },
     {
@@ -269,7 +274,8 @@ export default new Router({
       name: 'customService',
       component: CustomService,
       meta: {
-        auth: true
+        showTab: true,
+        keepAlive: true
       }
     },
     {

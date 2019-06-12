@@ -1,6 +1,6 @@
 <template>
     <div class="o-a-list-container">
-        <navi title="全部订单" :isFixed="true"></navi>
+        <navi title="全部订单" :isFixed="true" :isShowBack="false"></navi>
         <order-list-item ref="allItem" :state="0"></order-list-item>
     </div>
 </template>

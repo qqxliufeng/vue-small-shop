@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="p-header-container">
-            <span class="iconfont p-header-back" @click="back">&#xe625;</span>
+            <!-- <span class="iconfont p-header-back" @click="back">&#xe625;</span> -->
             个人中心
             <div class="p-header-notify-container" @click="message">
               <span class="iconfont">&#xe60c;</span>
@@ -23,7 +23,7 @@
             </router-link>
             <div class="p-order-all">
                 <span>我的订单</span>
-                <span class="iconfont p-order-see-all" @click="allOrder">查看全部 &#xe64c;</span>
+                <!-- <span class="iconfont p-order-see-all" @click="allOrder">查看全部 &#xe64c;</span> -->
             </div>
             <div class="p-order">
                 <div class="p-order-item" v-for="(item,index) of orderItemList" :key="index">
@@ -197,6 +197,7 @@ export default {
     },
     confirmLogout () {
       this.$root.userInfo.clearInfoAction()
+      this.$root.$emit('changeTab', {index: '1'})
       this.$router.replace({path: '/index/' + this.$root.state.getSallerInfo().identity + '/' + this.$root.state.getSallerInfo().storeId})
     }
   },
@@ -315,7 +316,7 @@ export default {
           width .4rem
           margin-right .2rem
     .p-logout-wrapper
-      padding-bottom .3rem
+      padding-bottom 1rem
       .p-logout
           display block
           background-color $primary

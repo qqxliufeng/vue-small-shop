@@ -1,6 +1,6 @@
 <template>
     <div>
-        <navi title="联系客服"></navi>
+        <navi title="联系客服" :isShowBack="false"></navi>
         <div class="c-s-container">
             <p class="c-s-title">
                 <i></i>

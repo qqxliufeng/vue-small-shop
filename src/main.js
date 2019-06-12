@@ -20,7 +20,6 @@ import 'swiper/dist/css/swiper.css'
 import VueLazyLoad from 'vue-lazyload'
 import VueAMap from 'vue-amap'
 import 'common/utils/weixin.js'
-import SlideVerify from 'common/components/slideverify/index'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
@@ -38,7 +37,6 @@ Vue.use(VueLazyLoad, {
   loading: require('images/img_loading_list.png'),
   attempt: 1
 })
-Vue.use(SlideVerify)
 Vue.prototype.$isWeiXin = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1
 Vue.prototype.$utils = utils
 Vue.prototype.$urlPath = urlPath

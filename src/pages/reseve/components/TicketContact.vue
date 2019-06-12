@@ -21,13 +21,13 @@
       <span>学生证号：</span>
       <input type="text" placeholder="请输入学生证号" v-model="tempUserInfo.studentId" maxlength="20">
     </div>
-    <el-dialog :visible.sync="showVerifyDialog" :modal="false" width="90%">
+    <!-- <el-dialog :visible.sync="showVerifyDialog" :modal="false" width="90%">
       <slide-verify
       :w="width"
       @success="onSlideSuccess"
       ref="slideVerfiy"></slide-verify>
     </el-dialog>
-    <div class="modal" v-if="showVerifyDialog" @click="dismissDialog"></div>
+    <div class="modal" v-if="showVerifyDialog" @click="dismissDialog"></div> -->
   </div>
 </template>
 
@@ -78,7 +78,7 @@ export default {
     },
     clearUserInfo () {
       this.tempUserInfo.name = null
-      this.tempUserInfo.phone = null
+      this.tempUserInfo.phone = this.$root.userInfo.state.phone || ''
       this.tempUserInfo.idCard = null
       this.tempUserInfo.schoolName = null
       this.tempUserInfo.studentId = null

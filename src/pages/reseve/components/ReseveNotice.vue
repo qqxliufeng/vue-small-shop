@@ -79,16 +79,26 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .r-n-container
-    position relative
+    position absolute
+    top 0
+    bottom 0
+    left 0
+    right 0
     .close-icon
         position absolute
         right rem(.2)
+        top rem(.2)
         textStyle(#888, .4)
+        z-index 100
     .scenic-info-wrapper
         display flex
         padding rem(.3)
         overflow hidden
         box-sizing border-box
+        position absolute
+        top 0
+        left 0
+        right 0
         .scenic-info-image-wrapper
             height rem(1.5)
             width rem(1.5)
@@ -132,6 +142,13 @@ export default {
                 .scenic-detail-sale-count
                     textStyle(#333, .25)
                     margin-left rem(1)
+    .notice-info-wrapper
+        position absolute
+        top rem(2.2)
+        left 0
+        right 0
+        bottom 0
+        overflow scroll
     .sperator-1
         height 2px
         background-color #f5f5f5
