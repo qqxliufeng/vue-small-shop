@@ -20,7 +20,7 @@
               <div class="item-container">
                 <div class="user-info-container">
                   <img v-lazy="$utils.image.getImagePath(item.avatar)">
-                  <span>{{item.username}}</span>
+                  <span>{{$utils.common.hiddenMobile(item.username)}}</span>
                   <div class="report-wrapper">
                     <el-dropdown>
                       <span class="report">举报<i class="el-icon-arrow-down el-icon--right"></i></span>

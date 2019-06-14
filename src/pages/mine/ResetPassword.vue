@@ -76,6 +76,8 @@ export default {
       }, '正在修改密码…',
       (data) => {
         this.$toast('密码修改成功，请牢记…')
+        this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
+        this.$root.state.saveUserInfo(data.data.userinfo.token)
         this.$router.back()
       },
       (errorCode, error) => {

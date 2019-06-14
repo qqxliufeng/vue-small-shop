@@ -1,6 +1,5 @@
 <template>
     <div class="login-container">
-        <navi title="登录"></navi>
         <div class="input-container">
             <div>
                 <span class="iconfont input-close" @click="clear">&#xe604;</span>
@@ -13,14 +12,6 @@
                 </router-link>
             </div>
             <el-button type="primary" class="input-login" @click="login">登录</el-button>
-            <div>
-                <router-link :to="{name: 'fastLogin', params: { backName }}">
-                  <span class="input-fast-phone">手机快捷登录</span>
-                </router-link>
-                <router-link to="/register">
-                    <span class="input-regist">注册</span>
-                </router-link>
-            </div>
         </div>
     </div>
 </template>
@@ -81,19 +72,9 @@ export default {
       })
     }
   },
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      if (!vm.backName) {
-        vm.backName = to.params.backName
-      }
-      if (vm.$root.userInfo.isLogin()) {
-        if (vm.backName) {
-          vm.$router.replace({name: vm.backName.name, query: vm.backName.query, params: vm.backName.params})
-        } else {
-          vm.$router.replace({path: '/index/' + vm.$root.state.getSallerInfo().identity + '/' + vm.$root.state.getSallerInfo().storeId})
-        }
-      }
-    })
+  beforeRouteLeave (to, from, next) {
+    to.params.backName = this.backName
+    next()
   }
 }
 </script>

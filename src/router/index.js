@@ -6,6 +6,7 @@ import Protocol from '@/pages/login/protocol'
 import ForgetPasswordStepOne from '@/pages/login/forgetpasswordstepone'
 import ForgetPasswordStepTwo from '@/pages/login/forgetpasswordsteptwo'
 import FastLogin from '@/pages/login/FastLogin'
+import LoginContainer from '@/pages/login/LoginContainer'
 import Personal from '@/pages/mine/Personal'
 import Message from '@/pages/mine/Message'
 import PInfo from '@/pages/mine/PInfo'
@@ -142,6 +143,12 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login,
+      props: true
+    },
+    {
+      path: '/logincontainer',
+      name: 'loginContainer',
+      component: LoginContainer,
       props: true
     },
     {

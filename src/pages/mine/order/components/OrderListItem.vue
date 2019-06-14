@@ -351,6 +351,7 @@ export default {
                 flex 1.2
                 overflow hidden
                 height 1.7rem
+                border-radius rem(.1)
                 & img
                   width 100%
                   height 100%

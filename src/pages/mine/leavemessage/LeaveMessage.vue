@@ -5,7 +5,7 @@
             <el-tab-pane label="我的问题" name="first" class="l-tab-item">
                 <my-question ref="myAsk"></my-question>
             </el-tab-pane>
-            <el-tab-pane label="我的回复" name="second" class="l-tab-item" ref="myAnswer">
+            <el-tab-pane label="我的回复" name="second" class="l-tab-item">
                 <my-reply ref="myAnswer"></my-reply>
             </el-tab-pane>
         </el-tabs>

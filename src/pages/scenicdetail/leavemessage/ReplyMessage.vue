@@ -14,12 +14,12 @@
         <div class="ask-title-wrapper">
             <span>答</span>
             <span>我的回复</span>
+            <span class="a-m-message-submit" @click="submitAsk">发 布</span>
         </div>
         <textarea cols="30" rows="10" class="ask-content" placeholder="请输入您的回复哦~，最多100字" maxlength="100" v-model="content"></textarea>
       </div>
     </el-card>
   </div>
-  <div class="a-m-message-submit" @click="submitAsk">发 布</div>
 </div>
 </template>
 <script>
@@ -72,14 +72,12 @@ export default {
     & >>> .el-dialog__header
         padding 0
     .a-m-message-submit
-        position fixed
-        left 0
-        right 0
-        bottom 0
+        border-radius rem(.05)
+        color #fff
+        padding rem(.1) rem(.2)
         background-color $primary
-        textStyle(#fff, .32)
+        textStyle(#fff, .28)
         text-align center
-        line-height $headerHeight
     .a-m-message-content-wrapper
         padding rem(.3)
         .reply-title-wrapper

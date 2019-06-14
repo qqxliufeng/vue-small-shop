@@ -1,6 +1,5 @@
 <template>
     <div class="login-container">
-        <navi title="手机快捷登录"></navi>
         <div class="input-container">
             <div>
                 <span class="iconfont input-close" @click="clear">&#xe604;</span>
@@ -11,6 +10,11 @@
                 <button class="input-forget-password" @click="countDown" :disabled="disabled">{{countTitle}}</button>
             </div>
             <el-button type="primary" class="input-login" @click="login">登录</el-button>
+            <div>
+                <router-link to="/register">
+                    <span class="input-regist">注册</span>
+                </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -57,7 +61,12 @@ export default {
       (data) => {
         this.$toast(data.msg)
         this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
-        this.$router.back()
+        this.$root.state.saveUserInfo(data.data.userinfo.token)
+        if (this.backName) {
+          this.$router.replace({name: this.backName.name, query: this.backName.query, params: this.backName.params})
+        } else {
+          this.$router.go(-1)
+        }
       },
       (errorCode, error) => {
         this.$toast(error)
@@ -93,10 +102,6 @@ export default {
         this.$toast(error)
       })
     }
-  },
-  beforeRouteLeave (to, from, next) {
-    to.params.backName = this.backName
-    next()
   }
 }
 </script>
@@ -155,4 +160,12 @@ export default {
     .register-protocol
       color $primary
       font-size .28rem
+  .input-fast-phone
+    float left
+    font-size .3rem
+    color #ccc
+  .input-regist
+    float right
+    font-size .3rem
+    color #ccc
 </style>

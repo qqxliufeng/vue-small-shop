@@ -30,6 +30,8 @@
       </div>
       <div class="notice-info-wrapper">
           <div class="sperator-1"></div>
+          <ticket-notice title="购买须知" :remarks="goods.buy_way"></ticket-notice>
+          <div class="sperator-1"></div>
           <ticket-notice title="入园须知" :remarks="goods.entrance"></ticket-notice>
           <div class="sperator-1"></div>
           <ticket-notice title="退还说明" :remarks="goods.refund"></ticket-notice>

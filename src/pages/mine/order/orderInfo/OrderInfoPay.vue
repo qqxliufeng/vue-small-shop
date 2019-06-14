@@ -19,6 +19,8 @@
         </template>
     </order-info-header>
     <order-info-content :scenic="detail.scenic" :voucher="detail.voucher" :ticketName="detail.ord_product_name" :ticketNum="detail.ord_ticket_num" :timeLog="detail.order_log"></order-info-content>
+    <ticket-notice title="购买须知" :remarks="detail.goods.buy_way"></ticket-notice>
+    <div class="sperator-1"></div>
     <ticket-notice title="入园方式" :remarks="detail.goods.entrance"></ticket-notice>
     <div class="sperator-1"></div>
     <ticket-notice title="退票说明" :remarks="detail.goods.refund"></ticket-notice>

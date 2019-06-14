@@ -13,6 +13,8 @@
           </ticket-info>
           <div class="t-d-detail-buy-info">
               <p class="t-d-detail-buy-info-title">购买须知</p>
+              <ticket-notice title="预订须知" :remarks="goodsInfo.buy_way"></ticket-notice>
+              <div class="sperator-1"></div>
               <ticket-notice title="入园方式" :remarks="goodsInfo.entrance"></ticket-notice>
               <div class="sperator-1"></div>
               <ticket-notice title="退票说明" :remarks="goodsInfo.refund"></ticket-notice>

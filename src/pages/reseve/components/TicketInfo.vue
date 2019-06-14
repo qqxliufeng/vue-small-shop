@@ -22,7 +22,7 @@
             <div class="r-d-ticket-info-count-info">
                 <span class="r-d-ticket-info-count-info-price">￥{{tempTime.price || 0}}</span>
                 <span class="r-d-ticket-info-count-info-release-count" v-show="tempTime.count >= 0">剩余{{tempTime.count || 0}}张</span>
-                <el-input-number v-model="num" size="mini" :max="maxCount(tempTime.count || 1)" :min="minNum" @change="onNumberChange"></el-input-number>
+                <el-input-number v-model="num" size="mini" :min="minNum" @change="onNumberChange"></el-input-number>
             </div>
         </div>
        <el-dialog title="选择日期" :visible.sync="isShowCanlendarDialog" center width="92%" :modal="false" @open="showModal = true" @close="showModal = false">
@@ -220,7 +220,7 @@ export default {
     collection () {
       this.$emit('collection')
     },
-    onNumberChange () {
+    onNumberChange (num) {
       this.emit()
     },
     emit () {
