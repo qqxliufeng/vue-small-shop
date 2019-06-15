@@ -7,9 +7,9 @@
             </p>
         </template>
         <template slot="headerBottomInfo" v-if="detail.refund_mark !== 0">
-            <div class="after-service-wrapper">
+            <div class="after-service-wrapper" @click="orderBackProgress">
                 <span>退票记录：{{detail.refund_count}}</span>
-                <span @click="orderBackProgress">查看进度></span>
+                <span>查看进度></span>
             </div>
         </template>
     </order-info-header>

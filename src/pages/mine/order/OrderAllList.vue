@@ -27,6 +27,11 @@ export default {
   beforeRouteLeave (to, from, next) {
     this.$refs.allItem.$refs.mescroll && this.$refs.allItem.$refs.mescroll.beforeRouteLeave()
     next()
+  },
+  mounted () {
+    this.$root.$on('onRefreshOrderList', () => {
+      this.$refs.allItem.reload()
+    })
   }
 }
 </script>

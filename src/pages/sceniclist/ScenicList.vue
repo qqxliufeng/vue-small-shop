@@ -53,6 +53,7 @@ export default {
       }, null, (data) => {
         if (!this.tags) {
           this.tags = data.data.label
+          this.tags.unshift({id: 0, name: '全部'})
         }
         this.loadSuccess(page, mescroll, data.data.scenic)
       }, (errorCode, error) => {

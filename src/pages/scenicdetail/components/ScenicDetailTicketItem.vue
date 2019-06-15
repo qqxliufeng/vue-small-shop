@@ -6,7 +6,7 @@
                 <p class="s-d-hot-item-info-price"><span>￥{{item.minPrice}}</span><i>起</i></p>
             </div>
             <div class="s-d-hot-item-info-remark-wrapper">
-                <!-- <p class="s-d-hot-item-info-remark">{{item.before}}</p> -->
+                <p class="s-d-hot-item-info-remark">{{item.before}}</p>
                 <p class="s-d-hot-item-info-old-price">￥{{item.retailPrice}}</p>
             </div>
             <div class="s-d-hot-item-info-info-wrapper">

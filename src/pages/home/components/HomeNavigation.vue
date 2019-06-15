@@ -24,13 +24,13 @@
               <p class="menu-text">首页</p>
             </div>
           </el-menu-item>
-          <el-menu-item index="2">
-            <span class="iconfont menu-icon">&#xe618;</span>
-            <p class="menu-text">订单</p>
-          </el-menu-item>
           <el-menu-item index="3">
             <span class="iconfont menu-icon">&#xe614;</span>
             <p class="menu-text">客服</p>
+          </el-menu-item>
+          <el-menu-item index="2">
+            <span class="iconfont menu-icon">&#xe618;</span>
+            <p class="menu-text">订单</p>
           </el-menu-item>
           <el-menu-item index="4">
             <span class="iconfont menu-icon">&#xe654;</span>

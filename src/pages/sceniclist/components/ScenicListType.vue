@@ -25,8 +25,8 @@ export default {
     tags (newVal, oldVal) {
       if (newVal) {
         this.tagsList = this.tags
-        this.tagsList.forEach(element => {
-          this.$set(element, 'selected', false)
+        this.tagsList.forEach((element, index) => {
+          this.$set(element, 'selected', index === 0)
         })
       }
     }

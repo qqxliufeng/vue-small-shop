@@ -7,9 +7,9 @@
             </p>
         </template>
         <template slot="headerBottomInfo" v-if="detail.refund_mark !== 0">
-            <div class="after-service-wrapper">
+            <div class="after-service-wrapper" @click="orderBackProgress">
                 <span>退票记录：{{detail.refund_count}}</span>
-                <span @click="orderBackProgress">查看进度></span>
+                <span>查看进度></span>
             </div>
         </template>
     </order-info-header>
@@ -94,6 +94,9 @@ export default {
     },
     backMoney () {
       this.$router.push({name: 'orderBackMoney', query: {id: this.detail.ord_id}})
+    },
+    orderBackProgress () {
+      this.$router.push({name: 'orderBackProgress', query: {id: this.detail.ord_id}})
     },
     comment () {
       this.$toast('当前订单还未进行消费')

@@ -20,9 +20,9 @@
           <div class="report-wrapper">
             <el-dropdown>
               <span class="report">举报<i class="el-icon-arrow-down el-icon--right"></i></span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-for="reportItem of report" :key="reportItem.id" @click.native="doReport(1, item.aid, reportItem.name)">{{reportItem.name}}</el-dropdown-item>
-            </el-dropdown-menu>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item v-for="reportItem of report" :key="reportItem.id" @click.native="doReport(2, item.aid, reportItem.name)">{{reportItem.name}}</el-dropdown-item>
+              </el-dropdown-menu>
             </el-dropdown>
           </div>
       </el-card>

@@ -12,6 +12,11 @@
                 </router-link>
             </div>
             <el-button type="primary" class="input-login" @click="login">登录</el-button>
+            <div>
+                <router-link to="/register">
+                    <span class="input-regist">注册</span>
+                </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -59,6 +64,7 @@ export default {
         if (data.data) {
           this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
           this.$root.state.saveUserInfo(data.data.userinfo.token)
+          this.$root.$emit('onRefreshOrderList')
           if (this.backName) {
             this.$router.replace({name: this.backName.name, query: this.backName.query, params: this.backName.params})
           } else {
