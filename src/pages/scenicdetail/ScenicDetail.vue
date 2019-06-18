@@ -98,7 +98,7 @@ export default {
           this.$toast(error)
         })
       } else {
-        this.$router.push({name: 'login'})
+        this.$router.push({name: 'loginContainer'})
       }
     },
     getData () {

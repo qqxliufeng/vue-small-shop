@@ -32,15 +32,6 @@
                 </div>
             </div>
             <div class="o-i-back-l-f">
-                <span>
-                    退款原因
-                </span>
-                <span @click="showBackMoneyReason">
-                    {{reason ? reason : '选择退款原因'}}
-                    <i class="el-icon-arrow-right"></i>
-                </span>
-            </div>
-            <div class="o-i-back-l-f">
                 <span class="o-i-back-money-num">
                     退票数量
                 </span>
@@ -64,6 +55,20 @@
                 </p>
             </div>
             <div class="sperator-line"></div>
+            <div class="o-i-back-l-f">
+                <span>
+                    退款原因
+                </span>
+                <!-- <span @click="showBackMoneyReason">
+                    {{reason ? reason : '选择退款原因'}}
+                    <i class="el-icon-arrow-right"></i>
+                </span> -->
+                <div class="reason-list">
+                    <div v-for="(item, index) of info.reason" :key="item.id" class="o-i-back-money-reason-item">
+                        <el-radio v-model="radio" :label="index" @change="changeReason">{{item.reason}}</el-radio>
+                    </div>
+                </div>
+            </div>
             <p class="o-i-back-money-goods">留言</p>
             <div class="o-i-back-money-leave-message-wrapper">
                 <el-input
@@ -264,8 +269,6 @@ export default {
             line-height .3rem
             box-sizing border-box
             borderBottom()
-            & span:nth-child(1)
-                float left
             & span:nth-child(2)
                 float right
                 color #888
@@ -277,6 +280,16 @@ export default {
                 text-align right
             .o-i-back-money-num
                 margin-top .14rem
+            .reason-list
+                border-top 1px solid #f5f5f5
+                margin-top rem(.3)
+                .o-i-back-money-reason-item
+                    margin .4rem 0
+                    & >>> label
+                        display block
+                    & >>> .el-radio__label
+                        color #888
+                        font-size rem(.2)
         .o-i-info-money-detail
             overflow hidden
             margin .2rem 0
@@ -310,8 +323,6 @@ export default {
             line-height $headerHeight
             margin-top .3rem
             background-color $primary
-        .o-i-back-money-reason-item
-            margin .4rem 0
         .o-i-back-money-reason-input
             font-size .3rem
 </style>

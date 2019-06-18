@@ -88,7 +88,7 @@ export default {
       this.getData()
     },
     collection () {
-      if (confirm) {
+      if (this.$root.userInfo.isLogin()) {
         this.$http(this.$urlPath.userUnFavoroteGoodsUrl, {
           goods_id: this.goodsId
         }, '正在操作…', (data) => {
@@ -102,6 +102,8 @@ export default {
         }, (errorCode, error) => {
           this.$toast(error)
         })
+      } else {
+        this.$router.push({name: 'loginContainer'})
       }
     },
     getData () {

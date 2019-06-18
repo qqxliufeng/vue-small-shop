@@ -91,9 +91,11 @@ export default {
                   time: it.ord_add_time
                 },
                 action1: {
-                  title: '',
-                  show: false,
-                  action: null
+                  title: '重新购票',
+                  show: true,
+                  action: () => {
+                    this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
+                  }
                 },
                 action2: {
                   title: '',
@@ -148,9 +150,11 @@ export default {
                       time: it.ord_add_time
                     },
                     action1: {
-                      title: '',
-                      show: false,
-                      action: null
+                      title: '重新购票',
+                      show: true,
+                      action: () => {
+                        this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
+                      }
                     },
                     action2: {
                       title: it.is_refund === 1 ? '申请退款' : '',
@@ -171,9 +175,11 @@ export default {
                       time: it.ord_add_time
                     },
                     action1: {
-                      title: '',
-                      show: false,
-                      action: null
+                      title: '重新购票',
+                      show: true,
+                      action: () => {
+                        this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
+                      }
                     },
                     action2: {
                       title: '去评价',
@@ -247,7 +253,7 @@ export default {
                       title: '重新购票',
                       show: true,
                       action: () => {
-                        this.$router.push({name: 'reseveDetail', query: { goods_id: it.ord_goodsId, scenicId: it.ord_scenicId }})
+                        this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
                       }
                     }
                   }
@@ -261,9 +267,11 @@ export default {
                       time: it.ord_add_time
                     },
                     action1: {
-                      title: '',
-                      show: false,
-                      action: null
+                      title: '重新购票',
+                      show: true,
+                      action: () => {
+                        this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
+                      }
                     },
                     action2: {
                       title: '',
@@ -281,9 +289,11 @@ export default {
                       time: it.ord_add_time
                     },
                     action1: {
-                      title: '',
-                      show: false,
-                      action: null
+                      title: '重新购票',
+                      show: true,
+                      action: () => {
+                        this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
+                      }
                     },
                     action2: {
                       title: '',
@@ -301,9 +311,11 @@ export default {
                       time: it.ord_add_time
                     },
                     action1: {
-                      title: '',
-                      show: false,
-                      action: null
+                      title: '重新购票',
+                      show: true,
+                      action: () => {
+                        this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
+                      }
                     },
                     action2: {
                       title: '',

@@ -59,10 +59,10 @@ export default {
         .remark-key
             color #333333
             width 30%
-            vertical-align middle
+            vertical-align top
+            line-height rem(.4)
         .remark-value
             width 60%
-            vertical-align middle
             color #888888
             line-height rem(.4)
 </style>
