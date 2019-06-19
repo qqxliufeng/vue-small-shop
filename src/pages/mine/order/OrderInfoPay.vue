@@ -21,14 +21,14 @@
                     <p>￥{{info.price}}</p>
                 </div>
             </div>
-            <div class="o-i-pay-goods-info-money">
-                <span>支付金额</span>
-                <span>￥{{info.amount}}</span>
-            </div>
-            <div class="sperator-line"></div>
             <div class="o-i-pay-goods-info-money-add">
                 <span>￥{{info.price}}</span>
                 <span>x{{info.num}}</span>
+            </div>
+            <div class="sperator-line"></div>
+            <div class="o-i-pay-goods-info-money">
+                <span>支付金额</span>
+                <span>￥{{info.amount}}</span>
             </div>
             <div class="sperator-line-height"></div>
             <div class="o-i-pay-goods-info-money">

@@ -11,9 +11,12 @@
             </p>
             <p class="time">申请时间：{{item.refund_create_time}}</p>
             <p class="time">更新时间：{{item.refund_update_time || '暂无'}}</p>
+            <p class="time">退款金额：<i style="color:#ffad2c">￥{{item.refund_amount}}</i></p>
+            <p class="time">手续费类型：{{item.refund_way}}</p>
+            <p class="time">手续费：<i style="color:#ffad2c">￥{{item.refund_charge}}</i></p>
             <div class="line"></div>
             <div class="money-wrapper">
-              <span class="money">退款金额<i>￥{{item.refund_actual_amount}}</i><strong>（{{item.refund_num}}张）</strong></span>
+              <span class="money">实际退款金额：<i>￥{{item.refund_actual_amount}}</i><strong>（{{item.refund_num}}张）</strong></span>
               <span class="open" @click="openInfo(item)">{{item.opened ? '收起' : '展开'}}<i :class="{'el-icon-arrow-down' : !item.opened, 'el-icon-arrow-up' : item.opened}"></i></span>
             </div>
             <div v-show="item.opened">

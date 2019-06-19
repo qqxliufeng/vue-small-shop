@@ -5,7 +5,7 @@
         <span class="remark-key">
             {{remark.title}}
         </span>
-        <span class="remark-value">
+        <span class="remark-value" :style="{color: specialList.includes(remark.title) ? '#ffad2c' : '#888'}">
             {{value || '暂无'}}
         </span>
     </p>
@@ -18,6 +18,11 @@ export default {
   name: 'ticketRemark',
   props: {
     remark: Object
+  },
+  data () {
+    return {
+      specialList: ['适用人群', '退款手续费']
+    }
   },
   computed: {
     value () {

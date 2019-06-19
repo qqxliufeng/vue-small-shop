@@ -15,7 +15,6 @@
             </span>
             <span class="ticket-price">
               ￥{{Number(scenic.minPrice || 0).toFixed(2)}}
-              <i>起</i>
             </span>
           </div>
           <div class="scenic-detail">
@@ -32,6 +31,8 @@
           <div class="sperator-1"></div>
           <ticket-notice title="购买须知" :remarks="goods.buy_way"></ticket-notice>
           <div class="sperator-1"></div>
+          <ticket-notice title="适用人群" :remarks="goods.for_people" v-if="goods.for_people[0].value"></ticket-notice>
+          <div class="sperator-1" v-if="goods.for_people[0].value"></div>
           <ticket-notice title="入园须知" :remarks="goods.entrance"></ticket-notice>
           <div class="sperator-1"></div>
           <ticket-notice title="退还说明" :remarks="goods.refund"></ticket-notice>
@@ -40,7 +41,7 @@
           <div class="sperator-2"></div>
       </div>
       <div class="bottom-wrapper" >
-        <span class="price-wrapper">￥{{Number(scenic.minPrice || 0).toFixed(2)}}<i>起</i></span>
+        <span class="price-wrapper">￥{{Number(scenic.minPrice || 0).toFixed(2)}}</span>
         <span class="flex-item"></span>
         <div class="collection" @click="colletion">
           <p :class="[collectionState ===  1 ? 'el-icon-star-on' : 'el-icon-star-off']"></p>
@@ -146,7 +147,7 @@ export default {
                     margin-left rem(1)
     .notice-info-wrapper
         position absolute
-        top rem(2.2)
+        top rem(2)
         left 0
         right 0
         bottom 0

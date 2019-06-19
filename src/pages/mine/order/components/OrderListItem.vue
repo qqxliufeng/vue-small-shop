@@ -74,6 +74,15 @@ export default {
       // }
       this.$router.push({name: 'orderInfo', params: {orderId: item.ord_id.toString(), orderType: item.stateModel.orderType}})
     },
+    reBuyTicket (item) {
+      return {
+        title: '再来一单',
+        show: true,
+        action: () => {
+          this.$router.push({name: 'scenicDetail', query: {scenicId: item.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
+        }
+      }
+    },
     upCallBack (page, mescroll) {
       this.$http(this.$urlPath.orderList, {
         status: this.state,
@@ -90,13 +99,7 @@ export default {
                   title: '下单时间：',
                   time: it.ord_add_time
                 },
-                action1: {
-                  title: '重新购票',
-                  show: true,
-                  action: () => {
-                    this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
-                  }
-                },
+                action1: this.reBuyTicket(it),
                 action2: {
                   title: '',
                   show: false,
@@ -149,13 +152,7 @@ export default {
                       title: '下单时间：',
                       time: it.ord_add_time
                     },
-                    action1: {
-                      title: '重新购票',
-                      show: true,
-                      action: () => {
-                        this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
-                      }
-                    },
+                    action1: this.reBuyTicket(it),
                     action2: {
                       title: it.is_refund === 1 ? '申请退款' : '',
                       show: it.is_refund === 1,
@@ -174,13 +171,7 @@ export default {
                       title: '下单时间：',
                       time: it.ord_add_time
                     },
-                    action1: {
-                      title: '重新购票',
-                      show: true,
-                      action: () => {
-                        this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
-                      }
-                    },
+                    action1: this.reBuyTicket(it),
                     action2: {
                       title: '去评价',
                       show: true,
@@ -215,13 +206,7 @@ export default {
                         }
                       }
                     },
-                    action2: {
-                      title: '重新购票',
-                      show: true,
-                      action: () => {
-                        this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
-                      }
-                    }
+                    action2: this.reBuyTicket(it)
                   }
                   break
                 case 'USE_STATUS_EXPIRD': // 已过期
@@ -249,13 +234,7 @@ export default {
                         }
                       }
                     },
-                    action2: {
-                      title: '重新购票',
-                      show: true,
-                      action: () => {
-                        this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
-                      }
-                    }
+                    action2: this.reBuyTicket(it)
                   }
                   break
                 case 'ALREADY_COMMENT': // 已经评价
@@ -266,13 +245,7 @@ export default {
                       title: '下单时间：',
                       time: it.ord_add_time
                     },
-                    action1: {
-                      title: '重新购票',
-                      show: true,
-                      action: () => {
-                        this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
-                      }
-                    },
+                    action1: this.reBuyTicket(it),
                     action2: {
                       title: '',
                       show: false,
@@ -288,13 +261,7 @@ export default {
                       title: '下单时间：',
                       time: it.ord_add_time
                     },
-                    action1: {
-                      title: '重新购票',
-                      show: true,
-                      action: () => {
-                        this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
-                      }
-                    },
+                    action1: this.reBuyTicket(it),
                     action2: {
                       title: '',
                       show: false,
@@ -310,13 +277,7 @@ export default {
                       title: '下单时间：',
                       time: it.ord_add_time
                     },
-                    action1: {
-                      title: '重新购票',
-                      show: true,
-                      action: () => {
-                        this.$router.push({name: 'scenicDetail', query: {scenicId: it.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
-                      }
-                    },
+                    action1: this.reBuyTicket(it),
                     action2: {
                       title: '',
                       show: false,
