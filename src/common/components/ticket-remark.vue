@@ -1,7 +1,7 @@
 <template>
 <div class="r-d-ticket-info-remark-content-wrapper">
     <!-- <p class="r-d-ticket-info-remark-content-title">{{remarkInfo.title}}</p> -->
-    <p class="r-d-ticket-info-remark-content-title-info">
+    <p class="r-d-ticket-info-remark-content-title-info" v-if="value">
         <span class="remark-key">
             {{remark.title}}
         </span>
@@ -21,7 +21,7 @@ export default {
   },
   data () {
     return {
-      specialList: ['适用人群', '退款手续费']
+      specialList: ['适用人群：', '退款手续费：']
     }
   },
   computed: {

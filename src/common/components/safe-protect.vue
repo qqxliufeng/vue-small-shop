@@ -17,7 +17,7 @@
         </div>
         <p class="content">成功预订门票获得确认短信后（按规则购买和使用），我们将保障您顺利入园游玩。</p>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          <el-button type="primary" @click="dialogVisible = false" size="mini">确 定</el-button>
         </span>
       </el-dialog>
   </div>

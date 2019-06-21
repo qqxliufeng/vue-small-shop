@@ -20,7 +20,7 @@
 <script>
 import ScenicHeader from './components/ScenicListHeader'
 import ScenicType from './components/ScenicListType'
-import ScenicListItem from './components/ScenicListItem'
+import ScenicListItem from '@/pages/home/components/ScenicListItem'
 import MescrollVue from 'mescroll.js/mescroll.vue'
 import mescrollConfig from 'common/utils/mescrollerConfig'
 import listMixin from 'common/mixins/list-mixin'

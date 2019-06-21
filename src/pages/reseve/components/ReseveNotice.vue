@@ -28,16 +28,7 @@
         </div>
       </div>
       <div class="notice-info-wrapper">
-          <div class="sperator-1"></div>
-          <ticket-notice title="购买须知" :remarks="goods.buy_way"></ticket-notice>
-          <div class="sperator-1"></div>
-          <ticket-notice title="适用人群" :remarks="goods.for_people" v-if="goods.for_people[0].value"></ticket-notice>
-          <div class="sperator-1" v-if="goods.for_people[0].value"></div>
-          <ticket-notice title="入园须知" :remarks="goods.entrance"></ticket-notice>
-          <div class="sperator-1"></div>
-          <ticket-notice title="退还说明" :remarks="goods.refund"></ticket-notice>
-          <div class="sperator-1"></div>
-          <ticket-notice title="商家说明" :remarks="goods.explain"></ticket-notice>
+          <ticket-notice-wrapper :goodsInfo="goods"></ticket-notice-wrapper>
           <div class="sperator-2"></div>
       </div>
       <div class="bottom-wrapper" >
@@ -53,7 +44,7 @@
 </template>
 
 <script>
-import TicketNotice from 'common/components/ticket-notice'
+import TicketNoticeWrapper from 'common/components/ticket-notice-wrapper'
 export default {
   name: 'reseveNotice',
   props: {
@@ -62,7 +53,7 @@ export default {
     collectionState: 0
   },
   components: {
-    TicketNotice
+    TicketNoticeWrapper
   },
   data () {
     return {

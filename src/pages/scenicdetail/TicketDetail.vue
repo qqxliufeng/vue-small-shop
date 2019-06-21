@@ -13,13 +13,8 @@
           </ticket-info>
           <div class="t-d-detail-buy-info">
               <p class="t-d-detail-buy-info-title">购买须知</p>
-              <ticket-notice title="预订须知" :remarks="goodsInfo.buy_way"></ticket-notice>
-              <div class="sperator-1"></div>
-              <ticket-notice title="入园方式" :remarks="goodsInfo.entrance"></ticket-notice>
-              <div class="sperator-1"></div>
-              <ticket-notice title="退票说明" :remarks="goodsInfo.refund"></ticket-notice>
-              <div class="sperator-1"></div>
-              <ticket-notice title="商家说明" :remarks="goodsInfo.explain"></ticket-notice>
+              <ticket-notice-wrapper :goodsInfo="goodsInfo"></ticket-notice-wrapper>
+              <div class="sperator-2"></div>
           </div>
           <div class="sperator-line-2"></div>
           <div class="t-d-detail-order-info-wrapper">
@@ -40,7 +35,7 @@ import TicketHeader from './components/ScenicDetailHeader'
 import TicketImages from './components/ScenicDetailImages'
 import TicketInfo from './components/ScenicDetailInfo'
 import TicketComment from './components/ScenicDetailComment'
-import ticketNotice from 'common/components/ticket-notice'
+import TicketNoticeWrapper from 'common/components/ticket-notice-wrapper'
 import TicketRemark from 'common/components/ticket-remark'
 import LoadFail from 'common/components/loading/load-fail'
 export default {
@@ -50,7 +45,7 @@ export default {
     TicketImages,
     TicketInfo,
     TicketComment,
-    ticketNotice,
+    TicketNoticeWrapper,
     TicketRemark,
     LoadFail
   },

@@ -1,15 +1,8 @@
 <template>
     <div class="h-l-like-container">
         <ul v-if="tempLikeList.length > 0">
-            <li v-for="item of tempLikeList" :key="item.s_id" class="h-l-like-wrapper" @click="itemClick(item)">
-                <div class="h-l-like-img-wrapper">
-                    <img v-lazy="$utils.image.getImagePath(item.scenicimages)" :key="item.scenicimages">
-                </div>
-                <div class="h-l-like-info-wrapper">
-                    <p>{{item.s_title}}</p>
-                    <p>{{item.brief}}</p>
-                    <p><span>￥{{item.minPrice}}</span><i>起</i><span>已售{{item.totalSales}}</span></p>
-                </div>
+            <li v-for="item of tempLikeList" :key="item.s_id" @click="itemClick(item)">
+                <scenic-list-item :item="item"></scenic-list-item>
             </li>
             <p class="h-l-sell-more" @click="seeMore" v-if="showMore ">查看更多</p>
         </ul>
@@ -18,10 +11,14 @@
 </template>
 
 <script>
+import ScenicListItem from './ScenicListItem'
 export default {
   name: 'homeLike',
   props: {
     likeList: Array
+  },
+  components: {
+    ScenicListItem
   },
   data () {
     return {

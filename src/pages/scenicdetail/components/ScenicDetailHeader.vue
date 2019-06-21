@@ -10,6 +10,7 @@
             @click="collection"></span>
         </div>
         <div :style="opacityStyle"></div>
+        <span class="header-title" :style="opacityStyle">{{scenicInfo.title}}</span>
     </div>
 </template>
 
@@ -119,4 +120,13 @@ export default {
     & div:nth-child(3)
         background-color #f5f5f5
         height 100%
+    .header-title
+        position absolute
+        top 0
+        left 0
+        right 0
+        text-align center
+        line-height $headerHeight
+        color #333
+        font-size rem(.3)
 </style>

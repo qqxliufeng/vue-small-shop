@@ -65,7 +65,8 @@ export default {
       this.$router.push({name: 'homeSearch'})
     },
     startPersonal () {
-      this.$router.push({name: 'personal'})
+      this.$router.replace({name: 'personal', params: {backName: 'personal'}})
+      this.$root.$emit('changeTab', {index: '4'})
     },
     citySelector () {
       this.$router.push({name: 'city', params: { backName: 'home' }})

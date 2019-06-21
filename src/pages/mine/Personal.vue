@@ -15,7 +15,7 @@
                     <div>
                         <div class="p-info-header-vip-container">
                             <span class="p-info-header-vip">会员</span>
-                            <span>{{$utils.common.hiddenMobile(userPhone)}}</span>
+                            <span>{{$utils.validator.isPhone(userPhone) ? $utils.common.hiddenMobile(userPhone) : userPhone}}</span>
                         </div>
                         <p class="p-info-header-id">ID: {{this.$root.userInfo.state.id}}</p>
                     </div>
@@ -206,6 +206,11 @@ export default {
       this.isShowRedNotify = false
     }
     next()
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.$root.$emit('changeTab', {index: '4'})
+    })
   },
   activated () {
     this.$refs.pContent.scrollTop = this.contentDivScroll

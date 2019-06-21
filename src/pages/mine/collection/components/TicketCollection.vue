@@ -81,6 +81,7 @@ export default {
         .s-t-content-container
             display flex
             overflow hidden
+            border-radius rem(.1)
             & div:nth-child(1)
                 flex 1.2
                 height 1.5rem
