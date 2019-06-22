@@ -72,9 +72,15 @@ Vue.prototype.$http = function (url, params = {}, loadingTip, onRequestSuccess, 
           } else {
             onRequestFail(-1, '请求失败，请重试…')
           }
+        } else if (response.status === 401) {
+          this.$toast('当前账号已过期，请重新登录')
+          userInfo.clearInfoAction()
+          router.replace({name: 'loginContainer'})
         } else {
           if (onRequestFail) {
             onRequestFail(-1, '请求失败，请重试…')
+          } else {
+            this.$toast('请求失败，请重试…')
           }
         }
       })
@@ -82,8 +88,14 @@ Vue.prototype.$http = function (url, params = {}, loadingTip, onRequestSuccess, 
         if (this.NODE_DEVELOPMENT) {
           console.log(error)
         }
-        if (onRequestFail) {
-          onRequestFail(-1, '请求失败，请重试…')
+        if (error && error.toString().indexOf('401') !== -1) {
+          this.$toast('当前账号已过期，请重新登录')
+          userInfo.clearInfoAction()
+          router.replace({name: 'loginContainer'})
+        } else {
+          if (onRequestFail) {
+            onRequestFail(-1, '请求失败，请重试…')
+          }
         }
       })
       .then(() => {

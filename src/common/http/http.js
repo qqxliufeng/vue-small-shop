@@ -28,9 +28,9 @@ axios.interceptors.response.use(
     }
   },
   error => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log(error)
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   console.log(error)
+    // }
     return Promise.reject(error)
   }
 )

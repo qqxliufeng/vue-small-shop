@@ -11,7 +11,7 @@
                             <div class="o-l-item-info-container">
                                 <p>
                                   <span>{{item.ord_product_name}}</span>
-                                  <span class="o-l-item-info-state">{{item.stateModel.stateTip}}</span>
+                                  <span class="o-l-item-info-state">{{item.stateModel.stateTip || ''}}</span>
                                 </p>
                                 <p>
                                   <span>{{item.stateModel.time.title}}
@@ -209,7 +209,7 @@ export default {
                     action2: this.reBuyTicket(it)
                   }
                   break
-                case 'USE_STATUS_EXPIRD': // 已过期
+                case 'USE_STATUS_EXPIRE': // 已过期
                   it.stateModel = {
                     orderType: '7',
                     stateTip: '已过期',

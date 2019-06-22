@@ -23,12 +23,28 @@ export default {
     OpenMobile,
     HomeNavi
   },
+  methods: {
+    autoLogin () {
+      if (!this.$root.userInfo.isLogin()) {
+        let state = this.$root.state
+        if (state.token) {
+          this.$http(this.$urlPath.userInfo, {
+            token: state.token
+          }, null, (data) => {
+            data.data.token = state.token
+            this.$root.$data.userInfo.setUserInfo(data.data)
+          }, null)
+        }
+      }
+    }
+  },
   mounted () {
     this.$http(this.$urlPath.reportUrl, {}, null, (data) => {
       this.$root.report = data.data
     }, (errorCode, error) => {
       console.log('获取失败')
     })
+    this.autoLogin()
   }
 }
 </script>

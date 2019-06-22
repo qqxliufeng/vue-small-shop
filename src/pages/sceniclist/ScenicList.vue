@@ -6,7 +6,7 @@
           <scenic-type :tags="tags" @tagsClick="tagsClick"></scenic-type>
           <ul v-if="list && list.length > 0">
               <li v-for="(item, index) of list" :key="index">
-                <scenic-list-item :item="item"></scenic-list-item>
+                <scenic-list-item :item="item" @itemClick="itemClick"></scenic-list-item>
               </li>
           </ul>
           <div v-else class="empty">
@@ -64,6 +64,9 @@ export default {
     tagsClick (item) {
       this.tempTag = item
       this.$refs.mescroll.mescroll.resetUpScroll(true)
+    },
+    itemClick (item) {
+      this.$router.push({name: 'scenicDetail', query: {scenicId: item.s_id, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
     }
   }
 }

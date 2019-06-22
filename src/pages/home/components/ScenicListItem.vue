@@ -1,5 +1,5 @@
 <template>
-  <div class='s-l-i-container' v-if="item">
+  <div class='s-l-i-container' v-if="item" @click="itemClick">
       <div class="h-l-like-img-wrapper">
           <img v-lazy="$utils.image.getImagePath(item.scenicimages)" :key="item.scenicimages">
       </div>
@@ -14,7 +14,9 @@
                      score-template="{value}分">
             </el-rate>
             <div class="tags">
-              <el-tag size="mini">{{item.tag}}</el-tag>
+              <span v-for="(itemTag, index) of item.tag" :key="index" class="tag">
+                <el-tag size="mini" :type=" index === 0 ? 'success' : 'danger'">{{itemTag}}</el-tag>
+              </span>
             </div>
           </div>
           <p class="money"><span>￥{{item.minPrice}}</span><i>起</i><span>已售{{item.totalSales}}</span></p>
@@ -37,6 +39,9 @@ export default {
   methods: {
     getMark (mark) {
       return Number(3.7)
+    },
+    itemClick () {
+      this.$emit('itemClick', this.item)
     }
   }
 }
@@ -93,4 +98,6 @@ export default {
                 margin-left rem(.1)
             .tags
                 margin-top rem(.08)
+                .tag
+                    margin 0 rem(.1)
 </style>

@@ -196,9 +196,13 @@ export default {
       this.$refs.confirmDialog.showDialog()
     },
     confirmLogout () {
-      this.$root.userInfo.clearInfoAction()
-      this.$root.$emit('changeTab', {index: '1'})
-      this.$router.replace({path: '/index/' + this.$root.state.getSallerInfo().identity + '/' + this.$root.state.getSallerInfo().storeId})
+      new Promise((resolve, reject) => {
+        this.$root.userInfo.clearInfoAction()
+        resolve()
+      }).then(() => {
+        this.$root.$emit('changeTab', {index: '1'})
+        this.$router.replace({path: '/index/' + this.$root.state.getSallerInfo().identity + '/' + this.$root.state.getSallerInfo().storeId})
+      })
     }
   },
   beforeRouteLeave (to, from, next) {

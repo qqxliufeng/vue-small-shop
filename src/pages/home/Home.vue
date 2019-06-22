@@ -83,19 +83,6 @@ export default {
     adClick () {
       this.$router.push({name: 'adsDetail', params: {path: this.ad.ad_url}})
     },
-    autoLogin () {
-      if (!this.$root.userInfo.isLogin()) {
-        let state = this.$root.state
-        if (state.token) {
-          this.$http(this.$urlPath.userInfo, {
-            token: state.token
-          }, null, (data) => {
-            data.data.token = state.token
-            this.$root.$data.userInfo.setUserInfo(data.data)
-          }, null)
-        }
-      }
-    },
     startDetail (item) {
       this.$router.push({name: 'scenicDetail', query: {scenicId: item.s_id, identity: this.identity, storeId: this.storeId}})
     },
@@ -158,7 +145,6 @@ export default {
   },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)
-    this.autoLogin()
     this.getData()
   },
   beforeRouteEnter (to, from, next) {

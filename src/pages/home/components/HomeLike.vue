@@ -1,8 +1,8 @@
 <template>
     <div class="h-l-like-container">
         <ul v-if="tempLikeList.length > 0">
-            <li v-for="item of tempLikeList" :key="item.s_id" @click="itemClick(item)">
-                <scenic-list-item :item="item"></scenic-list-item>
+            <li v-for="item of tempLikeList" :key="item.s_id">
+                <scenic-list-item :item="item" @itemClick="itemClick"></scenic-list-item>
             </li>
             <p class="h-l-sell-more" @click="seeMore" v-if="showMore ">查看更多</p>
         </ul>

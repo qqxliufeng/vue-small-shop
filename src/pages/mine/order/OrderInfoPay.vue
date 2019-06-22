@@ -122,7 +122,7 @@ export default {
     },
     close () {
       this.dialogVisible = false
-      this.$router.go(-1)
+      this.$router.replace({name: 'scenicDetail', query: {scenicId: this.info.scenic_id, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
     }
   },
   mounted () {
