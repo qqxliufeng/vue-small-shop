@@ -12,6 +12,12 @@
             </div>
             <el-button type="primary" class="input-login" @click="nextStep">下一步</el-button>
         </div>
+        <el-dialog :visible.sync="showVerifyDialog" modal width="90%">
+          <slide-verify
+          :w="width"
+          @success="onSlideSuccess"
+          ref="slideVerfiy"></slide-verify>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -26,7 +32,9 @@ export default {
       phone: '',
       verifyCode: '',
       disabled: false,
-      countTitle: '获取验证码'
+      countTitle: '获取验证码',
+      showVerifyDialog: false,
+      width: document.body.clientWidth * 0.9 - 40
     }
   },
   methods: {
@@ -57,6 +65,13 @@ export default {
         this.$toast('请输入正确的手机号')
         return
       }
+      this.showVerifyDialog = true
+    },
+    onSlideSuccess () {
+      if (this.$refs.slideVerfiy) {
+        this.$refs.slideVerfiy.reset()
+      }
+      this.showVerifyDialog = false
       this.$http(this.$urlPath.userInfoGetSMSCodeUrl, {
         mobile: this.phone,
         event: 'resetpwd'

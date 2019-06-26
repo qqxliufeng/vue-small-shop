@@ -250,9 +250,9 @@
         </thead>
         <tbody>
         <tr v-for="(day,k1) in days" style="{'animation-delay',(k1*30)+'ms'}" :key="k1">
-            <td v-for="(child,k2) in day" :class="{'selected':child.selected,'disabled':child.disabled || child.eventName == undefined || parseInt(child.eventName.one_stock) === 0 || parseInt(child.eventName.one_stock) === -2}" @click="select(k1,k2,$event,child)" :key="k2">
+            <td v-for="(child,k2) in day" :class="{'selected':child.selected,'disabled':child.disabled || child.eventName == undefined || !child.eventName.one_stock || parseInt(child.eventName.one_stock) === 0 || parseInt(child.eventName.one_stock) === -2}" @click="select(k1,k2,$event,child)" :key="k2">
                 <span :class="{'red':k2==0||k2==6||((child.isLunarFestival||child.isGregorianFestival) && lunar)}">{{child.day}}</span>
-                <slot name="event" v-if="child.eventName!=undefined" :event="child.eventName" :disabled="child.disabled || child.eventName == undefined || parseInt(child.eventName.one_stock) === 0 || parseInt(child.eventName.one_stock) === -2" :child="child"></slot>
+                <slot name="event" v-if="child.eventName!=undefined" :event="child.eventName" :disabled="child.disabled || child.eventName == undefined || !child.eventName.one_stock || parseInt(child.eventName.one_stock) === 0 || parseInt(child.eventName.one_stock) === -2" :child="child"></slot>
                 <!-- <div class="text" v-if="child.eventName!=undefined">{{child.eventName}}</div> -->
                 <div class="text" :class="{'isLunarFestival':child.isLunarFestival,'isGregorianFestival':child.isGregorianFestival}" v-if="lunar">{{child.lunar}}</div>
             </td>

@@ -33,6 +33,9 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
+      if (from.name === 'fpone') {
+        vm.activeName = 'second'
+      }
       if (!vm.backName) {
         vm.backName = to.params.backName
       }

@@ -281,7 +281,8 @@ export default new Router({
       name: 'customService',
       component: CustomService,
       meta: {
-        showTab: true
+        showTab: true,
+        keepAlive: true
       }
     },
     {

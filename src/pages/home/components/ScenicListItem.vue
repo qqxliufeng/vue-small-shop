@@ -96,6 +96,11 @@ export default {
             & >>> .el-rate__text
                 font-size 12px
                 margin-left rem(.1)
+            & >>> .el-tag
+                font-size rem(.15)
+            & >>> .el-tag--mini
+                height rem(.3)
+                line-height rem(.3)
             .tags
                 margin-top rem(.08)
                 .tag

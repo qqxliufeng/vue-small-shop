@@ -77,6 +77,11 @@ export default {
   },
   mounted () {
     this.getData()
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.$root.$emit('changeTab', {index: '2'})
+    })
   }
 }
 </script>

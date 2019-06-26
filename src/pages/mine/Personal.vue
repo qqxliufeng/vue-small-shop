@@ -5,7 +5,7 @@
             个人中心
             <div class="p-header-notify-container" @click="message">
               <span class="iconfont">&#xe60c;</span>
-              <span v-if="isShowRedNotify" class="p-header-notify-red"></span>
+              <!-- <span v-if="isShowRedNotify" class="p-header-notify-red"></span> -->
             </div>
         </div>
         <div class="p-content-container" @scroll="divScroll" ref="pContent">

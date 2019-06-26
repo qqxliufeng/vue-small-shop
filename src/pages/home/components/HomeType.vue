@@ -77,6 +77,9 @@ export default {
                 box-sizing border-box
                 .h-t-type-icon
                     width rem(.9)
+                    height rem(.9)
+                    background-color #f5f5f5
+                    border-radius 50%
                     object-fit cover
                 .h-t-type-title
                     normalTextStyle(#333, .25)

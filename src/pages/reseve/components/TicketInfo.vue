@@ -195,13 +195,14 @@ export default {
       it.date = this.$utils.dateAdd(date, index).date
       it.week = this.$utils.dateAdd(date, index).week
       let temp = this.events[it.date]
-      it.isEnable = this.events.hasOwnProperty(it.date) && temp && parseInt(temp.one_stock) !== 0 && parseInt(temp.one_stock) !== -2
+      it.isEnable = this.events.hasOwnProperty(it.date) && temp && temp.one_stock && parseInt(temp.one_stock) !== 0 && parseInt(temp.one_stock) !== -2
       it.count = it.isEnable && temp ? temp.one_stock : 0
       it.price = temp ? temp.sale_price : '0'
       it.isSelected = it.isEnable && index === 0
       it.raw = temp
     },
     releaseCount (count) {
+      if (count === null) return ''
       if (count === -1 || count === -2) {
         return ''
       } else {
