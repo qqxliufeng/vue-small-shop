@@ -93,7 +93,11 @@ export default {
       this.$router.push({name: 'orderBackProgress', query: {id: this.detail.ord_id}})
     },
     comment () {
-      this.$toast('当前订单还未进行消费')
+      if (this.detail.status === 'NO_COMMENT') {
+        this.$router.push({name: 'orderComment', query: {orderId: this.detail.ord_id}})
+      } else {
+        this.$toast('当前订单还未进行消费')
+      }
     }
   }
 }

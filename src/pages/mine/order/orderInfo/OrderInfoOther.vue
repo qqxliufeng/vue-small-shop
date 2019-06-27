@@ -59,7 +59,7 @@ export default {
             this.stateModel.stateTip = '已取消'
             this.stateModel.discription = '订单已经取消，如有需要请重新下单购买'
             break
-          case 'USE_STATUS_EXPIRD': // 已过期
+          case 'USE_STATUS_EXPIRE': // 已过期
             this.stateModel.stateTip = '已过期'
             this.stateModel.discription = '订单已经过期，如有需要请重新下单购买'
             break

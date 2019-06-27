@@ -7,7 +7,10 @@
         <div class="r-d-ticket-info-title-wrapper">
             <span class="r-d-ticket-info-time-title">使用日期</span>
         </div>
-        <div class="r-d-ticket-info-time-wrapper">
+        <div v-if="ticketInfo.valid_period === 2">
+          <p class="single-mode-info">{{ticketInfo.valid_period_info}}</p>
+        </div>
+        <div class="r-d-ticket-info-time-wrapper" v-else>
             <div class="r-d-ticket-info-time-item" v-for="(item, index) of times" :key="index" @click="timeItemClick(item)" :class="[{'r-d-ticket-info-time-selected': item.isSelected},{'r-d-ticket-info-time-uneable' : !item.isEnable}]">
                 <p>{{item.date}}</p>
                 <p>周{{$utils.getWeekByWeek(item.week)}}</p>
@@ -145,14 +148,23 @@ export default {
     ticketInfo (newVal, oldVal) {
       if (newVal) {
         let tempEvent = {}
-        for (let key in this.ticketInfo.calendar) {
-          let item = this.ticketInfo.calendar[key]
-          tempEvent[item.date] = item
+        if (typeof this.ticketInfo.calendar === 'object') {
+          this.tempTime.count = this.ticketInfo.calendar.one_stock || 0
+          this.tempTime.price = this.ticketInfo.calendar.sale_price
+          this.tempTime.raw = this.ticketInfo.calendar
+          this.minNum = this.ticketInfo.goods.min_number
+          this.num = this.minNum
+          this.emit()
+        } else {
+          for (let key in this.ticketInfo.calendar) {
+            let item = this.ticketInfo.calendar[key]
+            tempEvent[item.date] = item
+          }
+          this.minNum = this.ticketInfo.goods.min_number
+          this.num = this.minNum
+          this.events = tempEvent
+          this.initDate()
         }
-        this.minNum = this.ticketInfo.goods.min_number
-        this.num = this.minNum
-        this.events = tempEvent
-        this.initDate()
         this.showRemark = true
       }
     }
@@ -285,6 +297,10 @@ export default {
                 margin-left rem(.2)
         .r-d-ticket-info-time-more
             normalTextStyle(#888888, .28)
+    .single-mode-info
+        padding rem(.2)
+        line-height rem(.5)
+        textStyle(#ffad2c, .3)
     .r-d-ticket-info-time-wrapper
         display flex
         padding rem(.2)

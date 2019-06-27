@@ -66,7 +66,11 @@ export default {
           this.$root.state.saveUserInfo(data.data.userinfo.token)
           this.$root.$emit('onRefreshOrderList')
           if (this.backName) {
-            this.$router.replace({name: this.backName.name, query: this.backName.query, params: this.backName.params})
+            if (this.backName !== 'register') {
+              this.$router.replace({name: this.backName.name, query: this.backName.query, params: this.backName.params})
+            } else {
+              this.$router.go(-1)
+            }
           } else {
             this.$router.go(-1)
           }
