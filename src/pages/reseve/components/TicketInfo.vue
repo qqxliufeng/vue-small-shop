@@ -148,7 +148,7 @@ export default {
     ticketInfo (newVal, oldVal) {
       if (newVal) {
         let tempEvent = {}
-        if (typeof this.ticketInfo.calendar === 'object') {
+        if (this.ticketInfo.calendar.constructor === Object) {
           this.tempTime.count = this.ticketInfo.calendar.one_stock || 0
           this.tempTime.price = this.ticketInfo.calendar.sale_price
           this.tempTime.raw = this.ticketInfo.calendar
