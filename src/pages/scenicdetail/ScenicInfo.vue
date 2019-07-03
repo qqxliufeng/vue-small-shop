@@ -96,6 +96,7 @@ export default {
     for (let i = 0; i < array.length; i++) {
       let a = array[i]
       a.removeAttribute('href')
+      a.style.color = '#333333'
     }
   }
 }

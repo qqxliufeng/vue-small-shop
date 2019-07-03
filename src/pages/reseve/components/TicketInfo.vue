@@ -156,10 +156,16 @@ export default {
           this.num = this.minNum
           this.emit()
         } else {
-          for (let key in this.ticketInfo.calendar) {
-            let item = this.ticketInfo.calendar[key]
+          // for (let key in this.ticketInfo.calendar) {
+          //   let item = this.ticketInfo.calendar[key]
+          //   tempEvent[item.date] = item
+          // }
+          this.ticketInfo.calendar.forEach((item) => {
+            if (item.oneStock) {
+              item.one_stock = item.oneStock
+            }
             tempEvent[item.date] = item
-          }
+          })
           this.minNum = this.ticketInfo.goods.min_number
           this.num = this.minNum
           this.events = tempEvent
