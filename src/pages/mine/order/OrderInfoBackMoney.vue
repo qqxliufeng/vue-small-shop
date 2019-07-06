@@ -79,17 +79,6 @@
                     </el-input>
             </div>
             <p class="o-i-back-money-submit" @click="submit">提交</p>
-            <el-dialog title="选择退款原因" :visible.sync="isShowReasonDialog" width="80%">
-                <div>
-                    <div v-for="(item, index) of info.reason" :key="item.id" class="o-i-back-money-reason-item">
-                        <el-radio v-model="radio" :label="index" @change="changeReason">{{item.reason}}</el-radio>
-                    </div>
-                    <!-- <el-input v-model="input" placeholder="请输入内容" class="o-i-back-money-reason-input" size="medium"></el-input> -->
-                </div>
-                <span slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="isShowReasonDialog = false" size="small">确 定</el-button>
-                </span>
-            </el-dialog>
         </div>
     </div>
 </template>

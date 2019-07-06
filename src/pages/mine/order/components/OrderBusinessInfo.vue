@@ -11,14 +11,14 @@
               <span>联系方式：{{store.linkman_phone || '暂无'}}</span>
           </p>
       </div>
-      <a class="el-icon-phone-outline phone" :href=" 'tel:' + store.linkman_phone"></a>
+      <a class="iconfont phone" :href=" 'tel:' + store.linkman_phone">&#xe6a9;</a>
   </div>
 </template>
 
 <script>
 
 export default {
-  name: '',
+  name: 'businessInfo',
   props: {
     store: Object
   },
@@ -58,16 +58,11 @@ export default {
             line-height .5rem
             ellipsis()
     .phone
-        border-radius 50%
-        border 1px solid $primary
         display inline-block
-        width rem(.7)
-        height rem(.7)
-        line-height rem(.7)
         text-align center
         position absolute
         top 30%
         color $primary
-        font-size rem(.5)
+        font-size rem(.65)
         right rem(.3)
 </style>

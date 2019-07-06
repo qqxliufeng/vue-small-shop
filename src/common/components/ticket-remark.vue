@@ -21,7 +21,7 @@ export default {
   },
   data () {
     return {
-      specialList: ['适用人群：', '退款手续费：']
+      specialList: ['适用人群:', '退款规则:']
     }
   },
   computed: {

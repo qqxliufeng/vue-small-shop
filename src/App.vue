@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-      <!-- <div v-if="this.$isMobile() || this.NODE_DEVELOPMENT"> -->
+      <div v-if="this.$isMobile() || this.NODE_DEVELOPMENT">
         <div>
           <keep-alive>
             <router-view v-if="$route.meta.keepAlive"/>
@@ -9,8 +9,8 @@
         </div>
         <div class="sperator" v-show="$route.meta.showTab"></div>
         <home-navi v-show="$route.meta.showTab"></home-navi>
-      <!-- </div> -->
-      <!-- <open-mobile v-else></open-mobile> -->
+      </div>
+      <open-mobile v-else></open-mobile>
   </div>
 </template>
 

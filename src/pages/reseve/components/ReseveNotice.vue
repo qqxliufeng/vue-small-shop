@@ -29,6 +29,7 @@
       </div>
       <div class="notice-info-wrapper">
           <ticket-notice-wrapper :goodsInfo="goods"></ticket-notice-wrapper>
+          <business-info :store="store"></business-info>
           <div class="sperator-2"></div>
       </div>
       <div class="bottom-wrapper" >
@@ -45,15 +46,18 @@
 
 <script>
 import TicketNoticeWrapper from 'common/components/ticket-notice-wrapper'
+import BusinessInfo from '@/pages/mine/order/components/OrderBusinessInfo'
 export default {
   name: 'reseveNotice',
   props: {
     goods: Object,
     scenic: Object,
+    store: Object,
     collectionState: 0
   },
   components: {
-    TicketNoticeWrapper
+    TicketNoticeWrapper,
+    BusinessInfo
   },
   data () {
     return {

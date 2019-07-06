@@ -15,7 +15,7 @@
             </el-rate>
             <div class="tags">
               <span v-for="(itemTag, index) of item.tag" :key="index" class="tag">
-                <el-tag size="mini" :type=" index === 0 ? 'success' : 'danger'">{{itemTag}}</el-tag>
+                <el-tag size="mini" :type=" index === 0 ? 'success' : 'danger'" v-if="itemTag">{{itemTag}}</el-tag>
               </span>
             </div>
           </div>
@@ -37,9 +37,6 @@ export default {
     }
   },
   methods: {
-    getMark (mark) {
-      return Number(3.7)
-    },
     itemClick () {
       this.$emit('itemClick', this.item)
     }

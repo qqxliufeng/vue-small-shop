@@ -40,7 +40,7 @@
         </el-dialog>
         <transition name="slide-fade" @before-enter="beforeEnter" @before-leave="beforeLeave">
             <div v-if="showRemark" class="r-d-ticket-info-remark-wrapper">
-              <reseve-notice v-if="ticketInfo" :goods="ticketInfo.goods" :scenic="ticketInfo.scenic" :collectionState="ticketInfo.is_favorites" @colletion="collection"></reseve-notice>
+              <reseve-notice v-if="ticketInfo" :goods="ticketInfo.goods" :scenic="ticketInfo.scenic" :collectionState="ticketInfo.is_favorites"  :store="ticketInfo.store" @colletion="collection"></reseve-notice>
             </div>
         </transition>
         <div class="v-modal" v-show="showModal" @click="showRemark = false"></div>

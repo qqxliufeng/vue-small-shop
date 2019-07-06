@@ -313,6 +313,11 @@ export default new Router({
       component: OrderInfoPay
     },
     {
+      path: '/orderpayresult',
+      name: 'orderPayResult',
+      component: () => import('@/pages/mine/order/OrderPayResult')
+    },
+    {
       path: '/orderbackprogress',
       name: 'orderBackProgress',
       component: () => import('@/pages/mine/order/OrderBackProgress'),
