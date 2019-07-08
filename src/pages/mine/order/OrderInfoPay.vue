@@ -36,15 +36,16 @@
             </div>
             <div class="sperator-line"></div>
             <div class="o-i-pay-type-wrapper">
-                <div class="o-i-pay-type-zfb-wrapper" v-if="!$isWeiXin">
+              <!-- v-if="!$isWeiXin" -->
+                <div class="o-i-pay-type-zfb-wrapper" @click="selectPayType('alipay')" v-if="!$isWeiXin">
                     <img :src="ZFBIcon" class="icon">
                     <span>支付宝</span>
-                    <i class="el-icon-success"></i>
+                    <i class="el-icon-success" :style="{'color' : payType==='alipay' ? '#63BBB5' : '#ccc'}"></i>
                 </div>
-                <div class="o-i-pay-type-zfb-wrapper" v-else>
+                <div class="o-i-pay-type-zfb-wrapper" @click="selectPayType('wechatpay')" v-if="!$isAliPay">
                     <img :src="WXIcon" class="icon">
                     <span>微信</span>
-                    <i class="el-icon-success"></i>
+                    <i class="el-icon-success" :style="{'color' : payType==='wechatpay' ? '#63BBB5' : '#ccc'}"></i>
                 </div>
             </div>
             <p class="o-i-pay-action" @click="pay">支付</p>
@@ -69,7 +70,7 @@ export default {
       ZFBIcon,
       WXIcon,
       info: null,
-      payType: this.$isWeiXin ? 'wechatpay' : 'alipay',
+      payType: '',
       dialogVisible: false,
       orderId: null
     }
@@ -90,6 +91,10 @@ export default {
       this.$router.go(-1)
     },
     pay () {
+      if (!this.payType) {
+        this.$toast('请选择支付方式')
+        return
+      }
       this.$http(this.$urlPath.orderPay, {
         out_trade_no: this.$route.query.no,
         pay_type: this.payType
@@ -102,14 +107,29 @@ export default {
           document.body.appendChild(div)
           document.forms[0].submit()
         } else if (this.payType === 'wechatpay') {
-          console.log('')
+          if (this.$isWeiXin) { // 判断是不是微信客户端
+            console.log('weixin')
+          } else {
+            window.location.href = data.data
+          }
         }
       }, (errorCode, error) => {
         this.$toast(error)
       })
+    },
+    selectPayType (payType) {
+      this.payType = payType
+    },
+    getPayType () {
+      if (this.$isWeiXin) {
+        this.payType = 'wechatpay'
+      } else {
+        this.payType = 'alipay'
+      }
     }
   },
   mounted () {
+    this.getPayType()
     this.getData()
   }
 }

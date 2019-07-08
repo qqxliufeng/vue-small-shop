@@ -6,15 +6,17 @@
                 <p class="s-d-hot-item-info-price"><span>￥{{item.minPrice}}</span><i>起</i></p>
             </div>
             <div class="s-d-hot-item-info-remark-wrapper">
-                <p class="s-d-hot-item-info-remark">{{item.before}}</p>
+                <!-- <p class="s-d-hot-item-info-remark">{{item.before}}</p> -->
+                 <div class="tags">
+                    <span v-for="(itemTag, index) of item.tag" :key="index" class="tag">
+                        <el-tag size="mini" :type=" index === 0 ? 'success' : 'danger'" v-if="itemTag">{{itemTag}}</el-tag>
+                    </span>
+                 </div>
                 <p class="s-d-hot-item-info-old-price">￥{{item.retailPrice}}</p>
             </div>
             <div class="s-d-hot-item-info-info-wrapper">
                 <div class="s-d-hot-item-info-info-info">
-                    <!-- <p>
-                        <el-tag type="success" size="mini" class="s-d-hot-item-info-info-info-tag">立减2元</el-tag>
-                        <el-tag type="success" size="mini" class="s-d-hot-item-info-info-info-tag">立减2元</el-tag>
-                    </p> -->
+
                     <p>
                         已售{{item.totalSales}}
                     </p>
@@ -81,6 +83,10 @@ export default {
                 right 0
                 normalTextStyle(#888888, .25)
                 text-decoration line-through
+            .tags
+                margin-top rem(.08)
+                .tag
+                    margin 0 rem(.1)
         .s-d-hot-item-info-info-wrapper
             display flex
             justify-content center

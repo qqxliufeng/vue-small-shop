@@ -96,10 +96,10 @@ export default {
           x: 0,
           y: window.pageYOffset
         }).then((canvas) => {
+          this.showDialog = true
           let dataUrl = canvas.toDataURL('image/png')
           this.postUrl = dataUrl
           this.dialogTitle = '长按保存图片到手机'
-          this.showDialog = true
         })
       }, 100)
     }

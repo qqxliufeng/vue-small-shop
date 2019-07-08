@@ -1,6 +1,7 @@
 <template>
     <div>
-        <navi title="订单详情" :isFixed="true"></navi>
+        <navi title="订单详情" :isFixed="true" :isShowBack="false"></navi>
+        <span class="iconfont back" @click="back">&#xe625;</span>
         <div id="top" class="top"></div>
         <div class="o-i-container">
             <order-info-waiting-pay v-if="orderType === '1'" :detail="detail" @backTop="backTop"></order-info-waiting-pay>
@@ -31,7 +32,8 @@ export default {
   },
   data () {
     return {
-      detail: null
+      detail: null,
+      from: null
     }
   },
   watch: {
@@ -65,17 +67,45 @@ export default {
     },
     backTop () {
       document.querySelector('#top').scrollIntoView()
+    },
+    back () {
+      if (this.from) {
+        if (this.from.name === 'orderPayResult') {
+          this.$router.replace({name: 'personal'})
+        } else {
+          this.$router.go(-1)
+        }
+      } else {
+        this.$router.go(-1)
+      }
     }
   },
   mounted () {
     // if (this.orderType !== '4') {
     this.getData()
     // }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.from = from
+    })
   }
 }
 </script>
 <style lang="stylus" scoped>
 @import '~styles/varibles.styl'
+@import '~styles/mixin.styl'
 .top
     height $headerHeight
+.back
+    position fixed
+    z-index 999
+    top 0
+    left 0
+    padding-left rem(.3)
+    display inline-block
+    width rem(1)
+    height $headerHeight
+    line-height $headerHeight
+    font-size .4rem
 </style>

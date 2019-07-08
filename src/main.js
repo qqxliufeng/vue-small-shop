@@ -40,6 +40,7 @@ Vue.use(VueLazyLoad, {
 })
 Vue.use(SlideVerify)
 Vue.prototype.$isWeiXin = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1
+Vue.prototype.$isAliPay = navigator.userAgent.toLowerCase().indexOf('alipay') !== -1
 Vue.prototype.$utils = utils
 Vue.prototype.$urlPath = urlPath
 Vue.prototype.NODE_DEVELOPMENT = process.env.NODE_ENV === 'development'
