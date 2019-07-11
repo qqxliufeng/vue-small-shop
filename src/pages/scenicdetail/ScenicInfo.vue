@@ -2,10 +2,10 @@
     <div>
         <navi :title="title" :isFixed="true"></navi>
         <el-tabs :value="mSelected" @tab-click="handleClick" class="c-tabs" :stretch="true" v-if="info">
-            <el-tab-pane name="scenicInfoForIntro" label="景区介绍" class="c-tabs-item">
+            <el-tab-pane name="scenicInfoForIntro" label="景区须知" class="c-tabs-item">
                 <div class="s-i-content" v-html="content" ref="content"></div>
             </el-tab-pane>
-            <el-tab-pane name="scenicInfoForOrderNotify" label="使用须知" class="c-tabs-item">
+            <el-tab-pane name="scenicInfoForOrderNotify" label="景区详情" class="c-tabs-item">
                 <div v-for="(item, index) of remarks" :key="index" class="info-wrapper">
                   <p class="s-i-info-title">{{item.title}}</p>
                   <p v-if="showLine(item)" class="s-i-info-line">{{item.value}}</p>

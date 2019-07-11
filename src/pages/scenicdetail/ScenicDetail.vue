@@ -7,7 +7,7 @@
             <template slot="info" slot-scope="slotPropes">
               <div class="s-d-info-scenic-info-wrapper">
                   <div @click="startScenicInfo('scenicInfoForIntro')">
-                      <p class="s-d-info-scenic-info-title">景区介绍</p>
+                      <p class="s-d-info-scenic-info-title">景区须知</p>
                       <p class="s-d-info-scenic-info-info">{{slotPropes.scenicInfo.brief}}</p>
                   </div>
               </div>
@@ -137,17 +137,10 @@ export default {
       })
     },
     back () {
-      if (this.from) {
-        if (this.from.name) {
-          this.$router.go(-1)
-          if (this.$router.currentRoute.name === 'scenicDetail') {
-            this.$router.replace({path: '/index/' + this.identity + '/' + this.storeId})
-          }
-        } else {
-          this.$router.replace({path: '/index/' + this.identity + '/' + this.storeId})
-        }
-      } else {
+      if (this.from && this.from.name && this.from.name === 'collection') {
         this.$router.go(-1)
+      } else {
+        this.$router.replace({path: '/index/' + this.identity + '/' + this.storeId})
       }
     }
   },

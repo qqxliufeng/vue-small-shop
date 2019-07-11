@@ -49,6 +49,8 @@ import City from '@/pages/city/City'
 
 import Gallary from 'common/components/gallary/Gallary'
 
+import Auth from '@/pages/wx/Auth'
+
 Vue.use(Router)
 
 export default new Router({
@@ -345,6 +347,11 @@ export default new Router({
       name: 'gallary',
       component: Gallary,
       props: true
+    },
+    {
+      path: 'Auth',
+      name: 'auth',
+      component: Auth
     },
     {
       path: '*',

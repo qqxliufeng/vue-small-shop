@@ -112,16 +112,53 @@ Vue.prototype.$http = function (url, params = {}, loadingTip, onRequestSuccess, 
   }
 }
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(m => m.meta.auth)) {
-    if (userInfo.isLogin()) {
+  if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1 && userInfo.isLogin() && (!userInfo.state.openid || userInfo.state.openid === 'null')) {
+    // 如果是进入到授权页面 或者 是进入到回调页面，则直接放行
+    if (to.name === 'auth' || to.query.code) {
       next()
     } else {
-      next({name: 'loginContainer', params: { backName: to }})
+      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx10a7de3814315ba1&redirect_uri=http://www.store.liuyiqinzi.com&response_type=code&scope=snsapi_base&state=1#wechat_redirect'
     }
   } else {
-    next()
+    if (to.matched.some(m => m.meta.auth)) {
+      if (userInfo.isLogin()) {
+        next()
+      } else {
+        autoLogin(to, from, next)
+      }
+    } else {
+      next()
+    }
   }
 })
+
+function autoLogin (to, from, next) {
+  if (userInfo.state.token) {
+    axios.post(urlPath.userInfo, {
+      token: userInfo.state.token
+    }).then(response => {
+      new Promise((resolve, reject) => {
+        if (response.status === 200 && response.data.code === 1) {
+          response.data.data.token = state.token
+          userInfo.setUserInfo(response.data.data)
+          resolve()
+        } else {
+          reject(new Error('auto error'))
+        }
+      }).then(() => {
+        next()
+      }).catch((error) => {
+        console.log(error)
+        next({name: 'loginContainer', params: { backName: to }})
+      })
+    }).catch(error => {
+      console.log(error)
+      next({name: 'loginContainer', params: { backName: to }})
+    })
+  } else {
+    next({name: 'loginContainer', params: { backName: to }})
+  }
+}
 
 /* eslint-disable no-new */
 new Vue({

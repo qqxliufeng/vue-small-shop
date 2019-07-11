@@ -44,7 +44,7 @@ export default {
     }, (errorCode, error) => {
       console.log('获取失败')
     })
-    this.autoLogin()
+    // this.autoLogin()
   }
 }
 </script>

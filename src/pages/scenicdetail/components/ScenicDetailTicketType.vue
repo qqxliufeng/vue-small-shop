@@ -18,7 +18,7 @@
                 </el-tab-pane>
             </el-tabs> -->
              <swiper :options="swiperOption" class="h-h-hot-card">
-                 <swiper-slide v-for="(tabItem, index) of typeGoodsList" :key="tabItem.goodsTypeId">
+                 <swiper-slide v-for="(tabItem, index) of tempTypeGoodsList" :key="tabItem.goodsTypeId">
                      <span class="tab-item" @click="selectTabItem(index)" :class="{'tab-item-selected' : tabItem.isSelected}">{{tabItem.goodsTypeName}}</span>
                  </swiper-slide>
              </swiper>
@@ -54,16 +54,20 @@ export default {
       swiperOption: {
         slidesPerView: 5
       },
-      currentTabItems: null
+      currentTabItems: null,
+      tempTypeGoodsList: null
     }
   },
   watch: {
     typeGoodsList (newVal, oldVal) {
       if (newVal && newVal.length > 0) {
-        newVal.forEach((item, index) => {
+        this.tempTypeGoodsList = newVal.filter((item) => {
+          return item.goods_list && item.goods_list.length > 0
+        })
+        this.tempTypeGoodsList.forEach((item, index) => {
           this.$set(item, 'isSelected', index === 0)
         })
-        this.currentTabItems = newVal[0].goods_list
+        this.currentTabItems = this.tempTypeGoodsList[0].goods_list
       }
     }
   },
@@ -85,11 +89,11 @@ export default {
       }
     },
     selectTabItem (index) {
-      if (this.typeGoodsList && this.typeGoodsList.length > 0) {
-        this.typeGoodsList.forEach((item, i) => {
+      if (this.tempTypeGoodsList && this.tempTypeGoodsList.length > 0) {
+        this.tempTypeGoodsList.forEach((item, i) => {
           item.isSelected = index === i
         })
-        this.currentTabItems = this.typeGoodsList[index].goods_list
+        this.currentTabItems = this.tempTypeGoodsList[index].goods_list
       } else {
         this.currentTabItems = null
       }

@@ -1,12 +1,17 @@
 <template>
   <div class='o-i-result-container'>
-    <navi title="支付结果"></navi>
+    <div class="navi-relative navi-container">
+        <span class="iconfont navi-back" @click="back">&#xe625;</span>
+        <span class="navi-title">
+            支付结果
+        </span>
+    </div>
     <div class="result-icon-container">
-      <span class="el-icon-success result-icon" :class="{'el-icon-success' : state === 1, 'el-icon-circle-close' : state === 0}"></span>
+      <span class="result-icon" :class="{'el-icon-success' : state === 1, 'el-icon-circle-close' : state === 0}"></span>
       <p class="result-icon-tip">{{state === 1 ? '支付成功' : '支付失败'}}</p>
     </div>
     <div class="result-action-container">
-      <p><el-button size="mini" type="danger" class="button" @click="seeMore">再看看</el-button></p>
+      <p><el-button size="mini" type="danger" class="button" @click="seeMore">继续购买</el-button></p>
       <p><el-button size="mini" type="primary" class="button" v-if="no && state === 1" @click="seeOrder">查看订单</el-button></p>
     </div>
   </div>
@@ -23,8 +28,9 @@ export default {
     return {
       no: this.$route.query.out_trade_no || '',
       orderId: this.$route.query.order_id,
-      state: parseInt(this.$route.state || 1),
-      scenicId: this.$route.query.scenic_id
+      state: parseInt(this.$route.query.state || 1),
+      scenicId: this.$route.query.scenic_id,
+      from: null
     }
   },
   methods: {
@@ -33,6 +39,22 @@ export default {
     },
     seeOrder () {
       this.$router.replace({name: 'orderInfo', params: {orderId: this.orderId.toString(), orderType: '2'}})
+    },
+    back () {
+      this.$router.replace({name: 'personal'})
+    }
+  },
+  mounted () {
+    if (!this.$root.userInfo.isLogin()) {
+      let state = this.$root.state
+      if (state.token) {
+        this.$http(this.$urlPath.userInfo, {
+          token: state.token
+        }, null, (data) => {
+          data.data.token = state.token
+          this.$root.$data.userInfo.setUserInfo(data.data)
+        }, null)
+      }
     }
   }
 }
@@ -58,4 +80,31 @@ export default {
         width 50%
         line-height 1.5
         font-size rem(.3)
+.navi-container
+    height $headerHeight
+    line-height $headerHeight
+    background-color #f5f5f5
+    opacity 1
+    text-align center
+    font-size .32rem
+    top 0
+    left 0
+    right 0
+    z-index 999
+    .navi-back
+        font-size .4rem
+        position absolute
+        left 0
+        top 0
+        margin-left .3rem
+    .navi-right-action
+        position absolute
+        right  0
+        top 0
+        margin-right .3rem
+        font-size .3rem
+.navi-relative
+    position relative
+.navi-fixed
+    position fixed
 </style>

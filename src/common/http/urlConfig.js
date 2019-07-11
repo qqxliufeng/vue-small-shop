@@ -29,6 +29,8 @@ export const userInfoResetInfo = userInfoUrl + 'profile'
 
 export const userInfo = userInfoUrl + 'user_info'
 
+export const wxLogin = userInfoUrl + 'wx_login'
+
 const favoritesUrl = 'favorites/'
 
 export const userFavoriteScenicUrl = favoritesUrl + 'favorite_scenic'

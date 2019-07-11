@@ -36,6 +36,7 @@ export default {
   },
   methods: {
     back () {
+      this.$emit('onBackCallBack')
       this.$router.go(-1)
     }
   }

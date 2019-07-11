@@ -307,6 +307,7 @@ export default {
           & img
               margin .2rem 0rem
               width .5rem
+              height .5rem
           & >>> .el-badge__content
               margin-top rem(.2)
               margin-right rem(.1)

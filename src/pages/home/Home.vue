@@ -133,7 +133,7 @@ export default {
   created () {
     const tempIdentity = this.$route.params.identity
     const tempStoreId = this.$route.params.storeId
-    if (tempIdentity && tempStoreId) {
+    if (tempIdentity && tempStoreId && tempIdentity !== 'null' && tempStoreId !== 'null') {
       this.identity = tempIdentity
       this.storeId = tempStoreId
       this.$root.state.saveSallerInfo(tempIdentity, tempStoreId)
@@ -142,6 +142,9 @@ export default {
     // 如果没有这两个属性，则存默认的，这是防止用户直接访问根路径
     this.identity = this.sellerInfo.identity
     this.storeId = this.sellerInfo.storeId
+    if (this.$route.query.code) {
+      this.$router.push({name: 'auth', query: {code: this.$route.query.code}})
+    }
   },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)

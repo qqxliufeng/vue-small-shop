@@ -16,9 +16,9 @@
             </div>
             <div class="s-d-hot-item-info-info-wrapper">
                 <div class="s-d-hot-item-info-info-info">
-
                     <p>
-                        已售{{item.totalSales}}
+                        <span>已售{{item.totalSales}}</span>
+                        <span class="ticket-must" @click="itemClick">购票须知<i class="el-icon-arrow-right"></i></span>
                     </p>
                 </div>
                 <div class="s-d-hot-item-info-info-action">
@@ -99,7 +99,9 @@ export default {
                     margin-top rem(.1)
                     normalTextStyle(#888888, .25)
                     & span:nth-child(1)
-                        margin 0 rem(.2)
+                        margin 0 rem(.1)
+                .ticket-must
+                    textStyle($orangeColor, .25)
         .button
             background $orangeColor
             border-color $orangeColor

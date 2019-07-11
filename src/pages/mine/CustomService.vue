@@ -28,7 +28,7 @@
                       手机号
                   </span>
                   <span>
-                      {{info.phone}}
+                      <el-link type="primary" :href="'tel:'+info.phone">{{info.phone}}</el-link>
                   </span>
                 </p>
             </div>
