@@ -7,8 +7,8 @@
               <template slot="info" slot-scope="slotProps">
                   <p class="t-d-intro-title">门票名称</p>
                   <p class="t-d-intro-ticket-name">{{goodsInfo.goods_title}}</p>
-                  <p class="t-d-intro-title">景区介绍</p>
-                  <p class="t-d-intro-content">{{slotProps.scenicInfo.brief}}</p>
+                  <p class="t-d-intro-title">景区须知</p>
+                  <p class="t-d-intro-content" @click="startScenicInfo">{{slotProps.scenicInfo.brief}}</p>
               </template>
           </ticket-info>
           <div class="t-d-detail-buy-info">
@@ -81,6 +81,9 @@ export default {
     },
     reload () {
       this.getData()
+    },
+    startScenicInfo () {
+      this.$router.push({name: 'scenicInfo', query: {id: this.scenicId}})
     },
     collection () {
       if (this.$root.userInfo.isLogin()) {
@@ -185,6 +188,7 @@ export default {
 .t-d-intro-content
     margin-top rem(.2)
     normalTextStyle(#888, .25)
+    muitlLineEllipsis(2)
 .t-d-intro-ticket-name
     textStyle($orangeColor, .3)
     padding rem(.3) 0

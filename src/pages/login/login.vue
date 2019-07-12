@@ -65,15 +65,23 @@ export default {
           this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
           this.$root.state.saveUserInfo(data.data.userinfo.token)
           this.$root.$emit('onRefreshOrderList')
-          if (this.backName) {
-            if (this.backName !== 'register') {
-              this.$router.replace({name: this.backName.name, query: this.backName.query, params: this.backName.params})
-            } else {
-              this.$router.go(-1)
-            }
+          let backPage = this.$root.state.getBackPage()
+          if (backPage) {
+            this.$router.replace({name: backPage.name, query: backPage.query, params: backPage.params}, () => {
+              this.$root.state.setBackPage(null)
+            })
           } else {
             this.$router.go(-1)
           }
+          // if (this.backName) {
+          //   if (this.backName !== 'register') {
+          //     this.$router.replace({name: this.backName.name, query: this.backName.query, params: this.backName.params})
+          //   } else {
+          //     this.$router.go(-1)
+          //   }
+          // } else {
+          //   this.$router.go(-1)
+          // }
         } else {
           this.$toast('登录失败，请重试…')
         }

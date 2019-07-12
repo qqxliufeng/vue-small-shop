@@ -149,14 +149,18 @@ function autoLogin (to, from, next) {
         next()
       }).catch((error) => {
         console.log(error)
-        next({name: 'loginContainer', params: { backName: to }})
+        state.setBackPage(to)
+        next({name: 'loginContainer'})
+        // next({name: 'loginContainer', params: { backName: to }})
       })
     }).catch(error => {
       console.log(error)
-      next({name: 'loginContainer', params: { backName: to }})
+      state.setBackPage(to)
+      next({name: 'loginContainer'})
     })
   } else {
-    next({name: 'loginContainer', params: { backName: to }})
+    state.setBackPage(to)
+    next({name: 'loginContainer'})
   }
 }
 

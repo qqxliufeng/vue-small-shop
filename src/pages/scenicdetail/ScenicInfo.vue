@@ -3,10 +3,11 @@
         <navi :title="title" :isFixed="true"></navi>
         <el-tabs :value="mSelected" @tab-click="handleClick" class="c-tabs" :stretch="true" v-if="info">
             <el-tab-pane name="scenicInfoForIntro" label="景区须知" class="c-tabs-item">
-                <div class="s-i-content" v-html="content" ref="content"></div>
+                <div class="s-i-content" ref="content">{{content}}</div>
             </el-tab-pane>
             <el-tab-pane name="scenicInfoForOrderNotify" label="景区详情" class="c-tabs-item">
-                <div v-for="(item, index) of remarks" :key="index" class="info-wrapper">
+              <div class="s-i-content" v-html="detail"></div>
+                <!-- <div v-for="(item, index) of remarks" :key="index" class="info-wrapper">
                   <p class="s-i-info-title">{{item.title}}</p>
                   <p v-if="showLine(item)" class="s-i-info-line">{{item.value}}</p>
                   <div v-else>
@@ -15,7 +16,7 @@
                     </div>
                     <el-tag size="mini" v-else class="tag" v-for="(it, tagIndex) of tags" :key="tagIndex">{{it}}</el-tag>
                   </div>
-                </div>
+                </div> -->
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -39,12 +40,13 @@ export default {
       content: null,
       remarks: null,
       images: null,
-      tags: null
+      tags: null,
+      detail: null
     }
   },
   computed: {
     title () {
-      return this.mSelected === 'scenicInfoForIntro' ? '景区介绍' : '预定须知'
+      return this.mSelected === 'scenicInfoForIntro' ? '景区须知' : '景区详情'
     }
   },
   components: {
@@ -56,11 +58,12 @@ export default {
       if (newVal instanceof Array) {
         this.remarks = []
         newVal.forEach(item => {
-          if (item.title === '景区介绍') {
+          if (item.title === '景区须知') {
             this.content = item.value
-          } else if (item.title === '景区标签') {
-            this.tags = item.value
-            this.remarks.push(item)
+          } else if (item.title === '景区详情') {
+            this.detail = item.value
+            // this.tags = item.value
+            // this.remarks.push(item)
           } else if (item.title === '景区图片') {
             this.images = item.value
             this.remarks.push(item)
@@ -120,7 +123,7 @@ export default {
         overflow-y scroll
         .s-i-content
             padding rem(.2)
-            normalTextStyle(#333, .35)
+            normalTextStyle(#666, .3)
             & >>> img
                 width 100%
                 margin-top rem(.1)

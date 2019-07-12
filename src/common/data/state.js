@@ -6,6 +6,7 @@ let currentCity = defaultCity
 let token = ''
 let identity = '1'
 let storeId = '1'
+let backPage = null
 try {
   if (localStorage) {
     currentCity = JSON.parse(localStorage.getItem('currentCity')) || defaultCity
@@ -22,6 +23,7 @@ export default {
   token,
   identity,
   storeId,
+  backPage,
   changeCity (city) {
     this.currentCity = city
     try {
@@ -49,5 +51,11 @@ export default {
       identity: localStorage.getItem('identity'),
       storeId: localStorage.getItem('storeId')
     }
+  },
+  setBackPage (backPage) {
+    this.backPage = backPage
+  },
+  getBackPage () {
+    return this.backPage
   }
 }

@@ -66,11 +66,19 @@ export default {
         this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
         this.$root.state.saveUserInfo(data.data.userinfo.token)
         this.$root.$emit('onRefreshOrderList')
-        if (this.backName) {
-          this.$router.replace({name: this.backName.name, query: this.backName.query, params: this.backName.params})
+        let backPage = this.$root.state.getBackPage()
+        if (backPage) {
+          this.$router.replace({name: backPage.name, query: backPage.query, params: backPage.params}, () => {
+            this.$root.state.setBackPage(null)
+          })
         } else {
           this.$router.go(-1)
         }
+        // if (this.backName) {
+        //   this.$router.replace({name: this.backName.name, query: this.backName.query, params: this.backName.params})
+        // } else {
+        //   this.$router.go(-1)
+        // }
       },
       (errorCode, error) => {
         this.$toast(error)
