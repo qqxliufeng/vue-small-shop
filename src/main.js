@@ -18,7 +18,7 @@ import '../theme/index.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 import VueLazyLoad from 'vue-lazyload'
-import VueAMap from 'vue-amap'
+// import VueAMap from 'vue-amap'
 import 'common/utils/weixin.js'
 import SlideVerify from 'common/components/slideverify/index'
 
@@ -26,12 +26,12 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(Toast)
 Vue.use(VueAwesomeSwiper)
-Vue.use(VueAMap)
-VueAMap.initAMapApiLoader({
-  key: '9caebd5712374a94a3d247f7ff51de9f',
-  plugin: ['AMap.Geolocation'],
-  v: '1.4.4'
-})
+// Vue.use(VueAMap)
+// VueAMap.initAMapApiLoader({
+//   key: '9caebd5712374a94a3d247f7ff51de9f',
+//   plugin: ['AMap.Geolocation'],
+//   v: '1.4.4'
+// })
 Vue.use(VueLazyLoad, {
   preLoad: 1.3,
   error: require('images/img_loading_failed_list.png'),

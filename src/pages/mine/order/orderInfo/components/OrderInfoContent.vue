@@ -18,12 +18,13 @@
             <p class="download-img" @click="downloadImg" v-if="this.voucher[0].use_status === 0"><span class="el-icon-download"></span>下载图片</p>
             <div class="sperator-2"></div>
             <div class="info-count-wrapper">
-              <span class="info-count-item">待消费：{{voucher[0].no_check_num}}张</span>
-              <span class="info-count-item">已消费：{{voucher[0].consum}}张</span>
+              <span class="info-count-item">待消费: {{voucher[0].no_check_num}}张</span>
+              <span class="info-count-item">已消费: {{voucher[0].consum}}张</span>
+              <span class="info-count-item" style="color: red">已退款: {{refundTickets || 0}}张</span>
             </div>
           </div>
           <div v-else>
-            <order-ticket-info v-for="item of voucher" :key="item.v_id" :itemInfo="item" :ticketName="ticketName"></order-ticket-info>
+            <order-ticket-info v-for="item of voucher" :key="item.v_id" :itemInfo="item" :ticketName="ticketName" :refundNum="refundTickets || 0"></order-ticket-info>
           </div>
         </div>
     </div>
@@ -50,6 +51,7 @@ export default {
     voucher: Array,
     ticketName: String,
     ticketNum: Number,
+    refundTickets: Number || String,
     sendCode: Number,
     timeLog: Array
   },

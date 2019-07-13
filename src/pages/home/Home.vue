@@ -121,6 +121,11 @@ export default {
           this.hotList = data.data.popularity_goods
           this.ad = data.data.ad
           this.categoryList = data.data.category
+          if (data.data.store && data.data.store.store_name) {
+            document.title = data.data.store.store_name
+          } else {
+            document.title = '店铺'
+          }
         } else {
           this.loadState = false
         }
@@ -133,7 +138,7 @@ export default {
   created () {
     const tempIdentity = this.$route.params.identity
     const tempStoreId = this.$route.params.storeId
-    if (tempIdentity && tempStoreId && tempIdentity !== 'null' && tempStoreId !== 'null') {
+    if (tempIdentity && tempStoreId && !isNaN(tempIdentity) && !isNaN(tempStoreId)) {
       this.identity = tempIdentity
       this.storeId = tempStoreId
       this.$root.state.saveSallerInfo(tempIdentity, tempStoreId)

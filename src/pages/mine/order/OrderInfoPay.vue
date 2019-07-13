@@ -83,7 +83,7 @@ export default {
         this.info = data.data
         this.info.timeout_express = this.info.timeout_express - data.time
       }, (errorCode, error) => {
-        this.$toast(error)
+        // this.$toast(error)
         this.$router.go(-1)
       })
     },

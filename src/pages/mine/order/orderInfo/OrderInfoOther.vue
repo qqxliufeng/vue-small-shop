@@ -13,7 +13,13 @@
             </div>
         </template>
     </order-info-header>
-    <order-info-content :scenic="detail.scenic" :voucher="detail.voucher" :ticketName="detail.ord_product_name" :ticketNum="detail.ord_ticket_num" :timeLog="detail.order_log"></order-info-content>
+    <order-info-content :scenic="detail.scenic"
+                        :voucher="detail.voucher"
+                        :ticketName="detail.ord_product_name"
+                        :ticketNum="detail.ord_ticket_num"
+                        :timeLog="detail.order_log"
+                        :sendCode="detail.send_code"
+                        :refundTickets="detail.refund_tickets"></order-info-content>
     <ticket-notice-wrapper :goodsInfo="detail.goods"></ticket-notice-wrapper>
     <order-business-info :store="detail.store"></order-business-info>
     <order-detail :detail="detail"></order-detail>

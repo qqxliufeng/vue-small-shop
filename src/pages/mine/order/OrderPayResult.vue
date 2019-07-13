@@ -38,10 +38,10 @@ export default {
       this.$router.replace({name: 'scenicDetail', query: {scenicId: this.scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
     },
     seeOrder () {
-      this.$router.replace({name: 'orderInfo', params: {orderId: this.orderId.toString(), orderType: '2'}})
+      this.$router.push({name: 'orderInfo', params: {orderId: this.orderId.toString(), orderType: '2'}})
     },
     back () {
-      this.$router.replace({name: 'personal'})
+      this.$router.push({name: 'personal'})
     }
   },
   mounted () {
@@ -56,6 +56,14 @@ export default {
         }, null)
       }
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.from = from
+      if (from.name) {
+        vm.$router.replace({name: 'personal'})
+      }
+    })
   }
 }
 </script>

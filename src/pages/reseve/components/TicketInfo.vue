@@ -148,6 +148,10 @@ export default {
     ticketInfo (newVal, oldVal) {
       if (newVal) {
         let tempEvent = {}
+        if (!this.ticketInfo.calendar) {
+          this.$toast('此票今日暂不销售')
+          return
+        }
         if (this.ticketInfo.calendar.constructor === Object) {
           this.tempTime.count = this.ticketInfo.calendar.one_stock || 0
           this.tempTime.price = this.ticketInfo.calendar.sale_price

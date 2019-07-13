@@ -110,7 +110,7 @@ export default {
       this.$http(this.$urlPath.userInfoResetInfo, {
         username: this.userName,
         realname: this.realName,
-        avatar: this.uploadAvatar,
+        avatar: this.uploadAvatar || this.$root.userInfo.state.avatar,
         email: this.email,
         gender: this.sex,
         qq: this.qq,
@@ -141,7 +141,14 @@ export default {
       if (response.data) {
         this.uploadAvatar = response.data.url
         this.$http(this.$urlPath.userInfoResetInfo, {
-          avatar: this.uploadAvatar
+          username: this.userName,
+          realname: this.realName,
+          avatar: this.uploadAvatar || this.$root.userInfo.state.avatar,
+          email: this.email,
+          gender: this.sex,
+          qq: this.qq,
+          province: this.province,
+          city: this.city
         }, null, (data) => {
           this.$toast('头像上传成功')
           this.$loading.close()

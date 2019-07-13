@@ -13,6 +13,10 @@
                 <p class="title">已消费</p>
                 <p>{{itemInfo.consum}}张</p>
             </div>
+            <div class="o-t-i-container-title-total-num-wrapper">
+                <p class="title">已退款</p>
+                <p>{{refundNum || 0}}张</p>
+            </div>
             <div class="o-t-i-container-title-code-wrapper" @click="lookCode">
                 <p class="title">二维码</p>
                 <span class="iconfont">&#xe71e;</span>

@@ -11,6 +11,12 @@ try {
   if (localStorage) {
     currentCity = JSON.parse(localStorage.getItem('currentCity')) || defaultCity
     token = localStorage.getItem('token')
+    if (!localStorage.getItem('identity')) {
+      localStorage.setItem('identity', 1)
+    }
+    if (!localStorage.getItem('storeId')) {
+      localStorage.setItem('storeId', 1)
+    }
     identity = localStorage.getItem('identity')
     storeId = localStorage.getItem('storeId')
   }
