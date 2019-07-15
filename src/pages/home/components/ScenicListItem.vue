@@ -19,7 +19,7 @@
               </span>
             </div>
           </div>
-          <p class="money"><span>￥{{item.minPrice}}</span><i>起</i><span>已售{{item.totalSales}}</span></p>
+          <p class="money"><span>￥{{item.minPrice}}</span><i>起</i><span>已售{{trasformNum(item.totalSales)}}</span></p>
       </div>
   </div>
 </template>
@@ -39,6 +39,17 @@ export default {
   methods: {
     itemClick () {
       this.$emit('itemClick', this.item)
+    },
+    trasformNum (num) {
+      if (!num || isNaN(num) || Number(num) === 0) {
+        return 0
+      }
+      let intNum = Number(num)
+      if (intNum / 10000 >= 1) {
+        return Math.floor(intNum / 10000) + '万+'
+      } else {
+        return intNum
+      }
     }
   }
 }
