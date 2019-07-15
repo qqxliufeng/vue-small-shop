@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     itemClick (item) {
-      this.$router.replace({name: 'scenicDetail', query: {scenicId: item.s_id}})
+      this.$router.replace({name: 'scenicDetail', query: {s: item.s_id}})
     }
   }
 }

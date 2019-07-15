@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     itemClick () {
-      this.$router.push({name: 'scenicDetail', query: {scenicId: this.item.s_id}})
+      this.$router.push({name: 'scenicDetail', query: {s: this.item.s_id}})
     }
   }
 }

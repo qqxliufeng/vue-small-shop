@@ -69,7 +69,7 @@ export default {
       }
     },
     startScenicInfo (item) {
-      this.$router.push({name: 'scenicDetail', query: {scenicId: item.s_id}})
+      this.$router.push({name: 'scenicDetail', query: {s: item.s_id}})
     }
   }
 }

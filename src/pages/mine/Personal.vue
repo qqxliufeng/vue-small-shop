@@ -43,7 +43,7 @@
                 </ul>
             </div>
             <div class="p-logout-wrapper">
-              <button class="p-logout" @click="logout">退出登录</button>
+              <p class="p-logout" @click="logout">退出登录</p>
             </div>
         </div>
         <confirm-dialog content="是否要退出当前账号？" @dialogConfirm="confirmLogout" ref="confirmDialog"></confirm-dialog>
@@ -328,11 +328,11 @@ export default {
     .p-logout-wrapper
       padding-bottom 1rem
       .p-logout
-          display block
-          background-color $primary
-          width 70%
           height .75rem
           margin .3rem auto
-          color #ffffff
-          border-radius 1rem
+          color $primary
+          text-align center
+          line-height .75rem
+          border-top 1px solid #f5f5f5
+          border-bottom 1px solid #f5f5f5
 </style>

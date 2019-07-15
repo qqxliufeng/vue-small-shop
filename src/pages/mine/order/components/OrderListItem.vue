@@ -79,7 +79,7 @@ export default {
         title: '再来一单',
         show: true,
         action: () => {
-          this.$router.push({name: 'scenicDetail', query: {scenicId: item.ord_scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
+          this.$router.push({name: 'scenicDetail', query: {s: item.ord_scenicId, i: this.$root.state.identity, t: this.$root.state.storeId}})
         }
       }
     },

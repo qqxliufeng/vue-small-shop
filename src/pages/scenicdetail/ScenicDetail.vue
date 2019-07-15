@@ -65,6 +65,7 @@ export default {
       scenicId: null,
       identity: null,
       storeId: null,
+      businessesId: null,
       show: true,
       from: null
     }
@@ -105,7 +106,8 @@ export default {
       this.$http(this.$urlPath.scenicDetailUrl, {
         s_id: this.scenicId,
         identity: this.identity,
-        store_id: this.storeId
+        store_id: this.storeId,
+        businesses_id: this.businessesId
       }, '', (data) => {
         if (data.data) {
           this.loadState = true
@@ -145,9 +147,10 @@ export default {
     }
   },
   created () {
-    this.scenicId = this.$route.query.scenicId
-    let tempIdentity = this.$route.query.identity
-    let tempStoreId = this.$route.query.storeId
+    this.scenicId = this.$route.query.s
+    let tempIdentity = this.$route.query.i
+    let tempStoreId = this.$route.query.t
+    this.businessesId = this.$route.query.b || ''
     // 如果是直接从分享页面过来的，则要存一下identity 和 storeId
     if (tempIdentity && tempStoreId) {
       this.$root.state.saveSallerInfo(tempIdentity, tempStoreId)

@@ -84,7 +84,7 @@ export default {
       this.$router.push({name: 'adsDetail', params: {path: this.ad.ad_url}})
     },
     startDetail (item) {
-      this.$router.push({name: 'scenicDetail', query: {scenicId: item.s_id, identity: this.identity, storeId: this.storeId}})
+      this.$router.push({name: 'scenicDetail', query: {s: item.s_id, i: this.identity, t: this.storeId}})
     },
     reload () {
       this.getData()

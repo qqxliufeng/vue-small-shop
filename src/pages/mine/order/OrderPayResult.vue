@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     seeMore () {
-      this.$router.replace({name: 'scenicDetail', query: {scenicId: this.scenicId, identity: this.$root.state.identity, storeId: this.$root.state.storeId}})
+      this.$router.replace({name: 'scenicDetail', query: {s: this.scenicId, i: this.$root.state.identity, t: this.$root.state.storeId}})
     },
     seeOrder () {
       this.$router.push({name: 'orderInfo', params: {orderId: this.orderId.toString(), orderType: '2'}})
