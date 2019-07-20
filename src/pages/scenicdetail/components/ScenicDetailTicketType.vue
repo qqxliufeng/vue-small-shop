@@ -67,7 +67,9 @@ export default {
         this.tempTypeGoodsList.forEach((item, index) => {
           this.$set(item, 'isSelected', index === 0)
         })
-        this.currentTabItems = this.tempTypeGoodsList[0].goods_list
+        if (this.tempTypeGoodsList && this.tempTypeGoodsList.length > 0) {
+          this.currentTabItems = this.tempTypeGoodsList[0].goods_list
+        }
       }
     }
   },
