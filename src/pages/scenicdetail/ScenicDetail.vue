@@ -139,7 +139,7 @@ export default {
       })
     },
     back () {
-      if (this.from && this.from.name && this.from.name === 'collection') {
+      if (this.from && this.from.name && (this.from.name === 'collection' || this.from.name === 'activityTicketDetail')) {
         this.$router.go(-1)
       } else {
         this.$router.replace({path: '/index/' + this.identity + '/' + this.storeId})

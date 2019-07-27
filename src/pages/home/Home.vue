@@ -7,6 +7,8 @@
           <home-notice v-if="notice.notice_title !== undefined && notice.notice_title" :title="notice.notice_title" :identity="identity" :storeId="storeId"></home-notice>
           <home-type :list="categoryList"></home-type>
           <div class="sperator-line-height"></div>
+          <home-activity v-if="assist && assist.length > 0" :assist="assist" :time="time"></home-activity>
+          <div class="sperator-line-height" v-if="assist && assist.length > 0"></div>
           <div class="h-h-title">人气推荐</div>
           <home-hot :list="hotList" @itemClick="startDetail"></home-hot>
           <div class="h-h-ad-wrapper" v-if="ad">
@@ -40,6 +42,7 @@ import HomeHot from './components/HomeHot'
 import HomeLike from './components/HomeLike'
 import HomeNavi from './components/HomeNavigation'
 import HomeNotice from './components/HomeNotice'
+import HomeActivity from './components/HomeActivity'
 import LoadFail from 'common/components/loading/load-fail'
 export default {
   name: 'home',
@@ -48,6 +51,7 @@ export default {
     HomeSwiper,
     HomeType,
     HomeHot,
+    HomeActivity,
     HomeLike,
     HomeNavi,
     HomeNotice,
@@ -69,7 +73,9 @@ export default {
       storeId: null,
       dialogVisible: false,
       dialogTipContent: '',
-      diffrentCity: null
+      diffrentCity: null,
+      assist: null,
+      time: null
     }
   },
   methods: {
@@ -121,6 +127,8 @@ export default {
           this.hotList = data.data.popularity_goods
           this.ad = data.data.ad
           this.categoryList = data.data.category
+          this.assist = data.data.assist
+          this.time = Number(data.time)
           if (data.data.store && data.data.store.store_name) {
             document.title = data.data.store.store_name
           } else {

@@ -148,3 +148,7 @@ const reportModuleUrl = 'report/'
 export const reportUrl = reportModuleUrl + 'reports'
 
 export const doReport = reportModuleUrl + 'add'
+
+const assistModuleUrl = 'marketing/'
+
+export const assistDetail = assistModuleUrl + 'assist_detail'

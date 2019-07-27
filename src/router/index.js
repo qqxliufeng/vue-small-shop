@@ -34,6 +34,8 @@ import ScenicInfo from '@/pages/scenicdetail/ScenicInfo'
 import ScenicList from '@/pages/sceniclist/ScenicList'
 // ticketDetail
 import TicketDetail from '@/pages/scenicdetail/TicketDetail'
+// activityTicketDetail
+import ActivityTicketDetail from '@/pages/scenicdetail/ActivityTicketDetail'
 // reseve
 import ReseveDetail from '@/pages/reseve/ReseveDetail'
 // commentList
@@ -349,9 +351,19 @@ export default new Router({
       props: true
     },
     {
-      path: 'Auth',
+      path: '/auth',
       name: 'auth',
       component: Auth
+    },
+    {
+      path: '/activityticketdetail',
+      name: 'activityTicketDetail',
+      component: ActivityTicketDetail
+    },
+    {
+      path: '/helpfriend',
+      name: 'helpFriend',
+      component: () => import('@/pages/activity/HelpFriend')
     },
     {
       path: '*',
