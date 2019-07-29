@@ -3,7 +3,7 @@
       <section v-if="loadState && scenicInfo">
         <ticket-header :scenicInfo="scenicInfo" @back="back" @collection="collection" :isFavorites="this.goodsInfo.is_favorites"></ticket-header>
         <ticket-images :imageList="scenicInfo.imageList"></ticket-images>
-        <activity-ticket-info :assist="assist" :time="time"></activity-ticket-info>
+        <activity-ticket-info :assist="assist" :time="time" @countDownEnd="countDownEnd"></activity-ticket-info>
         <ticket-info :scenicInfo="scenicInfo">
             <template slot="info" slot-scope="slotProps">
                 <p class="t-d-intro-title">门票名称</p>
@@ -33,7 +33,7 @@
               <img :src="ShareWXImage" style="width: 1.5rem">
               <p>分享到微信</p>
             </div>
-            <div>
+            <div @click="saveActivityImage">
               <img :src="ShareCodeImage">
               <p>保存图片</p>
             </div>
@@ -88,7 +88,12 @@ export default {
       time: null,
       dialogVisible: false,
       ShareCodeImage,
-      ShareWXImage
+      ShareWXImage,
+      activityInfo: {
+        aid: null,
+        uid: null
+      },
+      countDown: false
     }
   },
   methods: {
@@ -133,10 +138,29 @@ export default {
     },
     invoteFriend () {
       if (this.assist.join.status === 1) {
-        console.log('object')
+        if (!this.countDown) {
+          this.$router.push({name: 'reseveDetail', query: { goods_id: this.goodsId, scenicId: this.scenicId }})
+        } else {
+          this.$toast('此活动已过期！')
+        }
       } else {
-        this.dialogVisible = true
+        this.$http(this.$urlPath.assistJoin, {
+          assist_id: this.$route.query.aid,
+          goods_id: this.goodsId
+        }, '', (data) => {
+          this.activityInfo.aid = data.data.assist_id
+          this.activityInfo.uid = data.data.user_id
+          this.dialogVisible = true
+        }, (errorCode, error) => {
+          this.$toast(error)
+        })
       }
+    },
+    saveActivityImage () {
+      this.$router.push({ name: 'shareActivityImage', query: { aid: this.activityInfo.aid, uid: this.activityInfo.uid } })
+    },
+    countDownEnd () {
+      this.countDown = true
     },
     getData () {
       this.$http(this.$urlPath.assistDetail, {

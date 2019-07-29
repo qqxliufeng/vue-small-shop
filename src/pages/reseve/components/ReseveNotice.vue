@@ -3,7 +3,7 @@
       <span class="el-icon-close close-icon" @click="close"></span>
       <div class="scenic-info-wrapper" v-if="scenic">
         <div class="scenic-info-image-wrapper">
-          <img v-lazy="$utils.image.getImagePath(scenic.scenicimages)">
+          <img v-lazy="$utils.image.getImagePath(scenic.scenicimage)">
         </div>
         <div class="scenic-info">
           <p class="scenic-title">

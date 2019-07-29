@@ -1,6 +1,8 @@
 <template>
   <div class='home-activity-container'>
-    <div class="h-h-title">热门活动</div>
+    <div class="h-h-title">热门活动
+      <span class="see-more" @click="seeMore">查看更多></span>
+    </div>
     <div class="activity-wrapper">
       <swiper :options="swiperOption" class="h-h-hot-card">
             <swiper-slide v-for="item of assist" :key="item.assist_id">
@@ -72,6 +74,9 @@ export default {
           identity: this.$root.state.getSallerInfo().identity,
           storeId: this.$root.state.getSallerInfo().storeId
         }})
+    },
+    seeMore () {
+      this.$router.push({ name: 'activityList' })
     }
   }
 }
@@ -85,6 +90,9 @@ export default {
         padding rem(.2) rem(.1)
         border-bottom #f5f5f5 solid rem(.02)
         margin 0 rem(.2)
+        .see-more
+            float right
+            textStyle(#888, .28)
     .h-h-hot-card
         padding rem(.3)
         .content-wrapper

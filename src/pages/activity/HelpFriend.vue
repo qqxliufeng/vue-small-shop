@@ -1,7 +1,7 @@
 <template>
   <div class='help-friend-container'>
-    <navi title="好友助力" :isFixed="true"></navi>
-    <goods-info></goods-info>
+    <navi title="好友助力" :isFixed="true" :isShowBack="false"></navi>
+    <goods-info :info="activityInfo"></goods-info>
     <help-and-register></help-and-register>
   </div>
 </template>
@@ -19,7 +19,32 @@ export default {
   },
   data () {
     return {
+      activityInfo: null
     }
+  },
+  methods: {
+    getData () {
+      this.$http(this.$urlPath.assistInvite, {
+        assist_id: this.$route.query.aid,
+        user_id: this.$route.query.uid
+      }, '', (data) => {
+        this.activityInfo = data
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
+    }
+  },
+  created () {
+    let tempIdentity = this.$route.query.i
+    let tempStoreId = this.$route.query.s
+    // 如果是直接从分享页面过来的，则要存一下identity 和 storeId
+    if (tempIdentity && tempStoreId) {
+      this.$root.state.saveSallerInfo(tempIdentity, tempStoreId)
+      this.sellerInfo = this.$root.state.getSallerInfo()
+    }
+  },
+  mounted () {
+    this.getData()
   }
 }
 </script>

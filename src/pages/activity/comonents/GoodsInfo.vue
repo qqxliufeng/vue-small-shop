@@ -1,21 +1,29 @@
 <template>
-  <div class='help-goods-info-container'>
+  <div class='help-goods-info-container' v-if="info">
     <div class="user-info-wrapper">
-      <img src="" class="img-face">
-      <span class="nick-name">王大宝:</span>
+      <img v-lazy="$utils.image.getImagePath(info.data.avatar)" class="img-face">
+      <span class="nick-name">{{info.data.username}}:</span>
       <div class="tip">我正在参加优待客低价抢票活动，快来帮我助力吧！</div>
     </div>
     <div class="goods-info-wrapper">
       <div class="goods-image-wrapper">
-        <img src="">
+        <img v-lazy="$utils.image.getImagePath(info.data.scenicimages)">
       </div>
       <div class="goods-info">
-        <p class="goods-name">哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</p>
-        <p class="release-time">剩余时间:</p>
-        <p class="goods-sales">已售1000</p>
+        <p class="goods-name">{{info.data.goods_title}}</p>
+        <div class="release-time">剩余时间:
+            <count-down :time="(info.data.end_time - info.time) * 1000">
+              <template slot-scope="props">
+                  <span class="time-wrapper">
+                      <span class="time-bg">{{ props.days }}</span><i>天</i><span class="time-bg">{{ props.hours }}</span><i>时</i><span class="time-bg">{{ props.minutes }}</span><i>分</i><span class="time-bg">{{ props.seconds }}</span><i>秒</i>
+                  </span>
+              </template>
+            </count-down>
+        </div>
+        <p class="goods-sales">已售{{info.data.sales_number}}</p>
         <div class="goods-price-wrapper">
-          <span class="goods-old-price">￥200</span>
-          <span class="goods-now-price"><i>￥89</i>起</span>
+          <span class="goods-old-price">￥{{info.data.retail_price}}</span>
+          <span class="goods-now-price"><i>￥{{info.data.min_price}}</i>起</span>
         </div>
       </div>
     </div>
@@ -23,10 +31,15 @@
 </template>
 
 <script>
-
+import CountDown from 'common/components/countdown/countdown'
 export default {
   name: 'goodsInfo',
-  components: {},
+  props: {
+    info: Object
+  },
+  components: {
+    CountDown
+  },
   data () {
     return {
     }
@@ -47,7 +60,6 @@ export default {
             width rem(.5)
             height rem(.5)
             object-fit cover
-            background red
             vertical-align middle
         .nick-name
             color #333
@@ -66,7 +78,7 @@ export default {
         margin rem(.2)
         overflow hidden
         .goods-image-wrapper
-            min-width rem(2)
+            width rem(2)
             height rem(1.8)
             background red
             & > img
@@ -75,6 +87,7 @@ export default {
                 object-fit cover
         .goods-info
             display flex
+            flex 1
             flex-direction column
             justify-content space-between
             overflow hidden
@@ -84,13 +97,10 @@ export default {
                 overflow hidden
                 textStyle(#333, .3)
             .release-time
-                text-align right
                 textStyle(#88, .25)
             .goods-sales
-                text-align right
                 textStyle(#88, .25)
             .goods-price-wrapper
-                text-align right
                 textStyle(#88, .28)
                 .goods-old-price
                     text-decoration line-through

@@ -3,16 +3,16 @@
     <div class="title">活动注册</div>
     <div class="user-phone-wrapper">
       <span class="el-icon-mobile-phone phone-icon"></span>
-      <input type="text" placeholder="请输入手机号" maxlength="11">
+      <input type="text" placeholder="请输入手机号" maxlength="11" v-model="phone">
     </div>
     <div class="code-wrapper">
       <div class="user-code-wrapper">
         <span class="el-icon-first-aid-kit code-icon"></span>
-        <input type="text" placeholder="请输入验证码" maxlength="6">
+        <input type="text" placeholder="请输入验证码" maxlength="6" v-model="captche">
       </div>
-      <span class="code-button">获取验证码</span>
+      <span class="code-button" @click="getCaptche">{{countTitle}}</span>
     </div>
-    <div class="help-action">
+    <div class="help-action" @click="help">
       为他助力
     </div>
     <div class="register-tip">
@@ -28,7 +28,74 @@ export default {
   components: {},
   data () {
     return {
-
+      phone: '',
+      captche: '',
+      countTitle: '获取验证码',
+      disabled: false
+    }
+  },
+  methods: {
+    getCaptche () {
+      if (this.disabled) {
+        return
+      }
+      if (!this.phone) {
+        this.$toast('请输入手机号')
+        return
+      }
+      if (!(this.$utils.validator.isPhone(this.phone))) {
+        this.$toast('请输入合法的手机号')
+        this.phone = ''
+        return
+      }
+      this.$http(this.$urlPath.userInfoGetSMSCodeUrl, {
+        mobile: this.phone,
+        event: 'mobilelogin'
+      }, null, (data) => {
+        this.$toast('短信发送成功，请注意查收')
+        this.disabled = true
+        let count = 60
+        let time = setInterval(() => {
+          this.disabled = true
+          count--
+          this.countTitle = count + ' s'
+          if (count <= 0) {
+            clearInterval(time)
+            this.disabled = false
+            this.countTitle = '重新获取？'
+          }
+        }, 1000)
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
+    },
+    help () {
+      if (!this.phone) {
+        this.$toast('请输入手机号')
+        return
+      }
+      if (!(this.$utils.validator.isPhone(this.phone))) {
+        this.$toast('请输入合法的手机号')
+        this.phone = ''
+        return
+      }
+      if (!this.captche) {
+        this.$toast('请输入验证码')
+        return
+      }
+      this.$http(this.$urlPath.assistLogin, {
+        mobile: this.phone,
+        captcha: this.captche,
+        user_id: this.$route.query.uid,
+        assist_id: this.$route.query.aid
+      }, '正在助力…', (data) => {
+        this.$toast('恭喜，助力成功')
+        this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
+        this.$root.state.saveUserInfo(data.data.userinfo.token)
+        this.$router.replace({path: '/index/' + this.$route.query.i + '/' + this.$route.query.s})
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
     }
   }
 }
@@ -52,6 +119,7 @@ export default {
         & > input
             background-color transparent
             height rem(.7)
+            width 80%
             margin-left rem(.1)
         .phone-icon
             color #666666

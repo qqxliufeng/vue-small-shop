@@ -152,3 +152,16 @@ export const doReport = reportModuleUrl + 'add'
 const assistModuleUrl = 'marketing/'
 
 export const assistDetail = assistModuleUrl + 'assist_detail'
+
+export const assistInvite = assistModuleUrl + 'assist_invite'
+
+export const assistJoin = assistModuleUrl + 'assist_join'
+
+export const assistLogin = userInfoUrl + 'assist_login'
+
+export const assistList = assistModuleUrl + 'assist'
+
+export function shareActivityUrl (aid, uid, i, s) {
+  // return baseIP + '/helpfriend' + '?aid=' + aid + '&uid=' + uid
+  return 'http://192.168.0.111:8080/helpfriend' + '?aid=' + aid + '&uid=' + uid + '&i=' + i + '&s=' + s
+}

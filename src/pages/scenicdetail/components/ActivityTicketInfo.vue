@@ -2,11 +2,14 @@
   <div class='activity-ticket-info-container' v-if="assist">
     <div class="tip-wrapper">
       <div class="tip-bg"></div>
-      <div class="tip">再邀请<span class="num">{{assist.number - assist.join.join_number}}</span>位好友助力，即可购买此票</div>
+      <div class="tip" v-if="assist.join.status === 1">
+        恭喜，任务已完成
+      </div>
+      <div class="tip" v-else>再邀请<span class="num">{{assist.join.status === 1 ? 0 : assist.number - assist.join.join_number}}</span>位好友助力，即可购买此票</div>
     </div>
     <div class="time-wrapper">
       <p class="time-relase-tip">剩余时间</p>
-      <count-down :time="(assist.end_time - time)* 1000">
+      <count-down :time="(assist.end_time - time)* 1000" @end="countDownEnd">
         <template slot-scope="props">
             <span class="time">
                 <span class="time-bg">{{ props.days }}</span><i>天</i><span class="time-bg">{{ props.hours }}</span><i>时</i><span  class="time-bg">{{ props.minutes }}</span><i>分</i><span  class="time-bg">{{ props.seconds }}</span><i>秒</i>
@@ -30,6 +33,11 @@ export default {
   },
   data () {
     return {
+    }
+  },
+  methods: {
+    countDownEnd () {
+      this.$emit('countDownEnd')
     }
   }
 }
@@ -69,6 +77,7 @@ export default {
     .time-wrapper
         flex 1
         text-align center
+        min-width rem(2.6)
         .time-relase-tip
             color #666
             font-size rem(.28)
@@ -77,6 +86,6 @@ export default {
             color #333
             font-size rem(.3)
             & > i
-                textStyle(#666, .25)
+                textStyle(#666, .22)
                 margin 0 rem(.05)
 </style>

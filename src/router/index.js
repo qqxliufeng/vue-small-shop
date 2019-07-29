@@ -358,12 +358,25 @@ export default new Router({
     {
       path: '/activityticketdetail',
       name: 'activityTicketDetail',
-      component: ActivityTicketDetail
+      component: ActivityTicketDetail,
+      meta: {
+        auth: true
+      }
     },
     {
       path: '/helpfriend',
       name: 'helpFriend',
       component: () => import('@/pages/activity/HelpFriend')
+    },
+    {
+      path: '/shareactivityimage',
+      name: 'shareActivityImage',
+      component: () => import('@/pages/activity/ShareActivityImage')
+    },
+    {
+      path: '/activitylist',
+      name: 'activityList',
+      component: () => import('@/pages/activity/ActivityList')
     },
     {
       path: '*',
