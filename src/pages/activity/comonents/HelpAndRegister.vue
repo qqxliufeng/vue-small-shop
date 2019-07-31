@@ -83,18 +83,9 @@ export default {
         this.$toast('请输入验证码')
         return
       }
-      this.$http(this.$urlPath.assistLogin, {
-        mobile: this.phone,
-        captcha: this.captche,
-        user_id: this.$route.query.uid,
-        assist_id: this.$route.query.aid
-      }, '正在助力…', (data) => {
-        this.$toast('恭喜，助力成功')
-        this.$root.$data.userInfo.setUserInfo(data.data.userinfo)
-        this.$root.state.saveUserInfo(data.data.userinfo.token)
-        this.$router.replace({path: '/index/' + this.$route.query.i + '/' + this.$route.query.s})
-      }, (errorCode, error) => {
-        this.$toast(error)
+      this.$emit('help', {
+        phone: this.phone,
+        captche: this.captche
       })
     }
   }
@@ -133,6 +124,7 @@ export default {
     .code-wrapper
         display flex
         align-items center
+        justify-content space-between
         line-height rem(.8)
         margin rem(.4) rem(.2) rem(.2) rem(.2)
         .user-code-wrapper
@@ -141,6 +133,7 @@ export default {
             & > input
                 background-color transparent
                 height rem(.7)
+                width 55%
                 margin-left rem(.1)
             .code-icon
                 color #666666
@@ -160,8 +153,8 @@ export default {
             padding 0 rem(.2)
             flex 1
             text-align center
-            margin-left rem(.3)
-            min-width rem(1.5)
+            margin-left rem(.1)
+            min-width rem(1.3)
             height rem(.6)
             line-height rem(.6)
     .help-action

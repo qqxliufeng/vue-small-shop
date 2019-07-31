@@ -162,6 +162,6 @@ export const assistLogin = userInfoUrl + 'assist_login'
 export const assistList = assistModuleUrl + 'assist'
 
 export function shareActivityUrl (aid, uid, i, s) {
-  // return baseIP + '/helpfriend' + '?aid=' + aid + '&uid=' + uid
-  return 'http://192.168.0.111:8080/helpfriend' + '?aid=' + aid + '&uid=' + uid + '&i=' + i + '&s=' + s
+  return 'http://www.store.liuyiqinzi.com/helpfriend' + '?aid=' + aid + '&uid=' + uid + '&i=' + i + '&s=' + s
+  // return 'http://192.168.0.111:8080/helpfriend' + '?aid=' + aid + '&uid=' + uid + '&i=' + i + '&s=' + s
 }

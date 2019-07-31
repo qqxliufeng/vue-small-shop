@@ -11,7 +11,7 @@
             </div>
             <el-button type="primary" class="input-login" @click="login">登录</el-button>
         </div>
-        <el-dialog :visible.sync="showVerifyDialog" modal width="90%">
+        <el-dialog :visible.sync="showVerifyDialog" modal width="80%">
           <slide-verify
           :w="width"
           @success="onSlideSuccess"
@@ -36,7 +36,7 @@ export default {
       disabled: false,
       countTitle: '获取验证码',
       showVerifyDialog: false,
-      width: document.body.clientWidth * 0.9 - 40
+      width: document.body.clientWidth * 0.8 - 40
     }
   },
   methods: {
@@ -124,7 +124,7 @@ export default {
   },
   mounted () {
     window.onresize = () => {
-      this.width = document.body.clientWidth * 0.9 - 40
+      this.width = document.body.clientWidth * 0.8 - 40
       if (this.$refs.slideVerfiy) {
         this.$refs.slideVerfiy.reset()
       }

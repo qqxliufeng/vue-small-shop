@@ -29,7 +29,7 @@
           :visible.sync="dialogVisible"
           width="90%">
           <div class="share-content">
-            <div>
+            <div @click="shareActivityImage">
               <img :src="ShareWXImage" style="width: 1.5rem">
               <p>分享到微信</p>
             </div>
@@ -40,6 +40,7 @@
           </div>
         </el-dialog>
       </section>
+      <bottom-friend-list @close="closeFriendList" v-if="showFriendList && assist && assist.join.user.length > 0" :users="assist.join.user"></bottom-friend-list>
   </div>
 </template>
 
@@ -53,8 +54,10 @@ import TicketRemark from 'common/components/ticket-remark'
 import LoadFail from 'common/components/loading/load-fail'
 import ActivityTicketInfo from './components/ActivityTicketInfo'
 import ActviityTicketBottom from './components/ActivityTicketBottom'
+import BottomFriendList from '@/pages/activity/comonents/BottomFriendList'
 import ShareCodeImage from 'images/img_share_code.png'
 import ShareWXImage from 'images/img_share_wx.png'
+import wx from 'weixin-js-sdk'
 export default {
   name: 'TicketDetail',
   components: {
@@ -66,6 +69,7 @@ export default {
     TicketRemark,
     ActivityTicketInfo,
     ActviityTicketBottom,
+    BottomFriendList,
     LoadFail
   },
   data () {
@@ -93,7 +97,9 @@ export default {
         aid: null,
         uid: null
       },
-      countDown: false
+      countDown: false,
+      showFriendList: true,
+      canShareWX: false
     }
   },
   methods: {
@@ -146,24 +152,88 @@ export default {
       } else {
         this.$http(this.$urlPath.assistJoin, {
           assist_id: this.$route.query.aid,
-          goods_id: this.goodsId
+          goods_id: this.goodsId,
+          url: window.location.href
         }, '', (data) => {
           this.activityInfo.aid = data.data.assist_id
           this.activityInfo.uid = data.data.user_id
           this.dialogVisible = true
+          let wechat = data.data.wechat
+          if (wechat) {
+            wx.config({
+              debug: false,
+              appId: wechat.appId,
+              timestamp: wechat.timestamp,
+              nonceStr: wechat.nonceStr,
+              signature: wechat.signature,
+              jsApiList: wechat.jsApiList
+            })
+            wx.ready(() => {
+              this.canShareWX = true
+              console.log('ok')
+            })
+          }
         }, (errorCode, error) => {
           this.$toast(error)
         })
       }
     },
+    closeFriendList () {
+      this.showFriendList = false
+    },
     saveActivityImage () {
       this.$router.push({ name: 'shareActivityImage', query: { aid: this.activityInfo.aid, uid: this.activityInfo.uid } })
+    },
+    shareActivityImage () {
+      if (!this.$isWeiXin) {
+        this.$toast('此功能仅限在微信客户端使用')
+        return
+      }
+      this.dialogVisible = false
+      wx.ready(() => {
+        this.canShareWX = true
+        let shareData = {
+          title: this.goodsInfo.goods_title,
+          desc: '快快来帮我助力吧~~',
+          link: this.$urlPath.shareActivityUrl(this.activityInfo.aid, this.activityInfo.uid, this.$root.state.getSallerInfo().identity, this.$root.state.getSallerInfo().storeId),
+          imgUrl: this.$utils.image.getImagePath(this.scenicInfo.imageList[0]),
+          success: () => {
+            this.$toast('注册成功，请点击上方分享按钮进行分享')
+          }
+        }
+        wx.updateAppMessageShareData(shareData)
+        wx.updateTimelineShareData(shareData)
+      })
+      // let shareData = {
+      //   title: this.goodsInfo.goods_title,
+      //   desc: '快快来帮我助力吧~~',
+      //   link: this.$urlPath.shareActivityUrl(this.$route.query.aid, this.$route.query.uid, this.$root.state.getSallerInfo().identity, this.$root.state.getSallerInfo().storeId),
+      //   imgUrl: this.$utils.image.getImagePath(this.scenicInfo.imageList[0]),
+      //   success: () => {
+      //     this.$toast('注册成功，请点击上方分享按钮进行分享')
+      //   }
+      // }
+      // wx.checkJsApi({
+      //   jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'],
+      //   success: (res) => {
+      //     let result = JSON.parse(res.checkResult)
+      //     alert(result.updateAppMessageShareData)
+      //     if (result.updateAppMessageShareData) {
+      //       if (this.canShareWX) {
+      //         wx.updateAppMessageShareData(shareData)
+      //         wx.updateTimelineShareData(shareData)
+      //       }
+      //     } else {
+      //       this.$toast('当前微信版本不支持网页分享')
+      //     }
+      //   }
+      // })
     },
     countDownEnd () {
       this.countDown = true
     },
     getData () {
-      this.$http(this.$urlPath.assistDetail, {
+      this.$http(this.$urlPath.goodsDetailUrl, {
         s_id: this.scenicId,
         goods_id: this.goodsId,
         assist_id: this.$route.query.aid,

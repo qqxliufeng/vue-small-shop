@@ -61,6 +61,17 @@ export default {
         newMobile = mobile.substr(0, 3) + '****' + mobile.substr(7)
       }
       return newMobile
+    },
+    trasformNum (num) {
+      if (!num || isNaN(num) || Number(num) === 0) {
+        return 0
+      }
+      let intNum = Number(num)
+      if (intNum / 10000 >= 1) {
+        return Math.floor(intNum / 10000) + '万+'
+      } else {
+        return intNum
+      }
     }
   }
 }

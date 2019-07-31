@@ -9,8 +9,8 @@
           <div class="sperator-line-height"></div>
           <home-activity v-if="assist && assist.length > 0" :assist="assist" :time="time"></home-activity>
           <div class="sperator-line-height" v-if="assist && assist.length > 0"></div>
-          <div class="h-h-title">人气推荐</div>
-          <home-hot :list="hotList" @itemClick="startDetail"></home-hot>
+          <div class="h-h-title" v-if="hotList && hotList.length > 0">人气推荐</div>
+          <home-hot v-if="hotList && hotList.length > 0" :list="hotList" @itemClick="startDetail"></home-hot>
           <div class="h-h-ad-wrapper" v-if="ad">
             <img :src="$utils.image.getImagePath(ad.image)" @click="adClick">
           </div>
@@ -75,7 +75,7 @@ export default {
       dialogTipContent: '',
       diffrentCity: null,
       assist: null,
-      time: null
+      time: 0
     }
   },
   methods: {

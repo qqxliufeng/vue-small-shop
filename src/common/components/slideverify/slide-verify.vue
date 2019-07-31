@@ -4,7 +4,7 @@
         <div @click="refresh" class="slide-verify-refresh-icon"></div>
         <canvas :width="w" :height="h" ref="block"  class="slide-verify-block"></canvas>
         <!-- container -->
-        <div class="slide-verify-slider" :class="{'container-active': containerActive, 'container-success': containerSuccess, 'container-fail': containerFail}">
+        <div class="slide-verify-slider" :style="{ width: w }" :class="{'container-active': containerActive, 'container-success': containerSuccess, 'container-fail': containerFail}">
             <div class="slide-verify-slider-mask" :style="{width: sliderMaskWidth}">
                 <!-- slider -->
                 <div @mousedown="sliderDown"
@@ -316,7 +316,7 @@
     .slide-verify-slider {
         position: relative;
         text-align: center;
-        width: 310px;
+        width: 100%;
         height: 40px;
         line-height: 40px;
         margin-top: 15px;

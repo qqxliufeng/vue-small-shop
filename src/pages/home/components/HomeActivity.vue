@@ -17,20 +17,17 @@
                       <div class="activity-tip">
                         <div class="tip-bg"></div>
                         <div class="tip-wrapper">
-                          <span class="tip">好友助力</span><span class="tip-price">￥{{item.min_price}}</span>
+                          <span class="tip">助力价</span><span class="tip-price">￥{{item.min_price}}</span>
                         </div>
                       </div>
                     </div>
                     <div class="info-wrapper">
                       <p class="release-time">剩余:<span>{{releaseDays}}天</span></p>
                       <div class="time-count-down-wrapper">
-                        <count-down :time="(item.end_time - time) * 1000">
+                        <count-down :time="Math.max(0, (item.end_time - time) * 1000)">
                           <template slot-scope="props">
                               <span style="display:none">{{releaseDays = props.days}}</span>
-                              <div class="time-wrapper">
-                                  <span class="time-bg">{{ props.hours }}</span><i>:</i>
-                                  <span  class="time-bg">{{ props.minutes }}</span><i>:</i>
-                                  <span  class="time-bg">{{ props.seconds }}</span>
+                              <div class="time-wrapper"><span class="time-bg">{{ props.hours }}</span><i>:</i><span  class="time-bg">{{ props.minutes }}</span><i>:</i><span  class="time-bg">{{ props.seconds }}</span>
                               </div>
                           </template>
                         </count-down>
@@ -50,7 +47,10 @@ export default {
   name: 'homeActivity',
   props: {
     assist: Array,
-    time: Number
+    time: {
+      type: Number,
+      default: 0
+    }
   },
   components: {
     CountDown
@@ -156,7 +156,7 @@ export default {
                         .tip
                             font-size rem(.25)
                         .tip-price
-                            font-size rem(.3)
+                            font-size rem(.25)
                             font-weight bold
                             font-style italic
               .info-wrapper
@@ -167,8 +167,8 @@ export default {
                       font-size rem(.25)
                       padding-left rem(.1)
                       & > span
-                          margin-left rem(.2)
-                          margin-right rem(.2)
+                          margin-left rem(.1)
+                          margin-right rem(.1)
                           font-weight bold
                   .time-count-down-wrapper
                       text-align center
@@ -178,11 +178,11 @@ export default {
                           text-align center
                           & > i
                               color #333
-                              margin 0 rem(.03)
+                              margin 0 rem(.05)
                               font-size rem(.2)
                           .time-bg
-                              background-color #000
+                              background-color #424242
                               display inline-block
-                              min-width rem(.5)
+                              min-width rem(.4)
                               text-align center
 </style>

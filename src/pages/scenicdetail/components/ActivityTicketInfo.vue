@@ -9,7 +9,7 @@
     </div>
     <div class="time-wrapper">
       <p class="time-relase-tip">剩余时间</p>
-      <count-down :time="(assist.end_time - time)* 1000" @end="countDownEnd">
+      <count-down :time="Math.max(0, (assist.end_time - time) * 1000)" @end="countDownEnd">
         <template slot-scope="props">
             <span class="time">
                 <span class="time-bg">{{ props.days }}</span><i>天</i><span class="time-bg">{{ props.hours }}</span><i>时</i><span  class="time-bg">{{ props.minutes }}</span><i>分</i><span  class="time-bg">{{ props.seconds }}</span><i>秒</i>

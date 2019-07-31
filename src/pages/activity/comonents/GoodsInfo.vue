@@ -11,8 +11,8 @@
       </div>
       <div class="goods-info">
         <p class="goods-name">{{info.data.goods_title}}</p>
-        <div class="release-time">剩余时间:
-            <count-down :time="(info.data.end_time - info.time) * 1000">
+        <div class="release-time">剩余:
+            <count-down :time="(info.data.end_time - info.time) * 1000" @end="countDownEnd">
               <template slot-scope="props">
                   <span class="time-wrapper">
                       <span class="time-bg">{{ props.days }}</span><i>天</i><span class="time-bg">{{ props.hours }}</span><i>时</i><span class="time-bg">{{ props.minutes }}</span><i>分</i><span class="time-bg">{{ props.seconds }}</span><i>秒</i>
@@ -42,6 +42,11 @@ export default {
   },
   data () {
     return {
+    }
+  },
+  methods: {
+    countDownEnd () {
+      this.$emit('countDownEnd')
     }
   }
 }
