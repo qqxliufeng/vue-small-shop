@@ -57,9 +57,9 @@ import ActviityTicketBottom from './components/ActivityTicketBottom'
 import BottomFriendList from '@/pages/activity/comonents/BottomFriendList'
 import ShareCodeImage from 'images/img_share_code.png'
 import ShareWXImage from 'images/img_share_wx.png'
-import wx from 'weixin-js-sdk'
+var wx = require('weixin-js-sdk')
 export default {
-  name: 'TicketDetail',
+  name: 'activityTicketDetail',
   components: {
     TicketHeader,
     TicketImages,
@@ -152,27 +152,11 @@ export default {
       } else {
         this.$http(this.$urlPath.assistJoin, {
           assist_id: this.$route.query.aid,
-          goods_id: this.goodsId,
-          url: window.location.href
+          goods_id: this.goodsId
         }, '', (data) => {
           this.activityInfo.aid = data.data.assist_id
           this.activityInfo.uid = data.data.user_id
           this.dialogVisible = true
-          let wechat = data.data.wechat
-          if (wechat) {
-            wx.config({
-              debug: false,
-              appId: wechat.appId,
-              timestamp: wechat.timestamp,
-              nonceStr: wechat.nonceStr,
-              signature: wechat.signature,
-              jsApiList: wechat.jsApiList
-            })
-            wx.ready(() => {
-              this.canShareWX = true
-              console.log('ok')
-            })
-          }
         }, (errorCode, error) => {
           this.$toast(error)
         })
@@ -190,44 +174,17 @@ export default {
         return
       }
       this.dialogVisible = false
-      wx.ready(() => {
-        this.canShareWX = true
-        let shareData = {
-          title: this.goodsInfo.goods_title,
-          desc: '快快来帮我助力吧~~',
-          link: this.$urlPath.shareActivityUrl(this.activityInfo.aid, this.activityInfo.uid, this.$root.state.getSallerInfo().identity, this.$root.state.getSallerInfo().storeId),
-          imgUrl: this.$utils.image.getImagePath(this.scenicInfo.imageList[0]),
-          success: () => {
-            this.$toast('注册成功，请点击上方分享按钮进行分享')
-          }
+      let shareData = {
+        title: this.goodsInfo.goods_title,
+        desc: '快快来帮我助力吧~~',
+        link: this.$urlPath.shareActivityUrl(this.activityInfo.aid, this.activityInfo.uid, this.$root.state.getSallerInfo().identity, this.$root.state.getSallerInfo().storeId),
+        imgUrl: this.$utils.image.getImagePath(this.scenicInfo.imageList[0]),
+        success: () => {
+          this.$toast('注册成功，请点击上方分享按钮进行分享')
         }
-        wx.updateAppMessageShareData(shareData)
-        wx.updateTimelineShareData(shareData)
-      })
-      // let shareData = {
-      //   title: this.goodsInfo.goods_title,
-      //   desc: '快快来帮我助力吧~~',
-      //   link: this.$urlPath.shareActivityUrl(this.$route.query.aid, this.$route.query.uid, this.$root.state.getSallerInfo().identity, this.$root.state.getSallerInfo().storeId),
-      //   imgUrl: this.$utils.image.getImagePath(this.scenicInfo.imageList[0]),
-      //   success: () => {
-      //     this.$toast('注册成功，请点击上方分享按钮进行分享')
-      //   }
-      // }
-      // wx.checkJsApi({
-      //   jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'],
-      //   success: (res) => {
-      //     let result = JSON.parse(res.checkResult)
-      //     alert(result.updateAppMessageShareData)
-      //     if (result.updateAppMessageShareData) {
-      //       if (this.canShareWX) {
-      //         wx.updateAppMessageShareData(shareData)
-      //         wx.updateTimelineShareData(shareData)
-      //       }
-      //     } else {
-      //       this.$toast('当前微信版本不支持网页分享')
-      //     }
-      //   }
-      // })
+      }
+      wx.updateAppMessageShareData(shareData)
+      wx.updateTimelineShareData(shareData)
     },
     countDownEnd () {
       this.countDown = true
@@ -271,7 +228,7 @@ export default {
       if (this.from) {
         if (this.from.name) {
           this.$router.go(-1)
-          if (this.$router.currentRoute.name === 'ticketDetail') {
+          if (this.$router.currentRoute.name === 'activityTicketDetail') {
             this.$router.replace({path: '/index/' + this.identity + '/' + this.storeId})
           }
         } else {

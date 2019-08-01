@@ -43,6 +43,7 @@
 
 <script>
 import CountDown from 'common/components/countdown/countdown'
+var wx = require('weixin-js-sdk')
 export default {
   name: 'homeActivity',
   props: {
@@ -66,14 +67,44 @@ export default {
   },
   methods: {
     itemClick (item) {
-      this.$router.push({name: 'activityTicketDetail',
-        query: {
-          aid: item.assist_id,
-          scenicId: item.scenic_id,
-          goods_id: item.goods_id,
-          identity: this.$root.state.getSallerInfo().identity,
-          storeId: this.$root.state.getSallerInfo().storeId
-        }})
+      if (this.$isWeiXin) {
+        this.$http(this.$urlPath.getShareInfo, {
+          url: window.location.href.split('#')[0]
+        }, '', (data) => {
+          let wechat = data.data.config
+          if (wechat) {
+            wx.config({
+              debug: false,
+              appId: wechat.appId,
+              timestamp: wechat.timestamp,
+              nonceStr: wechat.nonceStr,
+              signature: wechat.signature,
+              jsApiList: wechat.jsApiList
+            })
+            wx.ready(() => {
+              this.$router.push({name: 'activityTicketDetail',
+                query: {
+                  aid: item.assist_id,
+                  scenicId: item.scenic_id,
+                  goods_id: item.goods_id,
+                  identity: this.$root.state.getSallerInfo().identity,
+                  storeId: this.$root.state.getSallerInfo().storeId
+                }})
+            })
+          }
+        }, (errorCode, error) => {
+          this.$toast(error)
+        })
+      } else {
+        this.$router.push({name: 'activityTicketDetail',
+          query: {
+            aid: item.assist_id,
+            scenicId: item.scenic_id,
+            goods_id: item.goods_id,
+            identity: this.$root.state.getSallerInfo().identity,
+            storeId: this.$root.state.getSallerInfo().storeId
+          }})
+      }
     },
     seeMore () {
       this.$router.push({ name: 'activityList' })

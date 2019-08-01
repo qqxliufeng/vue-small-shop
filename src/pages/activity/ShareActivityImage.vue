@@ -9,7 +9,7 @@
           <canvas ref="qrcode"></canvas>
           <p class="code-tip">扫描上方二维码完成注册即可自动为好友助力哦</p>
         </div>
-        <span class="save-button" @click="saveImage">保存图片</span>
+        <span class="save-button" @click="saveImage" id="saveImage">保存图片</span>
         <el-dialog :visible.sync="showDialog" width="90%" :modal="false" title="长按保存图片到手机" center>
             <div class="share-img-post-wrapper">
               <img :src="postUrl">
@@ -36,6 +36,15 @@ export default {
       postUrl: ''
     }
   },
+  watch: {
+    showDialog (newValue, oldValue) {
+      if (newValue) {
+        document.getElementById('saveImage').style.display = 'none'
+      } else {
+        document.getElementById('saveImage').style.display = 'block'
+      }
+    }
+  },
   methods: {
     createCode () {
       QRCode.toCanvas(this.$refs['qrcode'], this.$urlPath.shareActivityUrl(this.$route.query.aid, this.$route.query.uid, this.$root.state.getSallerInfo().identity, this.$root.state.getSallerInfo().storeId), error => {
@@ -43,6 +52,7 @@ export default {
       })
     },
     saveImage () {
+      document.getElementById('saveImage').style.display = 'none'
       setTimeout(() => {
         html2canvas(this.$refs.download, {
           backgroundColor: '#f5f5f5',
@@ -58,7 +68,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$urlPath.shareActivityUrl(this.$route.query.aid, this.$route.query.uid, this.$root.state.getSallerInfo().identity, this.$root.state.getSallerInfo().storeId))
     this.createCode()
   }
 }

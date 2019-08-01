@@ -9,7 +9,8 @@ export default {
   components: {},
   data () {
     return {
-      code: ''
+      code: '',
+      href: 'http://www.store.liuyiqinzi.com/index/' + this.$root.state.getSallerInfo().identity + '/' + this.$root.state.getSallerInfo().storeId
     }
   },
   methods: {
@@ -19,13 +20,16 @@ export default {
           code: this.code
         }, '正在授权登录…', (data) => {
           this.$root.userInfo.setUserInfoOpenId(data.data.openid)
-          this.$router.go(-1)
+          // this.$router.go(-1)
+          window.location.href = this.href
         }, (errorCode, error) => {
-          this.$router.go(-1)
+          // this.$router.go(-1)
+          window.location.href = this.href
           console.log(error)
         })
       } else {
-        this.$router.go(-1)
+        // this.$router.go(-1)
+        window.location.href = this.href
       }
     }
   },
