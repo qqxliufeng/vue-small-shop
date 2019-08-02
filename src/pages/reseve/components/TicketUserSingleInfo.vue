@@ -7,7 +7,7 @@
     </div>
     <div class="user-info-container">
       <span>游客手机：</span>
-      <input type="text" maxlength="11" placeholder="请输入游客手机号（必填）" v-model="tempUserInfo.phone">
+      <input type="tel" maxlength="11" placeholder="请输入游客手机号（必填）" v-model="tempUserInfo.phone">
     </div>
     <div class="user-info-container" v-if="visitorInfo.indexOf('id') !== -1">
       <span>身份证号：</span>
@@ -72,4 +72,5 @@ export default {
         flex 1
         background #f9f9f9
         padding rem(.1)
+        font-size rem(.3)
 </style>

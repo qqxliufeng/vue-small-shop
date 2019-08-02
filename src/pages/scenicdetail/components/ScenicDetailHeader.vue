@@ -86,7 +86,7 @@ export default {
         // background-color #000000
         opacity .5
         display inline-block
-        background-color transparentify
+        background-color transparent
         width rem(.66)
         height rem(.66)
         border-radius 50%

@@ -1,13 +1,13 @@
 <template>
   <div class='t-c-container'>
-    <p class="title">联系人</p>
+    <p class="title">联系人<i>(需要提供<i>1</i>位游客信息)</i></p>
     <div class="user-info-container">
       <span>联系人姓名：</span>
       <input type="text" maxlength="6" placeholder="请输入联系人姓名" v-model="tempUserInfo.name">
     </div>
     <div class="user-info-container">
       <span>联系人手机：</span>
-      <input type="text" maxlength="11" placeholder="请输入联系人手机号" v-model="tempUserInfo.phone">
+      <input type="tel" maxlength="11" placeholder="请输入联系人手机号" v-model="tempUserInfo.phone" style="letter-spacing: .02rem">
     </div>
     <div class="user-info-container"  v-if="visitorInfo.indexOf('id') !== -1">
       <span>身份证号：</span>
@@ -99,6 +99,13 @@ export default {
         textStyle(#333, .3)
         padding rem(.3)
         borderBottom()
+        & > i
+            font-size rem(.25)
+            color #888
+            & > i
+                textStyle(#ffad2c, .25)
+                margin 0 rem(.1)
+                font-weight bold
     .user-info-container
         padding rem(.2) rem(.3)
         display flex
@@ -110,7 +117,7 @@ export default {
             flex 1
             background #f9f9f9
             padding rem(.12)
-            font-size rem(.24)
+            font-size rem(.3)
         .get-code
             margin-left rem(.3)
             min-width rem(1.6)

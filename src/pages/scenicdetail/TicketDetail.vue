@@ -5,10 +5,15 @@
           <ticket-images :imageList="scenicInfo.imageList"></ticket-images>
           <ticket-info :scenicInfo="scenicInfo">
               <template slot="info" slot-scope="slotProps">
-                  <p class="t-d-intro-title">门票名称</p>
-                  <p class="t-d-intro-ticket-name">{{goodsInfo.goods_title}}</p>
+                  <div class="t-d-intro-ticket-name">
+                    <div>
+                      <span class="ticket-name">{{goodsInfo.goods_title}}</span>
+                      <span class="ticket-old-price">￥{{goodsInfo.retailPrice}}</span>
+                      <span class="ticket-price">￥{{scenicInfo.price}}</span>
+                    </div>
+                  </div>
                   <p class="t-d-intro-title">景区须知</p>
-                  <p class="t-d-intro-content" @click="startScenicInfo">{{slotProps.scenicInfo.brief}}</p>
+                  <p class="t-d-intro-content" @click="startScenicInfo">{{delHtmlTag(slotProps.scenicInfo.brief)}}</p>
               </template>
           </ticket-info>
           <div class="t-d-detail-buy-info">
@@ -18,10 +23,12 @@
           </div>
           <div class="sperator-line-2"></div>
           <div class="t-d-detail-order-info-wrapper">
-              <p class="t-d-detail-order-info-price">
-                  门票价格：<span>￥{{scenicInfo.price}}</span>
-              </p>
-              <p class="t-d-detail-order-info-action" @click="reseve">立即预定</p>
+              <div class="collection-wrapper" @click="collection">
+                <p :class="[this.goodsInfo.is_favorites ===  1 ? 'el-icon-star-on' : 'el-icon-star-off']"></p>
+                <p>收藏</p>
+              </div>
+              <div class="other-goods" @click="seeOtherGoods">查看其它商品</div>
+              <div class="t-d-detail-order-info-action" @click="reseve">立即预定</div>
           </div>
         </section>
         <section v-else-if="!loadState">
@@ -84,6 +91,12 @@ export default {
     },
     startScenicInfo () {
       this.$router.push({name: 'scenicInfo', query: {id: this.scenicId}})
+    },
+    seeOtherGoods () {
+      this.$router.push({name: 'scenicDetail', query: {s: this.scenicId, i: this.$root.state.getSallerInfo().identity, t: this.$root.state.getSallerInfo().storeId}})
+    },
+    delHtmlTag (str) {
+      return str.replace(/<[^>]+>/g, '')
     },
     collection () {
       if (this.$root.userInfo.isLogin()) {
@@ -191,8 +204,19 @@ export default {
     muitlLineEllipsis(2)
 .t-d-intro-ticket-name
     textStyle($orangeColor, .3)
-    padding rem(.3) 0
+    padding 0 0 rem(.3) 0
     borderBottom()
+    text-align right
+    .ticket-name
+        float left
+        margin-top rem(.05)
+    .ticket-old-price
+        textStyle(#666, .28)
+        text-decoration line-through
+        margin-right rem(.2)
+    .ticket-price
+        textStyle($orangeColor, .4)
+        background-color #fff
 .t-d-intro-back-money
     padding rem(.2)
     overflow hidden
@@ -236,18 +260,31 @@ export default {
     right 0
     border-top #f5f5f5 solid 1px
     height $headerHeight
-    & p
-        flex 1
-    .t-d-detail-order-info-price
-        margin-left rem(.2)
-        background-color #ffffff
-        line-height $headerHeight
-        textStyle(#333, .3)
-        & span
-            color $orangeColor
+    background #fff
     .t-d-detail-order-info-action
-        textStyle(#fff, .3)
+        textStyle(#fff, .25)
         text-align center
         background-color $orangeColor
         line-height $headerHeight
+        flex 1
+    .collection-wrapper
+        display flex
+        padding 0 rem(.3)
+        width rem(.8)
+        flex-direction column
+        justify-content center
+        height 100%
+        flex 2
+        & p:nth-child(1)
+            textStyle($orangeColor, .35)
+            margin-left rem(.1)
+        & p:nth-child(2)
+            margin-top rem(.1)
+            textStyle(#FFAD2C, .25)
+    .other-goods
+        flex 1
+        line-height $headerHeight
+        background-color #ff5353
+        text-align center
+        textStyle(#fff, .25)
 </style>

@@ -242,10 +242,10 @@ export default {
                     textStyle($orangeColor, .35)
                 & p:nth-child(2)
                     margin-top rem(.1)
-                    textStyle(#555555, .25)
+                    textStyle($orangeColor, .25)
             .r-d-pay-action-pay
                 background-color $orangeColor
-                textStyle(#fff, .32)
+                textStyle(#fff, .28)
                 display flex
                 align-items center
                 height 100%

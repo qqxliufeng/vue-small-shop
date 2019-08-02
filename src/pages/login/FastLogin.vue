@@ -3,7 +3,7 @@
         <div class="input-container">
             <div>
                 <span class="iconfont input-close" @click="clear">&#xe604;</span>
-                <input placeholder="请输入手机号" class="user-name" maxlength="11" v-model="phone">
+                <input placeholder="请输入手机号" class="user-name" maxlength="11" v-model="phone" type="tel" style="letter-spacing: .02rem">
             </div>
             <div class="input-password-container">
                 <input placeholder="请输入验证码" class="user-password" maxlength="6" v-model="verifyCode" type="number"/>

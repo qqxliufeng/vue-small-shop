@@ -3,7 +3,7 @@
         <navi :title="title" :isFixed="true"></navi>
         <el-tabs :value="mSelected" @tab-click="handleClick" class="c-tabs" :stretch="true" v-if="info">
             <el-tab-pane name="scenicInfoForIntro" label="景区须知" class="c-tabs-item">
-                <div class="s-i-content" ref="content">{{content}}</div>
+                <div class="s-i-content" ref="content" v-html="content"></div>
             </el-tab-pane>
             <el-tab-pane name="scenicInfoForOrderNotify" label="景区详情" class="c-tabs-item">
               <div class="s-i-content" v-html="detail"></div>
@@ -100,6 +100,11 @@ export default {
       let a = array[i]
       a.removeAttribute('href')
       a.style.color = '#333333'
+    }
+    let imageArray = document.getElementsByTagName('img')
+    for (let i = 0; i < imageArray.length; i++) {
+      let img = imageArray[i]
+      img.style.width = '100%'
     }
   }
 }

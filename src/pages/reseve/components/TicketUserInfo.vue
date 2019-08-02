@@ -25,7 +25,7 @@
             </div>
              <div class="r-d-user-info-input-wrapper"  v-if="visitorInfo.indexOf('m') !== -1">
                 <span>手机号</span>
-                <input type="text" placeholder="请输入手机号" v-model="tempUserInfo.phone" maxlength="11">
+                <input type="tel" placeholder="请输入手机号" v-model="tempUserInfo.phone" maxlength="11" style="letter-spacing: .02rem">
             </div>
              <div class="r-d-user-info-input-wrapper"  v-if="visitorInfo.indexOf('id') !== -1">
                 <span>身份证号</span>

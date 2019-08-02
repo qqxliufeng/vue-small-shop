@@ -6,10 +6,15 @@
         <activity-ticket-info :assist="assist" :time="time" @countDownEnd="countDownEnd"></activity-ticket-info>
         <ticket-info :scenicInfo="scenicInfo">
             <template slot="info" slot-scope="slotProps">
-                <p class="t-d-intro-title">门票名称</p>
-                <p class="t-d-intro-ticket-name">{{goodsInfo.goods_title}}</p>
+                <p class="t-d-intro-ticket-name">
+                  <span>{{goodsInfo.goods_title}}</span>
+                  <span class="ticket-price">
+                    <i class="ticket-price-tip">活动价：</i>
+                    ￥{{scenicInfo.price}}
+                    </span>
+                </p>
                 <p class="t-d-intro-title">景区须知</p>
-                <p class="t-d-intro-content" @click="startScenicInfo">{{slotProps.scenicInfo.brief}}</p>
+                <p class="t-d-intro-content" @click="startScenicInfo">{{delHtmlTag(slotProps.scenicInfo.brief)}}</p>
             </template>
         </ticket-info>
         <div class="t-d-detail-buy-info">
@@ -119,6 +124,9 @@ export default {
     },
     startScenicInfo () {
       this.$router.push({name: 'scenicInfo', query: {id: this.scenicId}})
+    },
+    delHtmlTag (str) {
+      return str.replace(/<[^>]+>/g, '')
     },
     collection () {
       if (this.$root.userInfo.isLogin()) {
@@ -279,8 +287,13 @@ export default {
     muitlLineEllipsis(2)
 .t-d-intro-ticket-name
     textStyle($orangeColor, .3)
-    padding rem(.3) 0
+    padding 0 0 rem(.3) 0
     borderBottom()
+    .ticket-price
+        float right
+        .ticket-price-tip
+            color #888
+            font-size rem(.25)
 .t-d-intro-back-money
     padding rem(.2)
     overflow hidden

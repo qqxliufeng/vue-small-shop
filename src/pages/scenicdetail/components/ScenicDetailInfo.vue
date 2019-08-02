@@ -1,7 +1,7 @@
 <template>
     <div class="s-d-info-container">
         <div class="s-d-info-header-wrapper">
-            <div>
+            <div class="title-wrapper">
                 <span>{{scenicInfo.title}}</span>
                 <span>{{scenicInfo.mark}}分</span>
             </div>
@@ -53,7 +53,7 @@ export default {
 .s-d-info-container
     .s-d-info-header-wrapper
         padding rem(.3)
-        & div:nth-child(1)
+        .title-wrapper
             margin-bottom rem(.2)
             overflow hidden
             & span:nth-child(1)

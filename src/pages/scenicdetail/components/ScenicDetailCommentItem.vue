@@ -19,6 +19,13 @@
         <div v-if="item.images && item.images.length > 0" class="s-d-comment-item-imags-wrapper" v-lazy-container="{ selector: 'img' }">
             <img v-for="(image, index) of item.images" :key="index" :data-src="$utils.image.getImagePath(image)" @click="imageClick">
         </div>
+        <div class="reply-container" v-if="item.answer">
+            <div>
+              <span class="reply-title">商家回复:</span>
+              <span class="reply-content">{{item.answer.content}}</span>
+              <div class="reply-time">{{item.answer.add_time}}</div>
+            </div>
+        </div>
         <div class="report-wrapper" v-if="$root.report">
           <el-dropdown :command="command">
             <span class="report">举报<i class="el-icon-arrow-down el-icon--right"></i></span>
@@ -115,6 +122,7 @@ export default {
             height 100%
             object-fit cover
             margin-left 2.5%
+            border-radius rem(.1)
     .report-wrapper
       overflow hidden
       text-align right
@@ -127,4 +135,21 @@ export default {
           border 1px solid #eee
           padding rem(.05) rem(.2)
           textStyle(#888, .25)
+    .reply-container
+        background-color #f5f5f5
+        padding rem(.2)
+        border-radius rem(.05)
+        margin-top rem(.3)
+        font-size rem(.25)
+        overflow hidden
+        .reply-title
+            color $primary
+        .reply-content
+            color #666
+            margin-left rem(.1)
+            line-height rem(.35)
+        .reply-time
+            textStyle(#888, .25)
+            text-align right
+            margin rem(.1) 0 0 0
 </style>
