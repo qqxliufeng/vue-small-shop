@@ -4,22 +4,24 @@
           <img v-lazy="$utils.image.getImagePath(item.scenicimages)" :key="item.scenicimages">
       </div>
       <div class="h-l-like-info-wrapper">
-          <p class="title">{{item.s_title}}</p>
-          <!-- <p>{{item.brief}}</p> -->
-          <div class="info">
-            <el-rate :value="Number(item.mark)"
-                     disabled
-                     show-score
-                     text-color="#ff9900"
-                     score-template="{value}分">
-            </el-rate>
-            <div class="tags">
-              <span v-for="(itemTag, index) of item.tag" :key="index" class="tag">
-                <el-tag size="mini" :type=" index === 0 ? 'success' : 'danger'" v-if="itemTag">{{itemTag}}</el-tag>
-              </span>
-            </div>
-          </div>
-          <p class="money"><span>￥{{item.minPrice}}</span><i>起</i><span>已售{{trasformNum(item.totalSales)}}</span></p>
+        <p class="title">{{item.s_title}}</p>
+        <div class="tags">
+          <span v-for="(itemTag, index) of item.tag" :key="index" class="tag">
+            <el-tag size="mini" :type=" index === 0 ? 'success' : 'danger'" v-if="itemTag">{{itemTag}}</el-tag>
+          </span>
+        </div>
+        <div class="money">
+          <span class="price">￥{{item.minPrice}}<i>起</i></span>
+        </div>
+        <div class="order-wrapper">
+          <el-rate :value="Number(item.mark)"
+                  disabled
+                  show-score
+                  text-color="#ff9900"
+                  :score-template="Number(item.mark) > 0 ? '{value}分' : '暂无评价'">
+          </el-rate>
+          <span class="order">立即预定</span>
+        </div>
       </div>
   </div>
 </template>
@@ -77,11 +79,33 @@ export default {
         display flex
         flex-direction column
         justify-content space-between
+        position relative
         .title
             ellipsis()
             textStyle(#333, .32)
+        & >>> .el-rate
+            height 15px
+        & >>> .el-rate__icon
+            font-size 14px
+            margin-right 1px
+        & >>> .el-rate__text
+            font-size 12px
+            margin-left rem(.1)
+        & >>> .el-tag
+            font-size rem(.15)
+        & >>> .el-tag--mini
+            height rem(.3)
+            line-height rem(.3)
+        .tags
+            .tag
+                margin 0 rem(.05)
+        .no-comment
+            textStyle(#888, .25)
         .money
             overflow hidden
+            position absolute
+            top rem(.2)
+            right rem(.1)
             & span:nth-child(1)
                 display inline-block
                 normalTextStyle($primary, .35)
@@ -89,28 +113,18 @@ export default {
                 display inline-block
                 normalTextStyle(#cccccc, .2)
                 line-height .2rem
-                margin-left rem(.1)
-            & span:nth-child(3)
-                display inline-block
-                normalTextStyle(#888888, .22)
-                float right
-                margin-top rem(.11rem)
-        .info
-            & >>> .el-rate
-                height 15px
-            & >>> .el-rate__icon
-                font-size 14px
-                margin-right 1px
-            & >>> .el-rate__text
-                font-size 12px
-                margin-left rem(.1)
-            & >>> .el-tag
-                font-size rem(.15)
-            & >>> .el-tag--mini
-                height rem(.3)
-                line-height rem(.3)
-            .tags
-                margin-top rem(.08)
-                .tag
-                    margin 0 rem(.1)
+        .order-wrapper
+            display flex
+            justify-content space-between
+            .price
+                textStyle($primary, .32)
+                & > i
+                    font-size rem(.25)
+                    color #ccc
+                    margin-left rem(.05)
+            .order
+                textStyle(#fff, .25)
+                background-color $orangeColor
+                border-radius rem(.05)
+                padding rem(.05) rem(.15)
 </style>

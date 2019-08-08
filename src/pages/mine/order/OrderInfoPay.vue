@@ -142,6 +142,9 @@ export default {
           }, (res) => {
             if (res.err_msg === 'get_brand_wcpay_request:ok') {
               this.$router.replace({name: 'orderPayResult', query: {out_trade_no: this.$route.query.no, scenic_id: this.info.scenic_id, state: '1', order_id: this.info.order_id}})
+            } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+              this.$toast('用户取消支付')
+              this.$router.replace({name: 'orderPayResult', query: {out_trade_no: this.$route.query.no, scenic_id: this.info.scenic_id, state: '0', order_id: this.info.order_id}})
             } else {
               this.$router.replace({name: 'orderPayResult', query: {out_trade_no: this.$route.query.no, scenic_id: this.info.scenic_id, state: '0', order_id: this.info.order_id}})
             }

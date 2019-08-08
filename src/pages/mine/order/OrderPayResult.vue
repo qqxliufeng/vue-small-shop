@@ -28,7 +28,7 @@ export default {
     return {
       no: this.$route.query.out_trade_no || '',
       orderId: this.$route.query.order_id,
-      state: parseInt(this.$route.query.state || 1),
+      state: parseInt(this.$route.query.state || 0),
       scenicId: this.$route.query.scenic_id,
       from: null
     }
@@ -59,9 +59,13 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      vm.from = from
-      if (from.name) {
-        vm.$router.replace({name: 'personal'})
+      if (Number(vm.$route.query.state) === 0) {
+        vm.$router.replace({name: 'orderInfo', params: {orderId: vm.$route.query.order_id.toString(), orderType: '1'}})
+      } else {
+        vm.from = from
+        if (from.name) {
+          vm.$router.replace({name: 'personal'})
+        }
       }
     })
   }

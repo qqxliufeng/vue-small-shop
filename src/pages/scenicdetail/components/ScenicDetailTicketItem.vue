@@ -18,11 +18,11 @@
                 <div class="s-d-hot-item-info-info-info">
                     <p>
                         <span>已售{{item.totalSales}}</span>
-                        <span class="ticket-must" @click="itemClick">购票须知<i class="el-icon-arrow-right"></i></span>
+                        <span class="ticket-must">购票须知<i class="el-icon-arrow-right"></i></span>
                     </p>
                 </div>
                 <div class="s-d-hot-item-info-info-action">
-                    <el-button type="primary" size="mini" @click="itemClick" class="button">立即预定</el-button>
+                    <el-button type="primary" size="mini" class="button">立即预定</el-button>
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     itemClick () {
-      this.$root.$emit('ticketItemClick', this.item)
+      this.$router.push({name: 'reseveDetail', query: { goods_id: this.item.goodsId, scenicId: this.$route.query.s }})
     }
   }
 }

@@ -9,7 +9,7 @@
                 <span>
                     <el-tag type="success" class="s-d-info-tag" size="mini" v-for="(item, index) of scenicInfo.tags" :key="index">{{item}}</el-tag>
                 </span>
-                <span class="s-d-info-header-saller">已售{{scenicInfo.totalSales}}</span>
+                <!-- <span class="s-d-info-header-saller">已售{{scenicInfo.totalSales}}</span> -->
             </div>
             <div class="s-d-info-middle-wrapper">
                 <slot name="info" :scenicInfo="scenicInfo"></slot>

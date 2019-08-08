@@ -19,7 +19,7 @@
           </div>
           <div class="scenic-detail">
             <div class="scenic-detail-rate">
-              <el-rate disabled :value="Number(scenic.mark) || 0" show-score text-color="#ff9900" score-template="{value}分"></el-rate>
+              <el-rate disabled :value="Number(scenic.mark) || 0" show-score text-color="#ff9900" :score-template="Number(scenic.mark) > 0 ? '{value}分' : '暂无评价'"></el-rate>
             </div>
             <span class="scenic-detail-sale-count">
               已售{{scenic.totalSales}}张
