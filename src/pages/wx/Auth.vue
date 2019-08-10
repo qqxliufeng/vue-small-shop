@@ -15,20 +15,54 @@ export default {
   },
   methods: {
     wxLogin () {
-      if (this.code && this.$root.userInfo.isLogin() && (!this.$root.userInfo.state.openid || this.$root.userInfo.state.openid === 'null')) {
-        this.$http(this.$urlPath.wxLogin, {
-          code: this.code
-        }, '正在授权登录…', (data) => {
-          this.$root.userInfo.setUserInfoOpenId(data.data.openid)
-          // this.$router.go(-1)
-          window.location.href = this.href
-        }, (errorCode, error) => {
-          // this.$router.go(-1)
-          window.location.href = this.href
-          console.log(error)
-        })
+      // this.code && this.$root.userInfo.isLogin() && (!this.$root.userInfo.state.openid || this.$root.userInfo.state.openid === 'null')
+      if (this.code) {
+        if (this.$root.userInfo.isLogin() && (!this.$root.userInfo.state.openid || this.$root.userInfo.state.openid === 'null')) {
+          this.$http(this.$urlPath.getOpenId, {
+            code: this.code
+          }, '正在授权登录…', (data) => {
+            if (data) {
+              this.$root.userInfo.setUserInfoOpenId(data.data.openid)
+              let backPage = this.$root.state.getBackPage()
+              if (backPage) {
+                this.$router.replace({name: backPage.name, query: backPage.query, params: backPage.params}, () => {
+                  this.$root.state.setBackPage(null)
+                })
+              } else {
+                window.location.href = this.href
+              }
+            } else {
+              this.$router.replace({name: 'loginContainer'})
+            }
+          }, (errorCode, error) => {
+            this.$router.replace({name: 'loginContainer'})
+            console.log(error)
+          })
+        } else {
+          this.$http(this.$urlPath.wxLogin, {
+            code: this.code
+          }, '正在授权登录…', (data) => {
+            if (data) {
+              this.$root.userInfo.setUserInfo(data.data.userinfo)
+              this.$root.state.saveUserInfo(data.data.userinfo.token)
+              let backPage = this.$root.state.getBackPage()
+              if (backPage) {
+                this.$router.replace({name: backPage.name, query: backPage.query, params: backPage.params}, () => {
+                  this.$root.state.setBackPage(null)
+                })
+              } else {
+                window.location.href = this.href
+              }
+            } else {
+              // 如果获取openid失败，则去登录页面
+              this.$router.replace({name: 'loginContainer'})
+            }
+          }, (errorCode, error) => {
+            this.$router.replace({name: 'loginContainer'})
+            console.log(error)
+          })
+        }
       } else {
-        // this.$router.go(-1)
         window.location.href = this.href
       }
     }

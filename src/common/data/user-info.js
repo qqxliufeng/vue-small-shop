@@ -15,7 +15,7 @@ const userInfo = {
   },
   isLogin () {
     // return this.state.id !== '' && this.state.id !== null && this.state.token !== '' && this.state.token !== null && this.state.phone !== '' && this.state.phone !== null
-    return this.state.id && this.state.token && this.state.phone
+    return this.state.id && this.state.token
   },
   setUserInfo (userInfo) {
     this.state.id = userInfo.id

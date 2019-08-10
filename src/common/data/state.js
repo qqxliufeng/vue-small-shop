@@ -59,9 +59,18 @@ export default {
     }
   },
   setBackPage (backPage) {
-    this.backPage = backPage
+    if (backPage) {
+      localStorage.setItem('backpage', JSON.stringify(backPage))
+    } else {
+      localStorage.removeItem('backpage')
+    }
   },
   getBackPage () {
-    return this.backPage
+    let backPage = localStorage.getItem('backpage')
+    if (backPage || backPage !== 'null') {
+      this.backPage = JSON.parse(backPage)
+      return this.backPage
+    }
+    return null
   }
 }

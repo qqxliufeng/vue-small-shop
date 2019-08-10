@@ -42,11 +42,11 @@
                     </li>
                 </ul>
             </div>
-            <div class="p-logout-wrapper">
+            <!-- <div class="p-logout-wrapper">
               <p class="p-logout" @click="logout">退出登录</p>
-            </div>
+            </div> -->
         </div>
-        <confirm-dialog content="是否要退出当前账号？" @dialogConfirm="confirmLogout" ref="confirmDialog"></confirm-dialog>
+        <!-- <confirm-dialog content="是否要退出当前账号？" @dialogConfirm="confirmLogout" ref="confirmDialog"></confirm-dialog> -->
     </div>
 </template>
 <script>

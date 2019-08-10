@@ -31,6 +31,8 @@ export const userInfo = userInfoUrl + 'user_info'
 
 export const wxLogin = userInfoUrl + 'wx_login'
 
+export const getOpenId = userInfoUrl + 'get_openid'
+
 const favoritesUrl = 'favorites/'
 
 export const userFavoriteScenicUrl = favoritesUrl + 'favorite_scenic'

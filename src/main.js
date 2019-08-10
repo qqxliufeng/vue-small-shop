@@ -112,23 +112,26 @@ Vue.prototype.$http = function (url, params = {}, loadingTip, onRequestSuccess, 
   }
 }
 router.beforeEach((to, from, next) => {
-  if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1 && userInfo.isLogin() && (!userInfo.state.openid || userInfo.state.openid === 'null')) {
-    // 如果是进入到授权页面 或者 是进入到回调页面，则直接放行
-    if (to.name === 'auth' || to.query.code) {
-      next()
-    } else {
-      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx10a7de3814315ba1&redirect_uri=http://www.store.liuyiqinzi.com&response_type=code&scope=snsapi_base&state=1#wechat_redirect'
-    }
-  } else {
-    if (to.matched.some(m => m.meta.auth)) {
-      if (userInfo.isLogin()) {
+  if (to.matched.some(m => m.meta.auth)) {
+    if (userInfo.isLogin()) {
+      // 如果已经登录了，但是在微信是没有openId，则需要进行授权（此场景应用于 不是在微信公众号里面打开页面）
+      if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1 && (!userInfo.state.openid || userInfo.state.openid === 'null')) {
+        state.setBackPage(to)
+        location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx10a7de3814315ba1&redirect_uri=http://www.store.liuyiqinzi.com&response_type=code&scope=snsapi_base&state=1#wechat_redirect'
+      } else {
         next()
+      }
+    } else {
+      // 如果是在微信公众号里面打开的，且没有登录过，则需要进行授权
+      if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1) {
+        state.setBackPage(to)
+        location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx10a7de3814315ba1&redirect_uri=http://www.store.liuyiqinzi.com&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
       } else {
         autoLogin(to, from, next)
       }
-    } else {
-      next()
     }
+  } else {
+    next()
   }
 })
 

@@ -12,14 +12,14 @@
                         :before-upload="beforeUpload"
                         :on-success="uploadSuccess"
                         :on-error="uploadError">
-                        <img class="avatar p-i-right" :src="avatar">
+                        <img class="avatar p-i-right" :src="$utils.image.getImagePath(avatar)">
                     </el-upload>
                </div>
            </li>
            <li>
                <div class="p-i-item">
                    <span class="p-i-left">用户名</span>
-                   <input class="p-i-right p-i-text" placeholder="请输入用户名" maxlength="10" v-model="userName"/>
+                   <input class="p-i-right p-i-text" placeholder="请输入用户名" maxlength="10" v-model="userName" :disabled="$isWeiXin"/>
                </div>
            </li>
            <li>
@@ -68,7 +68,7 @@ export default {
   },
   data () {
     return {
-      avatar: this.$urlPath.imageUrl + this.$root.userInfo.state.avatar,
+      avatar: this.$root.userInfo.state.avatar,
       uploadAvatar: null,
       userName: this.$root.userInfo.state.name,
       realName: this.$root.userInfo.state.realName,
