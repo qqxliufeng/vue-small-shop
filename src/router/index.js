@@ -293,6 +293,9 @@ export default new Router({
       path: '/orderinfo/:orderId/:orderType',
       name: 'orderInfo',
       component: OrderInfo,
+      meta: {
+        auth: true
+      },
       props: true
     },
     {
@@ -362,6 +365,16 @@ export default new Router({
       meta: {
         auth: true
       }
+    },
+    {
+      path: '/invitedticketdetail',
+      name: 'invitedTicketDetail',
+      component: () => import('@/pages/scenicdetail/InvitedTicketDetail')
+    },
+    {
+      path: '/activityruleinfo',
+      name: 'activityRuleInfo',
+      component: () => import('@/pages/activity/ActivityRuleInfo')
     },
     {
       path: '/helpfriend',

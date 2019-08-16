@@ -1,22 +1,33 @@
 <template>
-  <div class='activity-ticket-info-container' v-if="assist">
-    <div class="tip-wrapper">
-      <div class="tip-bg"></div>
-      <div class="tip" v-if="assist.join.status === 1">
-        恭喜，任务已完成
+  <div>
+    <div class='activity-ticket-info-container' v-if="assist">
+      <div class="tip-wrapper">
+        <div class="tip-bg"></div>
+        <div class="tip" v-if="assist.join.status === 1">
+          恭喜，任务已完成
+        </div>
+        <!-- <div class="tip" v-else>再邀请<span class="num">{{assist.join.status === 1 ? 0 : assist.number - assist.join.join_number}}</span>位好友助力，即可购买此票</div> -->
+        <div class="tip" v-else>限量500张，剩余250张</div>
       </div>
-      <div class="tip" v-else>再邀请<span class="num">{{assist.join.status === 1 ? 0 : assist.number - assist.join.join_number}}</span>位好友助力，即可购买此票</div>
+      <div class="time-wrapper">
+        <p class="time-relase-tip">距结束</p>
+        <count-down :time="Math.max(0, (assist.end_time - time) * 1000)" @end="countDownEnd">
+          <template slot-scope="props">
+              <span class="time">
+                  <span class="time-bg">{{ props.days }}</span><i>天</i><span class="time-bg">{{ props.hours }}</span><i>:</i><span  class="time-bg">{{ props.minutes }}</span><i>:</i><span  class="time-bg">{{ props.seconds }}</span>
+              </span>
+          </template>
+        </count-down>
+      </div>
     </div>
-    <div class="time-wrapper">
-      <p class="time-relase-tip">剩余时间</p>
-      <count-down :time="Math.max(0, (assist.end_time - time) * 1000)" @end="countDownEnd">
-        <template slot-scope="props">
-            <span class="time">
-                <span class="time-bg">{{ props.days }}</span><i>天</i><span class="time-bg">{{ props.hours }}</span><i>时</i><span  class="time-bg">{{ props.minutes }}</span><i>分</i><span  class="time-bg">{{ props.seconds }}</span><i>秒</i>
+     <div class="ticket-info-wrapper">
+        <p class="title">{{scenicInfo.title +'   '+ scenicInfo.goodsTitle}}</p>
+        <div class="tags-wrapper" v-if="scenicInfo.tags">
+            <span>
+                <el-tag type="success" class="s-d-info-tag" size="mini" v-for="(item, index) of scenicInfo.tags" :key="index">{{item}}</el-tag>
             </span>
-        </template>
-      </count-down>
-    </div>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -26,6 +37,7 @@ export default {
   name: 'activityTicketInfo',
   props: {
     assist: Object,
+    scenicInfo: Object,
     time: Number
   },
   components: {
@@ -88,4 +100,10 @@ export default {
             & > i
                 textStyle(#666, .22)
                 margin 0 rem(.05)
+.ticket-info-wrapper
+    padding rem(.3) rem(.2)
+    .title
+        textStyle(#333, .32)
+    .tags-wrapper
+        margin-top rem(.2)
 </style>

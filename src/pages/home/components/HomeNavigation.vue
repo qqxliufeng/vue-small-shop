@@ -96,10 +96,14 @@ export default {
       this.$router.replace({path: '/index/' + this.$root.state.identity + '/' + this.$root.state.storeId})
     },
     startOrder () {
-      this.$router.push({name: 'orderAllList'})
+      this.$router.push({name: 'orderAllList'}, null, () => {
+        this.$refs.menu.activeIndex = '1'
+      })
     },
     startMine () {
-      this.$router.replace({name: 'personal', params: {backName: 'personal'}})
+      this.$router.replace({name: 'personal', params: {backName: 'personal'}}, null, () => {
+        this.$refs.menu.activeIndex = '1'
+      })
     },
     startCustomService () {
       this.$router.push({name: 'customService'})

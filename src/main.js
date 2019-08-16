@@ -122,13 +122,20 @@ router.beforeEach((to, from, next) => {
         next()
       }
     } else {
+      // 没有登录的话 自动去登录
+      autoLogin(to, from, next)
       // 如果是在微信公众号里面打开的，且没有登录过，则需要进行授权
-      if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1) {
-        state.setBackPage(to)
-        location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx10a7de3814315ba1&redirect_uri=http://www.store.liuyiqinzi.com&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
-      } else {
-        autoLogin(to, from, next)
-      }
+      // if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1) {
+      //   // 如果已经存在token了，则自动登录
+      //   if (userInfo.state.token) {
+      //     autoLogin()
+      //   } else {
+      //     state.setBackPage(to)
+      //     location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx10a7de3814315ba1&redirect_uri=http://www.store.liuyiqinzi.com&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
+      //   }
+      // } else {
+      //   autoLogin(to, from, next)
+      // }
     }
   } else {
     next()
@@ -152,17 +159,22 @@ function autoLogin (to, from, next) {
         next()
       }).catch((error) => {
         console.log(error)
-        state.setBackPage(to)
-        next({name: 'loginContainer'})
-        // next({name: 'loginContainer', params: { backName: to }})
+        loadFail(to, next)
       })
     }).catch(error => {
       console.log(error)
-      state.setBackPage(to)
-      next({name: 'loginContainer'})
+      loadFail(to, next)
     })
   } else {
-    state.setBackPage(to)
+    loadFail(to, next)
+  }
+}
+
+function loadFail (to, next) {
+  state.setBackPage(to)
+  if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1) {
+    location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx10a7de3814315ba1&redirect_uri=http://www.store.liuyiqinzi.com&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
+  } else {
     next({name: 'loginContainer'})
   }
 }

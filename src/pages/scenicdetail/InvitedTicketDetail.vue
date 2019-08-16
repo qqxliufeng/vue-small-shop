@@ -1,39 +1,44 @@
 <template>
-  <div class='activity-ticket-detail-container'>
-      <section v-if="loadState && scenicInfo">
-        <ticket-header :scenicInfo="scenicInfo" @back="back" @collection="collection" :isFavorites="this.goodsInfo.is_favorites"></ticket-header>
-        <ticket-images :imageList="scenicInfo.imageList"></ticket-images>
-        <activity-ticket-info :assist="assist" :time="time" :scenicInfo="scenicInfo" @countDownEnd="countDownEnd"></activity-ticket-info>
-        <ticket-friend-info :scenicInfo="scenicInfo"></ticket-friend-info>
-        <div class="t-d-detail-buy-info">
-            <p class="t-d-detail-buy-info-title">购买须知</p>
-            <ticket-notice-wrapper :goodsInfo="goodsInfo"></ticket-notice-wrapper>
-            <div class="sperator-2"></div>
-        </div>
-        <div class="sperator-line-2"></div>
-        <actviity-ticket-bottom :assist="assist" :isFavorites="this.goodsInfo.is_favorites" @collection="collection" @seeOtherGoods="seeOtherGoods" @invoteFriend="invoteFriend"></actviity-ticket-bottom>
-      </section>
-      <section v-else-if="!loadState">
-        <load-fail @reload="reload"></load-fail>
-      </section>
-      <section>
-        <el-dialog
-          title="分享图片"
-          :visible.sync="dialogVisible"
-          width="90%">
-          <div class="share-content">
-            <div @click="shareActivityImage">
-              <img :src="ShareWXImage" style="width: 1.5rem">
-              <p>分享到微信</p>
+  <div>
+      <div class='activity-ticket-detail-container' v-if="$isWeiXin">
+          <section v-if="loadState && scenicInfo">
+            <ticket-header :scenicInfo="scenicInfo" @back="back" @collection="collection" :isFavorites="this.goodsInfo.is_favorites"></ticket-header>
+            <ticket-images :imageList="scenicInfo.imageList"></ticket-images>
+            <activity-ticket-info :assist="assist" :time="time" :scenicInfo="scenicInfo" @countDownEnd="countDownEnd"></activity-ticket-info>
+            <invitation-info :scenicInfo="scenicInfo"></invitation-info>
+            <div class="t-d-detail-buy-info">
+                <p class="t-d-detail-buy-info-title">购买须知</p>
+                <ticket-notice-wrapper :goodsInfo="goodsInfo"></ticket-notice-wrapper>
+                <div class="sperator-2"></div>
             </div>
-            <div @click="saveActivityImage">
-              <img :src="ShareCodeImage">
-              <p>保存图片</p>
-            </div>
-          </div>
-        </el-dialog>
-      </section>
-      <bottom-friend-list @close="closeFriendList" v-if="showFriendList && assist && assist.join.user.length > 0" :users="assist.join.user"></bottom-friend-list>
+            <div class="sperator-line-2"></div>
+            <actviity-ticket-bottom :assist="assist" :isFavorites="this.goodsInfo.is_favorites" @collection="collection" @seeOtherGoods="seeOtherGoods" @invoteFriend="invoteFriend"></actviity-ticket-bottom>
+          </section>
+          <section v-else-if="!loadState">
+            <load-fail @reload="reload"></load-fail>
+          </section>
+          <section>
+            <el-dialog
+              title="分享图片"
+              :visible.sync="dialogVisible"
+              width="90%">
+              <div class="share-content">
+                <div @click="shareActivityImage">
+                  <img :src="ShareWXImage" style="width: 1.5rem">
+                  <p>分享到微信</p>
+                </div>
+                <div @click="saveActivityImage">
+                  <img :src="ShareCodeImage">
+                  <p>保存图片</p>
+                </div>
+              </div>
+            </el-dialog>
+          </section>
+          <bottom-friend-list @close="closeFriendList" v-if="showFriendList && assist && assist.join.user.length > 0" :users="assist.join.user"></bottom-friend-list>
+      </div>
+      <div v-else class="weixin-tip">
+          请在微信中打开此页面
+      </div>
   </div>
 </template>
 
@@ -41,7 +46,7 @@
 import TicketHeader from './components/ScenicDetailHeader'
 import TicketImages from './components/ScenicDetailImages'
 import TicketInfo from './components/ScenicDetailInfo'
-import TicketFriendInfo from './components/ActivityFriendInfo'
+import InvitationInfo from './components/InvitationInfo'
 import TicketComment from './components/ScenicDetailComment'
 import TicketNoticeWrapper from 'common/components/ticket-notice-wrapper'
 import TicketRemark from 'common/components/ticket-remark'
@@ -58,7 +63,7 @@ export default {
     TicketHeader,
     TicketImages,
     TicketInfo,
-    TicketFriendInfo,
+    InvitationInfo,
     TicketComment,
     TicketNoticeWrapper,
     TicketRemark,
@@ -210,7 +215,6 @@ export default {
         info.brief = data.data.scenic.brief
         info.price = data.data.scenic.minPrice
         this.scenicInfo = info
-        this.scenicInfo.goodsTitle = data.data.goods.goods_title
         this.goodsInfo = data.data.goods
         this.assist = data.data.assist
         this.time = Number(data.time)
@@ -252,7 +256,9 @@ export default {
     this.storeId = this.sellerInfo.storeId
   },
   mounted () {
-    this.getData()
+    if (this.$isWeiXin) {
+      this.getData()
+    }
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
@@ -358,4 +364,10 @@ export default {
         & > p
             margin-top rem(.2)
             textStyle(#333, .3)
+.weixin-tip
+    height 100vh
+    display flex
+    justify-content center
+    align-items center
+    textStyle(#888, .4)
 </style>

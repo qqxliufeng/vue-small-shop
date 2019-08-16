@@ -4,11 +4,11 @@
         <home-header :scrollTop="mScrollTop" @changeCity="changeCity" @cityDiffrent="cityDiffrent"></home-header>
         <div ref="homeContent" class="h-content" id="home">
           <home-swiper :list="swiperList"></home-swiper>
-          <home-notice v-if="notice.notice_title !== undefined && notice.notice_title" :title="notice.notice_title" :identity="identity" :storeId="storeId"></home-notice>
+          <home-notice v-if="notice && notice.notice_title !== undefined && notice.notice_title" :title="notice.notice_title" :identity="identity" :storeId="storeId"></home-notice>
           <home-type :list="categoryList"></home-type>
           <div class="sperator-line-height"></div>
-          <home-activity v-if="assist && assist.length > 0" :assist="assist" :time="time"></home-activity>
-          <div class="sperator-line-height" v-if="assist && assist.length > 0"></div>
+          <home-activity v-if="assist && assist.length > 0 " :assist="assist" :time="time"></home-activity>
+          <div class="sperator-line-height" v-if="assist && assist.length > 0 "></div>
           <div class="h-h-title" v-if="hotList && hotList.length > 0">人气推荐</div>
           <home-hot v-if="hotList && hotList.length > 0" :list="hotList" @itemClick="startDetail"></home-hot>
           <div class="h-h-ad-wrapper" v-if="ad">

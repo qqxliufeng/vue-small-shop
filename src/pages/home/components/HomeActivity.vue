@@ -12,26 +12,28 @@
                       <img v-lazy="$utils.image.getImagePath(item.scenicimages)">
                       <div class="bottom-title-wrapper">
                         <div class="bottom-title-bg"></div>
-                        <div class="bottom-title">{{item.goods_title}}</div>
+                        <div class="bottom-title">
+                          <span class="price"><i>￥</i>{{item.min_price}}</span>
+                          <span class="price-tip">助力价</span>
+                        </div>
                       </div>
                       <div class="activity-tip">
                         <div class="tip-bg"></div>
                         <div class="tip-wrapper">
-                          <span class="tip">助力价</span><span class="tip-price">￥{{item.min_price}}</span>
+                          <span class="tip">距结束
+                            <count-down :time="Math.max(0, (item.end_time - time) * 1000)">
+                                <template slot-scope="props">
+                                    <span class="time-wrapper"><span>{{ props.days }}</span><i>天</i><span>{{ props.hours }}</span><i>:</i><span>{{ props.minutes }}</span><i>:</i><span>{{ props.seconds }}</span>
+                                    </span>
+                                </template>
+                            </count-down>
+                          </span>
                         </div>
                       </div>
                     </div>
                     <div class="info-wrapper">
-                      <p class="release-time">剩余:<span>{{releaseDays}}天</span></p>
-                      <div class="time-count-down-wrapper">
-                        <count-down :time="Math.max(0, (item.end_time - time) * 1000)">
-                          <template slot-scope="props">
-                              <span style="display:none">{{releaseDays = props.days}}</span>
-                              <div class="time-wrapper"><span class="time-bg">{{ props.hours }}</span><i>:</i><span  class="time-bg">{{ props.minutes }}</span><i>:</i><span  class="time-bg">{{ props.seconds }}</span>
-                              </div>
-                          </template>
-                        </count-down>
-                      </div>
+                      <p class="title">{{item.scenic_name}}</p>
+                      <p class="ticke-name">{{item.goods_title}}</p>
                     </div>
                   </div>
                 </el-card>
@@ -59,7 +61,7 @@ export default {
   data () {
     return {
       swiperOption: {
-        slidesPerView: 3,
+        slidesPerView: 2.5,
         spaceBetween: 10
       },
       releaseDays: 0
@@ -129,7 +131,7 @@ export default {
         .content-wrapper
             .img-wrapper
                 position relative
-                height rem(2)
+                height rem(2.5)
                 overflow hidden
                 & > img
                     width 100%
@@ -148,8 +150,8 @@ export default {
                     width 100%
                     z-index 1
                     .bottom-title-bg
-                        background #000
-                        opacity .3
+                        background-color $orangeColor
+                        opacity .8
                         position absolute
                         top 0
                         left 0
@@ -163,6 +165,17 @@ export default {
                         box-sizing border-box
                         position relative
                         z-index 10
+                        .price
+                            font-size rem(.3)
+                            font-style italic
+                            & > i
+                              font-size rem(.2)
+                        .price-tip
+                            background #fff
+                            color $orangeColor
+                            border-radius rem(.05)
+                            padding 0 rem(.1)
+                            margin-left rem(.1)
                 .activity-tip
                     position absolute
                     top 0
@@ -193,14 +206,14 @@ export default {
               .info-wrapper
                   padding rem(.2) 0
                   overflow hidden
-                  .release-time
+                  text-align left
+                  .title
                       color $orangeColor
-                      font-size rem(.25)
-                      padding-left rem(.1)
-                      & > span
-                          margin-left rem(.1)
-                          margin-right rem(.1)
-                          font-weight bold
+                      font-size rem(.3)
+                      padding rem(.1)
+                  .ticke-name
+                      padding rem(.1)
+                      textStyle(#666, .25)
                   .time-count-down-wrapper
                       text-align center
                       margin-top rem(.1)

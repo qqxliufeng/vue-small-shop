@@ -6,6 +6,12 @@
                     <div class="h-h-hot-wrapper" @click="itemClick(item)">
                         <div class="h-h-hot-image-wrapper">
                             <img v-lazy="$utils.image.getImagePath(item.scenic.scenicimages)">
+                            <div class="scenic-name-wrapper">
+                              <div class="scenic-name-bg"></div>
+                              <div class="scenic-title">
+                                {{item.scenic.s_title}}
+                            </div>
+                        </div>
                         </div>
                         <p class="h-h-hot-wrapper-title">{{item.goodsTitle}}</p>
                         <div class="h-h-hot-wrapper-prices">
@@ -33,7 +39,7 @@ export default {
   data () {
     return {
       swiperOption: {
-        slidesPerView: 3,
+        slidesPerView: 2.5,
         spaceBetween: 10
       }
     }
@@ -67,11 +73,31 @@ export default {
         .h-h-hot-wrapper
             position relative
             .h-h-hot-image-wrapper
-                height 1.6rem
+                height rem(2.5)
+                position relative
                 & img
                     width 100%
                     height 100%
                     object-fit cover
+                .scenic-name-wrapper
+                    position absolute
+                    bottom 0
+                    left 0
+                    right 0
+                    .scenic-name-bg
+                        background-color #FFAD2E
+                        opacity .8
+                        position absolute
+                        top 0
+                        right 0
+                        left 0
+                        bottom 0
+                    .scenic-title
+                        textStyle(#fff, .25)
+                        ellipsis()
+                        padding rem(.08)
+                        position relative
+                        z-index 1
             .h-h-hot-wrapper-title
                 normalTextStyle(#333, .25)
                 ellipsis()
