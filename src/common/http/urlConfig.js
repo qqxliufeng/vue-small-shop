@@ -1,7 +1,11 @@
 
 // const baseIP = 'http://192.168.1.100'
 
-const baseIP = 'http://www.liuyiqinzi.com'
+// 正式用的
+// const baseIP = 'http://www.liuyiqinzi.com'
+
+// 测试用的
+const baseIP = 'https://www.yixinglvxing.com'
 
 export const baseUrl = baseIP + '/store_api/v1/'
 

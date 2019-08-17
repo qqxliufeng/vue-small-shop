@@ -68,6 +68,7 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .h-h-hot-container
+    border-bottom #f5f5f5 solid rem(.2)
     .h-h-hot-card
         padding rem(.3)
         .h-h-hot-wrapper

@@ -118,6 +118,7 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .home-activity-container
+    border-bottom #f5f5f5 solid rem(.2)
     .h-h-title
         normalTextStyle(#333, .32)
         padding rem(.2) rem(.1)

@@ -55,9 +55,10 @@ export default {
 @import '~styles/mixin.styl'
 .home-type-container
     width 100%
-    height 50vw
+    max-height 50vw
     overflow hidden
     border-top 1px solid #f5f5f5
+    border-bottom #f5f5f5 solid rem(.2)
     .swiper-container
         & >>> .swiper-pagination-bullets
             bottom 1px

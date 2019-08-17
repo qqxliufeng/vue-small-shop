@@ -36,7 +36,7 @@
             <div class="line"></div>
             <div>
                 <ul>
-                    <li v-for="(item,index) of actionItemList" :key="index" class="p-action-item" @click="itemClick(index)">
+                    <li v-for="(item,index) of tempActionItemList" :key="index" class="p-action-item" @click="itemClick(index)">
                         <img :src="item.icon" alt="">
                         <span>{{item.title}}</span>
                     </li>
@@ -61,7 +61,6 @@ import img07 from 'images/img_personal_03.png'
 import img08 from 'images/img_personal_04.png'
 import img09 from 'images/img_personal_05.png'
 import img10 from 'images/img_personal_06.png'
-import img11 from 'images/img_personal_07.png'
 import ConfirmDialog from 'common/components/confirm-dialog'
 export default {
   name: 'personal',
@@ -99,31 +98,33 @@ export default {
       actionItemList: [
         {
           title: '我的收藏',
-          icon: img05
+          icon: img05,
+          show: true
         },
         {
           title: '我的优惠券',
-          icon: img06
+          icon: img06,
+          show: true
         },
         {
           title: '留言板',
-          icon: img07
+          icon: img07,
+          show: true
         },
         {
           title: '常用联系人',
-          icon: img08
+          icon: img08,
+          show: true
         },
         {
           title: '个人信息',
-          icon: img09
+          icon: img09,
+          show: true
         },
         {
           title: '密码修改',
-          icon: img10
-        },
-        {
-          title: '联系客服',
-          icon: img11
+          icon: img10,
+          show: !this.$isWeiXin
         }
       ],
       isShowRedNotify: true,
@@ -136,6 +137,11 @@ export default {
     },
     avatar () {
       return this.$utils.image.getImagePath(this.$root.userInfo.state.avatar)
+    },
+    tempActionItemList () {
+      return this.actionItemList.filter((item) => {
+        return item.show
+      })
     }
   },
   methods: {

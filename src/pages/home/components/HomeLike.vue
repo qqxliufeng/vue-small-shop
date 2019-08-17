@@ -51,7 +51,7 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .h-l-like-container
-    // padding-bottom rem($headerHeight)
+    border-bottom #f5f5f5 solid rem(.2)
     .h-l-like-wrapper
         display flex
         padding rem(.2) rem(.3)
