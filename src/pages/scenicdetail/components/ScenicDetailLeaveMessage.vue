@@ -5,7 +5,7 @@
             <span>{{ask.ask_count}}条留言</span>
         </div>
         <div v-if="showEmpty" class="s-d-l-m-message-empty">
-            <el-button size="mini" type="warning" @click="startLeaveMessage">去留言</el-button>
+            <el-button type="primary" size="mini" class="button" @click="startLeaveMessage">去留言</el-button>
         </div>
         <div v-else class="s-d-l-m-message-info-wrapper">
             <ul>
@@ -61,7 +61,7 @@ export default {
         borderBottom()
         & span:nth-child(1)
             float left
-            normalTextStyle(#333, .35)
+            normalTextStyle(#333, .3)
             .icon
                 textStyle($orangeColor, .35)
                 margin-right rem(.1)
@@ -74,6 +74,10 @@ export default {
         align-items center
         min-height rem(2)
         normalTextStyle(#888, .3)
+        .button
+            background $orangeColor
+            border-color $orangeColor
+            padding rem(.15) rem(.5)
     .s-d-l-m-message-info-item
         display flex
         align-items center

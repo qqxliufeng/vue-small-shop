@@ -359,15 +359,12 @@ export default new Router({
       component: Auth
     },
     {
-      path: '/activityticketdetail',
+      path: '/atdetail',
       name: 'activityTicketDetail',
-      component: ActivityTicketDetail,
-      meta: {
-        auth: true
-      }
+      component: ActivityTicketDetail
     },
     {
-      path: '/invitedticketdetail',
+      path: '/itdetail',
       name: 'invitedTicketDetail',
       component: () => import('@/pages/scenicdetail/InvitedTicketDetail')
     },

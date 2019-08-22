@@ -11,7 +11,7 @@
             <div class="sperator-2"></div>
         </div>
         <div class="sperator-line-2"></div>
-        <actviity-ticket-bottom :assist="assist" :isFavorites="this.goodsInfo.is_favorites" @collection="collection" @seeOtherGoods="seeOtherGoods" @invoteFriend="invoteFriend"></actviity-ticket-bottom>
+        <actviity-ticket-bottom :assist="assist" :isFavorites="goodsInfo.is_favorites" @collection="collection" @seeOtherGoods="seeOtherGoods" @invoteFriend="invoteFriend"></actviity-ticket-bottom>
       </section>
       <section v-else-if="!loadState">
         <load-fail @reload="reload"></load-fail>
@@ -83,6 +83,7 @@ export default {
       storeId: null,
       scenicId: null,
       goodsId: null,
+      promotionId: null,
       assist: null,
       time: null,
       dialogVisible: false,
@@ -191,7 +192,7 @@ export default {
       this.$http(this.$urlPath.goodsDetailUrl, {
         s_id: this.scenicId,
         goods_id: this.goodsId,
-        assist_id: this.$route.query.aid,
+        assist_id: this.promotionId,
         identity: this.identity,
         store_id: this.storeId
       }, '', (data) => {
@@ -239,10 +240,11 @@ export default {
     }
   },
   created () {
-    this.scenicId = this.$route.query.scenicId
-    this.goodsId = this.$route.query.goods_id
-    let tempIdentity = this.$route.query.identity
-    let tempStoreId = this.$route.query.storeId
+    this.scenicId = this.$route.query.scenicId || this.$route.query.s
+    this.goodsId = this.$route.query.goods_id || this.$route.query.g
+    let tempIdentity = this.$route.query.identity || this.$route.query.i
+    let tempStoreId = this.$route.query.storeId || this.$route.query.t
+    this.promotionId = this.$route.query.promotionId || this.$route.query.p
     // 如果是直接从分享页面过来的，则要存一下identity 和 storeId
     if (tempIdentity && tempStoreId) {
       this.$root.state.saveSallerInfo(tempIdentity, tempStoreId)

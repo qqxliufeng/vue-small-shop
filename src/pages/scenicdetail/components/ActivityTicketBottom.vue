@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="wrapper-2" @click="seeOtherGoods">查看其它商品</div>
-    <div class="wrapper-3" @click="invoteFriend">{{ assist.join.status === 1 ? '立即购买' : '邀请好友'}}</div>
+    <div class="wrapper-3" @click="invoteFriend">{{ assist && assist.join.status === 1 ? '立即购买' : '邀请好友'}}</div>
   </div>
 </template>
 

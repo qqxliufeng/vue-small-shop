@@ -47,5 +47,5 @@ export default {
             vertical-align middle
             & + span
                 vertical-align middle
-                font-size rem(.35)
+                font-size rem(.3)
 </style>

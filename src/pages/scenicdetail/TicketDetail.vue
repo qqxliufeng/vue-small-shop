@@ -165,10 +165,10 @@ export default {
     }
   },
   created () {
-    this.scenicId = this.$route.query.scenicId
-    this.goodsId = this.$route.query.goods_id
-    let tempIdentity = this.$route.query.identity
-    let tempStoreId = this.$route.query.storeId
+    this.scenicId = this.$route.query.scenicId || this.$route.query.s
+    this.goodsId = this.$route.query.goods_id || this.$route.query.g
+    let tempIdentity = this.$route.query.identity || this.$route.query.i
+    let tempStoreId = this.$route.query.storeId || this.$route.query.t
     // 如果是直接从分享页面过来的，则要存一下identity 和 storeId
     if (tempIdentity && tempStoreId) {
       this.$root.state.saveSallerInfo(tempIdentity, tempStoreId)

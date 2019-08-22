@@ -153,7 +153,7 @@ export default {
         background-color #f5f7f8
         margin rem(.15)
     .s-d-t-type-title-wrapper
-        normalTextStyle(#333, .35)
+        normalTextStyle(#333, .3)
         borderBottom()
         height $headerHeight
         line-height $headerHeight

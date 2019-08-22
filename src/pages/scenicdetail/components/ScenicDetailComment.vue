@@ -86,7 +86,7 @@ export default {
         borderBottom()
         & span:nth-child(1)
             float left
-            normalTextStyle(#333, .35)
+            normalTextStyle(#333, .3)
             & i
                 color $orangeColor
             .icon
