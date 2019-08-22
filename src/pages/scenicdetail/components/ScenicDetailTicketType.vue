@@ -1,7 +1,8 @@
 <template>
-    <div class="s-d-t-type-container" v-if="typeGoodsList && typeGoodsList.length > 0">
+    <el-card :body-style="{padding: '0'}"  class="s-d-t-type-container" v-if="typeGoodsList && typeGoodsList.length > 0">
         <div class="s-d-t-type-title-wrapper" :class="{'tab-fixed' : isFixed}"  ref="type" @click="positionType">
-            门票类型
+            <span class="el-icon-tickets icon"></span>
+            <span>门票类型</span>
         </div>
         <div id="tab" v-show="isFixed" style="height: 1.72rem"></div>
         <div>
@@ -22,8 +23,7 @@
                      <span class="tab-item" @click="selectTabItem(index)" :class="{'tab-item-selected' : tabItem.isSelected}">{{tabItem.goodsTypeName}}</span>
                  </swiper-slide>
              </swiper>
-             <div style="height: 1px; background-color:#f5f5f5"></div>
-             <ul v-if="currentTabItems && currentTabItems.length > 0">
+             <ul v-if="currentTabItems && currentTabItems.length > 0" class="ticket-wrapper">
                 <li v-for="item of currentTabItems" :key="item.goodsId">
                     <scenic-detail-ticket-item :item="item"></scenic-detail-ticket-item>
                 </li>
@@ -32,7 +32,7 @@
                 <span>暂无门票</span>
             </div>
         </div>
-    </div>
+    </el-card>
 </template>
 
 <script>
@@ -147,7 +147,11 @@ export default {
 .tab-scroll
     margin-top 2 * $headerHeight
 .s-d-t-type-container
-    border-top #f5f5f5 solid rem(.1)
+    margin rem(.2)
+    .ticket-wrapper
+        border-radius rem(.1)
+        background-color #f5f7f8
+        margin rem(.15)
     .s-d-t-type-title-wrapper
         normalTextStyle(#333, .35)
         borderBottom()
@@ -155,6 +159,8 @@ export default {
         line-height $headerHeight
         padding-left rem(.2)
         background-color #ffffff
+        .icon
+            textStyle($orangeColor, .35)
     .s-d-t-type-wrapper
         padding rem(.2)
     & >>> .el-tabs__nav-scroll

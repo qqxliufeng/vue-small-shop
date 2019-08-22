@@ -17,6 +17,7 @@
               </div>
             </template>
           </scenic-detail-info>
+          <safe-protect></safe-protect>
           <scenic-detail-hot :hotGoodsList="hotGoodsList" v-if="hotGoodsList && hotGoodsList.length > 0"></scenic-detail-hot>
           <scenic-detail-ticket-type :typeGoodsList="typeGoodsList"></scenic-detail-ticket-type>
           <scenic-detail-leave-message :ask="ask"></scenic-detail-leave-message>
@@ -32,6 +33,7 @@
 </template>
 
 <script>
+import SafeProtect from 'common/components/safe-protect'
 import ScenicDetailHeader from './components/ScenicDetailHeader'
 import ScenicDetailImages from './components/ScenicDetailImages'
 import ScenicDetailInfo from './components/ScenicDetailInfo'
@@ -43,6 +45,7 @@ import LoadFail from 'common/components/loading/load-fail'
 export default {
   name: 'scenicDetail',
   components: {
+    SafeProtect,
     ScenicDetailHeader,
     ScenicDetailImages,
     ScenicDetailInfo,
@@ -212,7 +215,7 @@ export default {
     & p:nth-child(2), & p:nth-child(3)
         normalTextStyle(#888, .25)
 .s-d-l-m-comment-info-see-more
-    normalTextStyle(#333, .32)
+    normalTextStyle(#666, .3)
     padding rem(.2)
     text-align center
     border-top #f5f5f5 solid rem(.05)

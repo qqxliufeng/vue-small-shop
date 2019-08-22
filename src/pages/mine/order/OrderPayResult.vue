@@ -64,7 +64,11 @@ export default {
       } else {
         vm.from = from
         if (from.name) {
-          vm.$router.replace({name: 'personal'})
+          if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1) {
+            console.log('在微信里面')
+          } else {
+            vm.$router.replace({name: 'personal'})
+          }
         }
       }
     })

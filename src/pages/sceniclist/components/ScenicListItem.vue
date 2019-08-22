@@ -35,7 +35,7 @@
             <div class="h-l-like-info-wrapper">
                 <p>{{item.s_title}}</p>
                 <p>{{item.brief}}</p>
-                <p><span>￥{{item.minPrice}}</span><i>起</i><span>已售{{item.totalSales}}</span></p>
+                <p><span>￥{{item.minPrice}}</span><i>起</i><span v-if="item.totalSales > 0">已售{{item.totalSales}}</span></p>
             </div>
         </div>
     </div>

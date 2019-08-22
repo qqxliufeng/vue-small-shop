@@ -92,19 +92,26 @@ export default {
             font-size 12px
             margin-left rem(.1)
         & >>> .el-tag
-            font-size rem(.15)
+            font-size rem(.2)
         & >>> .el-tag--mini
-            height rem(.3)
-            line-height rem(.3)
+            height rem(.35)
+            line-height rem(.35)
         .tags
             .tag
                 margin 0 rem(.05)
+                & >>> .el-tag
+                    background-color transparent
+                    border-radius 1px
+                & >>> .el-tag--success
+                    background-color transparent
+                & >>> .el-tag--danger
+                    background-color transparent
         .no-comment
             textStyle(#888, .25)
         .money
             overflow hidden
             position absolute
-            top rem(.2)
+            top rem(.5)
             right rem(.1)
             & span:nth-child(1)
                 display inline-block
@@ -123,8 +130,8 @@ export default {
                     color #ccc
                     margin-left rem(.05)
             .order
-                textStyle(#fff, .25)
+                textStyle(#fff, .24)
                 background-color $orangeColor
                 border-radius rem(.05)
-                padding rem(.05) rem(.15)
+                padding rem(.08) rem(.15)
 </style>

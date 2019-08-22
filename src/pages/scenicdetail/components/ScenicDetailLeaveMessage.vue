@@ -1,7 +1,7 @@
 <template>
-    <div class="s-d-l-m-message-container" v-if="ask">
+    <el-card :body-style="{padding: 0}" class="s-d-l-m-message-container" v-if="ask">
         <div class="s-d-l-m-message-title">
-            <span>留言板</span>
+            <span><span class="el-icon-chat-line-square icon"></span>留言板</span>
             <span>{{ask.ask_count}}条留言</span>
         </div>
         <div v-if="showEmpty" class="s-d-l-m-message-empty">
@@ -21,7 +21,7 @@
                 查看更多
             </div>
         </div>
-    </div>
+    </el-card>
 </template>
 
 <script>
@@ -54,7 +54,7 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .s-d-l-m-message-container
-    border-top #f5f5f5 solid rem(.1)
+    margin rem(.2)
     .s-d-l-m-message-title
         overflow hidden
         padding rem(.2)
@@ -62,6 +62,9 @@ export default {
         & span:nth-child(1)
             float left
             normalTextStyle(#333, .35)
+            .icon
+                textStyle($orangeColor, .35)
+                margin-right rem(.1)
         & span:nth-child(2)
             float right
             normalTextStyle(#888, .3)
@@ -89,7 +92,7 @@ export default {
         & span:nth-child(3)
             normalTextStyle(#888, .28)
     .s-d-l-m-message-info-see-more
-        normalTextStyle(#333, .32)
+        normalTextStyle(#666, .3)
         padding rem(.2)
         text-align center
         border-top #f5f5f5 solid rem(.05)

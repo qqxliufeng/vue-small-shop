@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <el-card :body-style="{padding: '0'}">
       <div class="o-i-ticket-safe-container" @click="dialogVisible = true">
         <p>优待客消费保障</p>
         <div class="o-i-ticket-info-tag">
@@ -20,7 +20,7 @@
           <el-button type="primary" @click="dialogVisible = false" size="mini">确 定</el-button>
         </span>
       </el-dialog>
-  </div>
+  </el-card>
 </template>
 
 <script>

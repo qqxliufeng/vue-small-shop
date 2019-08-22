@@ -17,7 +17,7 @@
             <div class="s-d-hot-item-info-info-wrapper">
                 <div class="s-d-hot-item-info-info-info">
                     <p>
-                        <span>已售{{item.totalSales}}</span>
+                        <span v-if="item.totalSales > 0">已售{{$utils.common.trasformNum(item.totalSales)}}</span>
                         <span class="ticket-must">购票须知<i class="el-icon-arrow-right"></i></span>
                     </p>
                 </div>
@@ -26,6 +26,7 @@
                 </div>
             </div>
         </div>
+        <div class="line"></div>
         <!-- <div class="s-d-hot-item-will-online">
             【即将上线】距离开始还有10时10分
         </div> -->
@@ -51,7 +52,11 @@ export default {
 @import '~styles/mixin.styl'
 .s-d-hot-item-wrapper
     position relative
-    border-bottom #f5f5f5 solid rem(.05)
+    .line
+        width 90%
+        height 1px
+        background-color #eee
+        margin 0 auto
     .s-d-hot-item-info
         padding rem(.2)
         .s-d-hot-item-info-title-wrapper
@@ -87,6 +92,13 @@ export default {
                 margin-top rem(.08)
                 .tag
                     margin 0 rem(.1)
+                    & >>> .el-tag
+                        background-color transparent
+                        border-radius 1px
+                    & >>> .el-tag--success
+                        background-color transparent
+                    & >>> .el-tag--danger
+                        background-color transparent
         .s-d-hot-item-info-info-wrapper
             display flex
             justify-content center

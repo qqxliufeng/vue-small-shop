@@ -1,6 +1,7 @@
 <template>
     <div class="s-d-info-container">
-        <div class="s-d-info-header-wrapper">
+        <el-card :body-style="{padding: '0'}">
+            <div class="s-d-info-header-wrapper">
             <div class="title-wrapper">
                 <span>{{scenicInfo.title}}</span>
                 <span>{{scenicInfo.mark}}分</span>
@@ -20,24 +21,19 @@
                         <p>{{scenicInfo.tel}}</p>
                     </div>
                     <a :href="'tel:' + scenicInfo.tel" class="iconfont s-d-info-scenic-phone">&#xe6a9;</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <slot name="bottomInfo"></slot>
-        <div class="sperator-line"></div>
-        <safe-protect></safe-protect>
+            <slot name="bottomInfo"></slot>
+        </el-card>
     </div>
 </template>
 
 <script>
-import SafeProtect from 'common/components/safe-protect'
 export default {
   name: 'scenicDetailInfo',
   props: {
     scenicInfo: Object
-  },
-  components: {
-    SafeProtect
   },
   methods: {
     startScenicInfo (type) {
@@ -51,8 +47,12 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .s-d-info-container
+    margin rem(.2)
+    margin-top rem(-.4)
+    position relative
+    z-index 1
     .s-d-info-header-wrapper
-        padding rem(.3)
+        padding rem(.2)
         .title-wrapper
             margin-bottom rem(.2)
             overflow hidden

@@ -1,7 +1,7 @@
 <template>
-    <div class="s-d-comment-container" v-if="comment">
+    <el-card :body-style="{padding: 0}" class="s-d-comment-container" v-if="comment">
         <div class="s-d-comment-title-wrapper">
-            <span>综合评价：<i>{{Number(comment.avg_mark).toFixed(1)}}</i></span>
+            <span><span class="el-icon-star-off icon"></span>综合评价：<i>{{Number(comment.avg_mark).toFixed(1)}}</i></span>
             <span>{{comment.count}}次评价</span>
         </div>
         <div class="s-d-comment-tags-wrapper">
@@ -12,7 +12,7 @@
                 <scenic-detail-comment-item :item="item"></scenic-detail-comment-item>
             </li>
         </ul>
-    </div>
+    </el-card>
 </template>
 
 <script>
@@ -79,7 +79,7 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .s-d-comment-container
-    border-top #f5f5f5 solid rem(.1)
+    margin rem(.2)
     .s-d-comment-title-wrapper
         overflow hidden
         padding rem(.2)
@@ -89,6 +89,9 @@ export default {
             normalTextStyle(#333, .35)
             & i
                 color $orangeColor
+            .icon
+                textStyle($orangeColor, .35)
+                margin-right rem(.1)
         & span:nth-child(2)
             float right
             normalTextStyle(#888, .3)
