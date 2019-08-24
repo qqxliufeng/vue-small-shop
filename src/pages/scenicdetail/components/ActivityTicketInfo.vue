@@ -1,13 +1,16 @@
 <template>
-  <div>
+  <div style="box-shadow: 0 2px 12px 0 rgba(0,0,0,.1)">
     <div class='activity-ticket-info-container' v-if="assist">
       <div class="tip-wrapper">
         <div class="tip-bg"></div>
-        <div class="tip" v-if="assist.join.status === 1">
+        <div class="tip" v-if="$root.userInfo.isLogin() && assist.join.status === 1">
           恭喜，任务已完成
         </div>
         <!-- <div class="tip" v-else>再邀请<span class="num">{{assist.join.status === 1 ? 0 : assist.number - assist.join.join_number}}</span>位好友助力，即可购买此票</div> -->
-        <div class="tip" v-else>限量500张，剩余250张</div>
+        <div class="tip" v-else>
+          <span v-if="Number(scenicInfo.totalStock) === 0">活动商品不限量，快来参加吧~</span>
+          <span v-else class="num">限量<i>{{scenicInfo.totalStock}}</i>张，剩余<i>{{Number(scenicInfo.totalStock) - Number(scenicInfo.totalSales)}}</i>张</span>
+        </div>
       </div>
       <div class="time-wrapper">
         <p class="time-relase-tip">距结束</p>
@@ -84,8 +87,11 @@ export default {
             padding-left rem(.2)
             font-size rem(.25)
             .num
-                font-size rem(.4)
+                font-size rem(.3)
                 margin 0 rem(.1)
+                & > i
+                    textStyle($orangeColor, .32)
+                    margin 0 rem(.1)
     .time-wrapper
         flex 1
         text-align center

@@ -1,13 +1,13 @@
 <template>
   <div class='activity-ticket-bottom-container'>
     <div class="wrapper-1">
-      <div class="collection-wrapper" @click="collection">
+      <div class="collection-wrapper" @click="collection" v-if="isShow">
         <p :class="[collectionState ===  1 ? 'el-icon-star-on' : 'el-icon-star-off']"></p>
         <p>收藏</p>
       </div>
     </div>
     <div class="wrapper-2" @click="seeOtherGoods">查看其它商品</div>
-    <div class="wrapper-3" @click="invoteFriend">{{ assist && assist.join.status === 1 ? '立即购买' : '邀请好友'}}</div>
+    <div class="wrapper-3" @click="invoteFriend" v-if="isShow">{{ buttonName }}</div>
   </div>
 </template>
 
@@ -17,9 +17,12 @@ export default {
   name: '',
   props: {
     assist: Object,
-    isFavorites: Number
+    isFavorites: Number,
+    isShow: {
+      type: Boolean,
+      default: true
+    }
   },
-  components: {},
   data () {
     return {
       collectionState: this.isFavorites
@@ -28,6 +31,19 @@ export default {
   watch: {
     isFavorites (newVal, oldVal) {
       this.collectionState = newVal
+    }
+  },
+  computed: {
+    buttonName () {
+      if (this.$root.userInfo.isLogin()) {
+        if (this.assist && this.assist.join.status === 1) {
+          return '立即购买'
+        } else {
+          return '邀请好友'
+        }
+      } else {
+        return '邀请好友'
+      }
     }
   },
   methods: {
@@ -39,7 +55,6 @@ export default {
     },
     invoteFriend () {
       this.$emit('invoteFriend')
-      // this.$router.push({name: 'helpFriend'})
     }
   }
 }

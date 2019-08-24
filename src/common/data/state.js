@@ -60,7 +60,12 @@ export default {
   },
   setBackPage (backPage) {
     if (backPage) {
-      localStorage.setItem('backpage', JSON.stringify(backPage))
+      const tempPage = {
+        name: backPage.name,
+        query: backPage.query,
+        params: backPage.params
+      }
+      localStorage.setItem('backpage', JSON.stringify(tempPage))
     } else {
       localStorage.removeItem('backpage')
     }

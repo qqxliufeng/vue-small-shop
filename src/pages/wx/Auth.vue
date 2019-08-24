@@ -47,9 +47,13 @@ export default {
               this.$root.state.saveUserInfo(data.data.userinfo.token)
               let backPage = this.$root.state.getBackPage()
               if (backPage) {
-                this.$router.replace({name: backPage.name, query: backPage.query, params: backPage.params}, () => {
-                  this.$root.state.setBackPage(null)
-                })
+                if (backPage.name === 'activityTicketDetail') {
+                  window.location.href = 'http://www.store.liuyiqinzi.com/atdetail?s=' + backPage.query.s + '&i=' + backPage.query.i + '&t=' + backPage.query.t + '&g=' + backPage.query.g + '&p=' + backPage.query.p
+                } else {
+                  this.$router.replace({name: backPage.name, query: backPage.query, params: backPage.params}, () => {
+                    this.$root.state.setBackPage(null)
+                  })
+                }
               } else {
                 window.location.href = this.href
               }

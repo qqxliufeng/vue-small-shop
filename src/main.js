@@ -78,7 +78,10 @@ Vue.prototype.$http = function (url, params = {}, loadingTip, onRequestSuccess, 
         } else if (response.status === 401) {
           this.$toast('当前账号已过期，请重新登录')
           userInfo.clearInfoAction()
-          router.replace({name: 'loginContainer'})
+          if (navigator.userAgent.toLowerCase().indexOf('micromessenger') === -1) {
+            router.replace({name: 'loginContainer'})
+          }
+          onRequestFail(401, '账号过期了')
         } else {
           if (onRequestFail) {
             onRequestFail(-1, '请求失败，请重试…')
@@ -94,7 +97,10 @@ Vue.prototype.$http = function (url, params = {}, loadingTip, onRequestSuccess, 
         if (error && error.toString().indexOf('401') !== -1) {
           this.$toast('当前账号已过期，请重新登录')
           userInfo.clearInfoAction()
-          router.replace({name: 'loginContainer'})
+          if (navigator.userAgent.toLowerCase().indexOf('micromessenger') === -1) {
+            router.replace({name: 'loginContainer'})
+          }
+          onRequestFail(401, '账号过期了')
         } else {
           if (onRequestFail) {
             onRequestFail(-1, '请求失败，请重试…')
@@ -117,7 +123,7 @@ router.beforeEach((to, from, next) => {
       // 如果已经登录了，但是在微信是没有openId，则需要进行授权（此场景应用于 不是在微信公众号里面打开页面）
       if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1 && (!userInfo.state.openid || userInfo.state.openid === 'null')) {
         state.setBackPage(to)
-        location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx10a7de3814315ba1&redirect_uri=http://www.store.liuyiqinzi.com&response_type=code&scope=snsapi_base&state=1#wechat_redirect'
+        location.href = urlPath.weixinAuthUrl
       } else {
         next()
       }
@@ -173,7 +179,7 @@ function autoLogin (to, from, next) {
 function loadFail (to, next) {
   state.setBackPage(to)
   if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1) {
-    location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx10a7de3814315ba1&redirect_uri=http://www.store.liuyiqinzi.com&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
+    location.href = urlPath.weixinAuthUrl
   } else {
     next({name: 'loginContainer'})
   }

@@ -1,39 +1,43 @@
 <template>
-  <div class='activity-ticket-detail-container'>
-      <section v-if="loadState && scenicInfo">
-        <ticket-header :scenicInfo="scenicInfo" @back="back" @collection="collection" :isFavorites="this.goodsInfo.is_favorites"></ticket-header>
-        <ticket-images :imageList="scenicInfo.imageList"></ticket-images>
-        <activity-ticket-info :assist="assist" :time="time" :scenicInfo="scenicInfo" @countDownEnd="countDownEnd"></activity-ticket-info>
-        <ticket-friend-info :scenicInfo="scenicInfo"></ticket-friend-info>
-        <div class="t-d-detail-buy-info">
-            <p class="t-d-detail-buy-info-title">购买须知</p>
-            <ticket-notice-wrapper :goodsInfo="goodsInfo"></ticket-notice-wrapper>
-            <div class="sperator-2"></div>
-        </div>
-        <div class="sperator-line-2"></div>
-        <actviity-ticket-bottom :assist="assist" :isFavorites="goodsInfo.is_favorites" @collection="collection" @seeOtherGoods="seeOtherGoods" @invoteFriend="invoteFriend"></actviity-ticket-bottom>
-      </section>
-      <section v-else-if="!loadState">
-        <load-fail @reload="reload"></load-fail>
-      </section>
-      <section>
-        <el-dialog
-          title="分享图片"
-          :visible.sync="dialogVisible"
-          width="90%">
-          <div class="share-content">
-            <div @click="shareActivityImage">
-              <img :src="ShareWXImage" style="width: 1.5rem">
-              <p>分享到微信</p>
-            </div>
-            <div @click="saveActivityImage">
-              <img :src="ShareCodeImage">
-              <p>保存图片</p>
-            </div>
+  <div>
+    <div class='activity-ticket-detail-container' v-if="$isWeiXin">
+        <section v-if="loadState && scenicInfo">
+          <ticket-header :scenicInfo="scenicInfo" @back="back" @collection="collection" :isFavorites="goodsInfo.is_favorites"></ticket-header>
+          <ticket-images :imageList="scenicInfo.imageList"></ticket-images>
+          <activity-ticket-info :assist="assist" :time="time" :scenicInfo="scenicInfo" @countDownEnd="countDownEnd"></activity-ticket-info>
+          <ticket-friend-info :assist="assist" :scenicInfo="scenicInfo" @inviteFriend="invoteFriend" @ativityRuleInfo="ativityRuleInfo"></ticket-friend-info>
+          <div class="t-d-detail-buy-info">
+              <p class="t-d-detail-buy-info-title">购买须知</p>
+              <ticket-notice-wrapper :goodsInfo="goodsInfo"></ticket-notice-wrapper>
+              <div class="sperator-2"></div>
           </div>
-        </el-dialog>
-      </section>
-      <bottom-friend-list @close="closeFriendList" v-if="showFriendList && assist && assist.join.user.length > 0" :users="assist.join.user"></bottom-friend-list>
+          <div class="sperator-line-2"></div>
+          <actviity-ticket-bottom :assist="assist" :isFavorites="goodsInfo.is_favorites" @collection="collection" @seeOtherGoods="seeOtherGoods" @invoteFriend="invoteFriend"></actviity-ticket-bottom>
+        </section>
+        <section v-else-if="!loadState">
+          <load-fail @reload="reload"></load-fail>
+        </section>
+        <section>
+          <el-dialog
+            title="分享图片"
+            :visible.sync="dialogVisible"
+            width="90%">
+            <div class="share-content">
+              <div @click="saveActivityImage">
+                <img :src="ShareCodeImage">
+                <p>保存图片</p>
+              </div>
+              <div @click="shareActivityImage">
+                <img :src="ShareWXImage" style="width: 1.5rem">
+                <p>分享到微信</p>
+              </div>
+            </div>
+          </el-dialog>
+        </section>
+    </div>
+    <div v-else class="weixin-tip">
+        请在微信中打开此页面
+    </div>
   </div>
 </template>
 
@@ -107,6 +111,9 @@ export default {
       }
       this.isSeeMore = !this.isSeeMore
     },
+    ativityRuleInfo () {
+      this.$router.push({name: 'activityRuleInfo', query: {pid: this.promotionId}})
+    },
     reseve () {
       this.$router.push({name: 'reseveDetail', query: { goods_id: this.goodsId, goods_source: this.$route.query.goods_source, scenicId: this.scenicId }})
     },
@@ -135,37 +142,59 @@ export default {
           this.$toast(error)
         })
       } else {
-        this.$router.push({name: 'loginContainer'})
+        if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1) {
+          this.$root.state.setBackPage(this.$route)
+          location.href = this.$urlPath.weixinAuthUrl
+        } else {
+          this.$toast('此活动只可在微信中参加')
+        }
       }
     },
     seeOtherGoods () {
       this.$router.push({name: 'scenicDetail', query: {s: this.scenicId, i: this.$root.state.getSallerInfo().identity, t: this.$root.state.getSallerInfo().storeId}})
     },
     invoteFriend () {
-      if (this.assist.join.status === 1) {
-        if (!this.countDown) {
-          this.$router.push({name: 'reseveDetail', query: { goods_id: this.goodsId, scenicId: this.scenicId }})
+      if (this.$root.userInfo.isLogin()) {
+        if (this.assist.join.status === 1) {
+          if (!this.countDown) {
+            this.$router.push({name: 'reseveDetail', query: { goods_id: this.goodsId, scenicId: this.scenicId }})
+          } else {
+            this.$toast('活动已结束啦~')
+          }
         } else {
-          this.$toast('此活动已过期！')
+          this.$http(this.$urlPath.assistJoin, {
+            assist_id: this.promotionId,
+            goods_id: this.goodsId
+          }, '', (data) => {
+            this.activityInfo.aid = data.data.assist_id
+            this.activityInfo.uid = data.data.user_id
+            this.dialogVisible = true
+          }, (errorCode, error) => {
+            this.$toast(error)
+          })
         }
       } else {
-        this.$http(this.$urlPath.assistJoin, {
-          assist_id: this.$route.query.aid,
-          goods_id: this.goodsId
-        }, '', (data) => {
-          this.activityInfo.aid = data.data.assist_id
-          this.activityInfo.uid = data.data.user_id
-          this.dialogVisible = true
-        }, (errorCode, error) => {
-          this.$toast(error)
-        })
+        if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1) {
+          this.$root.state.setBackPage(this.$route)
+          location.href = this.$urlPath.weixinAuthUrl
+        } else {
+          this.$toast('此活动只可在微信中参加')
+        }
       }
     },
     closeFriendList () {
       this.showFriendList = false
     },
     saveActivityImage () {
-      this.$router.push({ name: 'shareActivityImage', query: { aid: this.activityInfo.aid, uid: this.activityInfo.uid } })
+      this.$router.push({ name: 'shareActivityImage',
+        query: {
+          p: this.activityInfo.aid,
+          uid: this.activityInfo.uid,
+          i: this.$root.state.getSallerInfo().identity,
+          t: this.$root.state.getSallerInfo().storeId,
+          s: this.scenicId,
+          g: this.goodsId
+        }})
     },
     shareActivityImage () {
       if (!this.$isWeiXin) {
@@ -173,23 +202,25 @@ export default {
         return
       }
       this.dialogVisible = false
-      let shareData = {
-        title: this.goodsInfo.goods_title,
-        desc: '快快来帮我助力吧~~',
-        link: this.$urlPath.shareActivityUrl(this.activityInfo.aid, this.activityInfo.uid, this.$root.state.getSallerInfo().identity, this.$root.state.getSallerInfo().storeId),
-        imgUrl: this.$utils.image.getImagePath(this.scenicInfo.imageList[0]),
-        success: () => {
-          this.$toast('注册成功，请点击上方分享按钮进行分享')
+      wx.ready(() => {
+        let shareData = {
+          title: this.goodsInfo.goods_title,
+          desc: '快快来帮我助力吧~~',
+          link: this.$urlPath.shareActivityUrl(this.activityInfo.aid, this.activityInfo.uid, this.$root.state.getSallerInfo().identity, this.$root.state.getSallerInfo().storeId, this.scenicId, this.goodsId),
+          imgUrl: this.$utils.image.getImagePath(this.scenicInfo.imageList[0]),
+          success: () => {
+            this.$toast('注册成功，请点击上方分享按钮进行分享')
+          }
         }
-      }
-      wx.updateAppMessageShareData(shareData)
-      wx.updateTimelineShareData(shareData)
+        wx.updateAppMessageShareData(shareData)
+        wx.updateTimelineShareData(shareData)
+      })
     },
     countDownEnd () {
       this.countDown = true
     },
     getData () {
-      this.$http(this.$urlPath.goodsDetailUrl, {
+      this.$http(this.$urlPath.promotionDetailUrl, {
         s_id: this.scenicId,
         goods_id: this.goodsId,
         assist_id: this.promotionId,
@@ -212,6 +243,8 @@ export default {
         info.price = data.data.scenic.minPrice
         this.scenicInfo = info
         this.scenicInfo.goodsTitle = data.data.goods.goods_title
+        this.scenicInfo.totalStock = data.data.goods.totalStock
+        this.scenicInfo.totalSales = data.data.goods.totalSales
         this.goodsInfo = data.data.goods
         this.assist = data.data.assist
         this.time = Number(data.time)
@@ -237,6 +270,25 @@ export default {
       } else {
         this.$router.go(-1)
       }
+    },
+    configPage () {
+      this.$http(this.$urlPath.getShareInfo, {
+        url: window.location.href.split('#')[0]
+      }, '', (data) => {
+        let wechat = data.data.config
+        if (wechat) {
+          wx.config({
+            debug: false,
+            appId: wechat.appId,
+            timestamp: wechat.timestamp,
+            nonceStr: wechat.nonceStr,
+            signature: wechat.signature,
+            jsApiList: wechat.jsApiList
+          })
+        }
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
     }
   },
   created () {
@@ -254,10 +306,24 @@ export default {
     this.storeId = this.sellerInfo.storeId
   },
   mounted () {
-    this.getData()
+    const token = this.$root.userInfo.state.token
+    if (token) {
+      this.$http(this.$urlPath.userInfo, {
+        token: token
+      }, '', (res) => {
+        res.data.token = token
+        this.$root.userInfo.setUserInfo(res.data)
+        this.getData()
+      }, (errorCode, error) => {
+        this.getData()
+      })
+    } else {
+      this.getData()
+    }
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
+      vm.configPage()
       vm.from = from
     })
   }
@@ -360,4 +426,10 @@ export default {
         & > p
             margin-top rem(.2)
             textStyle(#333, .3)
+.weixin-tip
+    height 100vh
+    display flex
+    justify-content center
+    align-items center
+    textStyle(#888, .4)
 </style>

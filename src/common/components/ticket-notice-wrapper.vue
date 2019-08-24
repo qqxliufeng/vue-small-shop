@@ -5,7 +5,6 @@
       <ticket-notice title="费用说明" :remarks="goodsInfo.explain"></ticket-notice>
       <div class="sperator-1"></div>
       <ticket-notice title="退款说明" :remarks="goodsInfo.refund"></ticket-notice>
-      <div class="sperator-1"></div>
   </div>
 </template>
 
@@ -18,10 +17,6 @@ export default {
   },
   components: {
     ticketNotice
-  },
-  data () {
-    return {
-    }
   }
 }
 </script>
@@ -30,7 +25,7 @@ export default {
 @import '~styles/mixin.styl'
 .sperator-1
     background-color #f5f5f5
-    height 2px
+    height 1px
     width 90%
     margin 0 auto
 </style>

@@ -16,11 +16,11 @@
                   <p class="t-d-intro-content" @click="startScenicInfo">{{delHtmlTag(slotProps.scenicInfo.brief)}}</p>
               </template>
           </ticket-info>
-          <div class="t-d-detail-buy-info">
+          <el-card :body-style="{padding: 0}" class="t-d-detail-buy-info">
               <p class="t-d-detail-buy-info-title">购买须知</p>
               <ticket-notice-wrapper :goodsInfo="goodsInfo"></ticket-notice-wrapper>
               <div class="sperator-2"></div>
-          </div>
+          </el-card>
           <div class="sperator-line-2"></div>
           <div class="t-d-detail-order-info-wrapper">
               <div class="collection-wrapper" @click="collection">
@@ -205,7 +205,7 @@ export default {
 .t-d-intro-ticket-name
     textStyle($orangeColor, .3)
     padding 0 0 rem(.3) 0
-    borderBottom()
+    border-radius 4px
     text-align right
     .ticket-name
         float left
@@ -237,10 +237,11 @@ export default {
     height $headerHeight
 .t-d-detail-buy-info
     padding rem(.2)
+    margin rem(.2)
+    border-radius 4px
     .t-d-detail-buy-info-title
         textStyle(#333, .35)
         padding rem(.2) 0
-        borderBottom()
     .t-d-detail-buy-info-content
         overflow hidden
         normalTextStyle(#888, .3)

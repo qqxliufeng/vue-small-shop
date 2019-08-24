@@ -3,11 +3,12 @@
         <div :style="{ 'background-color': top == 0 ? '#000' : 'transparent'}" @click="back">
             <span class="iconfont" :style="{'color': top == 0 ? '#fff' : '#000'}">&#xe625;</span>
         </div>
-        <div :style="{ 'background-color': top == 0 ? '#000' : 'transparent'}">
+        <div :style="{ 'background-color': top == 0 ? '#000' : 'transparent', 'display' : isShowCollection ? 'block' : 'none'}">
             <span
             :class="[ favorites ? 'el-icon-star-on' : 'el-icon-star-off' ]"
             :style="{'color': top == 0 ? '#fff' : '#000'}"
-            @click="collection"></span>
+            @click="collection"
+            v-if="isShowCollection"></span>
         </div>
         <div :style="opacityStyle"></div>
         <span class="header-title" :style="opacityStyle">{{scenicInfo.title}}</span>
@@ -19,7 +20,11 @@ export default {
   name: 'scenicDetailHeader',
   props: {
     scenicInfo: Object,
-    isFavorites: Number
+    isFavorites: Number,
+    isShowCollection: {
+      type: Boolean,
+      default: true
+    }
   },
   data () {
     return {

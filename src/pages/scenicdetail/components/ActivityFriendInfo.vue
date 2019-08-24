@@ -1,18 +1,19 @@
 <template>
   <div>
-    <div class='activity-friend-info-container'>
+    <div class='activity-friend-info-container' v-if="assist">
       <div class="header">
-        <span class="friend-tip">已有<i>3</i>位好友为您助力，还需<i>3</i>位</span>
-        <span class="action">继续邀请</span>
+        <span class="friend-tip" v-if="$root.userInfo.isLogin()">已有<i>{{assist.join.join_number}}</i>位好友为您助力<span v-if="assist.number - assist.join.join_number !== 0">，还需<i>{{assist.number - assist.join.join_number}}</i>位</span></span>
+        <span class="friend-tip" v-else>快快邀请好友参加吧~</span>
+        <span class="action" @click="inviteFriend">{{tip}}</span>
       </div>
-      <div class="friend-info-wrapper">
-        <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
+      <div class="friend-info-wrapper" v-if="$root.userInfo.isLogin() && assist.join.user && assist.join.user.length > 0">
+        <img v-for="(item, index) of assist.join.user" :key="index" :src="$utils.image.getImagePath(item.avatar)">
       </div>
     </div>
     <div class="s-d-info-middle-wrapper">
       <div class="activity-info-wrapper" @click="activityRuleInfo">
         <p>活动详情</p>
-        <p class="activity-info">活动详情活动详情活动详情活动详情活动详情活动详情活动详情活动详情活动详情活动详情活动详情活动详情活动详情</p>
+        <p class="activity-info">{{delHtmlTag(assist.details)}}</p>
       </div>
       <div class="open-time-wrapper">
           <p>营业时间</p>
@@ -36,7 +37,8 @@ import SafeProtect from 'common/components/safe-protect'
 export default {
   name: 'activityFriendInfo',
   props: {
-    scenicInfo: Object
+    scenicInfo: Object,
+    assist: Object
   },
   components: {
     SafeProtect
@@ -45,9 +47,30 @@ export default {
     return {
     }
   },
+  computed: {
+    tip () {
+      if (this.$root.userInfo.isLogin()) {
+        if (this.assist && this.assist.join.status === 1) {
+          return '立即购买'
+        }
+        return '邀请好友'
+      } else {
+        return '邀请好友'
+      }
+    }
+  },
   methods: {
     activityRuleInfo () {
-      this.$router.push({name: 'activityRuleInfo'})
+      this.$emit('ativityRuleInfo')
+    },
+    inviteFriend () {
+      this.$emit('inviteFriend')
+    },
+    delHtmlTag (str) {
+      if (str) {
+        return str.replace(/<[^>]+>/g, '')
+      }
+      return ''
     }
   }
 }
@@ -65,8 +88,9 @@ export default {
         align-items center
         .friend-tip
             textStyle(#333, .25)
-            & > i
+            & i
                 textStyle($orangeColor, .3)
+                margin 0 rem(.1)
         .action
             textStyle(#fff, .23)
             border-radius rem(.3)
@@ -118,7 +142,8 @@ export default {
           margin-top rem(.2)
           textStyle(#333, .3)
           .activity-info
-              ellipsis()
+              muitlLineEllipsis(2)
+              line-height rem(.32)
               margin-top rem(.2)
               textStyle(#888, .25)
 </style>

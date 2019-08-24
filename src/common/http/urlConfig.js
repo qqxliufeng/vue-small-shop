@@ -2,10 +2,10 @@
 // const baseIP = 'http://192.168.1.100'
 
 // 正式用的
-// const baseIP = 'http://www.liuyiqinzi.com'
+const baseIP = 'http://www.liuyiqinzi.com'
 
 // 测试用的
-const baseIP = 'https://www.yixinglvxing.com'
+// const baseIP = 'https://www.yixinglvxing.com'
 
 export const baseUrl = baseIP + '/store_api/v1/'
 
@@ -159,6 +159,8 @@ const assistModuleUrl = 'marketing/'
 
 export const assistDetail = assistModuleUrl + 'assist_detail'
 
+export const promotionDetailUrl = assistModuleUrl + 'promotion_detail'
+
 export const assistInvite = assistModuleUrl + 'assist_invite'
 
 export const assistJoin = assistModuleUrl + 'assist_join'
@@ -169,7 +171,12 @@ export const assistList = assistModuleUrl + 'assist'
 
 export const getShareInfo = assistModuleUrl + 'share'
 
-export function shareActivityUrl (aid, uid, i, s) {
-  return 'http://www.store.liuyiqinzi.com/helpfriend' + '?aid=' + aid + '&uid=' + uid + '&i=' + i + '&s=' + s
-  // return 'http://192.168.0.111:8080/helpfriend' + '?aid=' + aid + '&uid=' + uid + '&i=' + i + '&s=' + s
+export const getWxQrCode = assistModuleUrl + 'wx_qr_code'
+
+export const getActivityRuleDetails = assistModuleUrl + 'assist_details'
+
+export function shareActivityUrl (aid, uid, i, t, s, g) {
+  return 'http://www.store.liuyiqinzi.com/shareActivityImage' + '?p=' + aid + '&uid=' + uid + '&i=' + i + '&t=' + t + '&s=' + s + '&g=' + g
 }
+
+export const weixinAuthUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx10a7de3814315ba1&redirect_uri=http://www.store.liuyiqinzi.com&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'

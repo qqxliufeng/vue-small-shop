@@ -374,11 +374,6 @@ export default new Router({
       component: () => import('@/pages/activity/ActivityRuleInfo')
     },
     {
-      path: '/helpfriend',
-      name: 'helpFriend',
-      component: () => import('@/pages/activity/HelpFriend')
-    },
-    {
       path: '/shareactivityimage',
       name: 'shareActivityImage',
       component: () => import('@/pages/activity/ShareActivityImage')

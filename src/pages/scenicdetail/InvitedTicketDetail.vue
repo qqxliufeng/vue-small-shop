@@ -2,43 +2,39 @@
   <div>
       <div class='activity-ticket-detail-container' v-if="$isWeiXin">
           <section v-if="loadState && scenicInfo">
-            <ticket-header :scenicInfo="scenicInfo" @back="back" @collection="collection" :isFavorites="this.goodsInfo.is_favorites"></ticket-header>
+            <ticket-header :scenicInfo="scenicInfo" @back="back" @collection="collection" :isFavorites="this.goodsInfo.is_favorites" :isShowCollection="false"></ticket-header>
             <ticket-images :imageList="scenicInfo.imageList"></ticket-images>
             <activity-ticket-info :assist="assist" :time="time" :scenicInfo="scenicInfo" @countDownEnd="countDownEnd"></activity-ticket-info>
-            <invitation-info :scenicInfo="scenicInfo"></invitation-info>
+            <invitation-info :scenicInfo="scenicInfo" :assist="assist" @helper="helper" :inviteruser="inviterUser" @ativityRuleInfo="ativityRuleInfo"></invitation-info>
             <div class="t-d-detail-buy-info">
                 <p class="t-d-detail-buy-info-title">购买须知</p>
                 <ticket-notice-wrapper :goodsInfo="goodsInfo"></ticket-notice-wrapper>
                 <div class="sperator-2"></div>
             </div>
             <div class="sperator-line-2"></div>
-            <actviity-ticket-bottom :assist="assist" :isFavorites="this.goodsInfo.is_favorites" @collection="collection" @seeOtherGoods="seeOtherGoods" @invoteFriend="invoteFriend"></actviity-ticket-bottom>
+            <actviity-ticket-bottom :assist="assist" :isFavorites="this.goodsInfo.is_favorites" @collection="collection" @seeOtherGoods="seeOtherGoods" @invoteFriend="invoteFriend" :isShow="false"></actviity-ticket-bottom>
           </section>
           <section v-else-if="!loadState">
             <load-fail @reload="reload"></load-fail>
           </section>
-          <section>
-            <el-dialog
-              title="分享图片"
-              :visible.sync="dialogVisible"
-              width="90%">
-              <div class="share-content">
-                <div @click="shareActivityImage">
-                  <img :src="ShareWXImage" style="width: 1.5rem">
-                  <p>分享到微信</p>
-                </div>
-                <div @click="saveActivityImage">
-                  <img :src="ShareCodeImage">
-                  <p>保存图片</p>
-                </div>
-              </div>
-            </el-dialog>
-          </section>
-          <bottom-friend-list @close="closeFriendList" v-if="showFriendList && assist && assist.join.user.length > 0" :users="assist.join.user"></bottom-friend-list>
       </div>
       <div v-else class="weixin-tip">
           请在微信中打开此页面
       </div>
+      <el-dialog
+          title="提示"
+          :visible.sync="dialogVisible"
+          width="90%"
+          :show-close="false"
+          :close-on-click-modal="false">
+          <div class="share-content">
+            感谢您的参与，您已经为好友助力成功~
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button size="mini" @click="completeHelper">完成助力</el-button>
+            <el-button type="primary" size="mini" @click="completeHelper">我要参加</el-button>
+          </span>
+        </el-dialog>
   </div>
 </template>
 
@@ -56,7 +52,6 @@ import ActviityTicketBottom from './components/ActivityTicketBottom'
 import BottomFriendList from '@/pages/activity/comonents/BottomFriendList'
 import ShareCodeImage from 'images/img_share_code.png'
 import ShareWXImage from 'images/img_share_wx.png'
-var wx = require('weixin-js-sdk')
 export default {
   name: 'activityTicketDetail',
   components: {
@@ -88,15 +83,14 @@ export default {
       storeId: null,
       scenicId: null,
       goodsId: null,
+      promotionId: null,
+      uid: null,
       assist: null,
+      inviterUser: null,
       time: null,
       dialogVisible: false,
       ShareCodeImage,
       ShareWXImage,
-      activityInfo: {
-        aid: null,
-        uid: null
-      },
       countDown: false,
       showFriendList: true,
       canShareWX: false
@@ -120,9 +114,6 @@ export default {
     startScenicInfo () {
       this.$router.push({name: 'scenicInfo', query: {id: this.scenicId}})
     },
-    delHtmlTag (str) {
-      return str.replace(/<[^>]+>/g, '')
-    },
     collection () {
       if (this.$root.userInfo.isLogin()) {
         this.$http(this.$urlPath.userUnFavoroteGoodsUrl, {
@@ -143,62 +134,99 @@ export default {
       }
     },
     seeOtherGoods () {
-      this.$router.push({name: 'scenicDetail', query: {s: this.scenicId, i: this.$root.state.getSallerInfo().identity, t: this.$root.state.getSallerInfo().storeId}})
+      this.$router.replace({name: 'scenicDetail', query: {s: this.scenicId, i: this.$root.state.getSallerInfo().identity, t: this.$root.state.getSallerInfo().storeId}})
     },
     invoteFriend () {
       if (this.assist.join.status === 1) {
         if (!this.countDown) {
           this.$router.push({name: 'reseveDetail', query: { goods_id: this.goodsId, scenicId: this.scenicId }})
         } else {
-          this.$toast('此活动已过期！')
+          this.$toast('此活动已结束啦~')
         }
       } else {
-        this.$http(this.$urlPath.assistJoin, {
-          assist_id: this.$route.query.aid,
-          goods_id: this.goodsId
-        }, '', (data) => {
-          this.activityInfo.aid = data.data.assist_id
-          this.activityInfo.uid = data.data.user_id
-          this.dialogVisible = true
-        }, (errorCode, error) => {
-          this.$toast(error)
-        })
+        this.helper()
       }
     },
-    closeFriendList () {
-      this.showFriendList = false
-    },
-    saveActivityImage () {
-      this.$router.push({ name: 'shareActivityImage', query: { aid: this.activityInfo.aid, uid: this.activityInfo.uid } })
-    },
-    shareActivityImage () {
-      if (!this.$isWeiXin) {
-        this.$toast('此功能仅限在微信客户端使用')
+    helper () {
+      if (this.countDown) {
+        this.$toast('此活动已经结束啦~')
         return
       }
-      this.dialogVisible = false
-      let shareData = {
-        title: this.goodsInfo.goods_title,
-        desc: '快快来帮我助力吧~~',
-        link: this.$urlPath.shareActivityUrl(this.activityInfo.aid, this.activityInfo.uid, this.$root.state.getSallerInfo().identity, this.$root.state.getSallerInfo().storeId),
-        imgUrl: this.$utils.image.getImagePath(this.scenicInfo.imageList[0]),
-        success: () => {
-          this.$toast('注册成功，请点击上方分享按钮进行分享')
+      if (this.$isWeiXin) {
+        if (this.$root.userInfo.isLogin()) {
+          this.$router.replace({name: 'activityTicketDetail',
+            query:
+            {
+              p: this.promotionId,
+              uid: this.$root.userInfo.state.id,
+              i: this.identity,
+              t: this.storeId,
+              s: this.scenicId,
+              g: this.goodsId
+            }
+          })
+        } else {
+          const token = this.$root.userInfo.state.token
+          if (token) {
+            this.$http(this.$urlPath.userInfo, {
+              token: token
+            }, '', (res) => {
+              res.data.token = token
+              this.$root.userInfo.setUserInfo(res.data)
+              this.helperFriend()
+            }, (errorCode, error) => {
+              this.$root.state.setBackPage(this.$route)
+              location.href = this.$urlPath.weixinAuthUrl
+            })
+          } else {
+            this.$root.state.setBackPage(this.$route)
+            location.href = this.$urlPath.weixinAuthUrl
+          }
         }
+      } else {
+        this.$toast('此活动仅限于微信中参加')
       }
-      wx.updateAppMessageShareData(shareData)
-      wx.updateTimelineShareData(shareData)
+    },
+    helperFriend () {
+      if (this.countDown) {
+        this.$toast('此活动已经结束啦~')
+        return
+      }
+      this.$http(this.$urlPath.assistInvite, {
+        assist_id: this.promotionId,
+        invite_user_id: this.$root.userInfo.state.id, // 被邀请人的id
+        user_id: this.uid
+      }, '', (res) => {
+        this.dialogVisible = true
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
+    },
+    completeHelper () {
+      this.dialogVisible = false
+      this.$router.replace({name: 'activityTicketDetail',
+        query:
+        {
+          p: this.promotionId,
+          uid: this.$root.userInfo.state.id,
+          i: this.identity,
+          t: this.storeId,
+          s: this.scenicId,
+          g: this.goodsId
+        }
+      })
     },
     countDownEnd () {
       this.countDown = true
     },
     getData () {
-      this.$http(this.$urlPath.goodsDetailUrl, {
+      this.$http(this.$urlPath.promotionDetailUrl, {
         s_id: this.scenicId,
         goods_id: this.goodsId,
-        assist_id: this.$route.query.aid,
+        assist_id: this.promotionId,
         identity: this.identity,
-        store_id: this.storeId
+        store_id: this.storeId,
+        uid: this.uid
       }, '', (data) => {
         this.loadState = true
         let info = {}
@@ -216,7 +244,11 @@ export default {
         info.price = data.data.scenic.minPrice
         this.scenicInfo = info
         this.goodsInfo = data.data.goods
+        this.scenicInfo.goodsTitle = data.data.goods.goods_title
+        this.scenicInfo.totalStock = data.data.goods.totalStock
+        this.scenicInfo.totalSales = data.data.goods.totalSales
         this.assist = data.data.assist
+        this.inviterUser = data.data.inviter_user
         this.time = Number(data.time)
         for (let i in this.goodsInfo) {
           if (this.goodsInfo[i] instanceof Object) {
@@ -226,6 +258,9 @@ export default {
       }, (errorCode, error) => {
         this.loadState = false
       })
+    },
+    ativityRuleInfo () {
+      this.$router.push({name: 'activityRuleInfo', query: {pid: this.promotionId}})
     },
     back () {
       if (this.from) {
@@ -243,10 +278,12 @@ export default {
     }
   },
   created () {
-    this.scenicId = this.$route.query.scenicId
-    this.goodsId = this.$route.query.goods_id
-    let tempIdentity = this.$route.query.identity
-    let tempStoreId = this.$route.query.storeId
+    this.scenicId = this.$route.query.scenicId || this.$route.query.s
+    this.goodsId = this.$route.query.goods_id || this.$route.query.g
+    let tempIdentity = this.$route.query.identity || this.$route.query.i
+    let tempStoreId = this.$route.query.storeId || this.$route.query.t
+    this.promotionId = this.$route.query.p
+    this.uid = this.$route.query.uid
     // 如果是直接从分享页面过来的，则要存一下identity 和 storeId
     if (tempIdentity && tempStoreId) {
       this.$root.state.saveSallerInfo(tempIdentity, tempStoreId)
@@ -257,6 +294,9 @@ export default {
   },
   mounted () {
     if (this.$isWeiXin) {
+      if (this.$root.userInfo.isLogin()) {
+        this.helperFriend()
+      }
       this.getData()
     }
   },

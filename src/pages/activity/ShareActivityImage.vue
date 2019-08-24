@@ -33,7 +33,8 @@ export default {
   data () {
     return {
       showDialog: false,
-      postUrl: ''
+      postUrl: '',
+      shareUrl: ''
     }
   },
   watch: {
@@ -47,7 +48,7 @@ export default {
   },
   methods: {
     createCode () {
-      QRCode.toCanvas(this.$refs['qrcode'], this.$urlPath.shareActivityUrl(this.$route.query.aid, this.$route.query.uid, this.$root.state.getSallerInfo().identity, this.$root.state.getSallerInfo().storeId), error => {
+      QRCode.toCanvas(this.$refs['qrcode'], this.shareUrl, error => {
         console.log(error)
       })
     },
@@ -65,10 +66,24 @@ export default {
           this.postUrl = dataUrl
         })
       }, 100)
+    },
+    getData () {
+      this.$http(this.$urlPath.getWxQrCode, {
+        i: this.$route.query.i,
+        t: this.$route.query.t,
+        s: this.$route.query.s,
+        p: this.$route.query.p,
+        uid: this.$route.query.uid,
+        g: this.$route.query.g
+      }, '', (res) => {
+        this.shareUrl = res.data
+        this.createCode()
+        this.saveImage()
+      }, () => {})
     }
   },
   mounted () {
-    this.createCode()
+    this.getData()
   }
 }
 </script>

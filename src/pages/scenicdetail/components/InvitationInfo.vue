@@ -3,41 +3,21 @@
     <div class='invitation-friend-info-container'>
     <div class="header">
       <div class="user-info">
-        <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
+        <img :src="$utils.image.getImagePath(inviteruser.wx_headimgurl)">
         <span class="friend-tip">您的好友正在参加助力活动</span>
       </div>
-      <span class="action">我要参加</span>
+      <span class="action" @click="helper">我要参加</span>
     </div>
     <div class="friend-info-wrapper">
-      <p class="tip">已邀请3位好友为他助力，还需3位</p>
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <img src="http://www.liuyiqinzi.com/uploads/20190713/24451307ff15be83416dbcbb268a4769.jpg">
-      <span class="helper">为他助力</span>
+      <p class="tip">已邀请<i>{{assist.join.join_number}}</i>位好友为他助力，还需<i>{{assist.number - assist.join.join_number}}</i>位</p>
+      <img v-for="(item, index) of assist.join.user" :key="index" :src="$utils.image.getImagePath(item.avatar)">
+      <span class="helper" @click="helper" v-if="!$root.userInfo.isLogin()">为他助力</span>
     </div>
   </div>
   <div class="s-d-info-middle-wrapper">
-      <div class="activity-info-wrapper">
+      <div class="activity-info-wrapper" @click="ativityRuleInfo">
         <p>活动详情</p>
-        <p class="activity-info">活动详情活动详情活动详情活动详情活动详情活动详情活动详情活动详情活动详情活动详情活动详情活动详情活动详情</p>
+        <p class="activity-info">{{delHtmlTag(assist.details)}}</p>
       </div>
       <div class="open-time-wrapper">
           <p>营业时间</p>
@@ -61,10 +41,23 @@ import SafeProtect from 'common/components/safe-protect'
 export default {
   name: 'activityFriendInfo',
   props: {
-    scenicInfo: Object
+    scenicInfo: Object,
+    assist: Object,
+    inviteruser: Object
   },
-  data () {
-    return {
+  methods: {
+    delHtmlTag (str) {
+      if (str) {
+        return str.replace(/<[^>]+>/g, '')
+      } else {
+        return ''
+      }
+    },
+    helper () {
+      this.$emit('helper')
+    },
+    ativityRuleInfo () {
+      this.$emit('ativityRuleInfo')
     }
   },
   components: {
@@ -112,6 +105,9 @@ export default {
             margin-left rem(.1)
             margin-top rem(.1)
             margin-bottom rem(.1)
+            & > i
+                textStyle($orangeColor, .23)
+                margin 0 rem(.1)
         & > img
             object-fit cover
             height rem(.5)
@@ -159,7 +155,8 @@ export default {
           margin-top rem(.2)
           textStyle(#333, .3)
           .activity-info
-              ellipsis()
+              muitlLineEllipsis(2)
+              line-height rem(.32)
               margin-top rem(.2)
               textStyle(#888, .25)
 </style>
