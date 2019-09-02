@@ -78,6 +78,25 @@ export default {
       } else {
         return intNum
       }
+    },
+    splitNum (num) {
+      if (num) {
+        const length = num.length
+        switch (length) {
+          case 7:
+            return num.slice(0, 4) + '  ' + num.slice(4, 7)
+          case 8:
+            return num.slice(0, 4) + '  ' + num.slice(4, 8)
+          case 9:
+            return num.slice(0, 5) + '  ' + num.slice(5, 9)
+          case 10:
+            return num.slice(0, 5) + '  ' + num.slice(5, 10)
+          default:
+            return num
+        }
+      } else {
+        return ''
+      }
     }
   }
 }

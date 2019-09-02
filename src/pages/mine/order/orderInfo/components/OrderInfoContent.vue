@@ -9,11 +9,11 @@
         <p class="item-info">验票时间：{{scenic.ticket_check}}</p>
         <p class="item-info">验票地点：{{scenic.ticket_check_info}}</p>
         <div  v-if="voucher && voucher.length > 0">
-          <p class="item-info">入园凭证：</p>
+          <p class="item-info">凭证号：</p>
           <div class="ticket-info-container" v-if="sendCode === 0">
             <div class="code-wrapper" @click="showFullCode">
               <canvas class="canvas-code" ref="qrcode" :style="{ 'opacity': this.voucher[0].use_status === 0 ? '1': '0.4' }"></canvas>
-              <p :class="['code-text', enableClass]">{{voucher[0].voucher_number}}</p>
+              <p :class="['code-text', enableClass]">{{$utils.common.splitNum(voucher[0].voucher_number)}}</p>
             </div>
             <p class="download-img" @click="downloadImg" v-if="this.voucher[0].use_status === 0"><span class="el-icon-download"></span>下载图片</p>
             <div class="sperator-2"></div>

@@ -68,14 +68,7 @@ export default {
   },
   methods: {
     itemClick (item) {
-      this.$router.push({name: 'activityTicketDetail',
-        query: {
-          p: item.assist_id,
-          scenicId: item.scenic_id,
-          goods_id: item.goods_id,
-          identity: this.$root.state.getSallerInfo().identity,
-          storeId: this.$root.state.getSallerInfo().storeId
-        }})
+      window.location.href = 'http://www.store.liuyiqinzi.com/atdetail?s=' + item.scenic_id + '&i=' + this.$root.state.getSallerInfo().identity + '&t=' + this.$root.state.getSallerInfo().storeId + '&g=' + item.goods_id + '&p=' + item.assist_id
     },
     seeMore () {
       this.$router.push({ name: 'activityList' })

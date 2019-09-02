@@ -38,7 +38,7 @@
     </div>
     <div class="sperator-1"></div>
     <ticket-remark :remark="{ title: '下单店铺', value: detail.shop_name }"></ticket-remark>
-    <ticket-remark :remark="{ title: '订单编号', value: detail.out_trade_no }"></ticket-remark>
+    <ticket-remark :remark="{ title: '订单编号', value: detail.ord_id }"></ticket-remark>
     <ticket-remark v-for="(item, index) of detail.order_log" :key="index" :remark="{ title: item.type, value: item.ctime}"></ticket-remark>
   </div>
 </template>
@@ -52,10 +52,6 @@ export default {
   },
   components: {
     TicketRemark
-  },
-  data () {
-    return {
-    }
   }
 }
 </script>

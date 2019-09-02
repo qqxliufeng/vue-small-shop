@@ -16,6 +16,7 @@
                   <p class="t-d-intro-content" @click="startScenicInfo">{{delHtmlTag(slotProps.scenicInfo.brief)}}</p>
               </template>
           </ticket-info>
+          <safe-protect></safe-protect>
           <el-card :body-style="{padding: 0}" class="t-d-detail-buy-info">
               <p class="t-d-detail-buy-info-title">购买须知</p>
               <ticket-notice-wrapper :goodsInfo="goodsInfo"></ticket-notice-wrapper>
@@ -44,6 +45,7 @@ import TicketInfo from './components/ScenicDetailInfo'
 import TicketComment from './components/ScenicDetailComment'
 import TicketNoticeWrapper from 'common/components/ticket-notice-wrapper'
 import TicketRemark from 'common/components/ticket-remark'
+import SafeProtect from 'common/components/safe-protect'
 import LoadFail from 'common/components/loading/load-fail'
 export default {
   name: 'TicketDetail',
@@ -54,6 +56,7 @@ export default {
     TicketComment,
     TicketNoticeWrapper,
     TicketRemark,
+    SafeProtect,
     LoadFail
   },
   data () {

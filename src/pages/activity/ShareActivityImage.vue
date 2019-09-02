@@ -2,12 +2,11 @@
   <div class='share-activity-image-container'>
     <navi title="分享图片" :isFixed="true"></navi>
     <div ref="download" class="save-img">
+      <img src="../../assets/images/img_share_activity_bg.png" class="bg-img">
       <div class="share-message-wrapper"></div>
       <div class='share-content-container'>
         <div class="code-wrapper">
-          <p class="title">我正在优待客参加低价购买票的活动，快来帮我助力吧！</p>
           <canvas ref="qrcode"></canvas>
-          <p class="code-tip">扫描上方二维码完成注册即可自动为好友助力哦</p>
         </div>
         <span class="save-button" @click="saveImage" id="saveImage">保存图片</span>
         <el-dialog :visible.sync="showDialog" width="90%" :modal="false" title="长按保存图片到手机" center>
@@ -95,21 +94,29 @@ export default {
     .share-message-wrapper
         height rem(2)
     .save-img
-        background #ff5353
         min-height 95vh
+        position relative
+        .bg-img
+            position absolute
+            top 0
+            left 0
+            right 0
+            bottom 0
+            width 100%
+            height 100%
         .share-content-container
             margin rem(.5)
-            background-color #fff
             border-radius rem(.08)
             padding rem(.2)
+            position relative
+            z-index 1
             .title
                 text-indent rem(.4)
                 line-height rem(.5)
                 textStyle(#333, .35)
             .code-wrapper
                 text-align center
-                padding-top rem(.3)
-                padding-bottom rem(.3)
+                margin-top rem(3)
                 & > canvas
                     display inline-block
                     width rem(3)
