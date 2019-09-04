@@ -1,6 +1,6 @@
 <template>
   <div class='ticket-notice-wrapper' v-if="goodsInfo">
-      <ticket-notice title="入园须知" :remarks="goodsInfo.entrance"></ticket-notice>
+      <ticket-notice title="预订须知" :remarks="goodsInfo.entrance"></ticket-notice>
       <div class="sperator-1"></div>
       <ticket-notice title="费用说明" :remarks="goodsInfo.explain"></ticket-notice>
       <div class="sperator-1"></div>
