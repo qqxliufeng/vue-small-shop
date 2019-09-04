@@ -3,9 +3,8 @@
         <navi title="提交订单" :isFixed="true"></navi>
         <div class="r-d-detail-wrapper">
             <ticket-info :ticketInfo="ticketInfo" @selected="onSelectedTimeItem" ref="ticketInfo" @collection="collection"></ticket-info>
-            <ticket-contact v-if="ticketInfo.goods" ref="userSingleInfo" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-contact>
-            <!-- <ticket-user-single-info v-if="ticketInfo.goods && ticketInfo.goods.play_info === 1" ref="userSingleInfo" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-single-info> -->
-            <ticket-user-info :contacts="contacts" :touristCount="touristCount" ref="userInfo" v-if="ticketInfo.goods && ticketInfo.goods.play_info === 2" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-info>
+            <ticket-contact v-if="ticketInfo.goods && ticketInfo.goods.play_info !== 0" ref="userSingleInfo" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-contact>
+            <ticket-user-info :contacts="contacts" :touristCount="touristCount" ref="userInfo" v-if="ticketInfo.goods && ticketInfo.goods.play_info === 2 && touristCount > 1" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-info>
             <ticket-discount></ticket-discount>
             <div class="r-d-detail-pay-action-wrapper">
                 <span class="r-d-pay-action-price">总价：<i>￥{{totalPrice}}</i></span>
@@ -24,7 +23,6 @@ import navi from 'common/components/navigation'
 import TicketInfo from './components/TicketInfo'
 import TicketDiscount from './components/TicketDiscount'
 import TicketUserInfo from './components/TicketUserInfo'
-// import TicketUserSingleInfo from './components/TicketUserSingleInfo'
 import TicketContact from './components/TicketContact'
 export default {
   name: 'ReseveDetail',
@@ -33,7 +31,6 @@ export default {
     TicketInfo,
     TicketDiscount,
     TicketUserInfo,
-    // TicketUserSingleInfo,
     TicketContact
   },
   data () {
@@ -112,53 +109,32 @@ export default {
         this.$toast('请选择游玩日期')
         return
       }
+      if (this.ticketInfo.goods.play_info !== 0 && !this.checkUserInfo()) {
+        return
+      }
       const postData = {}
       postData.date = this.tempDate
-      const userName = this.$refs.userSingleInfo.tempUserInfo.name
-      const userPhone = this.$refs.userSingleInfo.tempUserInfo.phone
-      const idCard = this.$refs.userSingleInfo.tempUserInfo.idCard
-      const schoolName = this.$refs.userSingleInfo.tempUserInfo.schoolName
-      const studentId = this.$refs.userSingleInfo.tempUserInfo.studentId
-      if (!userName) {
-        this.$toast('请输入联系人姓名')
-        return
-      }
-      if (!userPhone) {
-        this.$toast('请输入联系人手机号')
-        return
-      }
-      if (!this.$utils.validator.isPhone(userPhone)) {
-        this.$toast('请输入合法的联系人手机号')
-        return
-      }
-      if (!idCard && this.ticketInfo.goods.visitor_info.indexOf('id') !== -1) {
-        this.$toast('请输入联系人身份证号')
-        return
-      }
-      if (!schoolName && this.ticketInfo.goods.visitor_info.indexOf('u') !== -1) {
-        this.$toast('请输入联系人学校')
-        return
-      }
-      if (!studentId && this.ticketInfo.goods.visitor_info.indexOf('s') !== -1) {
-        this.$toast('请输入联系人学生证号')
-        return
-      }
-      postData.contact = this.$refs.userSingleInfo.tempUserInfo
-      if (this.ticketInfo.goods.play_info === 2) {
-        const userList = this.$refs.userInfo.userList
-        if (userList.length - 1 !== this.tempDate.num) {
-          this.$toast('游客信息与购买数量不匹配')
-          return
-        }
-        postData.user = []
-        userList.forEach(item => {
-          if (item.type !== 'add') {
-            postData.user.push(item)
+      switch (this.ticketInfo.goods.play_info) {
+        // 只需要接收短信的游客信息
+        case 1:
+          postData.contact = this.$refs.userSingleInfo.tempUserInfo
+          postData.user = [this.$refs.userSingleInfo.tempUserInfo]
+          break
+        // 需要多个游客信息
+        case 2:
+          postData.user = []
+          // 如果只是买了一张票，则不需要其它游客的信息
+          if (this.$refs.userInfo) {
+            const userList = this.$refs.userInfo.userList
+            userList.forEach(item => {
+              if (item.type !== 'add') {
+                postData.user.push(item)
+              }
+            })
           }
-        })
-        postData.user.push(this.$refs.userSingleInfo.tempUserInfo) // 把联系人也放到游玩人信息里面
-      } else if (this.ticketInfo.goods.play_info === 1) { // 只需要一个游玩人信息
-        postData.user = [this.$refs.userSingleInfo.tempUserInfo]
+          postData.contact = this.$refs.userSingleInfo.tempUserInfo // 用于接收短信的游客信息
+          postData.user.push(this.$refs.userSingleInfo.tempUserInfo) // 把联系人也放到游玩人信息里面
+          break
       }
       postData.info = {
         identity: this.$root.state.getSallerInfo().identity,
@@ -176,6 +152,46 @@ export default {
       }, (errorCode, error) => {
         this.$toast(error)
       })
+    },
+    checkUserInfo () {
+      if (this.$refs.userSingleInfo) {
+        const userName = this.$refs.userSingleInfo.tempUserInfo.name
+        const userPhone = this.$refs.userSingleInfo.tempUserInfo.phone
+        const idCard = this.$refs.userSingleInfo.tempUserInfo.idCard
+        const schoolName = this.$refs.userSingleInfo.tempUserInfo.schoolName
+        const studentId = this.$refs.userSingleInfo.tempUserInfo.studentId
+        if (!userName && this.ticketInfo.goods.visitor_info.indexOf('n') !== -1) {
+          this.$toast('请输入游客姓名')
+          return false
+        }
+        if (!userPhone && this.ticketInfo.goods.visitor_info.indexOf('m') !== -1) {
+          this.$toast('请输入游客手机号')
+          return false
+        }
+        if (userPhone && !this.$utils.validator.isPhone(userPhone)) {
+          this.$toast('请输入合法的手机号')
+          return false
+        }
+        if (!idCard && this.ticketInfo.goods.visitor_info.indexOf('id') !== -1) {
+          this.$toast('请输入身份证号')
+          return false
+        }
+        if (idCard && !this.$utils.validator.checkIdCard(idCard)) {
+          this.$toast('请输入合法的身份证号')
+          return false
+        }
+        if (!schoolName && this.ticketInfo.goods.visitor_info.indexOf('u') !== -1) {
+          this.$toast('请输入学校名称')
+          return false
+        }
+        if (!studentId && this.ticketInfo.goods.visitor_info.indexOf('s') !== -1) {
+          this.$toast('请输入学生证号')
+          return false
+        }
+        return true
+      } else {
+        return false
+      }
     }
   },
   beforeRouteEnter (to, from, next) {

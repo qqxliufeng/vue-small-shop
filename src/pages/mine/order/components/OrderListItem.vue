@@ -4,6 +4,7 @@
              <ul :id="'order_list_item_' + state">
                  <li v-for="(item,index) of list" :key="index">
                      <el-card shadow="always"  :body-style="{ padding: '.2rem' }" class="o-l-item-card">
+                       <div class="title-wrapper">{{item.scenic.s_title}}</div>
                         <div class="o-l-item-container" @click="orderItemClick(item)">
                             <div class="o-l-item-img-container">
                                 <img v-lazy="$utils.image.getImagePath(item.scenicimage)" :key="item.scenicimage">
@@ -318,8 +319,15 @@ export default {
       mescroller()
       .o-l-item-card
           margin .2rem
+          .title-wrapper
+            textStyle(#333, .3)
+            borderBottom()
+            margin rem(.1) 0
+            margin-top 0
+            padding rem(.2) 0
           .o-l-item-container
             display flex
+            padding-top rem(.1)
             .o-l-item-img-container
                 flex 1.2
                 overflow hidden

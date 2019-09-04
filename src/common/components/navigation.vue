@@ -1,6 +1,6 @@
 <template>
    <div :class="[isFixed ? 'navi-fixed' : 'navi-relative','navi-container']">
-      <span v-if="isShowBack && !this.$isWeiXin" class="iconfont navi-back" @click="back">&#xe625;</span>
+      <span v-if="isShowBack" class="iconfont navi-back" @click="back">&#xe625;</span>
       <span v-if="isShowTitle" class="navi-title">
           {{title}}
       </span>

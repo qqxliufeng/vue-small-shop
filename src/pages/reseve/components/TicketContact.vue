@@ -1,13 +1,13 @@
 <template>
   <div class='t-c-container'>
-    <p class="title">联系人<i>(需要提供<i>1</i>位游客信息)</i></p>
-    <div class="user-info-container">
-      <span>联系人姓名：</span>
-      <input type="text" maxlength="6" placeholder="请输入联系人姓名" v-model="tempUserInfo.name">
+    <p class="title">游客信息<i>(需要提供<i>1</i>位游客信息)</i></p>
+    <div class="user-info-container" v-if="visitorInfo.indexOf('n') !== -1">
+      <span>姓&nbsp;&nbsp;&nbsp;名：</span>
+      <input type="text" maxlength="6" placeholder="请输入(1)位游客姓名" v-model="tempUserInfo.name">
     </div>
-    <div class="user-info-container">
-      <span>联系人手机：</span>
-      <input type="tel" maxlength="11" placeholder="请输入联系人手机号" v-model="tempUserInfo.phone" style="letter-spacing: .02rem">
+    <div class="user-info-container" v-if="visitorInfo.indexOf('m') !== -1">
+      <span>手机号：</span>
+      <input type="tel" maxlength="11" placeholder="用于接受短信凭证" v-model="tempUserInfo.phone" style="letter-spacing: .02rem">
     </div>
     <div class="user-info-container"  v-if="visitorInfo.indexOf('id') !== -1">
       <span>身份证号：</span>
@@ -21,13 +21,6 @@
       <span>学生证号：</span>
       <input type="text" placeholder="请输入学生证号" v-model="tempUserInfo.studentId" maxlength="20">
     </div>
-    <!-- <el-dialog :visible.sync="showVerifyDialog" :modal="false" width="90%">
-      <slide-verify
-      :w="width"
-      @success="onSlideSuccess"
-      ref="slideVerfiy"></slide-verify>
-    </el-dialog>
-    <div class="modal" v-if="showVerifyDialog" @click="dismissDialog"></div> -->
   </div>
 </template>
 
@@ -91,6 +84,7 @@ export default {
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
 .t-c-container
+    border-top rem(0.2) solid #f5f5f5
     & >>> .slide-verify
         width 100%
     & >>> .slide-verify-slider
