@@ -247,6 +247,7 @@ export default {
         this.scenicInfo.goodsTitle = data.data.goods.goods_title
         this.scenicInfo.totalStock = data.data.goods.totalStock
         this.scenicInfo.totalSales = data.data.goods.totalSales
+        this.scenicInfo.minPrice = data.data.scenic.minPrice
         this.assist = data.data.assist
         this.inviterUser = data.data.inviter_user
         this.time = Number(data.time)

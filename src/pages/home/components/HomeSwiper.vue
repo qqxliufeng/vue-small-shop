@@ -56,7 +56,7 @@ export default {
 .h-s-container
     overflow hidden
     width 100%
-    padding-bottom 40%
+    padding-bottom 47%
     height 0
     .h-s-img
         width 100%

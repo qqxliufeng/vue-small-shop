@@ -3,6 +3,7 @@
     <div class='activity-ticket-info-container' v-if="assist">
       <div class="tip-wrapper">
         <div class="tip-bg"></div>
+        <div class="price-wrapper"><span class="price">{{'￥' + scenicInfo.minPrice}}</span><span class="sales" v-if="scenicInfo.totalSales > 0">已售{{$utils.common.trasformNum(scenicInfo.totalSales)}}张</span></div>
         <div class="tip" v-if="$root.userInfo.isLogin() && assist.join.status === 1">
           恭喜，任务已完成
         </div>
@@ -70,7 +71,16 @@ export default {
         flex 2.5
         position relative
         height 100%
-        line-height rem(1)
+        display flex
+        flex-direction column
+        justify-content space-around
+        .price-wrapper
+            padding-left rem(.2)
+          .price
+              textStyle(#fff, .32)
+              margin-right rem(.1)
+          .sales
+              textStyle(#fff, .2)
         .tip-bg
             width 100%
             background #FF5353
@@ -112,4 +122,6 @@ export default {
         textStyle(#333, .32)
     .tags-wrapper
         margin-top rem(.2)
+        .s-d-info-tag
+            margin-right rem(.1)
 </style>

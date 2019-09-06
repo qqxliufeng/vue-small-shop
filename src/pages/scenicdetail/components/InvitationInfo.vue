@@ -11,7 +11,7 @@
     <div class="friend-info-wrapper">
       <p class="tip">已邀请<i>{{assist.join.join_number}}</i>位好友为他助力，还需<i>{{assist.number - assist.join.join_number}}</i>位</p>
       <img v-for="(item, index) of assist.join.user" :key="index" :src="$utils.image.getImagePath(item.avatar)">
-      <span class="helper" @click="helper" v-if="!$root.userInfo.isLogin()">为他助力</span>
+      <span class="helper" @click="helper">为他助力</span>
     </div>
   </div>
   <div class="s-d-info-middle-wrapper">

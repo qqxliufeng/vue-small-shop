@@ -38,10 +38,10 @@ export default {
       this.$router.replace({name: 'scenicDetail', query: {s: this.scenicId, i: this.$root.state.identity, t: this.$root.state.storeId}})
     },
     seeOrder () {
-      this.$router.push({name: 'orderInfo', params: {orderId: this.orderId.toString(), orderType: '2'}})
+      this.$router.replace({name: 'orderInfo', params: {orderId: this.orderId.toString(), orderType: '2'}})
     },
     back () {
-      this.$router.push({name: 'personal'})
+      this.$router.replace({name: 'personal'})
     }
   },
   mounted () {

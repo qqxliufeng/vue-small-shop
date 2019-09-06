@@ -2,7 +2,7 @@
   <div class='share-activity-image-container'>
     <navi title="分享图片" :isFixed="true"></navi>
     <div ref="download" class="save-img">
-      <img src="../../assets/images/img_share_activity_bg.png" class="bg-img">
+      <img :src="$utils.image.getImagePath(bgImage)" class="bg-img">
       <div class="share-message-wrapper"></div>
       <div class='share-content-container'>
         <div class="code-wrapper">
@@ -33,7 +33,8 @@ export default {
     return {
       showDialog: false,
       postUrl: '',
-      shareUrl: ''
+      shareUrl: '',
+      bgImage: ''
     }
   },
   watch: {
@@ -75,7 +76,8 @@ export default {
         uid: this.$route.query.uid,
         g: this.$route.query.g
       }, '', (res) => {
-        this.shareUrl = res.data
+        this.shareUrl = res.data.url
+        this.bgImage = res.data.share_image
         this.createCode()
         this.saveImage()
       }, () => {})
