@@ -13,7 +13,7 @@
             <img :src="$utils.image.getImagePath(ad.image)" @click="adClick">
           </div>
           <div class="h-h-title">猜你喜欢</div>
-          <home-like :likeList="guessList" @itemClick="startDetail"></home-like>
+          <home-like :likeList="guessList" @itemClick="startDetail" @seeMore="seeMore"></home-like>
         </div>
           <!-- <home-navi :scrollTop="mScrollTop"></home-navi> -->
         </section>
@@ -139,6 +139,11 @@ export default {
         this.$toast(error)
         this.loadState = false
       })
+    },
+    seeMore () {
+      if (this.categoryList && this.categoryList.length > 0) {
+        this.$router.push({name: 'scenicList', query: {categoryId: this.categoryList[0].id}})
+      }
     }
   },
   created () {

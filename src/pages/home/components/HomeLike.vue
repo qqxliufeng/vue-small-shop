@@ -1,10 +1,10 @@
 <template>
     <div class="h-l-like-container">
-        <ul v-if="tempLikeList.length > 0">
-            <li v-for="item of tempLikeList" :key="item.s_id">
+        <ul v-if="likeList.length > 0">
+            <li v-for="item of likeList" :key="item.s_id">
                 <scenic-list-item :item="item" @itemClick="itemClick"></scenic-list-item>
             </li>
-            <p class="h-l-sell-more" @click="seeMore" v-if="showMore ">查看更多</p>
+            <p class="h-l-sell-more" @click="seeMore">查看更多</p>
         </ul>
         <p v-else class="empty">暂无信息哦~</p>
     </div>
@@ -20,28 +20,12 @@ export default {
   components: {
     ScenicListItem
   },
-  data () {
-    return {
-      tempLikeList: []
-    }
-  },
   methods: {
     seeMore () {
-      this.tempLikeList = this.likeList
+      this.$emit('seeMore')
     },
     itemClick (item) {
       this.$emit('itemClick', item)
-    }
-  },
-  computed: {
-    showMore () {
-      return this.likeList.length > 3 && this.tempLikeList.length !== this.likeList.length
-    }
-  },
-  watch: {
-    likeList () {
-      this.tempLikeList = this.likeList ? this.likeList.slice(0, 3) : []
-      return this.tempLikeList
     }
   }
 }

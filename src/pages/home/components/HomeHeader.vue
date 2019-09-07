@@ -1,10 +1,10 @@
 <template>
     <div class="h-h-header-container">
-      <div :style="opacityStyle" class="header-bg"></div>
+      <div class="header-bg"></div>
       <div class="h-h-header-wrapper">
-        <span class="h-h-header-title" :style="colorStyle" @click="citySelector">{{currentCity.value}}<i class="el-icon-arrow-down"></i></span>
+        <span class="h-h-header-title" @click="citySelector">{{currentCity.value}}<i class="el-icon-arrow-down"></i></span>
         <span class="h-h-header-search" @click="startSearch"><i class="el-icon-search"></i>搜索景点、关键字</span>
-        <span class="iconfont h-h-header-mine" :style="colorStyle" @click="startPersonal">&#xe8a0;</span>
+        <span class="iconfont h-h-header-mine" @click="startPersonal">&#xe8a0;</span>
       </div>
       <!-- <el-amap vid="amap" :plugin="plugin" class="amap-demo" style="display:none"></el-amap> -->
     </div>

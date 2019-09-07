@@ -11,15 +11,15 @@
     </div>
     <div class="user-info-container"  v-if="visitorInfo.indexOf('id') !== -1">
       <span>身份证号：</span>
-      <input type="text" placeholder="请输入身份证号" v-model="tempUserInfo.idCard" maxlength="18">
+      <input type="text" placeholder="请输入(1)位游客身份证号" v-model="tempUserInfo.idCard" maxlength="18">
     </div>
     <div class="user-info-container"  v-if="visitorInfo.indexOf('u') !== -1">
       <span>学校名称：</span>
-      <input type="text" placeholder="请输入学校名称" v-model="tempUserInfo.schoolName" maxlength="15">
+      <input type="text" placeholder="请输入(1)位游客学校名称" v-model="tempUserInfo.schoolName" maxlength="15">
     </div>
     <div class="user-info-container" v-if="visitorInfo.indexOf('s') !== -1">
       <span>学生证号：</span>
-      <input type="text" placeholder="请输入学生证号" v-model="tempUserInfo.studentId" maxlength="20">
+      <input type="text" placeholder="请输入(1)位游客学生证号" v-model="tempUserInfo.studentId" maxlength="20">
     </div>
   </div>
 </template>

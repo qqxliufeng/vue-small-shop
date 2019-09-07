@@ -25,7 +25,7 @@
             <div class="r-d-ticket-info-count-info">
                 <span class="r-d-ticket-info-count-info-price">￥{{tempTime.price || 0}}</span>
                 <span class="r-d-ticket-info-count-info-release-count" v-show="tempTime.count >= 0">剩余{{tempTime.count || 0}}张</span>
-                <el-input-number v-model="num" size="mini" :min="minNum" @change="onNumberChange"></el-input-number>
+                <el-input-number v-model="num" size="mini" :min="minNum" :max="maxCount(tempTime.count || 1)" @change="onNumberChange"></el-input-number>
             </div>
         </div>
        <el-dialog title="选择日期" :visible.sync="isShowCanlendarDialog" center width="92%" :modal="false" @open="showModal = true" @close="showModal = false">
@@ -65,6 +65,7 @@ export default {
     return {
       num: 1,
       minNum: 1,
+      maxNum: 1000000,
       isShowCanlendarDialog: false,
       showRemark: false,
       showModal: false,
@@ -157,6 +158,7 @@ export default {
           this.tempTime.price = this.ticketInfo.calendar.sale_price
           this.tempTime.raw = this.ticketInfo.calendar
           this.minNum = this.ticketInfo.goods.min_number
+          this.maxNum = this.ticketInfo.goods.highest_number === 0 ? 1000000 : this.ticketInfo.goods.highest_number
           this.num = this.minNum
           this.emit()
         } else {
@@ -233,11 +235,11 @@ export default {
     },
     maxCount (count) {
       if (count === -1) {
-        return Number.MAX_VALUE
+        return this.maxNum
       } else if (count === -2) {
         return 1
       } else {
-        return count || 1
+        return Math.min(count || 1, this.maxNum)
       }
     },
     collection () {

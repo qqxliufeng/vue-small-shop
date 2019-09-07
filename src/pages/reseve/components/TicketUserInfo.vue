@@ -21,23 +21,23 @@
         <el-dialog :visible.sync="showAddUserInfoDialog" :modal="false" title="游客信息" width="90%">
             <div class="r-d-user-info-input-wrapper"  v-if="visitorInfo.indexOf('n') !== -1">
                 <span>姓名</span>
-                <input type="text" placeholder="请输入姓名" v-model="tempUserInfo.name">
+                <input type="text" placeholder="请输入(1)位游客姓名" v-model="tempUserInfo.name">
             </div>
              <div class="r-d-user-info-input-wrapper"  v-if="visitorInfo.indexOf('m') !== -1">
                 <span>手机号</span>
-                <input type="tel" placeholder="请输入手机号" v-model="tempUserInfo.phone" maxlength="11" style="letter-spacing: .02rem">
+                <input type="tel" placeholder="请输入(1)位游客手机号" v-model="tempUserInfo.phone" maxlength="11" style="letter-spacing: .02rem">
             </div>
              <div class="r-d-user-info-input-wrapper"  v-if="visitorInfo.indexOf('id') !== -1">
                 <span>身份证号</span>
-                <input type="text" placeholder="请输入身份证号" v-model="tempUserInfo.idCard">
+                <input type="text" placeholder="请输入(1)位游客身份证号" v-model="tempUserInfo.idCard">
             </div>
              <div class="r-d-user-info-input-wrapper" v-if="visitorInfo.indexOf('u') !== -1">
                 <span>学校</span>
-                <input type="text" placeholder="请输入学校" v-model="tempUserInfo.schoolName">
+                <input type="text" placeholder="请输入(1)位游客学校" v-model="tempUserInfo.schoolName">
             </div>
              <div class="r-d-user-info-input-wrapper" v-if="visitorInfo.indexOf('s') !== -1">
                 <span>学生证号</span>
-                <input type="text" placeholder="请输入学生证号" v-model="tempUserInfo.studentId">
+                <input type="text" placeholder="请输入(1)位游客学生证号" v-model="tempUserInfo.studentId">
             </div>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="cancelUserInfoDialog" size="mini">取 消</el-button>

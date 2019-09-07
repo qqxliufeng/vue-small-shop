@@ -53,11 +53,14 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '~styles/varibles.styl'
+@import '~styles/mixin.styl'
 .h-s-container
     overflow hidden
     width 100%
     padding-bottom 47%
     height 0
+    margin-top $headerHeight
     .h-s-img
         width 100%
         height 100%
