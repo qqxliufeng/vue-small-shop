@@ -322,7 +322,10 @@ export default new Router({
     {
       path: '/orderpayresult',
       name: 'orderPayResult',
-      component: () => import('@/pages/mine/order/OrderPayResult')
+      component: () => import('@/pages/mine/order/OrderPayResult'),
+      meta: {
+        auth: true
+      }
     },
     {
       path: '/orderbackprogress',

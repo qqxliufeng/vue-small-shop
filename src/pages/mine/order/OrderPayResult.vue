@@ -1,28 +1,51 @@
 <template>
-  <div class='o-i-result-container'>
-    <div class="navi-relative navi-container">
+  <div class='o-i-result-container' v-if="detail">
+    <div class="navi-fixed navi-container">
         <span class="iconfont navi-back" @click="back">&#xe625;</span>
         <span class="navi-title">
             支付结果
         </span>
     </div>
-    <div class="result-icon-container">
+    <div style="height: .86rem"></div>
+    <order-info-header stateTip="待使用">
+        <template slot="headerTitleInfo">
+            <p class="o-i-use-info">
+                {{'产品已出票，' + detail.ord_play_time + '可用，请尽快使用产品'}}
+            </p>
+        </template>
+    </order-info-header>
+    <order-info-content :scenic="detail.scenic"
+                        :voucher="detail.voucher"
+                        :ticketName="detail.ord_product_name"
+                        :ticketNum="detail.ord_ticket_num"
+                        :refundTickets="detail.refund_tickets"
+                        :sendCode="detail.send_code"
+                        :timeLog="detail.order_log">
+    </order-info-content>
+    <!-- <div class="result-icon-container">
       <span class="result-icon" :class="{'el-icon-success' : state === 1, 'el-icon-circle-close' : state === 0}"></span>
       <p class="result-icon-tip">{{state === 1 ? '支付成功' : '支付失败'}}</p>
-    </div>
+    </div> -->
     <div class="result-action-container">
-      <p><el-button size="mini" type="danger" class="button" @click="seeMore">继续购买</el-button></p>
-      <p><el-button size="mini" type="primary" class="button" v-if="no && state === 1" @click="seeOrder">查看订单</el-button></p>
+      <el-button size="mini" type="danger" class="button" @click="seeMore">继续购买</el-button>
+      <el-button size="mini" type="primary" class="button" v-if="no && state === 1" @click="seeOrder">查看订单</el-button>
     </div>
+    <scenic-detail-hot :hotGoodsList="hotGoodsList" v-if="hotGoodsList && hotGoodsList.length > 0" @reseve-detail="reseveDetail"></scenic-detail-hot>
   </div>
 </template>
 
 <script>
 import navi from 'common/components/navigation'
+import OrderInfoHeader from './orderInfo/components/OrderInfoHeader'
+import OrderInfoContent from './orderInfo/components/OrderInfoContent'
+import ScenicDetailHot from '@/pages/scenicdetail/components/ScenicDetailHot'
 export default {
   name: 'orderPayResult',
   components: {
-    navi
+    navi,
+    OrderInfoHeader,
+    OrderInfoContent,
+    ScenicDetailHot
   },
   data () {
     return {
@@ -30,7 +53,8 @@ export default {
       orderId: this.$route.query.order_id,
       state: parseInt(this.$route.query.state || 0),
       scenicId: this.$route.query.scenic_id,
-      from: null
+      detail: null,
+      hotGoodsList: null
     }
   },
   methods: {
@@ -42,6 +66,29 @@ export default {
     },
     back () {
       this.$router.replace({name: 'personal'})
+    },
+    getData () {
+      this.$http(this.$urlPath.orderDetails, {
+        ord_id: this.orderId
+      }, '', (data) => {
+        this.detail = data.data
+        this.getScenicInfo()
+      }, (errorCode, error) => {
+        this.$toast(error)
+      })
+    },
+    getScenicInfo () {
+      this.$http(this.$urlPath.scenicDetailUrl, {
+        s_id: this.scenicId,
+        identity: this.$root.state.getSallerInfo().identity,
+        store_id: this.$root.state.getSallerInfo().storeId
+      }, '', (data) => {
+        this.hotGoodsList = data.data.hot_goods
+      }, (errorCode, error) => {
+      })
+    },
+    reseveDetail (item) {
+      this.$router.replace({name: 'reseveDetail', query: { goods_id: item.goodsId, scenicId: this.scenicId }})
     }
   },
   mounted () {
@@ -62,7 +109,7 @@ export default {
       if (Number(vm.$route.query.state) === 0) {
         vm.$router.replace({name: 'orderInfo', params: {orderId: vm.$route.query.order_id.toString(), orderType: '1'}})
       } else {
-        vm.from = from
+        vm.getData()
         if (from.name) {
           if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1) {
             console.log('在微信里面')
@@ -87,14 +134,19 @@ export default {
     .result-icon-tip
         textStyle(#666, .3)
         margin-top rem(.4)
+.o-i-use-info
+    color #eeeeee
+    font-size .25rem
+    margin-top .2rem
+    line-height .3rem
 .result-action-container
-    margin-top rem(1.5)
+    margin rem(.3)
     text-align center
-    & > p
-        margin-top rem(.5)
+    display flex
     .button
+        flex 1
         width 50%
-        line-height 1.5
+        line-height 1
         font-size rem(.3)
 .navi-container
     height $headerHeight

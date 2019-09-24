@@ -4,3 +4,4 @@
 /*.js
 /test/unit/coverage/
 /src/common/components/
+/src/pages/sceniclist/components/ScenicListMenu.vue

@@ -6,7 +6,7 @@
         </div>
         <ul v-if="hotGoodsList" class="ticket-wrapper">
            <li v-for="(item, index) of hotGoodsList" :key="index">
-               <scenic-detail-ticket-item :item="item"></scenic-detail-ticket-item>
+               <scenic-detail-ticket-item :item="item" @reseve-detail="reseveDetail"></scenic-detail-ticket-item>
             </li>
         </ul>
     </el-card>
@@ -24,6 +24,11 @@ export default {
   },
   data () {
     return {
+    }
+  },
+  methods: {
+    reseveDetail (item) {
+      this.$emit('reseve-detail', item)
     }
   }
 }

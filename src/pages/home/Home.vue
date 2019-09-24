@@ -1,7 +1,7 @@
 <template>
     <div>
        <section v-if="loadState">
-        <home-header :scrollTop="mScrollTop" @changeCity="changeCity" @cityDiffrent="cityDiffrent"></home-header>
+        <home-header :scrollTop="mScrollTop" @changeCity="changeCity" :citys="citys"></home-header>
         <div ref="homeContent" class="h-content" id="home">
           <home-swiper :list="swiperList"></home-swiper>
           <home-notice v-if="notice && notice.notice_title !== undefined && notice.notice_title" :title="notice.notice_title" :identity="identity" :storeId="storeId"></home-notice>
@@ -14,22 +14,12 @@
           </div>
           <div class="h-h-title">猜你喜欢</div>
           <home-like :likeList="guessList" @itemClick="startDetail" @seeMore="seeMore"></home-like>
+          <technology-support></technology-support>
         </div>
-          <!-- <home-navi :scrollTop="mScrollTop"></home-navi> -->
         </section>
         <section v-else>
           <load-fail @reload="reload"></load-fail>
         </section>
-        <el-dialog
-          title="提示"
-          :visible.sync="dialogVisible"
-          width="90%">
-          <span>{{dialogTipContent}}</span>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false" size="mini">取 消</el-button>
-            <el-button type="primary" @click="changeDiffrentCity" size="mini">确 定</el-button>
-          </span>
-        </el-dialog>
     </div>
 </template>
 <script>
@@ -41,6 +31,7 @@ import HomeLike from './components/HomeLike'
 import HomeNavi from './components/HomeNavigation'
 import HomeNotice from './components/HomeNotice'
 import HomeActivity from './components/HomeActivity'
+import TechnologySupport from 'common/components/technology-support'
 import LoadFail from 'common/components/loading/load-fail'
 export default {
   name: 'home',
@@ -53,6 +44,7 @@ export default {
     HomeLike,
     HomeNavi,
     HomeNotice,
+    TechnologySupport,
     LoadFail
   },
   data () {
@@ -70,10 +62,10 @@ export default {
       identity: null,
       storeId: null,
       dialogVisible: false,
-      dialogTipContent: '',
       diffrentCity: null,
       assist: null,
-      time: 0
+      time: 0,
+      citys: []
     }
   },
   methods: {
@@ -93,23 +85,8 @@ export default {
     reload () {
       this.getData()
     },
-    changeDiffrentCity () {
-      this.dialogVisible = false
-      if (this.diffrentCity) {
-        this.$root.state.changeCity({
-          value: this.diffrentCity.city,
-          code: '-1'
-        })
-        this.changeCity()
-      }
-    },
     changeCity () {
       this.getData()
-    },
-    cityDiffrent (city) {
-      this.diffrentCity = city
-      this.dialogVisible = true
-      this.dialogTipContent = '当前城市为：' + city.city + '，是否切换'
     },
     getData () {
       this.$http(this.$urlPath.indexUrl, {
@@ -127,8 +104,14 @@ export default {
           this.categoryList = data.data.category
           this.assist = data.data.assist
           this.time = Number(data.time)
+          this.citys = data.data.area
+          this.citys.forEach(item => {
+            item.isSelected = false
+            item.isSelected = item.name === this.$root.state.currentCity.value
+          })
+          sessionStorage.setItem('scenicMenu', JSON.stringify(this.categoryList))
           if (data.data.store && data.data.store.store_name) {
-            document.title = data.data.store.store_name
+            document.title = data.data.store.store_name + ' - 易行旅行'
           } else {
             document.title = '店铺'
           }
@@ -164,6 +147,7 @@ export default {
   },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)
+    this.$root.$emit('changeTab', {index: '1'})
     this.getData()
   },
   beforeRouteEnter (to, from, next) {

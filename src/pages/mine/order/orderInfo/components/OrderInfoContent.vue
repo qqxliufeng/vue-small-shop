@@ -9,7 +9,7 @@
         <p class="item-info">验票时间：{{scenic.ticket_check}}</p>
         <p class="item-info">验票地点：{{scenic.ticket_check_info}}</p>
         <div  v-if="voucher && voucher.length > 0">
-          <p class="item-info">凭证号：</p>
+          <p class="item-info">凭&nbsp;&nbsp;证&nbsp;&nbsp;号：<span class="no-tip">向商家展示消费</span></p>
           <div class="ticket-info-container" v-if="sendCode === 0">
             <div class="code-wrapper" @click="showFullCode">
               <canvas class="canvas-code" ref="qrcode" :style="{ 'opacity': this.voucher[0].use_status === 0 ? '1': '0.4' }"></canvas>
@@ -156,6 +156,8 @@ export default {
         padding rem(.1) rem(.2)
         textStyle(#666, .28)
         line-height rem(.4)
+        .no-tip
+            textStyle($orangeColor, .28)
     .ticket-info-container
         display flex
         flex-direction column

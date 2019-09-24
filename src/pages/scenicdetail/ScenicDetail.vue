@@ -18,8 +18,8 @@
             </template>
           </scenic-detail-info>
           <safe-protect></safe-protect>
-          <scenic-detail-hot :hotGoodsList="hotGoodsList" v-if="hotGoodsList && hotGoodsList.length > 0"></scenic-detail-hot>
-          <scenic-detail-ticket-type :typeGoodsList="typeGoodsList"></scenic-detail-ticket-type>
+          <scenic-detail-hot :hotGoodsList="hotGoodsList" v-if="hotGoodsList && hotGoodsList.length > 0" @reseve-detail="reseveDetail"></scenic-detail-hot>
+          <scenic-detail-ticket-type :typeGoodsList="typeGoodsList" @reseve-detail="reseveDetail"></scenic-detail-ticket-type>
           <scenic-detail-leave-message :ask="ask"></scenic-detail-leave-message>
           <scenic-detail-comment :comment="comment" :tagCanSelected="false"></scenic-detail-comment>
           <div class="s-d-l-m-comment-info-see-more" @click="seeMoreComment" v-if="comment && comment.comment_list.length > 0">
@@ -74,8 +74,8 @@ export default {
     }
   },
   methods: {
-    onItemClick (item) {
-      console.log(item)
+    reseveDetail (item) {
+      this.$router.push({name: 'reseveDetail', query: { goods_id: item.goodsId, scenicId: this.scenicId }})
     },
     startScenicInfo (type) {
       this.$router.push({name: 'scenicInfo', query: {id: this.scenicId}})

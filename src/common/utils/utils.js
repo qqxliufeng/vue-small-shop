@@ -19,7 +19,7 @@ export default {
     return weekMap[week]
   },
   validator: {
-    phoneReg: /^1(3|4|5|7|8)\d{9}$/,
+    phoneReg: /^1[0-9]\d{9}$/,
     passwordReg: /^(\w){6,16}$/,
     emailReg: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
     isPhone (phone) {

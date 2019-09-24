@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     itemClick () {
-      this.$router.push({name: 'reseveDetail', query: { goods_id: this.item.goodsId, scenicId: this.$route.query.s }})
+      this.$emit('reseve-detail', this.item)
     }
   }
 }

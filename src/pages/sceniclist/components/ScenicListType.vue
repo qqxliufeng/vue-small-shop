@@ -1,12 +1,11 @@
 <template>
     <div class="s-l-tags-container">
-        <span v-for="(item, index) of tagsList"
-              :key="index"
-              class="s-l-tags-item"
-              :class="{ 's-l-tags-item-selected': item.selected }"
-              @click="itemClick(item)">
-        {{item.name}}
+      <div v-for="(item, index) of tagsList" :key="index" @click="itemClick(item)" class="item-wrapper">
+        <span class="s-l-tags-item"
+              :class="{ 's-l-tags-item-selected': item.selected }">
+            {{item.name}}
         </span>
+      </div>
     </div>
 </template>
 
@@ -47,15 +46,22 @@ export default {
 @import '~styles/mixin.styl'
 .s-l-tags-container
     padding-top rem(.1)
-    overflow hidden
-    .s-l-tags-item
-        float left
-        margin rem(.1) rem(.2)
-        border-radius rem(.1)
-        border #eeeeee solid 1px
-        padding rem(.1) rem(.2)
-        color #888
-    .s-l-tags-item-selected
-        border $primary solid 1px
-        color $primary
+    .item-wrapper
+        display inline-block
+        width 25%
+        height 10vw
+        line-height 10vw
+        text-align center
+        .s-l-tags-item
+            display inline-block
+            line-height 4vw
+            width 60%
+            background-color #f5f5f5
+            padding rem(.1) rem(.2)
+            color #888
+            font-size rem(.24)
+            border-radius rem(.3)
+        .s-l-tags-item-selected
+            background-color $orangeColor
+            color #fff
 </style>

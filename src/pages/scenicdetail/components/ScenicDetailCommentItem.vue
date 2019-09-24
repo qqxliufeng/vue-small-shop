@@ -19,7 +19,7 @@
         <div v-if="item.images && item.images.length > 0" class="s-d-comment-item-imags-wrapper" v-lazy-container="{ selector: 'img' }">
             <img v-for="(image, index) of item.images" :key="index" :data-src="$utils.image.getImagePath(image)" @click="imageClick">
         </div>
-        <div class="reply-container" v-if="item.answer">
+        <div class="reply-container" v-if="item.answer && item.answer.content">
             <div>
               <span class="reply-title">商家回复:</span>
               <span class="reply-content">{{item.answer.content}}</span>

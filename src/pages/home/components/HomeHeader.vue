@@ -7,41 +7,28 @@
         <span class="iconfont h-h-header-mine" @click="startPersonal">&#xe8a0;</span>
       </div>
       <!-- <el-amap vid="amap" :plugin="plugin" class="amap-demo" style="display:none"></el-amap> -->
+      <popup ref="popup">
+        <div style="padding: .5rem .3rem">
+          <div v-for="item of citys" :key='item.id' class="city-wrapper" @click="cityItemClick(item)">
+            <span class="city-item" :class="{'select-city-item' : item.isSelected}">{{item.name}}</span>
+          </div>
+        </div>
+      </popup>
     </div>
 </template>
 <script>
+import popup from 'common/components/popup'
 export default {
   name: 'homeHeader',
   props: {
     scrollTop: {
       type: Number,
       default: 0
-    }
+    },
+    citys: Array
   },
-  data () {
-    return {
-      // plugin: [{
-      //   pName: 'Geolocation',
-      //   events: {
-      //     init: (amap) => {
-      //       amap.getCityInfo((status, result) => {
-      //         if (result.city) {
-      //           let saveCity = this.$root.state.currentCity.value
-      //           if (saveCity !== result.city) {
-      //             this.$emit('cityDiffrent', {city: result.city})
-      //           } else {
-      //             this.$root.state.changeCity({
-      //               value: result.city,
-      //               code: '-1'
-      //             })
-      //           }
-      //         }
-      //       }
-      //       )
-      //     }
-      //   }
-      // }]
-    }
+  components: {
+    popup
   },
   computed: {
     currentCity () {
@@ -69,16 +56,22 @@ export default {
       this.$root.$emit('changeTab', {index: '4'})
     },
     citySelector () {
-      this.$router.push({name: 'city', params: { backName: 'home' }})
-    }
-  },
-  mounted () {
-    this.$root.$on('selectedCity', (data) => {
-      if (data.city) {
-        this.$root.state.changeCity(data.city.city)
-        this.$emit('changeCity')
+      this.$refs.popup.open()
+    },
+    cityItemClick (item) {
+      this.$refs.popup.close()
+      if (item.isSelected) {
+        return
       }
-    })
+      this.$root.state.changeCity({
+        value: item.name,
+        code: item.id
+      })
+      this.$emit('changeCity')
+      this.citys.forEach(it => {
+        it.isSelected = item === it
+      })
+    }
   }
 }
 </script>
@@ -93,6 +86,21 @@ export default {
     right 0
     z-index 999
     height rem($headerHeight)
+    .city-wrapper
+        width 25%
+        height 12vw
+        display inline-block
+        text-align center
+        box-sizing border-box
+        .city-item
+            background-color #f5f5f5
+            border-radius rem(.3)
+            padding rem(.15) rem(.25)
+            textStyle(#333, .25)
+            ellipsis()
+        .select-city-item
+            background-color $orangeColor
+            color #fff
     .h-h-header-wrapper
         position absolute
         top 0
@@ -128,5 +136,5 @@ export default {
             margin-left rem(.2)
     .header-bg
         height 100%
-        background-color #f5f5f5
+        background-color #ffffff
 </style>

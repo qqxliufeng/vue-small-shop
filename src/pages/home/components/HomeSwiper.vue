@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     startScenicDetail (item) {
-      // this.$router.push({name: 'scenicDetail'})
+      this.$router.push({name: 'scenicDetail', query: {s: this.list[item].scenic_id, i: this.$root.state.identity, t: this.$root.state.storeId}})
     }
   }
 }
