@@ -1,7 +1,7 @@
 <template>
     <el-card :body-style="{padding: 0}" class="s-d-l-m-message-container" v-if="ask">
         <div class="s-d-l-m-message-title">
-            <span><span class="el-icon-chat-line-square icon"></span>留言板</span>
+            <span><span class="el-icon-chat-line-square icon"></span><i style="font-weight: bold; color: #444">留言板</i></span>
             <span>{{ask.ask_count}}条留言</span>
         </div>
         <div v-if="showEmpty" class="s-d-l-m-message-empty">

@@ -29,11 +29,15 @@
                                   </span>
                                 </p>
                                 <p>数量：{{item.ord_ticket_num}}张</p>
-                                <p>总价：￥{{item.ord_amount}}</p>
+                                <p>
+                                  <span>总价：￥{{item.ord_amount}}</span>
+                                  <span style="float: right; color: #333">详情</span>
+                                </p>
                             </div>
                         </div>
                         <div class="sperator-line" v-if="item.stateModel.action1.show || item.stateModel.action2.show"></div>
                         <div class="o-l-bottom-action-container">
+                            <div style="flex: 1"></div>
                             <el-button plain size="small" class="o-l-bottom-action" v-if="item.stateModel.action1.show" @click="item.stateModel.action1.action">{{item.stateModel.action1.title}}</el-button>
                             <el-button type="primary" size="small" class="o-l-bottom-action" v-if="item.stateModel.action2.show" @click="item.stateModel.action2.action">{{item.stateModel.action2.title}}</el-button>
                         </div>
@@ -355,7 +359,7 @@ export default {
                     .o-l-item-info-state
                         flex 1
                         text-align right
-                        color #888888
+                        color $orangeColor
                         font-size .25rem
                         line-height .3rem
                 & p:nth-child(2)
@@ -372,5 +376,4 @@ export default {
     margin .2rem 0
 .o-l-bottom-action-container
     display flex
-    justify-content flex-end
 </style>

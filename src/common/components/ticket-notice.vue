@@ -40,4 +40,5 @@ export default {
             color #333
             font-size rem(.32)
             vertical-align middle
+            font-weight bold
 </style>

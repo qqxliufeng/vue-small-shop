@@ -7,12 +7,12 @@
           <home-notice v-if="notice && notice.notice_title !== undefined && notice.notice_title" :title="notice.notice_title" :identity="identity" :storeId="storeId"></home-notice>
           <home-type :list="categoryList"></home-type>
           <home-activity v-if="assist && assist.length > 0 " :assist="assist" :time="time"></home-activity>
-          <div class="h-h-title" v-if="hotList && hotList.length > 0">人气推荐</div>
+          <div class="h-h-title" v-if="hotList && hotList.length > 0">-&nbsp;人气推荐&nbsp;-</div>
           <home-hot v-if="hotList && hotList.length > 0" :list="hotList" @itemClick="startDetail"></home-hot>
           <div class="h-h-ad-wrapper" v-if="ad">
             <img :src="$utils.image.getImagePath(ad.image)" @click="adClick">
           </div>
-          <div class="h-h-title">猜你喜欢</div>
+          <div class="h-h-title">-&nbsp;为您推荐&nbsp;-</div>
           <home-like :likeList="guessList" @itemClick="startDetail" @seeMore="seeMore"></home-like>
           <technology-support></technology-support>
         </div>
@@ -178,6 +178,7 @@ export default {
         padding rem(.2) rem(.1)
         border-bottom #f5f5f5 solid rem(.02)
         margin 0 rem(.2)
+        text-align center
     .h-h-ad-wrapper
         height rem(2)
         border-bottom #f5f5f5 solid rem(.2)

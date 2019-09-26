@@ -2,7 +2,7 @@
     <el-card :body-style="{padding: '0'}"  class="s-d-t-type-container" v-if="typeGoodsList && typeGoodsList.length > 0">
         <div class="s-d-t-type-title-wrapper" :class="{'tab-fixed' : isFixed}"  ref="type" @click="positionType">
             <span class="el-icon-tickets icon"></span>
-            <span>门票类型</span>
+            <span style="font-weight: bold; color: #444">门票类型</span>
         </div>
         <div id="tab" v-show="isFixed" style="height: 1.72rem"></div>
         <div>

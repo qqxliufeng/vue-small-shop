@@ -1,6 +1,6 @@
 <template>
   <div class='home-activity-container'>
-    <div class="h-h-title">热门活动
+    <div class="h-h-title">-&nbsp;热门活动&nbsp;-
       <span class="see-more" @click="seeMore">查看更多></span>
     </div>
     <div class="activity-wrapper">
@@ -86,6 +86,7 @@ export default {
         padding rem(.2) rem(.1)
         border-bottom #f5f5f5 solid rem(.02)
         margin 0 rem(.2)
+        text-align center
         .see-more
             float right
             textStyle(#888, .28)

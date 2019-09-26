@@ -1,12 +1,14 @@
 <template>
 	<div class="scenic-type-list-container">
-		<div class="scroll-view-h">
-			<div v-for="(item, index) of tempList" :key="index" style="display: inline-block; width: 20%; height: 80%;">
-				<div class="h-t-type-wrapper" @click="homeTypeClick(item)">
-					<img :src="$utils.image.getImagePath(item.image)" class="h-t-type-icon" :class="{ 'selected-type-image': item.isSelected }"/>
-					<p class="h-t-type-title" :class="{ 'selected-type-text': item.isSelected }">{{item.name}}</p>
-				</div>
-			</div>
+		<div ref="wrapper">
+				<ul class="scroll-view-h" :style="{'width': wrapperWidth + 'px'}">
+						<li v-for="(item, index) of tempList" :key="index" style="display: inline-block; width: 20vw; height: 80%;" :id="item.itemId">
+							<div class="h-t-type-wrapper" @click="homeTypeClick(item)">
+								<img :src="$utils.image.getImagePath(item.image)" class="h-t-type-icon" :class="{ 'selected-type-image': item.isSelected }"/>
+								<p class="h-t-type-title" :class="{ 'selected-type-text': item.isSelected }">{{item.name}}</p>
+							</div>
+					</li>
+				</ul>
 		</div>
 		<el-card class="more-wrapper" @click.native="showMore">
 			<img src="../../../assets/images/img_more_icon.png" class="icon"/>
@@ -25,6 +27,7 @@
 
 <script>
 import popup from 'common/components/popup'
+import Bscroll from 'better-scroll'
 export default {
 	name: 'scenicListMenu',
 	props: {
@@ -39,7 +42,9 @@ export default {
 	data () {
 		return {
 			tempList: [],
-			dialogTempList: []
+			dialogTempList: [],
+			scroll: null,
+			wrapperWidth: 0
 		}
 	},
 	methods: {
@@ -58,11 +63,28 @@ export default {
 			this.tempList.forEach((it, index) => {
 				it.isSelected = it === item
 			})
+			this.tempList.forEach(item => {
+				if (item.isSelected) {
+					this.scroll.scrollToElement(document.getElementById(item.itemId), 300, true, true)
+					return
+				}
+			})
 			this.$emit('type-item-click', item)
 		},
 		slideItems () {
 			this.tempList.forEach((item, index) => {
 				this.$set(item, 'isSelected', Number(item.id) === Number(this.categoryId))
+				this.$set(item, 'itemId', 'item'+index)
+			})
+			this.$nextTick(() => {
+				this.wrapperWidth = window.screen.width * .2 * this.tempList.length
+				this.scroll = new Bscroll(this.$refs.wrapper, {scrollX: true, scrollY: false, click: true})
+				this.tempList.forEach((item, index) => {
+					if (item.isSelected) {
+						this.scroll.scrollToElement(item.itemId)
+						return
+					}
+				})
 			})
 		}
 	},
@@ -110,9 +132,7 @@ export default {
 						color $orangeColor
 		.scroll-view-h
 				white-space: nowrap;
-				width 100%
-				height 100%
-				overflow-x scroll
+				height rem(1.6)
 				.h-t-type-wrapper
 						text-align: center;
 						box-sizing: border-box;

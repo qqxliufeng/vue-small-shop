@@ -21,7 +21,7 @@ export default {
   },
   data () {
     return {
-      specialList: ['适用人群:', '退款规则:']
+      specialList: ['适用人群:', '退款规则:', '换票时间:', '入园时间:']
     }
   },
   computed: {
@@ -63,11 +63,11 @@ export default {
             display inline-block
         .remark-key
             color #333333
-            width 30%
+            width 20%
             vertical-align top
             line-height rem(.4)
         .remark-value
-            width 60%
+            width 75%
             color #888888
             line-height rem(.4)
 </style>

@@ -1,7 +1,7 @@
 <template>
     <el-card :body-style="{padding: 0}" class="s-d-comment-container" v-if="comment">
         <div class="s-d-comment-title-wrapper">
-            <span><span class="el-icon-star-off icon"></span>综合评价：<i>{{Number(comment.avg_mark).toFixed(1)}}</i></span>
+            <span><span class="el-icon-star-off icon"></span><span style="font-weight: bold; color: #444">综合评价：<i>{{Number(comment.avg_mark).toFixed(1)}}</i></span></span>
             <span>{{comment.count}}次评价</span>
         </div>
         <div class="s-d-comment-tags-wrapper">
