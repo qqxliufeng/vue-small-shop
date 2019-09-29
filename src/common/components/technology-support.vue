@@ -1,6 +1,9 @@
 <template>
 	<div class="technology-support-container">
-		----技术支持：<a :href="'tel:'+phone" class="phone">山东易行旅行社有限公司</a>----
+		<div>技术支持：山东易行旅行社有限公司</div>
+		<div style="margin-top: .1rem">
+			----联系电话：<a :href="'tel:' + phone" class="phone">{{phone}}</a>----
+		</div>
 	</div>
 </template>
 

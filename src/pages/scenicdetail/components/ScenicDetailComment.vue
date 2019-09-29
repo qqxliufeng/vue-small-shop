@@ -7,11 +7,14 @@
         <div class="s-d-comment-tags-wrapper">
             <span v-for="(item, index) of tagsList" :key="index" :class="{'s-d-comment-tags-selected': item.select}" @click="tagsClick(item)">{{item.name}}</span>
         </div>
-        <ul>
+        <ul v-if="comment.comment_list && comment.comment_list.length > 0">
             <li v-for="(item, index) of comment.comment_list" :key="index">
                 <scenic-detail-comment-item :item="item"></scenic-detail-comment-item>
             </li>
         </ul>
+        <div v-else class="empty-comment">
+          暂无评价
+        </div>
     </el-card>
 </template>
 
@@ -109,4 +112,10 @@ export default {
         .s-d-comment-tags-selected
             background-color $orangeColor
             color #fff
+    .empty-comment
+        textStyle(#888, .28)
+        min-height rem(2)
+        display flex
+        justify-content center
+        align-items center
 </style>

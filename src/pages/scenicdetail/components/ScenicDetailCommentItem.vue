@@ -26,8 +26,9 @@
               <div class="reply-time">{{item.answer.add_time}}</div>
             </div>
         </div>
-        <div class="report-wrapper" v-if="$root.report">
-          <el-dropdown :command="command">
+        <div class="report-wrapper">
+          <span class="time">{{item.create_time}}</span>
+          <el-dropdown :command="command" v-if="$root.report">
             <span class="report">举报<i class="el-icon-arrow-down el-icon--right"></i></span>
             <el-dropdown-menu slot="dropdown" >
               <el-dropdown-item v-for="reportItem of report" :key="reportItem.id" @click.native="doReport(1, item.cid, reportItem.name)">{{reportItem.name}}</el-dropdown-item>
@@ -101,7 +102,7 @@ export default {
             font-size 15px
     .s-d-comment-item-content-wrapper
         font-size rem(.28)
-        color #aaaaaa
+        color #333
         margin-top rem(.2)
         line-height rem(.35)
         position relative
@@ -125,7 +126,9 @@ export default {
             border-radius rem(.1)
     .report-wrapper
       overflow hidden
-      text-align right
+      display flex
+      justify-content space-between
+      align-items center
       padding rem(.1) 0
       margin-top rem(.3)
       & >>> .el-dropdown
@@ -135,6 +138,8 @@ export default {
           border 1px solid #eee
           padding rem(.05) rem(.2)
           textStyle(#888, .25)
+      .time
+          textStyle(#888, .24)
     .reply-container
         background-color #f5f5f5
         padding rem(.2)

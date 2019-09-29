@@ -32,7 +32,7 @@ export default {
 	name: 'scenicListMenu',
 	props: {
 		categoryId: {
-			type: String | Number,
+			type: [String | Number],
 			default: 0
 		}
 	},
@@ -79,12 +79,6 @@ export default {
 			this.$nextTick(() => {
 				this.wrapperWidth = window.screen.width * .2 * this.tempList.length
 				this.scroll = new Bscroll(this.$refs.wrapper, {scrollX: true, scrollY: false, click: true})
-				this.tempList.forEach((item, index) => {
-					if (item.isSelected) {
-						this.scroll.scrollToElement(item.itemId)
-						return
-					}
-				})
 			})
 		}
 	},
