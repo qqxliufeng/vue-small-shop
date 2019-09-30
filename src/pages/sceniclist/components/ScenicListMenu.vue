@@ -32,7 +32,7 @@ export default {
 	name: 'scenicListMenu',
 	props: {
 		categoryId: {
-			type: [String | Number],
+			type: String,
 			default: 0
 		}
 	},

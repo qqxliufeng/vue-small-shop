@@ -3,7 +3,7 @@
     <scenic-header></scenic-header>
     <div class="s-l-content-wrapper">
       <mescroll-vue ref="mescroll" :down="mescrollConfig.mescrollDown" :up="mescrollConfig.mescrollUp">
-        <scenic-list-menu @type-item-click="menuItemClick" :categoryId="categoryId"></scenic-list-menu>
+        <scenic-list-menu @type-item-click="menuItemClick" :categoryId="categoryId+''"></scenic-list-menu>
         <scenic-type :tags="tags" @tagsClick="tagsClick"></scenic-type>
         <ul v-if="list && list.length > 0">
           <li v-for="(item, index) of list" :key="index">

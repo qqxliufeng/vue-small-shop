@@ -111,7 +111,7 @@ export default {
           })
           sessionStorage.setItem('scenicMenu', JSON.stringify(this.categoryList))
           if (data.data.store && data.data.store.store_name) {
-            document.title = data.data.store.store_name + ' - 易行旅行'
+            document.title = data.data.store.store_name + ' - 优待客'
           } else {
             document.title = '店铺'
           }
