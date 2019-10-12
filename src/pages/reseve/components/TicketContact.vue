@@ -70,12 +70,12 @@ export default {
       this.showVerifyDialog = false
     },
     clearUserInfo () {
-      this.tempUserInfo.name = null
+      this.tempUserInfo.name = ''
       this.tempUserInfo.phone = this.$root.userInfo.state.phone || ''
-      this.tempUserInfo.idCard = null
-      this.tempUserInfo.schoolName = null
-      this.tempUserInfo.studentId = null
-      this.tempUserInfo.code = null
+      this.tempUserInfo.idCard = ''
+      this.tempUserInfo.schoolName = ''
+      this.tempUserInfo.studentId = ''
+      this.tempUserInfo.code = ''
     }
   }
 }

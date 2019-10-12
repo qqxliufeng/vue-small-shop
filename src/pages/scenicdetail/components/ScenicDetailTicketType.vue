@@ -6,27 +6,18 @@
         </div>
         <div id="tab" v-show="isFixed" style="height: 1.72rem"></div>
         <div>
-            <!-- <el-tabs>
-                <el-tab-pane v-for="tabItem of typeGoodsList" :label="tabItem.goodsTypeName" :key="tabItem.goodsTypeId">
-                    <ul v-if="tabItem.goods_list && tabItem.goods_list.length > 0">
-                        <li v-for="item of tabItem.goods_list" :key="item.goodsId">
-                            <scenic-detail-ticket-item :item="item"></scenic-detail-ticket-item>
-                        </li>
-                    </ul>
-                    <div v-else class="s-d-l-m-message-empty">
-                        <span>暂无门票</span>
-                    </div>
-                </el-tab-pane>
-            </el-tabs> -->
              <swiper :options="swiperOption" class="h-h-hot-card">
                  <swiper-slide v-for="(tabItem, index) of tempTypeGoodsList" :key="tabItem.goodsTypeId">
                      <span class="tab-item" @click="selectTabItem(index)" :class="{'tab-item-selected' : tabItem.isSelected}">{{tabItem.goodsTypeName}}</span>
                  </swiper-slide>
              </swiper>
              <ul v-if="currentTabItems && currentTabItems.length > 0" class="ticket-wrapper">
-                <li v-for="item of currentTabItems" :key="item.goodsId">
+                <li v-for="item of tempCurrentTabItems" :key="item.goodsId">
                     <scenic-detail-ticket-item :item="item" @reseve-detail="reseveDetail"></scenic-detail-ticket-item>
                 </li>
+                <div v-if="tempCurrentTabItems && tempCurrentTabItems.length < currentTabItems.length" class="show-more" @click="showMore">
+                  加载更多
+                </div>
             </ul>
             <div v-else class="s-d-l-m-message-empty">
                 <span>暂无门票</span>
@@ -55,7 +46,9 @@ export default {
         slidesPerView: 5
       },
       currentTabItems: null,
-      tempTypeGoodsList: null
+      tempCurrentTabItems: null,
+      tempTypeGoodsList: null,
+      sliceSize: 3
     }
   },
   watch: {
@@ -69,6 +62,7 @@ export default {
         })
         if (this.tempTypeGoodsList && this.tempTypeGoodsList.length > 0) {
           this.currentTabItems = this.tempTypeGoodsList[0].goods_list
+          this.tempCurrentTabItems = this.currentTabItems.slice(0, this.sliceSize)
         }
       }
     }
@@ -96,12 +90,17 @@ export default {
           item.isSelected = index === i
         })
         this.currentTabItems = this.tempTypeGoodsList[index].goods_list
+        this.tempCurrentTabItems = this.currentTabItems.slice(0, this.sliceSize)
       } else {
         this.currentTabItems = null
+        this.tempCurrentTabItems = null
       }
     },
     reseveDetail (item) {
       this.$emit('reseve-detail', item)
+    },
+    showMore () {
+      this.tempCurrentTabItems = this.currentTabItems
     }
   },
   mounted () {
@@ -155,6 +154,11 @@ export default {
         border-radius rem(.1)
         background-color #f5f7f8
         margin rem(.15)
+        .show-more
+            text-align center
+            background-color #fff
+            padding rem(.1)
+            padding-top rem(.2)
     .s-d-t-type-title-wrapper
         normalTextStyle(#333, .3)
         borderBottom()

@@ -44,11 +44,11 @@ export default {
   },
   methods: {
     clearUserInfo () {
-      this.tempUserInfo.name = null
-      this.tempUserInfo.phone = null
-      this.tempUserInfo.idCard = null
-      this.tempUserInfo.schoolName = null
-      this.tempUserInfo.studentId = null
+      this.tempUserInfo.name = ''
+      this.tempUserInfo.phone = ''
+      this.tempUserInfo.idCard = ''
+      this.tempUserInfo.schoolName = ''
+      this.tempUserInfo.studentId = ''
     }
   }
 }

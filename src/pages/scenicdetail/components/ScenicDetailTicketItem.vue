@@ -3,7 +3,7 @@
         <div class="s-d-hot-item-info" @click="itemClick">
             <div class="s-d-hot-item-info-title-wrapper">
                 <p class="s-d-hot-item-info-title">{{item.goodsTitle}}</p>
-                <p class="s-d-hot-item-info-price"><span>￥{{item.minPrice}}</span><i>起</i></p>
+                <p class="s-d-hot-item-info-price"><span>￥{{item.minPrice}}</span></p>
             </div>
             <div class="s-d-hot-item-info-remark-wrapper">
                 <!-- <p class="s-d-hot-item-info-remark">{{item.before}}</p> -->

@@ -51,8 +51,10 @@
 import calander from 'common/components/calendar/calendar.vue'
 import TicketRemark from 'common/components/ticket-remark'
 import ReseveNotice from './ReseveNotice'
+import CalendarUtils from 'common/mixins/calendar-utils'
 export default {
   name: 'TicketInfo',
+  mixins: [CalendarUtils],
   props: {
     ticketInfo: Object
   },
@@ -68,66 +70,7 @@ export default {
       maxNum: 1000000,
       isShowCanlendarDialog: false,
       showRemark: false,
-      showModal: false,
-      calendar: {
-        weeks: ['日', '一', '二', '三', '四', '五', '六'],
-        months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-        begin: () => {
-          let date = new Date()
-          return [date.getFullYear(), date.getMonth() + 1, date.getDate()]
-        }
-      },
-      times: [
-        {
-          date: '',
-          week: '',
-          price: '0',
-          count: 0,
-          salesId: '',
-          isEnable: false,
-          isSelected: false,
-          raw: {}
-        },
-        {
-          date: '',
-          week: '',
-          price: '0',
-          count: 0,
-          salesId: '',
-          isEnable: false,
-          isSelected: false,
-          raw: {}
-        },
-        {
-          date: '',
-          week: '',
-          price: '0',
-          count: 0,
-          salesId: '',
-          isEnable: false,
-          isSelected: false,
-          raw: {}
-        }
-        // {
-        //   date: '',
-        //   week: '',
-        //   price: '0',
-        //   count: 0,
-        //   salesId: '',
-        //   isEnable: false,
-        //   isSelected: false,
-        //   raw: {}
-        // }
-      ],
-      events: {},
-      tempTime: {
-        date: '',
-        price: '0',
-        count: 0,
-        isEnable: false,
-        isSelected: false,
-        raw: {}
-      }
+      showModal: false
     }
   },
   computed: {
@@ -148,91 +91,16 @@ export default {
   watch: {
     ticketInfo (newVal, oldVal) {
       if (newVal) {
-        let tempEvent = {}
         if (!this.ticketInfo.calendar) {
           this.$toast('此票今日暂不销售')
           return
         }
-        if (this.ticketInfo.calendar.constructor === Object) {
-          this.tempTime.count = this.ticketInfo.calendar.one_stock || 0
-          this.tempTime.price = this.ticketInfo.calendar.sale_price
-          this.tempTime.raw = this.ticketInfo.calendar
-          this.minNum = this.ticketInfo.goods.min_number
-          this.maxNum = this.ticketInfo.goods.highest_number === 0 ? 1000000 : this.ticketInfo.goods.highest_number
-          this.num = this.minNum
-          this.emit()
-        } else {
-          // for (let key in this.ticketInfo.calendar) {
-          //   let item = this.ticketInfo.calendar[key]
-          //   tempEvent[item.date] = item
-          // }
-          this.ticketInfo.calendar.forEach((item) => {
-            if (item.oneStock) {
-              item.one_stock = item.oneStock
-            }
-            tempEvent[item.date] = item
-          })
-          this.minNum = this.ticketInfo.goods.min_number
-          this.num = this.minNum
-          this.events = tempEvent
-          this.initDate()
-        }
+        this.initCalendar(this.ticketInfo)
         this.showRemark = true
       }
     }
   },
   methods: {
-    initDate () {
-      let date = new Date()
-      this.times.forEach((it, index) => {
-        this.setTimesItem(date, it, index)
-      })
-      let tempArray = this.times.filter((item, index, array) => item.isEnable)
-      if (tempArray && tempArray.length > 0) {
-        tempArray[0].isSelected = true
-        this.tempTime = tempArray[0]
-        this.emit()
-      }
-    },
-    timeItemClick (item) {
-      this.tempTime = item
-      this.num = 1
-      this.times.forEach(element => {
-        element.isSelected = element === item
-      })
-      this.emit()
-    },
-    select (startDate, child) {
-      if (child.eventName) {
-        let date = new Date(startDate[0], startDate[1] - 1, startDate[2])
-        this.times.forEach((it, index) => {
-          this.setTimesItem(date, it, index)
-        })
-        this.tempTime = this.times[0]
-        this.emit()
-        this.isShowCanlendarDialog = false
-      } else {
-        this.$toast('所选日期暂无票的信息，请重新选择…')
-      }
-    },
-    setTimesItem (date, it, index) {
-      it.date = this.$utils.dateAdd(date, index).date
-      it.week = this.$utils.dateAdd(date, index).week
-      let temp = this.events[it.date]
-      it.isEnable = this.events.hasOwnProperty(it.date) && temp && temp.one_stock && parseInt(temp.one_stock) !== 0 && parseInt(temp.one_stock) !== -2
-      it.count = it.isEnable && temp ? temp.one_stock : 0
-      it.price = temp ? temp.sale_price : '0'
-      it.isSelected = it.isEnable && index === 0
-      it.raw = temp
-    },
-    releaseCount (count) {
-      if (count === null) return ''
-      if (count === -1 || count === -2 || count === 0) {
-        return ''
-      } else {
-        return '余' + Math.min(count, 99999)
-      }
-    },
     maxCount (count) {
       if (count === -1) {
         return this.maxNum

@@ -2,27 +2,11 @@ let defaultCity = {
   value: '济南市',
   code: 100
 }
-let currentCity = defaultCity
-let token = ''
-let identity = '2'
-let storeId = '2'
-let backPage = null
-try {
-  if (localStorage) {
-    currentCity = JSON.parse(localStorage.getItem('currentCity')) || defaultCity
-    token = localStorage.getItem('token')
-    if (!localStorage.getItem('identity')) {
-      localStorage.setItem('identity', 2)
-    }
-    if (!localStorage.getItem('storeId')) {
-      localStorage.setItem('storeId', 2)
-    }
-    identity = localStorage.getItem('identity')
-    storeId = localStorage.getItem('storeId')
-  }
-} catch (error) {
-  console.log(error)
-}
+let currentCity = JSON.parse(localStorage.getItem('currentCity')) || defaultCity
+let token = localStorage.getItem('token')
+let identity = localStorage.getItem('identity') || 2
+let storeId = localStorage.getItem('storeId') || 2
+let backPage = localStorage.getItem('backpage') || null
 
 export default {
   currentCity,

@@ -310,6 +310,11 @@ export default new Router({
       component: OrderBackMoney
     },
     {
+      path: '/orderinfomodify',
+      name: 'orderInfoModify',
+      component: () => import('@/pages/mine/order/OrderInfoModify')
+    },
+    {
       path: '/ordercomment',
       name: 'orderComment',
       component: OrderComment

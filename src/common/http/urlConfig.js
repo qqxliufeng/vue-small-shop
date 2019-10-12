@@ -123,6 +123,10 @@ export const orderCancelRefund = orderModuleUrl + 'cancel_refund'
 
 export const orderAfterSalesLog = orderModuleUrl + 'after_sales_log'
 
+export const orderModify = orderModuleUrl + 'ticketchanging'
+
+export const doOrderModify = orderModuleUrl + 'runticketchanging'
+
 const payModuleUrl = 'payment/'
 
 export const orderPayUrl = payModuleUrl + 'run_pay'

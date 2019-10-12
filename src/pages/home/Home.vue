@@ -10,7 +10,7 @@
           <div class="h-h-title" v-if="hotList && hotList.length > 0">-&nbsp;人气推荐&nbsp;-</div>
           <home-hot v-if="hotList && hotList.length > 0" :list="hotList" @itemClick="startDetail"></home-hot>
           <div class="h-h-ad-wrapper" v-if="ad">
-            <img :src="$utils.image.getImagePath(ad.image)" @click="adClick">
+            <img :src="$utils.image.getImagePath(ad.image)">
           </div>
           <div class="h-h-title">-&nbsp;为您推荐&nbsp;-</div>
           <home-like :likeList="guessList" @itemClick="startDetail" @seeMore="seeMore"></home-like>
@@ -111,7 +111,7 @@ export default {
           })
           sessionStorage.setItem('scenicMenu', JSON.stringify(this.categoryList))
           if (data.data.store && data.data.store.store_name) {
-            document.title = data.data.store.store_name + ' - 优待客'
+            document.title = data.data.store.store_name + ' - 易行旅行'
           } else {
             document.title = '店铺'
           }

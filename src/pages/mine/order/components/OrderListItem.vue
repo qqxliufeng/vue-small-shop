@@ -152,12 +152,18 @@ export default {
                 case 'USE_STATUS_NO': // 未使用
                   it.stateModel = {
                     orderType: '2',
-                    stateTip: '已支付',
+                    stateTip: '已支付/待使用',
                     time: {
                       title: '下单时间：',
                       time: it.ord_add_time
                     },
-                    action1: this.reBuyTicket(it),
+                    action1: Number(it.ticket_changing_status) === 1 ? {
+                      title: '更改日期',
+                      show: true,
+                      action: () => {
+                        this.$router.push({name: 'orderInfoModify', query: {id: it.ord_id, goodsId: it.ord_goodsId}})
+                      }
+                    } : this.reBuyTicket(it),
                     action2: {
                       title: it.is_refund === 1 ? '申请退款' : '',
                       show: it.is_refund === 1,
@@ -357,7 +363,6 @@ export default {
                         color #333333
                         font-size .3rem
                     .o-l-item-info-state
-                        flex 1
                         text-align right
                         color $orangeColor
                         font-size .25rem

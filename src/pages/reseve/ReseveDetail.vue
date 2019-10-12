@@ -12,7 +12,16 @@
                   <p :class="[collectionState ===  1 ? 'el-icon-star-on' : 'el-icon-star-off']"></p>
                   <p>收藏</p>
                 </div>
-                <span class="r-d-pay-action-pay" :style="{'background' : totalPrice === 0 ? '#cccccc' : '#E18234', 'pointer-events': totalPrice === 0 ? 'none' : 'auto'}" @click="reserve">立即预定</span>
+                <span class="r-d-pay-action-pay" :style="{'background' : isShowCountDown || totalPrice === 0 ? '#cccccc' : '#E18234', 'pointer-events': isShowCountDown || totalPrice === 0 ? 'none' : 'auto'}" @click="reserve">提交订单</span>
+            </div>
+            <div class="release-time" v-if="isShowCountDown">距离开售剩余时间：
+              <count-down :time="releaseTime * 1000" @end="countDownEnd">
+                <template slot-scope="props">
+                    <span class="time-wrapper">
+                        {{ props.days }}天{{ props.hours }}:{{ props.minutes }}:{{ props.seconds }}
+                    </span>
+                </template>
+              </count-down>
             </div>
         </div>
     </div>
@@ -24,6 +33,7 @@ import TicketInfo from './components/TicketInfo'
 import TicketDiscount from './components/TicketDiscount'
 import TicketUserInfo from './components/TicketUserInfo'
 import TicketContact from './components/TicketContact'
+import CountDown from 'common/components/countdown/countdown'
 export default {
   name: 'ReseveDetail',
   components: {
@@ -31,7 +41,8 @@ export default {
     TicketInfo,
     TicketDiscount,
     TicketUserInfo,
-    TicketContact
+    TicketContact,
+    CountDown
   },
   data () {
     return {
@@ -40,10 +51,22 @@ export default {
       contacts: [],
       tempDate: null,
       collectionState: 0,
-      touristCount: 1
+      touristCount: 1,
+      hasCountDownEnd: false
+    }
+  },
+  computed: {
+    isShowCountDown () {
+      return this.ticketInfo && this.ticketInfo.hasOwnProperty('releaseTime') && this.ticketInfo.releaseTime && Number(this.ticketInfo.releaseTime) - Number(this.ticketInfo.time) > 0 && !this.hasCountDownEnd
+    },
+    releaseTime () {
+      return this.ticketInfo ? Math.max(0, Number(this.ticketInfo.releaseTime) - Number(this.ticketInfo.time)) : 0
     }
   },
   methods: {
+    countDownEnd () {
+      this.hasCountDownEnd = true
+    },
     getData () {
       this.$http(this.$urlPath.orderReserve, {
         goods_id: this.$route.query.goods_id,
@@ -53,6 +76,10 @@ export default {
         s_id: this.$route.query.scenicId
       }, '', (data) => {
         this.ticketInfo = data.data
+        if (this.ticketInfo.calendar && this.ticketInfo.calendar.constructor === Object) {
+          this.ticketInfo.releaseTime = this.ticketInfo.calendar.releaseTime ? this.ticketInfo.calendar.releaseTime : 0
+          this.ticketInfo.time = data.time
+        }
         this.collectionState = data.data.is_favorites
       }, (errorCode, error) => {
         this.$toast(error)
@@ -234,6 +261,15 @@ export default {
     .r-d-detail-wrapper
         contentFixed()
         padding-bottom $headerHeight * 2
+        .release-time
+            position fixed
+            left 0
+            right 0
+            bottom $headerHeight
+            background-color $orangeColor
+            text-align center
+            textStyle(#fff, .25)
+            padding rem(.1) 0
         .r-d-detail-pay-action-wrapper
             display flex
             height $headerHeight

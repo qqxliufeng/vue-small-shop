@@ -12,13 +12,12 @@
                   </div>
               </div>
               <div class="s-d-info-scenic-open-time-wrapper">
-                  <p>营业时间</p>
-                  <p>{{slotPropes.scenicInfo.open}}</p>
+                  <div>营业时间: <span class="time">{{slotPropes.scenicInfo.open}}</span></div>
               </div>
             </template>
           </scenic-detail-info>
           <safe-protect></safe-protect>
-          <scenic-detail-hot :hotGoodsList="hotGoodsList" v-if="hotGoodsList && hotGoodsList.length > 0" @reseve-detail="reseveDetail"></scenic-detail-hot>
+          <!-- <scenic-detail-hot :hotGoodsList="hotGoodsList" v-if="hotGoodsList && hotGoodsList.length > 0" @reseve-detail="reseveDetail"></scenic-detail-hot> -->
           <scenic-detail-ticket-type :typeGoodsList="typeGoodsList" @reseve-detail="reseveDetail"></scenic-detail-ticket-type>
           <scenic-detail-leave-message :ask="ask"></scenic-detail-leave-message>
           <scenic-detail-comment :comment="comment" :tagCanSelected="false"></scenic-detail-comment>
@@ -201,19 +200,21 @@ export default {
         margin rem(.1) rem(.1)
         background-color #f5f5f5
     .s-d-info-scenic-info-title
-        normalTextStyle(#333333, .3)
+        textStyle(#333333, .3)
     .s-d-info-scenic-info-info
-        margin-top rem(.2)
+        margin-top rem(.1)
         normalTextStyle(#888888, .25)
         muitlLineEllipsis(2)
 .s-d-info-scenic-open-time-wrapper
     background-color #f5f5f5
-    padding rem(.1)
+    padding rem(.15)
+    margin-top rem(.1)
     border-radius rem(.1)
+    .time
+        textStyle($orangeColor, .28)
+        margin-left rem(.1)
     & p:nth-child(1)
         normalTextStyle(#333, .28)
-    & p:nth-child(2), & p:nth-child(3)
-        normalTextStyle(#888, .25)
 .s-d-l-m-comment-info-see-more
     normalTextStyle(#666, .3)
     padding rem(.2)

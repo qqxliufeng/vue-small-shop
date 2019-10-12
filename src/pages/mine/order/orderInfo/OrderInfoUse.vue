@@ -35,6 +35,9 @@
       <span class="comment" @click="comment">
         评价
       </span>
+      <span class="back-money" style="margin-right: .3rem" @click="orderInfomodify" v-if="detail.ticket_changing_status === 1">
+        更改日期
+      </span>
     </div>
   </div>
 </template>
@@ -99,6 +102,9 @@ export default {
       } else {
         this.$toast('当前订单还未进行消费')
       }
+    },
+    orderInfomodify () {
+      this.$router.push({name: 'orderInfoModify', query: {id: this.detail.ord_id, goodsId: this.detail.ord_goodsId}})
     }
   }
 }
