@@ -19,7 +19,8 @@
                         :ticketNum="detail.ord_ticket_num"
                         :refundTickets="detail.refund_tickets"
                         :sendCode="detail.send_code"
-                        :timeLog="detail.order_log">
+                        :timeLog="detail.order_log"
+                        :serialNumber="detail.goods.serial_number">
     </order-info-content>
     <ticket-notice-wrapper :goodsInfo="detail.goods"></ticket-notice-wrapper>
     <order-business-info :store="detail.store"></order-business-info>

@@ -6,3 +6,4 @@
 /src/common/components/
 /src/pages/sceniclist/components/ScenicListMenu.vue
 /src/common/mixins/calendar-utils.js
+/src/common/utils/htmlParse.js

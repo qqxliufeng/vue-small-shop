@@ -7,7 +7,7 @@
             <template slot="info" slot-scope="slotPropes">
               <div class="s-d-info-scenic-info-wrapper">
                   <div @click="startScenicInfo('scenicInfoForIntro')">
-                      <p class="s-d-info-scenic-info-title">景区须知</p>
+                      <p class="s-d-info-scenic-info-title">{{Number(scenicInfo.categoryId) === 13 ? '景区须知' : '简介'}}</p>
                       <p class="s-d-info-scenic-info-info">{{delHtmlTag(slotPropes.scenicInfo.brief)}}</p>
                   </div>
               </div>
@@ -16,7 +16,7 @@
               </div>
             </template>
           </scenic-detail-info>
-          <safe-protect></safe-protect>
+          <safe-protect v-if="Number(scenicInfo.categoryId) === 13"></safe-protect>
           <!-- <scenic-detail-hot :hotGoodsList="hotGoodsList" v-if="hotGoodsList && hotGoodsList.length > 0" @reseve-detail="reseveDetail"></scenic-detail-hot> -->
           <scenic-detail-ticket-type :typeGoodsList="typeGoodsList" @reseve-detail="reseveDetail"></scenic-detail-ticket-type>
           <scenic-detail-leave-message :ask="ask"></scenic-detail-leave-message>
@@ -74,7 +74,14 @@ export default {
   },
   methods: {
     reseveDetail (item) {
-      this.$router.push({name: 'reseveDetail', query: { goods_id: item.goodsId, scenicId: this.scenicId }})
+      switch (this.scenicInfo.categoryId) {
+        case 14:
+          this.$router.push({name: 'productionDetail', query: { goodsId: item.goodsId }})
+          break
+        default:
+          this.$router.push({name: 'reseveDetail', query: { goods_id: item.goodsId, scenicId: this.scenicId }})
+          break
+      }
     },
     startScenicInfo (type) {
       this.$router.push({name: 'scenicInfo', query: {id: this.scenicId}})
@@ -134,6 +141,7 @@ export default {
           info.brief = data.data.brief
           info.isFavorites = data.data.is_favorites
           info.content = data.data.s_content
+          info.categoryId = data.data.category_id
           this.scenicInfo = info
           this.hotGoodsList = data.data.hot_goods
           this.typeGoodsList = data.data.type_list

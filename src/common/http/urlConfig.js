@@ -67,7 +67,11 @@ const scenicDetailModuleUrl = 'details/'
 
 export const scenicDetailUrl = scenicDetailModuleUrl + 'scenic_details'
 
+export const simpleScenicDetailUrl = scenicDetailModuleUrl + 'scenic'
+
 export const goodsDetailUrl = scenicDetailModuleUrl + 'goods_detail'
+
+export const goodsDetailUrl2 = scenicDetailModuleUrl + 'goods_detail2'
 
 export const scenicNotesUrl = scenicDetailModuleUrl + 'scenic_notes'
 

@@ -21,8 +21,8 @@
             <div class="scenic-detail-rate">
               <el-rate disabled :value="Number(scenic.mark) || 0" text-color="#ff9900"></el-rate>
             </div>
-            <span class="scenic-detail-sale-count" v-if="scenic.totalSales > 0">
-              已售{{$utils.common.trasformNum(scenic.totalSales)}}
+            <span class="scenic-detail-sale-count" v-if="goods.totalSales > 0">
+              已售{{$utils.common.trasformNum(goods.totalSales)}}
             </span>
           </div>
         </div>

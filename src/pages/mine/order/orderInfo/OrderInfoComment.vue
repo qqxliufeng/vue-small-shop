@@ -13,7 +13,8 @@
                         :ticketNum="detail.ord_ticket_num"
                         :timeLog="detail.order_log"
                         :sendCode="detail.send_code"
-                        :refundTickets="detail.refund_tickets"></order-info-content>
+                        :refundTickets="detail.refund_tickets"
+                        :serialNumber="detail.goods.serial_number"></order-info-content>
     <ticket-notice-wrapper :goodsInfo="detail.goods"></ticket-notice-wrapper>
     <order-business-info :store="detail.store"></order-business-info>
     <order-detail :detail="detail"></order-detail>

@@ -3,7 +3,7 @@
     <p class="scenic-title">{{scenic.s_title}}</p>
     <div class="sperator"></div>
     <div ref="download">
-        <p class="item-info" id="download">{{ticketName}} X {{ticketNum}}</p>
+        <p class="item-info" id="download">{{ticketName}} X {{ticketNum}}<span v-if="serialNumber" class="serial-number">(团号：{{serialNumber}})</span></p>
         <p class="item-info">下单时间：{{createOrderTime || '暂无'}}</p>
         <p class="item-info">支付时间：{{payOrderTime || '暂无'}}</p>
         <p class="item-info">验票时间：{{scenic.ticket_check}}</p>
@@ -53,7 +53,8 @@ export default {
     ticketNum: Number,
     refundTickets: Number || String,
     sendCode: Number,
-    timeLog: Array
+    timeLog: Array,
+    serialNumber: String
   },
   components: {
     orderTicketInfo
@@ -158,6 +159,9 @@ export default {
         line-height rem(.4)
         .no-tip
             textStyle($orangeColor, .28)
+        .serial-number
+            textStyle($orangeColor, .25)
+            margin-left rem(.2)
     .ticket-info-container
         display flex
         flex-direction column

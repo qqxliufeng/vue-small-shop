@@ -76,14 +76,26 @@ export default {
             }
             tempEvent[item.date] = item
           })
-          this.minNum = ticketInfo.goods.min_number
+					this.minNum = ticketInfo.goods.min_number
+					this.maxNum = ticketInfo.goods.highest_number === 0 ? 1000000 : ticketInfo.goods.highest_number
           this.num = this.minNum
-          this.events = tempEvent
+					this.events = tempEvent
+					this.tempEvents = tempEvent
           this.initDate()
         }
 		},
 		initDate () {
-		  let date = new Date()
+			let date = new Date()
+			const time = (new Date(date.getFullYear(), date.getMonth(), date.getDate())).getTime()
+		  for (let obj in this.tempEvents) {
+				const temp = this.tempEvents[obj]
+				const objDate = new Date(obj.replace(/-/g, '/'))
+				const objTime = objDate.getTime()
+				if (temp && temp.one_stock && parseInt(temp.one_stock) !== 0 && parseInt(temp.one_stock) !== -2 && (time <= objTime)) {
+					date = objDate
+					break
+				}
+		  }
 		  this.times.forEach((it, index) => {
 		    this.setTimesItem(date, it, index)
 		  })

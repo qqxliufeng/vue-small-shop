@@ -3,7 +3,7 @@
         <div class="s-d-hot-item-info" @click="itemClick">
             <div class="s-d-hot-item-info-title-wrapper">
                 <p class="s-d-hot-item-info-title">{{item.goodsTitle}}</p>
-                <p class="s-d-hot-item-info-price"><span>￥{{item.minPrice}}</span></p>
+                <div class="s-d-hot-item-info-price"><span>￥{{item.minPrice}}</span></div>
             </div>
             <div class="s-d-hot-item-info-remark-wrapper">
                 <!-- <p class="s-d-hot-item-info-remark">{{item.before}}</p> -->
@@ -22,7 +22,7 @@
                     </p>
                 </div>
                 <div class="s-d-hot-item-info-info-action">
-                    <el-button type="primary" size="mini" class="button">立即预定</el-button>
+                    <el-button type="primary" size="mini" class="button">立即预订</el-button>
                 </div>
             </div>
         </div>
@@ -62,16 +62,15 @@ export default {
         .s-d-hot-item-info-title-wrapper
             padding rem(.1) 0
             overflow hidden
+            display flex
+            justify-content space-between
+            justify-items center
             .s-d-hot-item-info-title
-                float left
-                normalTextStyle(#333, .32)
+                textStyle(#333, .32)
+                flex 1
             .s-d-hot-item-info-price
-                float right
                 & span
-                    normalTextStyle($primary, .4)
-                & i
-                    normalTextStyle(#888888, .2)
-                    margin-left rem(.1)
+                    textStyle($primary, .4)
         .s-d-hot-item-info-remark-wrapper
             position relative
             height rem(.5)
@@ -89,7 +88,6 @@ export default {
                 normalTextStyle(#888888, .25)
                 text-decoration line-through
             .tags
-                margin-top rem(.08)
                 .tag
                     margin 0 rem(.1)
                     & >>> .el-tag
@@ -103,7 +101,6 @@ export default {
             display flex
             justify-content center
             align-items center
-            margin-top rem(.1)
             .s-d-hot-item-info-info-info
                 overflow hidden
                 flex 1

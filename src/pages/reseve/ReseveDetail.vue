@@ -5,6 +5,7 @@
             <ticket-info :ticketInfo="ticketInfo" @selected="onSelectedTimeItem" ref="ticketInfo" @collection="collection"></ticket-info>
             <ticket-contact v-if="ticketInfo.goods && ticketInfo.goods.play_info !== 0" ref="userSingleInfo" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-contact>
             <ticket-user-info :contacts="contacts" :touristCount="touristCount" ref="userInfo" v-if="ticketInfo.goods && ticketInfo.goods.play_info === 2 && touristCount > 1" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-info>
+            <select-route-site v-if="ticketInfo.goods && ticketInfo.goods.categoryId === 14" :routeSites="ticketInfo.assembling_place" @route-item-click="routeSiteClick"></select-route-site>
             <ticket-discount></ticket-discount>
             <div class="r-d-detail-pay-action-wrapper">
                 <span class="r-d-pay-action-price">总价：<i>￥{{totalPrice}}</i></span>
@@ -34,6 +35,7 @@ import TicketDiscount from './components/TicketDiscount'
 import TicketUserInfo from './components/TicketUserInfo'
 import TicketContact from './components/TicketContact'
 import CountDown from 'common/components/countdown/countdown'
+import SelectRouteSite from './components/SelectRouteSite'
 export default {
   name: 'ReseveDetail',
   components: {
@@ -42,7 +44,8 @@ export default {
     TicketDiscount,
     TicketUserInfo,
     TicketContact,
-    CountDown
+    CountDown,
+    SelectRouteSite
   },
   data () {
     return {
@@ -52,7 +55,8 @@ export default {
       tempDate: null,
       collectionState: 0,
       touristCount: 1,
-      hasCountDownEnd: false
+      hasCountDownEnd: false,
+      tempRouteSite: null
     }
   },
   computed: {
@@ -84,6 +88,9 @@ export default {
       }, (errorCode, error) => {
         this.$toast(error)
       })
+    },
+    routeSiteClick (item) {
+      this.tempRouteSite = item
     },
     onSelectedTimeItem (info) {
       if (info.item) {
@@ -162,6 +169,16 @@ export default {
           postData.contact = this.$refs.userSingleInfo.tempUserInfo // 用于接收短信的游客信息
           postData.user.push(this.$refs.userSingleInfo.tempUserInfo) // 把联系人也放到游玩人信息里面
           break
+      }
+      if (this.ticketInfo.goods.categoryId === 14 && this.tempRouteSite === null) {
+        this.$toast('请选择乘车时间和地点')
+        return
+      }
+      if (this.ticketInfo.goods.categoryId === 14 && this.tempRouteSite) {
+        postData.siteInfo = {
+          rideTime: this.tempRouteSite.time,
+          rideSite: this.tempRouteSite.site
+        }
       }
       postData.info = {
         identity: this.$root.state.getSallerInfo().identity,

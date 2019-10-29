@@ -18,6 +18,7 @@
                     <span class="iconfont s-d-info-scenic-location-icon">&#xe850;</span>
                     <div class="s-d-info-scenic-location">
                         <p>{{scenicInfo.city}}</p>
+                        <p class="address">{{scenicInfo.address}}</p>
                     </div>
                     <a :href="'tel:' + scenicInfo.tel" class="iconfont s-d-info-scenic-phone">&#xe6a9;</a>
                     </div>
@@ -80,10 +81,12 @@ export default {
             overflow hidden
             .s-d-info-scenic-location-wrapper
                 margin-top rem(.3)
-                normalTextStyle(#333333, .3)
+                textStyle(#333333, .3)
                 line-height rem(.45)
                 display flex
                 align-items center
+                .address
+                    textStyle(#666, .25)
                 .s-d-info-scenic-location
                     flex 1
                 .s-d-info-scenic-phone

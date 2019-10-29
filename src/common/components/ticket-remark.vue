@@ -1,7 +1,6 @@
 <template>
 <div class="r-d-ticket-info-remark-content-wrapper">
-    <!-- <p class="r-d-ticket-info-remark-content-title">{{remarkInfo.title}}</p> -->
-    <p class="r-d-ticket-info-remark-content-title-info" v-if="value">
+    <p class="r-d-ticket-info-remark-content-title-info" v-if="value" :style="itemStyle ? itemStyle : ''">
         <span class="remark-key">
             {{remark.title}}
         </span>
@@ -17,7 +16,8 @@
 export default {
   name: 'ticketRemark',
   props: {
-    remark: Object
+    remark: Object,
+    itemStyle: Object
   },
   data () {
     return {

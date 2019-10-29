@@ -20,7 +20,7 @@
                   text-color="#ff9900"
                   :score-template="Number(item.mark) > 0 ? '{value}分' : '暂无评价'">
           </el-rate>
-          <span class="order">立即预定</span>
+          <span class="order">立即预订</span>
         </div>
       </div>
   </div>

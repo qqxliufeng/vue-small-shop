@@ -53,6 +53,8 @@ import Gallary from 'common/components/gallary/Gallary'
 
 import Auth from '@/pages/wx/Auth'
 
+import ProductionDetail from '@/pages/production/ProductionDetail'
+
 Vue.use(Router)
 
 export default new Router({
@@ -394,6 +396,16 @@ export default new Router({
     {
       path: '*',
       component: () => import('@/pages/empty/EmptyPage')
+    },
+    {
+      path: '/productiondetail',
+      name: 'productionDetail',
+      component: ProductionDetail
+    },
+    {
+      path: '/simplescenicdetail',
+      name: 'simpleScenicDetail',
+      component: () => import('@/pages/scenicdetail/SimpleScenicDetail')
     }
   ],
   scrollBehavior (to, from, saveTop) {

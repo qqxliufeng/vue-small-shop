@@ -36,6 +36,18 @@
         合计金额：￥{{detail.ord_amount}}
       </p>
     </div>
+    <div class="sperator-1" v-if="detail.goods.categoryId === 14"></div>
+    <div class="content-wrapper" v-if="detail.goods.categoryId === 14">
+      <p class="content-title">
+        乘车时间/地点
+      </p>
+      <div class="content-info">
+        乘车时间：<span class="ride-item-info">{{detail.ride_time}}</span>
+      </div>
+      <div class="content-info">
+        乘车地点：<span class="ride-item-info">{{detail.ride_site}}</span>
+      </div>
+    </div>
     <div class="sperator-1"></div>
     <ticket-remark :remark="{ title: '下单店铺', value: detail.shop_name }"></ticket-remark>
     <ticket-remark :remark="{ title: '订单编号', value: detail.ord_id }"></ticket-remark>
@@ -83,6 +95,9 @@ export default {
             margin-left rem(.2)
             textStyle(#888, .26)
             line-height rem(.5)
+            .ride-item-info
+                textStyle($orangeColor, .28)
+                font-weight bold
     .sperator-1
         height 2px
         width 90%
