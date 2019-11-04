@@ -406,6 +406,11 @@ export default new Router({
       path: '/simplescenicdetail',
       name: 'simpleScenicDetail',
       component: () => import('@/pages/scenicdetail/SimpleScenicDetail')
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: () => import('@/pages/common/map')
     }
   ],
   scrollBehavior (to, from, saveTop) {

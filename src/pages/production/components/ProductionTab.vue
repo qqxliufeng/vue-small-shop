@@ -25,7 +25,7 @@ export default {
       isFixed: false,
       items: [
         {
-          title: '产品说明',
+          title: '预订须知',
           selected: false,
           clicked: false,
           index: 1
@@ -37,7 +37,7 @@ export default {
           index: 2
         },
         {
-          title: '预定须知',
+          title: '产品说明',
           selected: false,
           clicked: false,
           index: 3
@@ -110,8 +110,8 @@ export default {
             justify-content center
             border-bottom 1px solid #fff
         .tab-item-selected
-            color #f00
-            border-bottom 1px solid #f00
+            color $orangeColor
+            border-bottom 1px solid $orangeColor
             box-sizing border-box
     .tab-fixed
         position fixed

@@ -2,10 +2,11 @@
     <el-card :body-style="{padding: 0}" class="s-d-l-m-message-container" v-if="ask">
         <div class="s-d-l-m-message-title">
             <span><span class="el-icon-chat-line-square icon"></span><i style="font-weight: bold; color: #444">留言板</i></span>
-            <span>{{ask.ask_count}}条留言</span>
+            <span>{{ask.ask_count || 0}}条留言</span>
         </div>
         <div v-if="showEmpty" class="s-d-l-m-message-empty">
-            <el-button type="primary" size="mini" class="button" @click="startLeaveMessage">去留言</el-button>
+            <el-button type="primary" size="mini" class="button" @click="startLeaveMessage" v-if="status === 1">去留言</el-button>
+            <span v-else>暂无留言哦~</span>
         </div>
         <div v-else class="s-d-l-m-message-info-wrapper">
             <ul>
@@ -28,7 +29,11 @@
 export default {
   name: 'scenicDetailLeaveMessage',
   props: {
-    ask: Object
+    ask: Object,
+    status: {
+      type: Number,
+      default: 1
+    }
   },
   data () {
     return {
@@ -36,7 +41,7 @@ export default {
   },
   computed: {
     showEmpty () {
-      return this.ask.ask_list && this.ask.ask_list.length === 0
+      return !this.ask.ask_list || this.ask.ask_list.length === 0
     }
   },
   methods: {

@@ -4,8 +4,7 @@
         <span class="remark-key">
             {{remark.title}}
         </span>
-        <span class="remark-value" :style="{color: specialList.includes(remark.title) ? '#ffad2c' : '#888'}">
-            {{value || '暂无'}}
+        <span class="remark-value" :style="{color: specialList.includes(remark.title) ? '#ffad2c' : '#888'}" v-html="value || '暂无'">
         </span>
     </p>
 </div>
@@ -21,7 +20,7 @@ export default {
   },
   data () {
     return {
-      specialList: ['适用人群:', '退款规则:', '换票时间:', '入园时间:']
+      specialList: ['适用人群:', '退款规则:', '换票时间:', '入园时间:', '产品说明:']
     }
   },
   computed: {
@@ -70,4 +69,6 @@ export default {
             width 75%
             color #888888
             line-height rem(.4)
+            vertical-align top
+            white-space pre-line
 </style>

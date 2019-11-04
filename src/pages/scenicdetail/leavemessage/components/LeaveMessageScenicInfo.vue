@@ -6,7 +6,7 @@
     </div>
     <div class="a-m-message-scenic-info-content-wrapper">
       <p class="title">{{scenicInfo.s_title}}</p>
-      <p class="info">{{scenicInfo.mark}}分 | {{scenicInfo.total_sales}}人消费</p>
+      <p class="info">{{scenicInfo.mark}}分 | 已售{{$utils.common.trasformNum(scenicInfo.total_sales)}}</p>
     </div>
   </div>
 </div>

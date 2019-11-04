@@ -1,27 +1,26 @@
 <template>
     <el-card :body-style="{padding: '0'}"  class="s-d-t-type-container" v-if="typeGoodsList && typeGoodsList.length > 0">
-        <div class="s-d-t-type-title-wrapper" :class="{'tab-fixed' : isFixed}"  ref="type" @click="positionType">
-            <span class="el-icon-tickets icon"></span>
-            <span style="font-weight: bold; color: #444">优惠信息</span>
+        <div class="s-d-t-type-title-wrapper" ref="type" @click="positionType">
+          <span class="el-icon-tickets icon"></span>
+          <span style="font-weight: bold; color: #444">{{title}}</span>
         </div>
-        <div id="tab" v-show="isFixed" style="height: 1.72rem"></div>
         <div>
-             <swiper :options="swiperOption" class="h-h-hot-card">
-                 <swiper-slide v-for="(tabItem, index) of tempTypeGoodsList" :key="tabItem.goodsTypeId">
-                     <span class="tab-item" @click="selectTabItem(index)" :class="{'tab-item-selected' : tabItem.isSelected}">{{tabItem.goodsTypeName}}</span>
-                 </swiper-slide>
-             </swiper>
-             <ul v-if="currentTabItems && currentTabItems.length > 0" class="ticket-wrapper">
-                <li v-for="item of tempCurrentTabItems" :key="item.goodsId">
-                    <scenic-detail-ticket-item :item="item" @reseve-detail="reseveDetail"></scenic-detail-ticket-item>
-                </li>
-                <div v-if="tempCurrentTabItems && tempCurrentTabItems.length < currentTabItems.length" class="show-more" @click="showMore">
-                  加载更多
-                </div>
-            </ul>
-            <div v-else class="s-d-l-m-message-empty">
-                <span>暂无门票</span>
+          <swiper :options="swiperOption" class="h-h-hot-card">
+              <swiper-slide v-for="(tabItem, index) of tempTypeGoodsList" :key="tabItem.goodsTypeId">
+                  <span class="tab-item" @click="selectTabItem(index)" :class="{'tab-item-selected' : tabItem.isSelected}">{{tabItem.goodsTypeName}}</span>
+              </swiper-slide>
+          </swiper>
+          <ul v-if="currentTabItems && currentTabItems.length > 0" class="ticket-wrapper">
+            <li v-for="item of tempCurrentTabItems" :key="item.goodsId">
+                <scenic-detail-ticket-item :item="item" @reseve-detail="reseveDetail"></scenic-detail-ticket-item>
+            </li>
+            <div v-if="tempCurrentTabItems && tempCurrentTabItems.length < currentTabItems.length" class="show-more" @click="showMore">
+              加载更多
             </div>
+        </ul>
+        <div v-else class="s-d-l-m-message-empty">
+            <span>暂无产品</span>
+        </div>
         </div>
     </el-card>
 </template>
@@ -31,7 +30,11 @@ import ScenicDetailTicketItem from './ScenicDetailTicketItem'
 export default {
   name: 'scenicDetailTicketType',
   props: {
-    typeGoodsList: Array
+    typeGoodsList: Array,
+    title: {
+      type: String,
+      default: '优惠信息'
+    }
   },
   components: {
     ScenicDetailTicketItem
@@ -101,6 +104,7 @@ export default {
     },
     showMore () {
       this.tempCurrentTabItems = this.currentTabItems
+      this.$emit('show-more')
     }
   },
   mounted () {

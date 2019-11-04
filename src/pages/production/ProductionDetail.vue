@@ -17,11 +17,12 @@
       <div class="top-price-wrapper">
         <span class="min-price"><i>￥</i>{{Number(details.goods.minPrice).toFixed(2)}}</span>
         <span class="retail-price"><i>￥</i>{{Number(details.goods.retailPrice).toFixed(2)}}</span>
+        <span style="flex: 1"></span>
+        <span class="mark">{{details.avg_mark}}分</span>
       </div>
       <div class="header-goods-info-wrapper">
         <div class="title-wrapper">
           <span class="title">{{details.goods.goodsTitle}}</span>
-          <span class="mark">{{details.comment.avg_mark}}分</span>
         </div>
         <div class="second-title">
           {{details.goods.title}}
@@ -49,11 +50,29 @@
     </div>
     <production-tab>
       <template>
-        <div class="content" id="item1">
-          <div class="content-header">
-            产品详情
+        <div class="content" id="item1" style="padding: 0 .2rem">
+          <div class="content-header" v-if="details.goods.categoryId === 14">
+            乘车信息
           </div>
-          <div v-html="details.goods.details" id="item1-content" style="line-height: .45rem"></div>
+          <div style="padding: .2rem" v-if="details.goods.categoryId === 14">
+            <el-timeline>
+              <el-timeline-item
+                v-for="(item, index) of details.goods.route"
+                :key="index"
+                :timestamp="item.site">
+                {{item.time}}
+              </el-timeline-item>
+            </el-timeline>
+          </div>
+          <div v-if="details.goods.categoryId === 14" class="img-wrapper">
+            <img :src="details.route_image">
+          </div>
+          <div class="content-header">
+            预定须知
+          </div>
+          <div>
+            <ticket-remark v-for="(item, index) of entrance" :key="index" :remark="item" :itemStyle="{marginLeft: '.2rem'}"></ticket-remark>
+          </div>
         </div>
         <div class="content" id="item2" style="padding: 0 .2rem">
           <div class="content-header">
@@ -63,13 +82,11 @@
             <ticket-remark v-for="(item, index) of details.goods.explain" :key="index" :remark="item" :itemStyle="{marginLeft: '.2rem'}"></ticket-remark>
           </div>
         </div>
-        <div class="content" id="item3" style="padding: 0 .2rem">
+         <div class="content" id="item3">
           <div class="content-header">
-            预定须知
+            产品说明
           </div>
-          <div>
-            <ticket-remark v-for="(item, index) of entrance" :key="index" :remark="item" :itemStyle="{marginLeft: '.2rem'}"></ticket-remark>
-          </div>
+          <div v-html="details.goods.details" id="item1-content" style="line-height: .45rem"></div>
         </div>
       </template>
     </production-tab>
@@ -175,6 +192,12 @@ export default {
             textStyle(#ffffff, .28)
             margin-left rem(.2)
             text-decoration line-through
+        .mark
+            background-color $orangeColor
+            border-radius rem(.05)
+            textStyle(#fff, .25)
+            line-height rem(.32)
+            padding 0 rem(.1)
         & i
             textStyle(#fff, .2)
     .header-goods-info-wrapper
@@ -184,12 +207,6 @@ export default {
             .title
                 flex 1
                 textStyle(#333, .32)
-            .mark
-                background-color $orangeColor
-                border-radius rem(.05)
-                textStyle(#fff, .25)
-                line-height rem(.32)
-                padding 0 rem(.1)
         .second-title
             padding rem(.2) 0
             textStyle(#666, .28)
@@ -230,6 +247,11 @@ export default {
     .content
         background #ffffff
         padding rem(.2)
+        .img-wrapper
+            width 100%
+            & img
+                width 100%
+                object-fit cover
         .content-header
             &::before
                 content '|'

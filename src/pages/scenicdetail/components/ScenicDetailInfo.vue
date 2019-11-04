@@ -15,10 +15,10 @@
             <div class="s-d-info-middle-wrapper">
                 <slot name="info" :scenicInfo="scenicInfo"></slot>
                 <div class="s-d-info-scenic-location-wrapper">
-                    <span class="iconfont s-d-info-scenic-location-icon">&#xe850;</span>
+                    <span class="iconfont s-d-info-scenic-location-icon" @click="location">&#xe850;</span>
                     <div class="s-d-info-scenic-location">
-                        <p>{{scenicInfo.city}}</p>
-                        <p class="address">{{scenicInfo.address}}</p>
+                        <p>{{scenicInfo.categoryId === 14 ? scenicInfo.businessName : scenicInfo.city}}</p>
+                        <p class="address">{{scenicInfo.categoryId === 14 ? scenicInfo.tel : scenicInfo.address}}</p>
                     </div>
                     <a :href="'tel:' + scenicInfo.tel" class="iconfont s-d-info-scenic-phone">&#xe6a9;</a>
                     </div>
@@ -38,6 +38,11 @@ export default {
   methods: {
     startScenicInfo (type) {
       this.$router.push({name: 'scenicInfo', params: {selected: type}})
+    },
+    location () {
+      if (this.scenicInfo.longitude && this.scenicInfo.latitude) {
+        this.$router.push({name: 'map', query: { lng: this.scenicInfo.longitude, lat: this.scenicInfo.latitude, title: this.scenicInfo.title }})
+      }
     }
   }
 }
@@ -92,7 +97,7 @@ export default {
                 .s-d-info-scenic-phone
                     textStyle($primary, .5)
             .s-d-info-scenic-location-icon
-                font-size rem(.4)
+                font-size rem(.6)
                 margin-right rem(.2)
                 vertical-align top
     .sperator-line
