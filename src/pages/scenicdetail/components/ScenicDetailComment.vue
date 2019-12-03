@@ -4,9 +4,6 @@
             <span><span class="el-icon-star-off icon"></span><span style="font-weight: bold; color: #444">综合评价：<i>{{Number(comment.avg_mark).toFixed(1)}}</i></span></span>
             <span>{{comment.count}}次评价</span>
         </div>
-        <div class="s-d-comment-tags-wrapper">
-            <span v-for="(item, index) of tagsList" :key="index" :class="{'s-d-comment-tags-selected': item.select}" @click="tagsClick(item)">{{item.name}}</span>
-        </div>
         <ul v-if="comment.comment_list && comment.comment_list.length > 0">
             <li v-for="(item, index) of comment.comment_list" :key="index">
                 <scenic-detail-comment-item :item="item"></scenic-detail-comment-item>

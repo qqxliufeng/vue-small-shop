@@ -2,7 +2,7 @@
     <div>
         <section v-if="loadState">
           <div id="headerHeight">
-            <scenic-detail-header :scenicInfo="scenicInfo" @back="back" @collection="collection" :isFavorites="scenicInfo.isFavorites"></scenic-detail-header>
+            <scenic-detail-header :scenicInfo="scenicInfo" @back="back" @collection="collection" :isFavorites="scenicInfo.isFavorites" :scrollTop="scrollTop"></scenic-detail-header>
             <scenic-detail-images :imageList="imageList"></scenic-detail-images>
             <scenic-detail-info :scenicInfo="scenicInfo">
               <template slot="info" slot-scope="slotPropes">
@@ -27,7 +27,7 @@
             <scenic-detail-ticket-type :typeGoodsList="route" @reseve-detail="reseveRouteDetail" title="跟团游"></scenic-detail-ticket-type>
           </div>
           <div id="message">
-            <scenic-detail-leave-message :ask="ask" :status="scenicInfo.messageSwitch"></scenic-detail-leave-message>
+            <scenic-detail-leave-message :ask="ask" :status="scenicInfo.messageSwitch" @message-item-click="messageItemClick"></scenic-detail-leave-message>
           </div>
           <div id="comment">
             <scenic-detail-comment :comment="comment" :tagCanSelected="false"></scenic-detail-comment>
@@ -131,6 +131,9 @@ export default {
       }
       return ''
     },
+    messageItemClick (item) {
+      this.$router.push({name: 'leaveMessageInfo', query: {s_id: this.scenicId, aid: item.aid}})
+    },
     collection () {
       if (this.$root.userInfo.isLogin()) {
         this.$http(this.$urlPath.userUnFavoroteScenicUrl, {
@@ -199,7 +202,7 @@ export default {
             })
           }
           this.tabList.push({
-            title: '留言',
+            title: '留言板',
             type: 'message'
           })
           this.tabList.push({
@@ -345,10 +348,10 @@ export default {
     & p:nth-child(1)
         normalTextStyle(#333, .28)
 .s-d-l-m-comment-info-see-more
-    normalTextStyle(#666, .3)
+    normalTextStyle(#666, .26)
     padding rem(.2)
     text-align center
-    border-top #f5f5f5 solid rem(.05)
+    border-top #f5f5f5 solid 1px
 .tab-wrapper
     line-height rem(.86)
     background-color white
@@ -359,7 +362,7 @@ export default {
     z-index 999
     display flex
     align-items center
-    box-shadow 0px 7px 7px rgba(0, 0, 0, 0.1)
+    box-shadow 0px 1px 5px rgba(0, 0, 0, 0.1)
     & div
         flex 1
         text-align center

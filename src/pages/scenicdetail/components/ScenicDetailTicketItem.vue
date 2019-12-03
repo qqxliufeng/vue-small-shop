@@ -66,7 +66,7 @@ export default {
             justify-content space-between
             justify-items center
             .s-d-hot-item-info-title
-                textStyle(#333, .32)
+                textStyle(#333, .3)
                 flex 1
             .s-d-hot-item-info-price
                 & span

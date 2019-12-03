@@ -25,6 +25,15 @@
               </count-down>
             </div>
         </div>
+        <el-dialog
+          title="提示"
+          :visible.sync="orderConfirm"
+          width="90%">
+          <span>此订单需要等待商家确认库存，确认成功后方可付款</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="orderConfirmConfirm" size="mini">我知道了</el-button>
+          </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -56,7 +65,8 @@ export default {
       collectionState: 0,
       touristCount: 1,
       hasCountDownEnd: false,
-      tempRouteSite: null
+      tempRouteSite: null,
+      orderConfirm: false
     }
   },
   computed: {
@@ -70,6 +80,10 @@ export default {
   methods: {
     countDownEnd () {
       this.hasCountDownEnd = true
+    },
+    orderConfirmConfirm () {
+      this.orderConfirm = false
+      this.$router.back()
     },
     getData () {
       this.$http(this.$urlPath.orderReserve, {
@@ -189,10 +203,14 @@ export default {
       this.$http(this.$urlPath.orderCreate, {
         data: JSON.stringify(postData)
       }, '正在提交…', (data) => {
-        this.$toast('订单提交成功')
         this.$root.$emit('onReload')
         this.$root.$emit('onGetBadge')
-        this.$router.replace({name: 'orderInfoPay', query: {no: data.data.out_trade_no}})
+        if (Number(data.data.is_confirm) === 1) { // 1 不需要确认订单
+          this.$toast('订单提交成功')
+          this.$router.replace({name: 'orderInfoPay', query: {no: data.data.out_trade_no}})
+        } else { // 需要确认订单
+          this.orderConfirm = true
+        }
       }, (errorCode, error) => {
         this.$toast(error)
       })

@@ -88,6 +88,42 @@ export default {
         }
       }
     },
+    payStatusNoTitle (item) {
+      // 不需要确认
+      if (item.confirm_time === null && item.is_confirm === 1) {
+        return '剩余支付时间：'
+      }
+      // 需要确认，等待确认
+      if (item.confirm_time === null && item.is_confirm === 0) {
+        return '等待确认时间：'
+      }
+      // 需要确认，确认通过，展示支付时间
+      if (item.confirm_time && item.is_confirm === 1) {
+        return '剩余支付时间：'
+      }
+      // 需要确认，确认未通过
+      if (item.confirm_time && item.is_confirm === 2) {
+        return '订单确认未通过，订单已取消'
+      }
+    },
+    payStatusNoTime (item) {
+      // 不需要确认，直接展示支付时间
+      if (item.confirm_time === null && item.is_confirm === 1) {
+        return Math.max(0, (Number(item.timeout_express) - Number(this.serverTime)) * 1000)
+      }
+      // 需要确认，等待确认
+      if (item.confirm_time === null && item.is_confirm === 0) {
+        return Math.max(0, (Number(item.confirm_exprie_time) - Number(this.serverTime)) * 1000)
+      }
+      // 需要确认，确认通过，展示支付时间
+      if (item.confirm_time && item.is_confirm === 1) {
+        return Math.max(0, (Number(item.timeout_express) - Number(this.serverTime)) * 1000)
+      }
+      // 需要确认，确认未通过
+      if (item.confirm_time && item.is_confirm === 2) {
+        return 0
+      }
+    },
     upCallBack (page, mescroll) {
       this.$http(this.$urlPath.orderList, {
         status: this.state,
@@ -120,8 +156,8 @@ export default {
                     orderType: '1',
                     stateTip: '待付款',
                     time: {
-                      title: '剩余支付时间：',
-                      time: Math.max(0, (Number(it.timeout_express) - Number(this.serverTime)) * 1000)
+                      title: this.payStatusNoTitle(it),
+                      time: this.payStatusNoTime(it)
                     },
                     action1: {
                       title: '取消订单',
@@ -142,7 +178,7 @@ export default {
                     },
                     action2: {
                       title: '立即支付',
-                      show: Number(it.timeout_express) - Number(this.serverTime) > 0,
+                      show: it.is_confirm === 1 && Number(it.timeout_express) - Number(this.serverTime) > 0,
                       action: () => {
                         this.$router.push({name: 'orderInfoPay', query: {no: it.out_trade_no}})
                       }

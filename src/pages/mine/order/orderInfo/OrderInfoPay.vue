@@ -3,7 +3,7 @@
     <order-info-header :stateTip="title">
         <template slot="headerTitleInfo" >
             <span class="o-i-release-pay-time">
-                剩余支付时间：
+                {{payStatusNoTitle()}}
                 <count-down :time="releasePayTime" @end="countDownEnd">
                   <template slot-scope="props">
                       <span class="time-wrapper">
@@ -76,10 +76,62 @@ export default {
       return Math.max(0, (Number(this.detail.timeout_express) - Number(this.detail.time)) * 1000)
     },
     title () {
-      return this.hasDownEnd ? '已取消' : '待付款'
+      // 不需要确认
+      if (this.detail.confirm_time === null && this.detail.is_confirm === 1) {
+        return this.hasDownEnd ? '已取消' : '待付款'
+      }
+      // 需要确认，等待确认
+      if (this.detail.confirm_time === null && this.detail.is_confirm === 0) {
+        return '等待商家确认'
+      }
+      // 需要确认，确认通过，展示支付时间
+      if (this.detail.confirm_time && this.detail.is_confirm === 1) {
+        return this.hasDownEnd ? '已取消' : '待付款'
+      }
+      // 需要确认，确认未通过
+      if (this.detail.confirm_time && this.detail.is_confirm === 2) {
+        return '已取消'
+      }
+      return ''
     }
   },
   methods: {
+    payStatusNoTitle () {
+      // 不需要确认
+      if (this.detail.confirm_time === null && this.detail.is_confirm === 1) {
+        return '剩余支付时间：'
+      }
+      // 需要确认，等待确认
+      if (this.detail.confirm_time === null && this.detail.is_confirm === 0) {
+        return '等待确认时间：'
+      }
+      // 需要确认，确认通过，展示支付时间
+      if (this.detail.confirm_time && this.detail.is_confirm === 1) {
+        return '剩余支付时间：'
+      }
+      // 需要确认，确认未通过
+      if (this.detail.confirm_time && this.detail.is_confirm === 2) {
+        return '订单确认未通过，订单已取消'
+      }
+    },
+    payStatusNoTime () {
+      // 不需要确认，直接展示支付时间
+      if (this.detail.confirm_time === null && this.detail.is_confirm === 1) {
+        return Math.max(0, (Number(this.detail.timeout_express) - Number(this.serverTime)) * 1000)
+      }
+      // 需要确认，等待确认
+      if (this.detail.confirm_time === null && this.detail.is_confirm === 0) {
+        return Math.max(0, (Number(this.detail.confirm_exprie_time) - Number(this.serverTime)) * 1000)
+      }
+      // 需要确认，确认通过，展示支付时间
+      if (this.detail.confirm_time && this.detail.is_confirm === 1) {
+        return Math.max(0, (Number(this.detail.timeout_express) - Number(this.serverTime)) * 1000)
+      }
+      // 需要确认，确认未通过
+      if (this.detail.confirm_time && this.detail.is_confirm === 2) {
+        return 0
+      }
+    },
     countDownEnd () {
       this.hasDownEnd = true
     },
@@ -87,6 +139,16 @@ export default {
       this.$emit('backTop')
     },
     goPay () {
+      // 需要确认，等待确认
+      if (this.detail.confirm_time === null && this.detail.is_confirm === 0) {
+        this.$toast('订单等待商家确认')
+        return
+      }
+      // 需要确认，确认未通过
+      if (this.detail.confirm_time && this.detail.is_confirm === 2) {
+        this.$toast('订单确认未通过，已自动取消')
+        return
+      }
       if (this.releasePayTime === 0 || this.hasDownEnd) {
         this.$toast('订单长时间未支付，已自动取消')
         return

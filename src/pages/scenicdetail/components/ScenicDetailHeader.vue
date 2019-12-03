@@ -1,12 +1,12 @@
 <template>
     <div class="s-d-header-container" >
-        <div :style="{ 'background-color': top == 0 ? '#000' : 'transparent'}" @click="back">
-            <span class="iconfont" :style="{'color': top == 0 ? '#fff' : '#000'}">&#xe625;</span>
+        <div :style="{ 'background-color': scrollTop == 0 ? '#000' : 'transparent'}" @click="back">
+            <span class="iconfont" :style="{'color': scrollTop == 0 ? '#fff' : '#000'}">&#xe625;</span>
         </div>
-        <div :style="{ 'background-color': top == 0 ? '#000' : 'transparent', 'display' : isShowCollection ? 'block' : 'none'}">
+        <div :style="{ 'background-color': scrollTop == 0 ? '#000' : 'transparent', 'display' : isShowCollection ? 'block' : 'none'}">
             <span
             :class="[ favorites ? 'el-icon-star-on' : 'el-icon-star-off' ]"
-            :style="{'color': top == 0 ? '#fff' : '#000'}"
+            :style="{'color': scrollTop == 0 ? '#fff' : '#000'}"
             @click="collection"
             v-if="isShowCollection"></span>
         </div>
@@ -24,6 +24,10 @@ export default {
     isShowCollection: {
       type: Boolean,
       default: true
+    },
+    scrollTop: {
+      type: Number,
+      default: 0
     }
   },
   data () {
@@ -42,31 +46,25 @@ export default {
       return this.isFavorites === 1
     }
   },
-  methods: {
-    handlerScroll () {
-      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      this.top = scrollTop
-      if (scrollTop > 1) {
-        let opacity = 10 / scrollTop
+  watch: {
+    scrollTop (newVal) {
+      if (newVal > 1) {
+        let opacity = 10 / newVal
         opacity = Math.min(1, opacity)
         this.opacityStyle.opacity = 1 - opacity
       }
-      if (scrollTop === 0) {
+      if (newVal === 0) {
         this.opacityStyle.opacity = 0
       }
-    },
+    }
+  },
+  methods: {
     collection () {
       this.$emit('collection')
     },
     back () {
       this.$emit('back')
     }
-  },
-  mounted () {
-    window.addEventListener('scroll', this.handlerScroll, true)
-  },
-  destroyed () {
-    window.removeEventListener('scroll', this.handlerScroll, true)
   }
 }
 </script>
