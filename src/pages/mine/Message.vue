@@ -9,35 +9,10 @@
                 <span class="m-s-title"><i v-show="!item.is_read"></i>{{item.title}}</span>
                 <span class="m-s-time">{{item.create_time}}</span>
               </div>
-              <!-- <p class="m-s-content">{{item.content}}</p> -->
             </li>
           </ul>
        </mescroll-vue>
      </div>
-     <!-- <el-tabs :stretch="true" value="first" class="m-tabs">
-        <el-tab-pane label="系统通知" name="first" class="m-tabs-item">
-          <ul>
-            <li v-for="(item,index) of systemNotifyList" :key="index" class="m-tabs-item-li" @click="itemClick(index)">
-              <div class="m-s-title-container">
-                <span class="m-s-title"><i v-show="item.isShowNotify"></i>{{item.title}}</span>
-                <span class="m-s-time">{{item.time}}</span>
-              </div>
-              <p class="m-s-content">{{item.content}}</p>
-            </li>
-          </ul>
-        </el-tab-pane> -->
-        <!-- <el-tab-pane label="店铺公告" name="second" class="m-tabs-item">
-          <ul>
-            <li v-for="(item,index) of systemNotifyList" :key="index" class="m-tabs-item-li" @click="itemClick(index)">
-              <div class="m-s-title-container">
-                <span class="m-s-title"><i v-show="item.isShowNotify"></i>{{item.title}}</span>
-                <span class="m-s-time">{{item.time}}</span>
-              </div>
-              <span class="m-s-content">{{item.content}}</span>
-            </li>
-          </ul>
-        </el-tab-pane>
-    </el-tabs> -->
    </div>
 </template>
 <script>

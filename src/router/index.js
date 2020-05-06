@@ -256,6 +256,11 @@ export default new Router({
       }
     },
     {
+      path: '/couponinfo',
+      name: 'couponInfo',
+      component: () => import('@/pages/mine/coupon/CouponInfo')
+    },
+    {
       path: '/collection',
       name: 'collection',
       component: Collection,
@@ -411,6 +416,16 @@ export default new Router({
       path: '/map',
       name: 'map',
       component: () => import('@/pages/common/map')
+    },
+    {
+      path: '/mywallet',
+      name: 'mywallet',
+      component: () => import('@/pages/mine/MyWallet')
+    },
+    {
+      path: '/myfriendlist',
+      name: 'myFriendList',
+      component: () => import('@/pages/mine/FriendList')
     }
   ],
   scrollBehavior (to, from, saveTop) {

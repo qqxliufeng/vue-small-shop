@@ -1,5 +1,5 @@
 <template>
-	<div class="scenic-type-list-container">
+	<div class="scenic-type-list-container bg-white">
 		<div ref="wrapper">
 				<ul class="scroll-view-h" :style="{'width': wrapperWidth + 'px'}">
 						<li v-for="(item, index) of tempList" :key="index" style="display: inline-block; width: 20vw; height: 80%;" :id="item.itemId">

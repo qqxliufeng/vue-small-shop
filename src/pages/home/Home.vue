@@ -175,10 +175,10 @@ export default {
         horizontalLine(#f5f5f5, .2)
     .h-h-title
         normalTextStyle(#333, .32)
-        padding rem(.2) rem(.1)
+        padding rem(.2)
         border-bottom #f5f5f5 solid rem(.02)
-        margin 0 rem(.2)
         text-align center
+        background-color #ffffff
     .h-h-ad-wrapper
         height rem(2)
         border-bottom #f5f5f5 solid rem(.2)

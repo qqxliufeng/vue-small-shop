@@ -37,6 +37,22 @@ export const wxLogin = userInfoUrl + 'wx_login'
 
 export const getOpenId = userInfoUrl + 'get_openid'
 
+export const myMoneyLog = userInfoUrl + 'moneyLog'
+
+export const myFriendList = userInfoUrl + 'friendList'
+
+const couponModuleUrl = 'coupon/'
+
+export const couponList = couponModuleUrl + 'couponList'
+
+export const couponInfo = couponModuleUrl + 'couponInfo'
+
+export const getCoupon = couponModuleUrl + 'receiveCoupon'
+
+export const myCouponList = couponModuleUrl + 'userCouponList'
+
+export const seekCoupon = couponModuleUrl + 'seekCoupon'
+
 const favoritesUrl = 'favorites/'
 
 export const userFavoriteScenicUrl = favoritesUrl + 'favorite_scenic'

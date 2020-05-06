@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2019-08-24 17:19:22
+ * @LastEditTime: 2020-04-28 10:35:30
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /small-shop/src/common/components/navigation.vue
+ -->
 <template>
    <div :class="[isFixed ? 'navi-fixed' : 'navi-relative','navi-container']">
       <span v-if="isShowBack" class="iconfont navi-back" @click="back">&#xe625;</span>
@@ -47,7 +55,7 @@ export default {
 .navi-container
     height $headerHeight
     line-height $headerHeight
-    background-color #f5f5f5
+    background-color #ffffff
     opacity 1
     text-align center
     font-size .32rem

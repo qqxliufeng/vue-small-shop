@@ -12,7 +12,7 @@
           </swiper>
           <ul v-if="currentTabItems && currentTabItems.length > 0" class="ticket-wrapper">
             <li v-for="item of tempCurrentTabItems" :key="item.goodsId">
-                <scenic-detail-ticket-item :item="item" @reseve-detail="reseveDetail"></scenic-detail-ticket-item>
+                <scenic-detail-ticket-item :item="item" @reseve-detail="reseveDetail" @counpon="showCouponList"></scenic-detail-ticket-item>
             </li>
             <div v-if="tempCurrentTabItems && tempCurrentTabItems.length < currentTabItems.length" class="show-more" @click="showMore">
               加载更多
@@ -80,6 +80,9 @@ export default {
         this.isFixed = scrollTop + this.headerHeight >= this.offsetTop
         this.isScroll = false
       }
+    },
+    showCouponList (counpon) {
+      this.$emit('counpon', counpon)
     },
     positionType () {
       if (this.isFixed) {

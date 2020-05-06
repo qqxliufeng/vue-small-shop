@@ -1,7 +1,7 @@
 <template>
     <div>
         <navi title="联系客服" :isShowBack="false"></navi>
-        <div class="c-s-container">
+        <div class="c-s-container bg-white padding-sm margin-top-sm">
             <p class="c-s-title">
                 <i></i>
                 店铺客服

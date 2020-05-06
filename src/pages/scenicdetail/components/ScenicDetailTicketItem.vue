@@ -19,6 +19,7 @@
                     <p>
                         <span v-if="item.totalSales > 0">已售{{$utils.common.trasformNum(item.totalSales)}}</span>
                         <span class="ticket-must">购票须知<i class="el-icon-arrow-right"></i></span>
+                        <span class="ticket-must" @click.stop="getCounpon">领券<i class="el-icon-arrow-right"></i></span>
                     </p>
                 </div>
                 <div class="s-d-hot-item-info-info-action">
@@ -39,9 +40,85 @@ export default {
   props: {
     item: Object
   },
+  data () {
+    return {
+      isLoadCoupon: false,
+      coupon: [
+        // {
+        //   condition: '0.00',
+        //   create_time: null,
+        //   goods_ids: '78',
+        //   id: 1,
+        //   money: '10.00',
+        //   name: '优惠券',
+        //   receive_num: 5,
+        //   send_end_date: '2020-05-21',
+        //   send_num: 1000,
+        //   send_start_date: '2020-04-21',
+        //   send_status: 1,
+        //   send_type: 1,
+        //   status: this.state,
+        //   store_id: 2,
+        //   type: 2,
+        //   use_end_date: '2020-06-01',
+        //   use_num: 0,
+        //   use_start_date: '2020-04-21',
+        //   use_status: 1,
+        //   is_receive: 0
+        // },
+        // {
+        //   condition: '0.00',
+        //   create_time: null,
+        //   goods_ids: '78',
+        //   id: 2,
+        //   money: '10.00',
+        //   name: '优惠券',
+        //   receive_num: 5,
+        //   send_end_date: '2020-05-21',
+        //   send_num: 1000,
+        //   send_start_date: '2020-04-21',
+        //   send_status: 1,
+        //   send_type: 1,
+        //   status: this.state,
+        //   store_id: 2,
+        //   type: 2,
+        //   use_end_date: '2020-06-01',
+        //   use_num: 0,
+        //   use_start_date: '2020-04-21',
+        //   use_status: 1,
+        //   is_receive: 0
+        // }
+      ]
+    }
+  },
   methods: {
     itemClick () {
       this.$emit('reseve-detail', this.item)
+    },
+    getCounpon () {
+      if (this.isLoadCoupon) {
+        if (this.coupon && this.coupon.length > 0) {
+          this.$emit('counpon', this.coupon)
+        } else {
+          this.$toast('来晚啦，优惠券已领完~')
+        }
+      } else {
+        this.$http(this.$urlPath.seekCoupon, {
+          store_id: this.$route.query.t,
+          goods_id: this.item.goodsId
+        }, '', (res) => {
+          this.isLoadCoupon = true
+          this.coupon = res.data
+          if (this.coupon && this.coupon.length > 0) {
+            this.$emit('counpon', this.coupon)
+          } else {
+            this.$toast('来晚啦，优惠券已领完~')
+          }
+        }, (errerCode, error) => {
+          this.isLoadCoupon = true
+          this.$toast('来晚啦，优惠券已领完~')
+        })
+      }
     }
   }
 }

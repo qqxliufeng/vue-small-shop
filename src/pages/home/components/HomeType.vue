@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2019-08-24 17:19:23
+ * @LastEditTime: 2020-04-28 10:36:51
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /small-shop/src/pages/home/components/HomeType.vue
+ -->
 <template>
     <div class="home-type-container">
         <swiper :options="swiperOption" v-if="list">
@@ -33,7 +41,7 @@ export default {
     slideItems () {
       const pages = []
       this.list.forEach((element, index) => {
-        let page = Math.floor(index / 8)
+        let page = Math.floor(index / 10)
         if (!pages[page]) {
           pages[page] = []
         }
@@ -59,6 +67,7 @@ export default {
     overflow hidden
     border-top 1px solid #f5f5f5
     border-bottom #f5f5f5 solid rem(.2)
+    background-color #ffffff
     .swiper-container
         & >>> .swiper-pagination-bullets
             bottom 1px

@@ -1,5 +1,13 @@
+<!--
+ * @Author: your name
+ * @Date: 2019-08-24 17:19:23
+ * @LastEditTime: 2020-04-29 11:59:45
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /small-shop/src/pages/login/LoginContainer.vue
+ -->
 <template>
-  <div class='l-c-container'>
+  <div class='l-c-container bg-white'>
     <navi title="登录"></navi>
     <el-tabs :stretch="true" v-model="activeName">
       <el-tab-pane label="快捷登录" name="first">

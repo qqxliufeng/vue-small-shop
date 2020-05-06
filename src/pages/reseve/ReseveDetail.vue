@@ -1,14 +1,17 @@
 <template>
     <div class="r-d-detail-container">
         <navi title="提交订单" :isFixed="true"></navi>
-        <div class="r-d-detail-wrapper">
+        <div class="r-d-detail-wrapper bg-white">
             <ticket-info :ticketInfo="ticketInfo" @selected="onSelectedTimeItem" ref="ticketInfo" @collection="collection"></ticket-info>
             <ticket-contact v-if="ticketInfo.goods && ticketInfo.goods.play_info !== 0" ref="userSingleInfo" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-contact>
             <ticket-user-info :contacts="contacts" :touristCount="touristCount" ref="userInfo" v-if="ticketInfo.goods && ticketInfo.goods.play_info === 2 && touristCount > 1" :visitorInfo="ticketInfo.goods.visitor_info"></ticket-user-info>
             <select-route-site v-if="ticketInfo.goods && ticketInfo.goods.categoryId === 14" :routeSites="ticketInfo.assembling_place" @route-item-click="routeSiteClick"></select-route-site>
-            <ticket-discount></ticket-discount>
+            <ticket-discount :couponList="ticketInfo.coupon" :totalPrice="totalPrice" @selectedCoupon="selectedCoupon"></ticket-discount>
             <div class="r-d-detail-pay-action-wrapper">
-                <span class="r-d-pay-action-price">总价：<i>￥{{totalPrice}}</i></span>
+                <span class="r-d-pay-action-price">{{Number(discountPrice) > 0 ? '券后': '总价'}}:
+                  <i>￥{{totalPrice - discountPrice}}</i>
+                  <span v-if="discountPrice > 0" class="text-sm margin-left-sm">优惠：￥{{discountPrice}}</span>
+                </span>
                 <div class="r-d-pay-action-collection" @click="collection">
                   <p :class="[collectionState ===  1 ? 'el-icon-star-on' : 'el-icon-star-off']"></p>
                   <p>收藏</p>
@@ -60,13 +63,20 @@ export default {
     return {
       ticketInfo: {},
       totalPrice: 0,
+      discountPrice: 0,
       contacts: [],
       tempDate: null,
       collectionState: 0,
       touristCount: 1,
       hasCountDownEnd: false,
       tempRouteSite: null,
-      orderConfirm: false
+      orderConfirm: false,
+      idCardCheck: {
+        // 0 不限制 即不用校验身份证号 要是其它 如：37010 就要限制
+        isIdNumber: '0',
+        // 0 限制购买，1 只允许购买
+        idCardRule: 0
+      }
     }
   },
   computed: {
@@ -94,6 +104,8 @@ export default {
         s_id: this.$route.query.scenicId
       }, '', (data) => {
         this.ticketInfo = data.data
+        this.idCardCheck.isIdNumber = this.ticketInfo.goods.is_id_number
+        this.idCardCheck.idCardRule = this.ticketInfo.goods.id_card_rule
         if (this.ticketInfo.calendar && this.ticketInfo.calendar.constructor === Object) {
           this.ticketInfo.releaseTime = this.ticketInfo.calendar.releaseTime ? this.ticketInfo.calendar.releaseTime : 0
           this.ticketInfo.time = data.time
@@ -151,6 +163,13 @@ export default {
       }, (errorCode, error) => {
         this.$toast(error)
       })
+    },
+    selectedCoupon (item) {
+      if (item) {
+        this.discountPrice = Number(item.money)
+      } else {
+        this.discountPrice = 0
+      }
     },
     reserve () {
       if (!this.tempDate) {
@@ -241,6 +260,22 @@ export default {
         if (idCard && !this.$utils.validator.checkIdCard(idCard)) {
           this.$toast('请输入合法的身份证号')
           return false
+        }
+        if (Number(this.idCardCheck.isIdNumber) !== 0) {
+          const idReg = new RegExp('^' + this.idCardCheck.isIdNumber + '.*$')
+          const isChecked = idReg.test(idCard)
+          if (Number(this.idCardCheck.idCardRule) === 0) { // 限制购买
+            if (isChecked) {
+              this.$toast('此身份证号不允许购买该票')
+              return false
+            }
+          }
+          if (Number(this.idCardCheck.idCardRule) === 1) { // 只允许购买
+            if (!idReg.test(idCard)) {
+              this.$toast('此身份证号不允许购买该票')
+              return false
+            }
+          }
         }
         if (!schoolName && this.ticketInfo.goods.visitor_info.indexOf('u') !== -1) {
           this.$toast('请输入学校名称')

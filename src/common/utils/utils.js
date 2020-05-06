@@ -22,6 +22,7 @@ export default {
     phoneReg: /^1[0-9]\d{9}$/,
     passwordReg: /^(\w){6,16}$/,
     emailReg: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
+    regIdCard: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
     isPhone (phone) {
       return this.phoneReg.test(phone)
     },
@@ -30,6 +31,13 @@ export default {
     },
     isEmail (s) {
       return this.emailReg.test(s)
+    },
+    checkIdCard (idcard) {
+      if (!this.regIdCard.test(idcard)) {
+        return false
+      } else {
+        return true
+      }
     }
   },
   image: {
@@ -97,6 +105,16 @@ export default {
       } else {
         return ''
       }
+    },
+    dateFormat (timeStamp) {
+      const date = new Date(timeStamp)
+      const YY = date.getFullYear() + '-'
+      const MM = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      const DD = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate())
+      const hh = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':'
+      const mm = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':'
+      const ss = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds())
+      return YY + MM + DD + ' ' + hh + mm + ss
     }
   }
 }

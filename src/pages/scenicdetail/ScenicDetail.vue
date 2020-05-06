@@ -21,7 +21,7 @@
           </div>
           <!-- <scenic-detail-hot :hotGoodsList="hotGoodsList" v-if="hotGoodsList && hotGoodsList.length > 0" @reseve-detail="reseveDetail"></scenic-detail-hot> -->
           <div id="ticketType">
-            <scenic-detail-ticket-type :typeGoodsList="typeGoodsList" @reseve-detail="reseveDetail" :title="scenicInfo.categoryId === 14 ? '跟团游' : '优惠信息'" @show-more="showMoreTicket"></scenic-detail-ticket-type>
+            <scenic-detail-ticket-type :typeGoodsList="typeGoodsList" @reseve-detail="reseveDetail" title="优惠信息" @show-more="showMoreTicket" @counpon="showCouponList"></scenic-detail-ticket-type>
           </div>
           <div id="route">
             <scenic-detail-ticket-type :typeGoodsList="route" @reseve-detail="reseveRouteDetail" title="跟团游"></scenic-detail-ticket-type>
@@ -46,6 +46,41 @@
         <section v-else>
           <load-fail @reload="reload"></load-fail>
         </section>
+        <transition name="slide-fade" @before-enter="beforeEnter" @before-leave="beforeLeave">
+          <div v-if="showRemark" class="r-d-ticket-info-remark-wrapper">
+            <div class="title bg-white flex justify-between padding-sm align-center solid-bottom">
+              <span class="text-black text-bold text-lg">优惠券列表</span>
+              <i class="el-icon-circle-close close-icon" @click="close" style="font-size: 22px"></i>
+            </div>
+            <div class="content">
+              <div class="coupon-item-card-wrapper bg-white flex margin-sm" v-for="item of couponList" :key="item.id">
+                <div class="flex-sub flex flex-direction justify-center align-center">
+                  <div class="text-lg text-black text-bold text-cut">{{item.name}}</div>
+                  <div class="text-sm text-gray" style="margin-top: 10px; margin-bottom: 10px;">使用时间：{{item.use_start_date}} - {{item.use_end_date}}</div>
+                  <div class="text-sm text-gray">
+                    使用范围：{{item.type === 1 ? '全店通用' : '指定商品可用'}}
+                  </div>
+                </div>
+                <div class="line-wrapper flex flex-direction justify-center align-center">
+                  <div class="circle-one"></div>
+                  <div class="line flex-sub"></div>
+                  <div class="circle-two"></div>
+                </div>
+                <div class="money-info-wrapper flex flex-direction justify-center align-center" :class="{'money-info-bg' : item.is_receive === 0}">
+                  <div class="text-red text-xl text-bold text-price">
+                    {{item.money}}
+                  </div>
+                  <div class="text-bold text-red text-sm" v-if="Number(item.condition) > 0">满{{item.condition}}元可用</div>
+                  <div class="margin-top-sm button-wrapper cu-btn sm round text-xs flex justify-center align-center" :class="item.is_receive === 0 ? 'bg-gradual-orange' : 'line-red'" @click="getCoupon(item)">
+                    {{item.is_receive === 0 ? '立即领取' : '已领取'}}
+                  </div>
+                </div>
+                <div class="iconfont status-flag text-gray" v-if="item.is_receive === 1">&#xe7d5;</div>
+              </div>
+            </div>
+          </div>
+        </transition>
+        <div class="v-modal" v-show="showModal" @click="showRemark = false"></div>
     </div>
 </template>
 
@@ -94,7 +129,10 @@ export default {
       marginTop: 86,
       heightListInfo: {},
       tabList: [],
-      mTabIndex: -1
+      mTabIndex: -1,
+      showRemark: false,
+      showModal: false,
+      couponList: []
     }
   },
   computed: {
@@ -111,6 +149,33 @@ export default {
         default:
           this.$router.push({name: 'reseveDetail', query: { goods_id: item.goodsId, scenicId: this.scenicId }})
           break
+      }
+    },
+    showCouponList (coupon) {
+      this.couponList = coupon
+      this.showRemark = true
+    },
+    beforeEnter (el) {
+      this.showModal = true
+    },
+    beforeLeave (el) {
+      this.showModal = false
+    },
+    close () {
+      this.showRemark = false
+      this.showModal = false
+    },
+    getCoupon (item) {
+      if (item.is_receive === 0) {
+        this.$http(this.$urlPath.getCoupon, {
+          store_id: this.storeId,
+          coupon_id: item.id
+        }, '正在领取…', (res) => {
+          item.is_receive = 1
+        }, (erroCode, error) => {
+          this.$toast(error)
+        }
+        )
       }
     },
     reseveRouteDetail (item) {
@@ -313,6 +378,85 @@ export default {
 <style lang="stylus" scoped>
 @import '~styles/varibles.styl'
 @import '~styles/mixin.styl'
+>>> .v-modal
+      z-index 1
+.slide-fade-enter-active, .slide-fade-leave-active
+    transition all .3s
+.slide-fade-enter, .slide-fade-leave-to
+    transform translateY(10rem)
+    opacity 0
+.r-d-ticket-info-remark-wrapper
+    position fixed
+    bottom 0
+    top 20%
+    left 0
+    right 0
+    z-index 1001
+    overflow-y scroll
+    background-color #f5f5f5
+    border-top-left-radius rem(.2)
+    border-top-right-radius rem(.2)
+    padding-top rem(.2)
+    .close-icon
+      font-size 20px
+    .title
+      position absolute
+      top 0
+      left 0
+      right 0
+      height rem(.5)
+    .content
+      position absolute
+      top rem(.9)
+      left 0
+      right 0
+      bottom 0
+      overflow-y scroll
+      .coupon-left
+        width rem(1.7)
+        height rem(1.3)
+      .coupon-item-card-wrapper
+        height 88px
+        border-radius 5px
+        position relative
+        overflow hidden
+        .status-flag
+          position absolute
+          top 0
+          right 2px
+          margin-top -10px
+          font-size 40px
+        .money-info-wrapper
+          width 88px
+          position relative
+          z-index 2
+          .button-wrapper
+            height 18px
+        .money-info-bg
+          background rgba(255,182,193, .2)
+        .line-wrapper
+          width 10px
+          .circle-one
+            width 10px
+            height 10px
+            background-color #f1f1f1
+            margin-top -50%
+            border-radius 50%
+          .line
+            border #f1f1f1 dashed 1px
+            width 1px
+          .circle-two
+            width 10px
+            height 10px
+            background-color #f1f1f1
+            margin-bottom -50%
+            border-radius 50%
+    .button-confirm-wrapper
+      position fixed
+      left 0px
+      right 0px
+      bottom 0px
+      padding 0 10px
 .s-d-info-scenic-info-wrapper
     overflow hidden
     display flex

@@ -1,7 +1,15 @@
+<!--
+ * @Author: your name
+ * @Date: 2019-02-12 18:26:25
+ * @LastEditTime: 2020-04-28 18:38:03
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /small-shop/src/pages/mine/coupon/Coupon.vue
+ -->
 <template>
     <div>
         <navi title="优惠券" :isFixed="true"></navi>
-        <el-tabs value="first" :stretch="true" class="c-tabs">
+        <el-tabs value="first" :stretch="true" class="c-tabs" @tab-click="handleClick">
             <el-tab-pane label="可使用" name="first" class="c-tabs-item">
                 <coupon-item state="1"></coupon-item>
             </el-tab-pane>
@@ -22,6 +30,11 @@ export default {
   components: {
     navi,
     CouponItem
+  },
+  methods: {
+    handleClick (tab, event) {
+      tab.$children[0].$refs.mescroll.mescroll.resetUpScroll(true)
+    }
   }
 }
 </script>

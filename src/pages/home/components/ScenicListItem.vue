@@ -1,5 +1,5 @@
 <template>
-  <div class='s-l-i-container' v-if="item" @click="itemClick">
+  <div class='s-l-i-container bg-white' v-if="item" @click="itemClick">
       <div class="h-l-like-img-wrapper">
           <img v-lazy="$utils.image.getImagePath(item.scenicimages)" :key="item.scenicimages">
       </div>

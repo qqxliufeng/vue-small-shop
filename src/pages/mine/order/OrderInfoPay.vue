@@ -1,7 +1,7 @@
 <template>
     <div v-if="info">
         <navi title="支付"></navi>
-        <div class="o-i-pay-container">
+        <div class="o-i-pay-container bg-white">
             <div class="o-i-pay-time-wrapper">
                 <p>剩余支付时间</p>
                 <count-down :time="info.timeout_express * 1000" @end="countDownEnd">

@@ -1,5 +1,5 @@
 <template>
-    <div class="h-h-hot-container">
+    <div class="h-h-hot-container bg-white">
         <swiper :options="swiperOption" class="h-h-hot-card">
             <swiper-slide v-for="(item, index) of list" :key="item.goods_id">
                 <el-card shadow="always" :body-style="{padding: '0'}">

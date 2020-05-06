@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2019-08-24 17:19:25
+ * @LastEditTime: 2020-04-29 13:49:59
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /small-shop/src/pages/wx/Auth.vue
+ -->
 <template>
 <div class=''></div>
 </template>
@@ -20,7 +28,7 @@ export default {
         if (this.$root.userInfo.isLogin() && (!this.$root.userInfo.state.openid || this.$root.userInfo.state.openid === 'null')) {
           this.$http(this.$urlPath.getOpenId, {
             code: this.code
-          }, '正在授权登录…', (data) => {
+          }, '正在授权…', (data) => {
             if (data) {
               this.$root.userInfo.setUserInfoOpenId(data.data.openid)
               let backPage = this.$root.state.getBackPage()
@@ -46,10 +54,13 @@ export default {
               this.$root.userInfo.setUserInfo(data.data.userinfo)
               this.$root.state.saveUserInfo(data.data.userinfo.token)
               let backPage = this.$root.state.getBackPage()
+              console.log('backpage' + backPage)
               if (backPage) {
-                if (backPage.name === 'activityTicketDetail') {
-                  window.location.href = 'http://www.store.liuyiqinzi.com/atdetail?s=' + backPage.query.scenicId + '&i=' + backPage.query.identity + '&t=' + backPage.query.storeId + '&g=' + backPage.query.goods_id + '&p=' + backPage.query.p
+                console.log('backpage name' + backPage.name)
+                if (backPage.name === 'reseveDetail') {
+                  window.location.href = 'http://www.store.liuyiqinzi.com/resevedetail?goods_id=' + backPage.query.goods_id + '&scenicId=' + backPage.query.scenicId
                 } else {
+                  console.log('backpage')
                   this.$router.replace({name: backPage.name, query: backPage.query, params: backPage.params}, () => {
                     this.$root.state.setBackPage(null)
                   })

@@ -1,6 +1,6 @@
 <template>
     <div class="login-container">
-        <div class="input-container">
+        <div class="input-container bg-white">
             <div>
                 <span class="iconfont input-close" @click="clear">&#xe604;</span>
                 <input placeholder="请输入手机号" class="user-name" maxlength="11" v-model="userName"/>
