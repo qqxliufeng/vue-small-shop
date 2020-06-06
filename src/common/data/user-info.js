@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2019-08-24 17:19:22
+ * @LastEditTime: 2020-05-07 10:14:26
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /small-shop/src/common/data/user-info.js
+ */
 const userInfo = {
   debug: true,
   state: {
@@ -11,7 +19,10 @@ const userInfo = {
     email: sessionStorage.getItem('email'),
     qq: sessionStorage.getItem('qq'),
     city: sessionStorage.getItem('city'),
-    openid: sessionStorage.getItem('openid')
+    openid: sessionStorage.getItem('openid'),
+    yearCard: sessionStorage.getItem('yearCard'),
+    money: sessionStorage.getItem('money'),
+    level: sessionStorage.getItem('level')
   },
   isLogin () {
     // return this.state.id !== '' && this.state.id !== null && this.state.token !== '' && this.state.token !== null && this.state.phone !== '' && this.state.phone !== null
@@ -29,6 +40,9 @@ const userInfo = {
     this.state.qq = userInfo.qq
     this.state.city = userInfo.province + userInfo.town
     this.state.openid = userInfo.openid
+    this.state.yearCard = userInfo.year_card
+    this.state.money = userInfo.money
+    this.state.level = userInfo.level
     sessionStorage.setItem('userId', this.state.id)
     localStorage.setItem('token', this.state.token)
     sessionStorage.setItem('name', this.state.name)
@@ -40,6 +54,9 @@ const userInfo = {
     sessionStorage.setItem('gender', this.state.gender)
     sessionStorage.setItem('city', this.state.city)
     sessionStorage.setItem('openid', this.state.openid)
+    sessionStorage.setItem('yearCard', this.state.yearCard)
+    sessionStorage.setItem('money', this.state.money)
+    sessionStorage.setItem('level', this.state.level)
   },
   setUserInfoAvatar (avatar) {
     this.state.avatar = avatar

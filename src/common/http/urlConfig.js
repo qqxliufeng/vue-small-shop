@@ -41,6 +41,8 @@ export const myMoneyLog = userInfoUrl + 'moneyLog'
 
 export const myFriendList = userInfoUrl + 'friendList'
 
+export const getWxQrCode = userInfoUrl + 'referrerRegister'
+
 const couponModuleUrl = 'coupon/'
 
 export const couponList = couponModuleUrl + 'couponList'
@@ -163,6 +165,8 @@ export const customService = messageModuleUrl + 'customservice'
 
 export const registerProtocol = messageModuleUrl + 'protocol'
 
+export const feedback = messageModuleUrl + 'feedback'
+
 const searchModuleUrl = 'search/'
 
 export const hotSearch = searchModuleUrl + 'hot_search'
@@ -194,8 +198,6 @@ export const assistLogin = userInfoUrl + 'assist_login'
 export const assistList = assistModuleUrl + 'assist'
 
 export const getShareInfo = assistModuleUrl + 'share'
-
-export const getWxQrCode = assistModuleUrl + 'wx_qr_code'
 
 export const getActivityRuleDetails = assistModuleUrl + 'assist_details'
 

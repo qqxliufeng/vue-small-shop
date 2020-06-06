@@ -28,7 +28,14 @@
             </el-badge>
           </div>
       </div>
-      <div style="padding-top: 5px; padding-bottom: 15px">
+      <div style="margin: 10px;" class="upgrade-wrapper flex justify-between align-center bg-black">
+        <div class="flex flex-direction justify-between">
+          <div class="text-white text-df">当前等级：{{getLevelTip()}}</div>
+          <div class="text-yellow text-xs" style="margin-top: 10px;">升级享更多特权优惠</div>
+        </div>
+        <div class="upgread-tag text-yellow text-xs" @click="upgrade">{{showUpgrad ? '升级' + getUpgradeTip() : '查看信息'}}</div>
+      </div>
+      <div style="padding-bottom: 15px">
         <div style="margin: 10px; border-radius: 5px;" class="bg-white">
           <div class="padding-sm text-black text-df" v-if="myWallet.title">{{myWallet.title}}</div>
           <div class="flex padding-sm p-action-item">
@@ -186,12 +193,15 @@ export default {
           {
             title: '意见反馈',
             icon: img13,
-            click: () => {}
+            click: () => {
+              this.$router.push({name: 'feedBack'})
+            }
           }
         ]
       },
       isShowRedNotify: true,
-      contentDivScroll: 0
+      contentDivScroll: 0,
+      showUpgrad: this.$root.userInfo.state.level < 3
     }
   },
   computed: {
@@ -208,6 +218,29 @@ export default {
     }
   },
   methods: {
+    getLevelTip () {
+      const level = Number(this.$root.userInfo.state.level)
+      switch (level) {
+        case 1:
+          return '普通'
+        case 2:
+          return '黄金'
+        case 3:
+          return '白金'
+      }
+    },
+    getUpgradeTip () {
+      const level = Number(this.$root.userInfo.state.level)
+      switch (level) {
+        case 1:
+          return '黄金'
+        case 2:
+          return '白金'
+      }
+    },
+    upgrade () {
+      this.$router.push({name: 'shareActivityImage'})
+    },
     back () {
       this.$router.back()
     },
@@ -386,4 +419,11 @@ export default {
           line-height .75rem
           border-top 1px solid #f5f5f5
           border-bottom 1px solid #f5f5f5
+.upgrade-wrapper
+  border-radius 5px
+  padding 10px
+  .upgread-tag
+    border 1px solid #fbbd08
+    border-radius 15px
+    padding 5px 15px
 </style>

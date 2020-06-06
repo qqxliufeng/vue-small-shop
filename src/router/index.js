@@ -394,6 +394,11 @@ export default new Router({
       component: () => import('@/pages/activity/ShareActivityImage')
     },
     {
+      path: '/feedback',
+      name: 'feedBack',
+      component: () => import('@/pages/mine/FeedBack')
+    },
+    {
       path: '/activitylist',
       name: 'activityList',
       component: () => import('@/pages/activity/ActivityList')
